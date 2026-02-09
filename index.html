@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Menu</title>
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="brand" role="button" tabindex="0" id="btn_home">
+        <div class="brand__dot"></div>
+        <div class="brand__texts">
+          <div class="brand__title" id="ui_app_title"></div>
+          <div class="brand__sub" id="ui_app_subtitle"></div>
+        </div>
+      </div>
+
+      <div class="topbar__actions">
+        <button class="btn btn--ghost" id="btn_lang" type="button"></button>
+      </div>
+    </header>
+
+    <!-- MENU SCREEN -->
+    <main class="main" id="screen_menu">
+      <section class="panel panel--menu">
+        <div class="menu_head">
+          <h1 class="menu_title" id="ui_menu_title"></h1>
+          <p class="menu_sub" id="ui_menu_sub"></p>
+        </div>
+
+        <div class="grid" id="scenario_grid"></div>
+
+        <div class="menu_footer" id="ui_menu_footer"></div>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="js/engine.js"></script>
+</body>
+</html>

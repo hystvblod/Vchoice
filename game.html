@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Game</title>
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="brand" role="button" tabindex="0" id="btn_home">
+        <div class="brand__dot"></div>
+        <div class="brand__texts">
+          <div class="brand__title" id="ui_app_title"></div>
+          <div class="brand__sub" id="ui_app_subtitle"></div>
+        </div>
+      </div>
+
+      <div class="topbar__actions">
+        <button class="btn btn--ghost" id="btn_hint" type="button"></button>
+        <button class="btn btn--ghost" id="btn_lang" type="button"></button>
+        <button class="btn btn--ghost" id="btn_restart" type="button"></button>
+      </div>
+    </header>
+
+    <!-- GAME SCREEN -->
+    <main class="main" id="screen_game">
+      <section class="panel">
+        <div class="scene">
+          <div class="scene__media">
+            <img id="scene_img" alt="" />
+            <div class="img_fallback" id="img_fallback"></div>
+          </div>
+
+          <div class="scene__content">
+            <div class="meta">
+              <div class="pill" id="ui_scenario_name"></div>
+              <div class="pill pill--muted" id="ui_step"></div>
+              <div class="pill pill--muted" id="ui_endings"></div>
+            </div>
+
+            <h2 class="title" id="scene_title"></h2>
+            <p class="body" id="scene_body"></p>
+
+            <div class="choices" id="choices"></div>
+
+            <div class="footer" id="ui_footer"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- HINT MODAL -->
+    <div class="modal" id="hint_modal" style="display:none" aria-hidden="true">
+      <div class="modal__backdrop" id="hint_backdrop"></div>
+      <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="hint_title">
+        <div class="modal__head">
+          <div class="modal__title" id="hint_title"></div>
+          <button class="btn btn--ghost" id="hint_close" type="button">✕</button>
+        </div>
+
+        <div class="modal__tabs">
+          <button class="tab" id="hint_soft" type="button"></button>
+          <button class="tab" id="hint_strong" type="button"></button>
+        </div>
+
+        <p class="modal__body" id="hint_text"></p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/engine.js"></script>
+</body>
+</html>

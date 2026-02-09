@@ -1,0 +1,42 @@
+{
+  "langs": [
+    { "id": "fr", "label": "FR" }
+  ],
+  "ui": {
+    "app_title": "DOSSIER 14",
+    "app_subtitle": "Histoires interactives",
+    "restart": "Recommencer",
+    "lang_label": "{{lang}}",
+
+    "hint_button": "Indice",
+    "hint_title": "Indice",
+    "hint_level_soft": "Indice (léger)",
+    "hint_level_strong": "Indice (direct)",
+    "hint_none": "Aucun indice ici. Continue d’avancer ou explore une autre option.",
+
+    "step": "Étape {{n}}",
+    "endings_found": "Fins : {{n}}/{{total}}",
+
+    "footer": "Progression sauvegardée sur cet appareil.",
+    "play_again": "Rejouer ce scénario",
+    "confirm_restart": "Tout recommencer pour ce scénario ?",
+
+    "no_image": "Aucune image.",
+    "missing_image": "Image introuvable : {{path}}"
+  },
+  "menu": {
+    "title": "Choisis un scénario",
+    "subtitle": "Une histoire, des choix, plusieurs fins.",
+    "footer": "Ta progression est sauvegardée automatiquement.",
+    "start": "Jouer",
+    "resume": "Continuer",
+    "endings": "Fins {{n}}/{{total}}",
+    "back_to_menu": "Retour au menu"
+  },
+  "locks": {
+    "locked": "Option indisponible pour l’instant."
+  },
+  "errors": {
+    "missing_scene": "Scène introuvable."
+  }
+}
