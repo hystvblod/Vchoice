@@ -4,6 +4,9 @@
 const SAVE_KEY = "creepy_engine_save_v1";
 const DEFAULT_LANG = "fr";
 
+// Langues supportées par l'app (UI + potentiel scénarios)
+const SUPPORTED_LANGS = ["fr", "en"];
+
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
   catalog: `data/scenarios/catalog.json`,
@@ -12,66 +15,131 @@ const PATHS = {
 };
 
 /* =========================
-   SMALL HELPERS
+   GLOBAL STATE
 ========================= */
-const $ = (id) => document.getElementById(id);
+let LANG = DEFAULT_LANG;
 
-function deepGet(obj, path){
-  const parts = path.split(".");
-  let cur = obj;
-  for(const p of parts){
-    if(cur == null) return null;
-    cur = cur[p];
-  }
-  return cur;
-}
-
-function format(str, params){
-  return String(str).replace(/\{\{(\w+)\}\}/g, (_,k) => (params?.[k] ?? ""));
-}
-
-async function fetchJSON(path){
-  const res = await fetch(path, { cache: "no-store" });
-  if(!res.ok) throw new Error(`Missing ${path}`);
-  return await res.json();
-}
-
-/* =========================
-   STATE
-========================= */
 let UI = null;
 let CATALOG = null;
-
-let LANG = DEFAULT_LANG;
 
 let currentScenarioId = null;
 let LOGIC = null;
 let TEXT = null;
 
-let scenarioStates = {}; // { [scenarioId]: { scene, step, flags, endings } }
+// Scenario progress saved per scenario_id
+let scenarioStates = {};
 
-function defaultScenarioState(startScene){
-  return {
-    scene: startScene,
-    step: 1,
-    flags: {},  // { flagId:true }
-    endings: { good:false, bad:false, secret:false }
-  };
+/* =========================
+   SMALL HELPERS
+========================= */
+function $(id){ return document.getElementById(id); }
+
+async function fetchJSON(url){
+  const r = await fetch(url, { cache: "no-store" });
+  if(!r.ok) throw new Error(`fetch ${url} => ${r.status}`);
+  return await r.json();
 }
 
-function normalizeScenarioState(st, startScene){
-  if(!st || typeof st !== "object") return defaultScenarioState(startScene);
+function deepGet(obj, path){
+  if(!obj) return undefined;
+  const parts = path.split(".");
+  let cur = obj;
+  for(const p of parts){
+    if(cur && Object.prototype.hasOwnProperty.call(cur, p)) cur = cur[p];
+    else return undefined;
+  }
+  return cur;
+}
 
+function format(str, params={}){
+  return String(str).replace(/\{(\w+)\}/g, (_, k) => (params[k] ?? `{${k}}`));
+}
+
+/* =========================
+   LANGUAGE RESOLUTION
+========================= */
+function normalizeLang(raw){
+  if(!raw) return null;
+  const s = String(raw).trim().toLowerCase();
+  // "fr-FR" -> "fr"
+  const base = s.split("-")[0];
+  return base || null;
+}
+
+function detectDeviceLang(){
+  // navigator.languages est souvent le plus fiable
+  const list = Array.isArray(navigator.languages) && navigator.languages.length
+    ? navigator.languages
+    : [navigator.language];
+
+  for(const candidate of list){
+    const base = normalizeLang(candidate);
+    if(base && SUPPORTED_LANGS.includes(base)) return base;
+  }
+  return DEFAULT_LANG;
+}
+
+// setLang = point unique pour changer la langue partout
+async function setLang(newLang, opts = {}){
+  const {
+    persistLocal = true,
+    persistRemote = false, // Supabase (via userData) si dispo
+    rerender = true
+  } = opts;
+
+  const base = normalizeLang(newLang);
+  const safe = (base && SUPPORTED_LANGS.includes(base)) ? base : DEFAULT_LANG;
+
+  if(LANG === safe) return;
+
+  LANG = safe;
+
+  // Recharge UI (toujours)
+  await reloadUI();
+
+  // Sauvegarde locale (immédiate)
+  if(persistLocal) save();
+
+  // Sauvegarde remote (si userData est branché)
+  if(persistRemote && window.userData && typeof window.userData.setLanguage === "function"){
+    try{ await window.userData.setLanguage(LANG); }catch(e){ /* ne bloque pas */ }
+  }
+
+  // Si on est en jeu, recharge scenario text dans la langue
+  if(hasGamePage() && currentScenarioId){
+    await openScenario(currentScenarioId);
+  }
+
+  if(rerender){
+    if(hasMenuPage()) await renderMenu();
+    if(hasGamePage()) renderScene();
+    renderTopbar();
+  }
+}
+
+/* =========================
+   SAVE / LOAD
+========================= */
+function normalizeScenarioState(st, startScene){
+  // State model minimal stable
   const out = {
-    scene: (typeof st.scene === "string") ? st.scene : startScene,
-    step: (Number.isFinite(st.step) && st.step > 0) ? st.step : 1,
-    flags: (st.flags && typeof st.flags === "object") ? st.flags : {},
-    endings: (st.endings && typeof st.endings === "object")
-      ? { good:!!st.endings.good, bad:!!st.endings.bad, secret:!!st.endings.secret }
-      : { good:false, bad:false, secret:false }
+    scene: startScene,
+    step: 1,
+    flags: {},
+    endings: { good:false, bad:false, secret:false }
   };
 
-  // migration: ignore old "items"
+  if(!st || typeof st !== "object") return out;
+
+  out.scene = (typeof st.scene === "string") ? st.scene : startScene;
+  out.step = Number.isFinite(st.step) ? st.step : 1;
+
+  out.flags = (st.flags && typeof st.flags === "object") ? st.flags : {};
+  out.endings = (st.endings && typeof st.endings === "object")
+    ? { good:!!st.endings.good, bad:!!st.endings.bad, secret:!!st.endings.secret }
+    : { good:false, bad:false, secret:false };
+
+  // migration: ignore old fields safely
   return out;
 }
 
@@ -95,6 +163,9 @@ function save(){
   }));
 }
 
+/* =========================
+   I18N ACCESSORS
+========================= */
 function tUI(path, params={}){
   const raw = deepGet(UI, path);
   const s = (typeof raw === "string") ? raw : `[${path}]`;
@@ -106,28 +177,15 @@ function tS(key){
   return (typeof raw === "string") ? raw : `[${key}]`;
 }
 
-function getScenarioState(){
-  if(!currentScenarioId) return null;
-  return scenarioStates[currentScenarioId] || null;
-}
-
-function setScenarioState(st){
-  scenarioStates[currentScenarioId] = st;
-  save();
-}
-
-function countEndings(st){
-  return (st.endings.good?1:0) + (st.endings.bad?1:0) + (st.endings.secret?1:0);
-}
-
 /* =========================
    PAGE DETECTION
 ========================= */
 function hasMenuPage(){
   return !!$("screen_menu") && !!$("scenario_grid");
 }
+
 function hasGamePage(){
-  return !!$("screen_game") && !!$("choices");
+  return !!$("screen_game") && !!$("scene_title") && !!$("choices");
 }
 
 /* =========================
@@ -143,6 +201,20 @@ function renderTopbar(){
 }
 
 /* =========================
+   UI LOADING
+========================= */
+async function reloadUI(){
+  try{
+    UI = await fetchJSON(PATHS.ui(LANG));
+  }catch{
+    LANG = DEFAULT_LANG;
+    UI = await fetchJSON(PATHS.ui(DEFAULT_LANG));
+  }
+  // Important: on ne save() pas ici tout seul,
+  // setLang/boot gèrent quand persister.
+}
+
+/* =========================
    MENU (index.html)
 ========================= */
 async function loadScenarioMeta(scenarioId){
@@ -150,18 +222,9 @@ async function loadScenarioMeta(scenarioId){
     const text = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
     return text.meta || { title: scenarioId, tagline: "" };
   }catch{
-    const textFr = await fetchJSON(PATHS.scenarioText(scenarioId, "fr"));
+    const textFr = await fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG));
     return textFr.meta || { title: scenarioId, tagline: "" };
   }
-}
-
-function makeCover(file){
-  const img = document.createElement("img");
-  img.alt = "";
-  img.loading = "lazy";
-  img.src = file || "";
-  img.onerror = () => { img.src = ""; };
-  return img;
 }
 
 async function renderMenu(){
@@ -178,57 +241,27 @@ async function renderMenu(){
     const scenarioId = entry.id;
     const meta = await loadScenarioMeta(scenarioId);
 
-    const stRaw = scenarioStates[scenarioId];
-    const endings = stRaw?.endings ? countEndings(stRaw) : 0;
-    const hasSave = !!stRaw?.scene;
+    const card = document.createElement("button");
+    card.className = "scenario_card";
+    card.type = "button";
 
-    const card = document.createElement("div");
-    card.className = "card";
-    card.tabIndex = 0;
+    const cover = entry.cover || "";
+    card.style.backgroundImage = cover ? `url('${cover}')` : "none";
 
-    const cover = document.createElement("div");
-    cover.className = "cover";
-    cover.appendChild(makeCover(entry.cover || ""));
+    const title = document.createElement("div");
+    title.className = "scenario_title";
+    title.textContent = meta.title || scenarioId;
 
-    const body = document.createElement("div");
-    body.className = "card__body";
+    const sub = document.createElement("div");
+    sub.className = "scenario_sub";
+    sub.textContent = meta.tagline || "";
 
-    const h = document.createElement("h3");
-    h.className = "card__title";
-    h.textContent = meta.title || scenarioId;
+    card.appendChild(title);
+    card.appendChild(sub);
 
-    const p = document.createElement("p");
-    p.className = "card__sub";
-    p.textContent = meta.tagline || "";
-
-    const metaRow = document.createElement("div");
-    metaRow.className = "card__meta";
-
-    const b1 = document.createElement("div");
-    b1.className = "badge";
-    b1.textContent = hasSave ? tUI("menu.resume") : tUI("menu.start");
-
-    const b2 = document.createElement("div");
-    b2.className = "badge badge--muted";
-    b2.textContent = tUI("menu.endings", { n: endings, total: 3 });
-
-    metaRow.appendChild(b1);
-    metaRow.appendChild(b2);
-
-    body.appendChild(h);
-    body.appendChild(p);
-    body.appendChild(metaRow);
-
-    card.appendChild(cover);
-    card.appendChild(body);
-
-    const goGame = () => {
-      currentScenarioId = scenarioId;
-      save();
+    card.onclick = () => {
       window.location.href = `game.html?s=${encodeURIComponent(scenarioId)}`;
     };
-    card.onclick = goGame;
-    card.onkeydown = (e) => { if(e.key === "Enter") goGame(); };
 
     grid.appendChild(card);
   }
@@ -237,182 +270,39 @@ async function renderMenu(){
 /* =========================
    GAME (game.html)
 ========================= */
-function logicScene(id){ return LOGIC?.scenes?.[id] || null; }
-
-function resolveImage(scene){
-  if(!scene?.image_id) return null;
-  const im = LOGIC?.images?.[scene.image_id];
-  return im?.file || null;
+function defaultScenarioState(startScene){
+  return normalizeScenarioState(null, startScene);
 }
 
-function applyChoiceEffects(st, ch){
-  if(Array.isArray(ch.set_flags)){
-    for(const f of ch.set_flags) st.flags[f] = true;
-  }
-  if(Array.isArray(ch.unset_flags)){
-    for(const f of ch.unset_flags) delete st.flags[f];
-  }
+function getScenarioState(){
+  if(!currentScenarioId) return null;
+  return scenarioStates[currentScenarioId] || null;
 }
 
-function meetsRequirements(st, ch){
-  if(Array.isArray(ch.requires_all_flags)){
-    for(const f of ch.requires_all_flags){
-      if(!st.flags[f]) return false;
-    }
-  }
-  if(Array.isArray(ch.requires_any_flags)){
-    let ok = false;
-    for(const f of ch.requires_any_flags){
-      if(st.flags[f]) ok = true;
-    }
-    if(!ok) return false;
-  }
-  if(Array.isArray(ch.requires_not_flags)){
-    for(const f of ch.requires_not_flags){
-      if(st.flags[f]) return false;
-    }
-  }
-  return true;
+function setScenarioState(st){
+  scenarioStates[currentScenarioId] = st;
+  save();
 }
 
-function endingType(sceneId){
-  if(sceneId === "end_good") return "good";
-  if(sceneId === "end_bad") return "bad";
-  if(sceneId === "end_secret") return "secret";
-  if(sceneId && sceneId.startsWith("end_")) return "bad";
-  return null;
+function countEndings(st){
+  return (st.endings.good?1:0) + (st.endings.bad?1:0) + (st.endings.secret?1:0);
 }
 
-function unlockEnding(st, type){
-  if(type==="good") st.endings.good = true;
-  if(type==="bad") st.endings.bad = true;
-  if(type==="secret") st.endings.secret = true;
-}
-
-function renderScene(){
-  renderTopbar();
-
-  const st = getScenarioState();
-  if(!st) return;
-
-  const sL = logicScene(st.scene);
-  if(!sL){
-    if($("scene_title")) $("scene_title").textContent = tUI("errors.missing_scene");
-    if($("scene_body")) $("scene_body").textContent = tUI("errors.missing_scene");
-    return;
-  }
-
-  // HUD
-  if($("ui_scenario_name")) $("ui_scenario_name").textContent = TEXT?.meta?.title || currentScenarioId;
-  if($("ui_step")) $("ui_step").textContent = tUI("ui.step", { n: st.step });
-  if($("ui_endings")) $("ui_endings").textContent = tUI("ui.endings_found", { n: countEndings(st), total: 3 });
-
-  // Scene text
-  if($("scene_title")) $("scene_title").textContent = tS(sL.title_key);
-  if($("scene_body")) $("scene_body").textContent = tS(sL.body_key);
-
-  if($("ui_footer")) $("ui_footer").textContent = tUI("ui.footer");
-
-  // Image
-  const img = $("scene_img");
-  const fb  = $("img_fallback");
-  const path = resolveImage(sL);
-
-  if(img && fb){
-    if(!path){
-      img.style.display="none";
-      fb.style.display="flex";
-      fb.textContent = tUI("ui.no_image");
-    } else {
-      img.style.display="block";
-      fb.style.display="none";
-      img.src = path;
-      img.onerror = () => {
-        img.style.display="none";
-        fb.style.display="flex";
-        fb.textContent = tUI("ui.missing_image", { path });
-      };
-    }
-  }
-
-  // Endings tracking
-  const et = endingType(st.scene);
-  if(et){
-    unlockEnding(st, et);
-    setScenarioState(st);
-  }
-
-  // Choices
-  const box = $("choices");
-  box.innerHTML = "";
-
-  if(et){
-    const btnAgain = document.createElement("button");
-    btnAgain.className = "choice";
-    btnAgain.textContent = tUI("ui.play_again");
-    btnAgain.onclick = () => {
-      const ok = confirm(tUI("ui.confirm_restart"));
-      if(!ok) return;
-      scenarioStates[currentScenarioId] = defaultScenarioState(LOGIC.start_scene || "s01");
-      save();
-      renderScene();
-    };
-
-    const btnMenu = document.createElement("button");
-    btnMenu.className = "choice";
-    btnMenu.textContent = tUI("menu.back_to_menu");
-    btnMenu.onclick = () => { window.location.href = "index.html"; };
-
-    box.appendChild(btnAgain);
-    box.appendChild(btnMenu);
-    return;
-  }
-
-  const choices = Array.isArray(sL.choices) ? sL.choices : [];
-  for(const ch of choices){
-    const btn = document.createElement("button");
-    btn.className = "choice";
-
-    const ok = meetsRequirements(st, ch);
-    btn.disabled = !ok;
-    btn.textContent = tS(ch.choice_key);
-
-    if(!ok){
-      const sub = document.createElement("small");
-      sub.textContent = tUI("locks.locked");
-      btn.appendChild(sub);
-    }
-
-    btn.onclick = () => {
-      if(!meetsRequirements(st, ch)) return;
-      applyChoiceEffects(st, ch);
-      st.scene = ch.next;
-      st.step += 1;
-      setScenarioState(st);
-      renderScene();
-    };
-
-    box.appendChild(btn);
-  }
-}
-
-/* =========================
-   HINTS
-========================= */
 function hintKey(sceneId, level){
-  const ns = TEXT?.meta?.hint_ns;
-  if(ns) return `${ns}.${sceneId}.${level}`;
-  return `hint.${sceneId}.${level}`;
+  const ns = TEXT?.meta?.hint_ns || "hint";
+  return `${ns}.${sceneId}.${level}`;
 }
+
+let HINT_LEVEL = "soft";
 
 function setHintLevel(level){
-  const soft = $("hint_soft");
-  const strong = $("hint_strong");
-  if(soft && strong){
-    soft.classList.toggle("tab--active", level === "soft");
-    strong.classList.toggle("tab--active", level === "strong");
-  }
+  HINT_LEVEL = level;
+  if($("hint_soft")) $("hint_soft").classList.toggle("active", level==="soft");
+  if($("hint_strong")) $("hint_strong").classList.toggle("active", level==="strong");
+  renderHintText(level);
+}
 
+function renderHintText(level){
   const st = getScenarioState();
   const sceneId = st?.scene;
   const key = hintKey(sceneId, level);
@@ -441,9 +331,6 @@ function closeHintModal(){
   modal.setAttribute("aria-hidden", "true");
 }
 
-/* =========================
-   OPEN SCENARIO (game.html)
-========================= */
 async function openScenario(scenarioId){
   currentScenarioId = scenarioId;
   save();
@@ -453,59 +340,132 @@ async function openScenario(scenarioId){
   try{
     TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
   }catch{
-    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, "fr"));
+    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG));
   }
 
   const start = LOGIC.start_scene || "s01";
   scenarioStates[scenarioId] = normalizeScenarioState(scenarioStates[scenarioId], start);
   save();
 
+  // HUD static
+  if($("ui_scenario_name")) $("ui_scenario_name").textContent = TEXT?.meta?.title || scenarioId;
+
   renderScene();
 }
 
-/* =========================
-   LANGUAGE SWITCH
-========================= */
-async function reloadUI(){
-  try{
-    UI = await fetchJSON(PATHS.ui(LANG));
-  }catch{
-    LANG = "fr";
-    UI = await fetchJSON(PATHS.ui("fr"));
+function renderScene(){
+  const st = getScenarioState();
+  if(!st) return;
+
+  const sceneId = st.scene;
+  const sL = LOGIC?.scenes?.[sceneId];
+
+  renderTopbar();
+
+  if(!sL){
+    if($("scene_title")) $("scene_title").textContent = tUI("errors.missing_scene");
+    if($("scene_body")) $("scene_body").textContent = tUI("errors.missing_scene");
+    return;
   }
-  save();
+
+  // HUD
+  if($("ui_step")) $("ui_step").textContent = tUI("ui.step", { n: st.step });
+  if($("ui_endings")) $("ui_endings").textContent = tUI("ui.endings_found", { n: countEndings(st), total: 3 });
+
+  // Scene text
+  if($("scene_title")) $("scene_title").textContent = tS(sL.title_key);
+  if($("scene_body")) $("scene_body").textContent = tS(sL.body_key);
+
+  if($("ui_footer")) $("ui_footer").textContent = tUI("ui.footer");
+
+  // Image
+  const img = $("scene_img");
+  if(img){
+    const imageId = sL.image_id;
+    const src = LOGIC?.images?.[imageId] || "";
+    if(src){
+      img.src = src;
+      img.alt = tS(sL.title_key);
+      img.style.display = "";
+    }else{
+      img.removeAttribute("src");
+      img.alt = "";
+      img.style.display = "none";
+      if($("scene_img_fallback")) $("scene_img_fallback").textContent = tUI("ui.no_image");
+    }
+  }
+
+  // Choices
+  const box = $("choices");
+  box.innerHTML = "";
+
+  const choices = Array.isArray(sL.choices) ? sL.choices : [];
+  for(const ch of choices){
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "choice_btn";
+    btn.textContent = tS(ch.choice_key);
+
+    btn.onclick = () => {
+      const next = ch.next;
+      if(!next) return;
+
+      // Update state
+      const nextState = {
+        ...st,
+        scene: next,
+        step: (st.step || 1) + 1
+      };
+
+      setScenarioState(nextState);
+      renderScene();
+    };
+
+    box.appendChild(btn);
+  }
+
+  // Hint text refresh
+  renderHintText(HINT_LEVEL);
 }
 
+/* =========================
+   LANGUAGE SWITCH UI
+========================= */
 async function switchLang(){
-  const supported = UI?.langs?.map(x => x.id) || ["fr"];
-  const idx = Math.max(0, supported.indexOf(LANG));
-  const next = supported[(idx + 1) % supported.length];
-  LANG = next;
-  await reloadUI();
+  // Si ton ui_<lang>.json contient "langs", on s’en sert,
+  // sinon on retombe sur SUPPORTED_LANGS
+  const supported = (UI?.langs?.map(x => x.id).filter(Boolean) || SUPPORTED_LANGS)
+    .filter(id => SUPPORTED_LANGS.includes(id));
 
-  if(hasGamePage() && currentScenarioId){
-    try{
-      TEXT = await fetchJSON(PATHS.scenarioText(currentScenarioId, LANG));
-    }catch{
-      TEXT = await fetchJSON(PATHS.scenarioText(currentScenarioId, "fr"));
-    }
-    renderScene();
-  } else if(hasMenuPage()){
-    renderMenu();
-  } else {
-    renderTopbar();
-  }
+  const idx = Math.max(0, supported.indexOf(LANG));
+  const next = supported[(idx + 1) % supported.length] || DEFAULT_LANG;
+
+  // Ici on persiste local + remote si userData branché
+  await setLang(next, { persistLocal: true, persistRemote: true, rerender: true });
 }
 
 /* =========================
    BOOT
 ========================= */
 async function boot(){
+  // 1) charge cache local si existe
   loadSave();
+
+  // 2) si aucune langue sauvegardée ou invalide => device
+  const base = normalizeLang(LANG);
+  if(!base || !SUPPORTED_LANGS.includes(base)){
+    LANG = detectDeviceLang();
+  }else{
+    LANG = base;
+  }
+
+  // 3) charge l'UI dans la langue choisie
   await reloadUI();
+
+  // 4) charge catalog
   CATALOG = await fetchJSON(PATHS.catalog);
 
-  // Buttons
+  // 5) branche boutons topbar
   if($("btn_lang")) $("btn_lang").onclick = () => switchLang();
 
   if($("btn_home")){
@@ -525,7 +485,6 @@ async function boot(){
   }
 
   if($("btn_hint")) $("btn_hint").onclick = () => openHintModal();
-
   if($("hint_close")) $("hint_close").onclick = () => closeHintModal();
   if($("hint_backdrop")) $("hint_backdrop").onclick = () => closeHintModal();
   if($("hint_soft")) $("hint_soft").onclick = () => setHintLevel("soft");
@@ -535,9 +494,25 @@ async function boot(){
     if(e.key === "Escape") closeHintModal();
   });
 
-  // Route
+  // 6) SYNC SUPABASE (optionnel) :
+  // Si userData existe, on récupère la langue profil et on resynchronise.
+  // -> ne bloque pas le boot
+  if(window.userData && typeof window.userData.init === "function"){
+    try{
+      await window.userData.init();
+      if(typeof window.userData.getLanguage === "function"){
+        const remoteLang = await window.userData.getLanguage();
+        if(remoteLang){
+          await setLang(remoteLang, { persistLocal: true, persistRemote: false, rerender: true });
+        }
+      }
+    }catch(e){
+      // ignore: offline / pas configuré
+    }
+  }
+
+  // 7) Render page
   if(hasMenuPage()){
-    renderTopbar();
     await renderMenu();
     return;
   }
@@ -557,7 +532,7 @@ async function boot(){
     return;
   }
 
-  // Fallback
+  // fallback
   renderTopbar();
 }
 
