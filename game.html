@@ -34,7 +34,10 @@
 
           <!-- IMAGE FULLSCREEN (derrière tout) -->
           <div class="scene__media">
-            <img id="scene_img" alt="" />
+            <picture>
+              <source id="scene_img_source" type="image/webp" />
+              <img id="scene_img" alt="" />
+            </picture>
             <div class="img_fallback" id="scene_img_fallback"></div>
 
             <!-- voile pour lisibilité -->
