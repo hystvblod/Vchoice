@@ -28,14 +28,20 @@
     </header>
 
     <!-- GAME SCREEN -->
-    <main class="main" id="screen_game">
-      <section class="panel">
-        <div class="scene">
+    <main class="main main--game" id="screen_game">
+      <section class="panel panel--game">
+        <div class="scene scene--overlay">
+
+          <!-- IMAGE FULLSCREEN (derrière tout) -->
           <div class="scene__media">
             <img id="scene_img" alt="" />
-            <div class="img_fallback" id="img_fallback"></div>
+            <div class="img_fallback" id="scene_img_fallback"></div>
+
+            <!-- voile pour lisibilité -->
+            <div class="scene__shade" aria-hidden="true"></div>
           </div>
 
+          <!-- CONTENU par-dessus l'image -->
           <div class="scene__content">
             <div class="meta">
               <div class="pill" id="ui_scenario_name"></div>
@@ -50,6 +56,7 @@
 
             <div class="footer" id="ui_footer"></div>
           </div>
+
         </div>
       </section>
     </main>
@@ -74,14 +81,13 @@
 
   </div>
 
-<!-- 1) Supabase UMD (sans module) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 1) Supabase UMD (sans module) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- 2) ton userData (qui utilise window.supabase) -->
-<script src="js/userData.js"></script>
+  <!-- 2) ton userData (qui utilise window.supabase) -->
+  <script src="js/userData.js"></script>
 
-<!-- 3) ton moteur -->
-<script src="js/engine.js"></script>
-
+  <!-- 3) ton moteur -->
+  <script src="js/engine.js"></script>
 </body>
 </html>
