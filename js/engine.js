@@ -245,8 +245,10 @@ async function renderMenu(){
     card.className = "scenario_card";
     card.type = "button";
 
+    // cover peut être string OU objet {file, alt}
     const cover = entry.cover || "";
-    card.style.backgroundImage = cover ? `url('${cover}')` : "none";
+    const coverSrc = (typeof cover === "string") ? cover : (cover && typeof cover === "object" ? (cover.file || "") : "");
+    card.style.backgroundImage = coverSrc ? `url('${coverSrc}')` : "none";
 
     const title = document.createElement("div");
     title.className = "scenario_title";
@@ -293,6 +295,26 @@ function hintKey(sceneId, level){
   return `${ns}.${sceneId}.${level}`;
 }
 
+function hasHintForScene(sceneId){
+  const ns = TEXT?.meta?.hint_ns || "hint";
+  const soft = `${ns}.${sceneId}.soft`;
+  const strong = `${ns}.${sceneId}.strong`;
+  return !!(TEXT?.strings?.[soft] || TEXT?.strings?.[strong]);
+}
+
+function updateHintButton(){
+  const btn = $("btn_hint");
+  if(!btn) return;
+
+  const st = getScenarioState();
+  const sceneId = st?.scene;
+  const ok = sceneId ? hasHintForScene(sceneId) : false;
+
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? "1" : "0.5";
+  btn.style.pointerEvents = ok ? "" : "none";
+}
+
 let HINT_LEVEL = "soft";
 
 function setHintLevel(level){
@@ -311,6 +333,9 @@ function renderHintText(level){
 }
 
 function openHintModal(){
+  // si bouton grisé, on ne doit pas ouvrir
+  if($("btn_hint") && $("btn_hint").disabled) return;
+
   const modal = $("hint_modal");
   if(!modal) return;
 
@@ -329,6 +354,26 @@ function closeHintModal(){
   if(!modal) return;
   modal.style.display = "none";
   modal.setAttribute("aria-hidden", "true");
+}
+
+function resolveSceneImage(imageId){
+  const im = LOGIC?.images?.[imageId];
+  if(!im) return { src: "", alt: "" };
+
+  // compat ancien format: string
+  if(typeof im === "string"){
+    return { src: im, alt: "" };
+  }
+
+  // format pro: {file, alt}
+  if(im && typeof im === "object"){
+    return {
+      src: im.file || "",
+      alt: im.alt || ""
+    };
+  }
+
+  return { src: "", alt: "" };
 }
 
 async function openScenario(scenarioId){
@@ -382,10 +427,11 @@ function renderScene(){
   const img = $("scene_img");
   if(img){
     const imageId = sL.image_id;
-    const src = LOGIC?.images?.[imageId] || "";
+    const { src, alt } = resolveSceneImage(imageId);
+
     if(src){
       img.src = src;
-      img.alt = tS(sL.title_key);
+      img.alt = alt || tS(sL.title_key);
       img.style.display = "";
     }else{
       img.removeAttribute("src");
@@ -424,7 +470,8 @@ function renderScene(){
     box.appendChild(btn);
   }
 
-  // Hint text refresh
+  // Hint button + text refresh
+  updateHintButton();
   renderHintText(HINT_LEVEL);
 }
 
