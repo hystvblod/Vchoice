@@ -2,52 +2,51 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VChoice</title>
   <link rel="stylesheet" href="css/app.css" />
 </head>
-
 <body>
-  <div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand__title" id="ui_app_title">VChoice</div>
+      <div class="brand__subtitle" id="ui_app_subtitle">Histoire interactive</div>
+    </div>
 
-    <!-- TOP BAR -->
-    <header class="topbar">
-      <div class="brand" role="button" tabindex="0" id="btn_home">
-        <div class="brand__dot"></div>
-        <div class="brand__texts">
-          <div class="brand__title" id="ui_app_title"></div>
-          <div class="brand__sub" id="ui_app_subtitle"></div>
-        </div>
+    <div class="topbar__right">
+      <div class="lang">
+        <label class="sr_only" for="langSelect">Langue</label>
+        <select id="langSelect" class="lang__select" aria-label="Langue">
+          <option value="fr" selected>FR</option>
+          <option value="en">EN</option>
+        </select>
       </div>
+    </div>
+  </header>
 
-      <div class="topbar__actions">
-        <button class="btn btn--ghost" id="btn_lang" type="button"></button>
+  <main class="page">
+    <section class="hero">
+      <h1 class="hero__title" id="ui_index_title">Choisis ton univers</h1>
+      <p class="hero__text" id="ui_index_subtitle">Clique sur une carte pour commencer.</p>
+    </section>
+
+    <section class="menu" aria-label="Menu">
+      <div id="menuGrid" class="menu_grid"></div>
+    </section>
+  </main>
+
+  <!-- Modal réutilisée pour le bouton ? -->
+  <div id="hintModal" class="modal hidden" aria-hidden="true">
+    <div id="hintBackdrop" class="modal__backdrop"></div>
+    <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
+      <div class="modal__header">
+        <div class="modal__title" id="hintTitle">Info</div>
+        <button id="hintClose" class="modal__close" type="button" aria-label="Fermer">✕</button>
       </div>
-    </header>
-
-    <!-- MENU SCREEN -->
-    <main class="main" id="screen_menu">
-      <section class="panel panel--menu">
-        <div class="menu_head">
-          <h1 class="menu_title" id="ui_menu_title"></h1>
-          <p class="menu_sub" id="ui_menu_sub"></p>
-        </div>
-
-        <div class="grid" id="scenario_grid"></div>
-
-        <div class="menu_footer" id="ui_menu_footer"></div>
-      </section>
-    </main>
-
+      <div class="modal__body" id="hintBody"></div>
+    </div>
   </div>
-<!-- 1) Supabase UMD (sans module) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- 2) ton userData (qui utilise window.supabase) -->
-<script src="js/userData.js"></script>
-
-<!-- 3) ton moteur -->
-<script src="js/engine.js"></script>
-
+  <script src="js/engine.js"></script>
 </body>
 </html>

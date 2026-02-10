@@ -118,476 +118,397 @@ async function setLang(newLang, opts = {}){
 }
 
 /* =========================
-   SAVE / LOAD
+   UI TEXT HELPERS
 ========================= */
-function normalizeScenarioState(st, startScene){
-  // State model minimal stable
-  const out = {
-    scene: startScene,
-    step: 1,
-    flags: {},
-    endings: { good:false, bad:false, secret:false }
-  };
-
-  if(!st || typeof st !== "object") return out;
-
-  out.scene = (typeof st.scene === "string") ? st.scene : startScene;
-  out.step = Number.isFinite(st.step) ? st.step : 1;
-
-  out.flags = (st.flags && typeof st.flags === "object") ? st.flags : {};
-  out.endings = (st.endings && typeof st.endings === "object")
-    ? { good:!!st.endings.good, bad:!!st.endings.bad, secret:!!st.endings.secret }
-    : { good:false, bad:false, secret:false };
-
-  // migration: ignore old fields safely
-  return out;
+function tUI(key, params){
+  const v = deepGet(UI, `ui.${key}`) ?? `[ui.${key}]`;
+  return params ? format(v, params) : v;
 }
 
-function loadSave(){
-  const raw = localStorage.getItem(SAVE_KEY);
-  if(!raw) return;
+function tS(key, params){
+  const v = deepGet(TEXT, key) ?? `[${key}]`;
+  return params ? format(v, params) : v;
+}
 
+function getScenarioInfo(scenarioId){
+  // Source voulu : data/ui/ui_<lang>.json
+  // (pas dans text_<lang>.json)
+  const info = deepGet(UI, `scenario_info.${scenarioId}`) || {};
+  const title = (typeof info.title === 'string') ? info.title : 'Infos';
+  const body  = (typeof info.body  === 'string') ? info.body  : '';
+  if(!body && !title) return null;
+  return { title, body };
+}
+
+function isChoiceAvailable(choice){
+  const flags = scenarioStates[currentScenarioId]?.flags || {};
+  const all = Array.isArray(choice.requires_all_flags) ? choice.requires_all_flags : null;
+  const any = Array.isArray(choice.requires_any_flags) ? choice.requires_any_flags : null;
+
+  if(all && all.length){
+    for(const f of all){
+      if(!flags[f]) return false;
+    }
+  }
+  if(any && any.length){
+    let ok = false;
+    for(const f of any){
+      if(flags[f]){ ok = true; break; }
+    }
+    if(!ok) return false;
+  }
+  return true;
+}
+
+/* =========================
+   SAVE/LOAD
+========================= */
+function load(){
   try{
-    const obj = JSON.parse(raw);
-    if(obj.lang) LANG = obj.lang;
-    if(obj.scenarioStates) scenarioStates = obj.scenarioStates;
-    if(obj.currentScenarioId) currentScenarioId = obj.currentScenarioId;
-  }catch{}
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+
+    if(data && typeof data === "object"){
+      scenarioStates = data.scenarioStates || {};
+      const savedLang = normalizeLang(data.lang);
+      if(savedLang && SUPPORTED_LANGS.includes(savedLang)) LANG = savedLang;
+    }
+  }catch(e){
+    console.warn("load failed", e);
+  }
 }
 
 function save(){
-  localStorage.setItem(SAVE_KEY, JSON.stringify({
-    lang: LANG,
-    currentScenarioId,
-    scenarioStates
-  }));
+  try{
+    localStorage.setItem(SAVE_KEY, JSON.stringify({
+      lang: LANG,
+      scenarioStates
+    }));
+  }catch(e){
+    console.warn("save failed", e);
+  }
 }
 
 /* =========================
-   I18N ACCESSORS
-========================= */
-function tUI(path, params={}){
-  const raw = deepGet(UI, path);
-  const s = (typeof raw === "string") ? raw : `[${path}]`;
-  return format(s, params);
-}
-
-function tS(key){
-  const raw = TEXT?.strings?.[key];
-  return (typeof raw === "string") ? raw : `[${key}]`;
-}
-
-/* =========================
-   PAGE DETECTION
+   INIT
 ========================= */
 function hasMenuPage(){
-  return !!$("screen_menu") && !!$("scenario_grid");
+  return !!$("menuGrid");
 }
-
 function hasGamePage(){
-  return !!$("screen_game") && !!$("scene_title") && !!$("choices");
+  return !!$("sceneTitle");
 }
 
-/* =========================
-   TOPBAR
-========================= */
-function renderTopbar(){
-  if($("ui_app_title")) $("ui_app_title").textContent = tUI("ui.app_title");
-  if($("ui_app_subtitle")) $("ui_app_subtitle").textContent = tUI("ui.app_subtitle");
-
-  if($("btn_restart")) $("btn_restart").textContent = tUI("ui.restart");
-  if($("btn_lang")) $("btn_lang").textContent = tUI("ui.lang_label", { lang: LANG.toUpperCase() });
-  if($("btn_hint")) $("btn_hint").textContent = tUI("ui.hint_button");
-}
-
-/* =========================
-   UI LOADING
-========================= */
 async function reloadUI(){
-  try{
-    UI = await fetchJSON(PATHS.ui(LANG));
-  }catch{
-    LANG = DEFAULT_LANG;
-    UI = await fetchJSON(PATHS.ui(DEFAULT_LANG));
+  UI = await fetchJSON(PATHS.ui(LANG));
+  // sync select
+  const sel = $("langSelect");
+  if(sel){
+    sel.value = LANG;
   }
-  // Important: on ne save() pas ici tout seul,
-  // setLang/boot gèrent quand persister.
+}
+
+async function loadCatalog(){
+  CATALOG = await fetchJSON(PATHS.catalog);
+}
+
+async function boot(){
+  load();
+
+  // Lang initiale : localStorage > userData > device > default
+  let initialLang = LANG;
+
+  // userData (Supabase) si dispo
+  if(window.userData && typeof window.userData.getLanguage === "function"){
+    try{
+      const remoteLang = await window.userData.getLanguage();
+      const base = normalizeLang(remoteLang);
+      if(base && SUPPORTED_LANGS.includes(base)) initialLang = base;
+    }catch(e){
+      // ignore
+    }
+  }else{
+    // device
+    const device = detectDeviceLang();
+    initialLang = device;
+  }
+
+  LANG = initialLang;
+
+  await reloadUI();
+  await loadCatalog();
+
+  bindTopbar();
+
+  if(hasMenuPage()){
+    await renderMenu();
+  }
+
+  if(hasGamePage()){
+    // game.html : lecture scenarioId depuis query
+    const u = new URL(location.href);
+    const scenarioId = u.searchParams.get("scenario");
+    if(scenarioId){
+      await openScenario(scenarioId);
+      renderScene();
+    }
+  }
+}
+
+function bindTopbar(){
+  const sel = $("langSelect");
+  if(sel){
+    sel.addEventListener("change", async (e) => {
+      await setLang(e.target.value, { persistLocal:true, persistRemote:true, rerender:true });
+    });
+  }
 }
 
 /* =========================
    MENU (index.html)
 ========================= */
 async function loadScenarioMeta(scenarioId){
-  try{
-    const text = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
-    return text.meta || { title: scenarioId, tagline: "" };
-  }catch{
-    const textFr = await fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG));
-    return textFr.meta || { title: scenarioId, tagline: "" };
-  }
+  // On lit seulement meta depuis le text_xx.json (si nécessaire)
+  const txt = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
+  return txt.meta || {};
+}
+
+function goToScenario(scenarioId){
+  // Redirige vers game.html avec param scenario
+  location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
 }
 
 async function renderMenu(){
+  // Topbar UI
   renderTopbar();
 
-  if($("ui_menu_title")) $("ui_menu_title").textContent = tUI("menu.title");
-  if($("ui_menu_sub")) $("ui_menu_sub").textContent = tUI("menu.subtitle");
-  if($("ui_menu_footer")) $("ui_menu_footer").textContent = tUI("menu.footer");
+  const grid = $("menuGrid");
+  if(!grid) return;
 
-  const grid = $("scenario_grid");
   grid.innerHTML = "";
 
-  for(const entry of CATALOG.scenarios){
+  const list = (CATALOG && Array.isArray(CATALOG.scenarios)) ? CATALOG.scenarios : [];
+
+  for(const entry of list){
     const scenarioId = entry.id;
-    const meta = await loadScenarioMeta(scenarioId);
+
+    const meta = entry.meta || await loadScenarioMeta(scenarioId);
+    const titleText = meta.title || scenarioId;
+    const subText = meta.tagline || "";
 
     const card = document.createElement("button");
-    card.className = "scenario_card";
     card.type = "button";
+    card.className = "menu_card";
+    card.onclick = () => goToScenario(scenarioId);
 
-    // cover peut être string OU objet {file, alt}
-    const cover = entry.cover || "";
-    const coverSrc = (typeof cover === "string") ? cover : (cover && typeof cover === "object" ? (cover.file || "") : "");
-    card.style.backgroundImage = coverSrc ? `url('${coverSrc}')` : "none";
+    const cover = document.createElement("div");
+    cover.className = "menu_cover";
+    cover.style.backgroundImage = `url('${entry.cover}')`;
+
+    const metaBox = document.createElement("div");
+    metaBox.className = "menu_meta";
 
     const title = document.createElement("div");
-    title.className = "scenario_title";
-    title.textContent = meta.title || scenarioId;
+    title.className = "menu_title";
+    title.textContent = titleText;
 
     const sub = document.createElement("div");
-    sub.className = "scenario_sub";
-    sub.textContent = meta.tagline || "";
+    sub.className = "menu_sub";
+    sub.textContent = subText;
 
-    card.appendChild(title);
-    card.appendChild(sub);
+    card.appendChild(cover);
+    metaBox.appendChild(title);
+    metaBox.appendChild(sub);
+    card.appendChild(metaBox);
 
-    card.onclick = () => {
-      window.location.href = `game.html?s=${encodeURIComponent(scenarioId)}`;
-    };
+    const info = getScenarioInfo(scenarioId);
+    if(info && info.body){
+      const help = document.createElement("button");
+      help.type = "button";
+      help.className = "menu_help";
+      help.textContent = "?";
+      help.title = "Infos";
+      help.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        showHintModal(info.title || "Infos", info.body || "");
+      });
+      card.appendChild(help);
+    }
 
     grid.appendChild(card);
   }
 }
 
+function renderTopbar(){
+  const t1 = $("ui_app_title");
+  if(t1) t1.textContent = tUI("app_title");
+  const t2 = $("ui_app_subtitle");
+  if(t2) t2.textContent = tUI("app_subtitle");
+
+  const i1 = $("ui_index_title");
+  if(i1) i1.textContent = tUI("index_title");
+  const i2 = $("ui_index_subtitle");
+  if(i2) i2.textContent = tUI("index_subtitle");
+}
+
 /* =========================
    GAME (game.html)
 ========================= */
-function defaultScenarioState(startScene){
-  return normalizeScenarioState(null, startScene);
-}
+async function openScenario(scenarioId){
+  currentScenarioId = scenarioId;
 
-function getScenarioState(){
-  if(!currentScenarioId) return null;
-  return scenarioStates[currentScenarioId] || null;
-}
+  LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
+  TEXT  = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
 
-function setScenarioState(st){
-  scenarioStates[currentScenarioId] = st;
+  // init state if missing
+  if(!scenarioStates[scenarioId]){
+    scenarioStates[scenarioId] = {
+      scene: LOGIC.start_scene,
+      flags: {},
+      clues: [],
+    };
+  }
+
+  // Ensure required fields
+  scenarioStates[scenarioId].flags ??= {};
+  scenarioStates[scenarioId].clues ??= [];
+
   save();
 }
 
-function countEndings(st){
-  return (st.endings.good?1:0) + (st.endings.bad?1:0) + (st.endings.secret?1:0);
+function getCurrentScene(){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return null;
+  const sceneId = st.scene;
+  return LOGIC.scenes[sceneId] ? { id: sceneId, ...LOGIC.scenes[sceneId] } : null;
 }
 
-function hintKey(sceneId, level){
-  const ns = TEXT?.meta?.hint_ns || "hint";
-  return `${ns}.${sceneId}.${level}`;
+function addClue(clueId){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return;
+  if(!st.clues.includes(clueId)) st.clues.push(clueId);
 }
 
-function hasHintForScene(sceneId){
-  const ns = TEXT?.meta?.hint_ns || "hint";
-  const soft = `${ns}.${sceneId}.soft`;
-  const strong = `${ns}.${sceneId}.strong`;
-  return !!(TEXT?.strings?.[soft] || TEXT?.strings?.[strong]);
+function setFlag(flag){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return;
+  st.flags[flag] = true;
 }
 
-function updateHintButton(){
-  const btn = $("btn_hint");
-  if(!btn) return;
-
-  const st = getScenarioState();
-  const sceneId = st?.scene;
-  const ok = sceneId ? hasHintForScene(sceneId) : false;
-
-  btn.disabled = !ok;
-  btn.style.opacity = ok ? "1" : "0.5";
-  btn.style.pointerEvents = ok ? "" : "none";
+function clearFlag(flag){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return;
+  delete st.flags[flag];
 }
 
-let HINT_LEVEL = "soft";
+function showHintModal(title, body){
+  const modal = $("hintModal");
+  const t = $("hintTitle");
+  const b = $("hintBody");
+  if(!modal || !t || !b) return;
 
-function setHintLevel(level){
-  HINT_LEVEL = level;
-  if($("hint_soft")) $("hint_soft").classList.toggle("active", level==="soft");
-  if($("hint_strong")) $("hint_strong").classList.toggle("active", level==="strong");
-  renderHintText(level);
-}
+  t.textContent = title || tUI("hint_title");
+  b.textContent = body || "";
 
-function renderHintText(level){
-  const st = getScenarioState();
-  const sceneId = st?.scene;
-  const key = hintKey(sceneId, level);
-  const txt = TEXT?.strings?.[key] || tUI("ui.hint_none");
-  if($("hint_text")) $("hint_text").textContent = txt;
-}
-
-function openHintModal(){
-  // si bouton grisé, on ne doit pas ouvrir
-  if($("btn_hint") && $("btn_hint").disabled) return;
-
-  const modal = $("hint_modal");
-  if(!modal) return;
-
-  modal.style.display = "";
+  modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden", "false");
-
-  if($("hint_title")) $("hint_title").textContent = tUI("ui.hint_title");
-  if($("hint_soft")) $("hint_soft").textContent = tUI("ui.hint_level_soft");
-  if($("hint_strong")) $("hint_strong").textContent = tUI("ui.hint_level_strong");
-
-  setHintLevel("soft");
 }
 
-function closeHintModal(){
-  const modal = $("hint_modal");
+function hideHintModal(){
+  const modal = $("hintModal");
   if(!modal) return;
-  modal.style.display = "none";
+  modal.classList.add("hidden");
   modal.setAttribute("aria-hidden", "true");
 }
 
-function resolveSceneImage(imageId){
-  const im = LOGIC?.images?.[imageId];
-  if(!im) return { src: "", alt: "" };
-
-  // compat ancien format: string
-  if(typeof im === "string"){
-    return { src: im, alt: "" };
-  }
-
-  // format pro: {file, alt}
-  if(im && typeof im === "object"){
-    return {
-      src: im.file || "",
-      alt: im.alt || ""
-    };
-  }
-
-  return { src: "", alt: "" };
-}
-
-async function openScenario(scenarioId){
-  currentScenarioId = scenarioId;
-  save();
-
-  LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
-
-  try{
-    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
-  }catch{
-    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG));
-  }
-
-  const start = LOGIC.start_scene || "s01";
-  scenarioStates[scenarioId] = normalizeScenarioState(scenarioStates[scenarioId], start);
-  save();
-
-  // HUD static
-  if($("ui_scenario_name")) $("ui_scenario_name").textContent = TEXT?.meta?.title || scenarioId;
-
-  renderScene();
+function bindHintModal(){
+  const close = $("hintClose");
+  const back = $("hintBackdrop");
+  if(close) close.onclick = hideHintModal;
+  if(back) back.onclick = hideHintModal;
 }
 
 function renderScene(){
-  const st = getScenarioState();
+  renderTopbar();
+  bindHintModal();
+
+  const st = scenarioStates[currentScenarioId];
   if(!st) return;
 
-  const sceneId = st.scene;
-  const sL = LOGIC?.scenes?.[sceneId];
+  const scene = getCurrentScene();
+  if(!scene) return;
 
-  renderTopbar();
+  const titleEl = $("sceneTitle");
+  const bodyEl  = $("sceneBody");
+  const imgEl   = $("sceneImg");
+  const choicesEl = $("choices");
+  const hintBtn = $("btnHint");
 
-  if(!sL){
-    if($("scene_title")) $("scene_title").textContent = tUI("errors.missing_scene");
-    if($("scene_body")) $("scene_body").textContent = tUI("errors.missing_scene");
-    return;
+  if(titleEl) titleEl.textContent = tS(scene.title_key);
+  if(bodyEl) bodyEl.textContent = tS(scene.body_key);
+
+  if(imgEl){
+    const image = LOGIC.images?.[scene.image_id];
+    imgEl.src = image ? image.file : "";
+    imgEl.alt = image ? (image.alt || "") : "";
   }
 
-  // HUD
-  if($("ui_step")) $("ui_step").textContent = tUI("ui.step", { n: st.step });
-  if($("ui_endings")) $("ui_endings").textContent = tUI("ui.endings_found", { n: countEndings(st), total: 3 });
-
-  // Scene text
-  if($("scene_title")) $("scene_title").textContent = tS(sL.title_key);
-  if($("scene_body")) $("scene_body").textContent = tS(sL.body_key);
-
-  if($("ui_footer")) $("ui_footer").textContent = tUI("ui.footer");
-
-  // Image
-  const img = $("scene_img");
-  if(img){
-    const imageId = sL.image_id;
-    const { src, alt } = resolveSceneImage(imageId);
-
-    if(src){
-      img.src = src;
-      img.alt = alt || tS(sL.title_key);
-      img.style.display = "";
-    }else{
-      img.removeAttribute("src");
-      img.alt = "";
-      img.style.display = "none";
-      if($("scene_img_fallback")) $("scene_img_fallback").textContent = tUI("ui.no_image");
-    }
+  // hint
+  if(hintBtn){
+    const hintKey = scene.hint_key;
+    hintBtn.onclick = () => {
+      const title = tUI("hint_title");
+      const body = hintKey ? tS(hintKey) : "";
+      showHintModal(title, body);
+    };
   }
 
-  // Choices
-  const box = $("choices");
-  box.innerHTML = "";
+  // choices
+  if(choicesEl){
+    choicesEl.innerHTML = "";
+    for(const ch of (scene.choices || [])){
+      const label = tS(ch.choice_key);
+      const btn = document.createElement("button");
+      btn.className = "choice_btn";
+      btn.textContent = label;
 
-  const choices = Array.isArray(sL.choices) ? sL.choices : [];
-  for(const ch of choices){
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "choice_btn";
-    btn.textContent = tS(ch.choice_key);
+      const available = isChoiceAvailable(ch);
+      if(!available){
+        btn.classList.add("is_locked");
+        btn.disabled = true;
+        btn.title = tUI("locked_choice") || "Indisponible pour le moment";
+      }
 
-    btn.onclick = () => {
-      const next = ch.next;
-      if(!next) return;
+      btn.onclick = async () => {
+        if(!available) return;
 
-      // Update state
-      const nextState = {
-        ...st,
-        scene: next,
-        step: (st.step || 1) + 1
+        // set/clear flags
+        if(Array.isArray(ch.set_flags)){
+          for(const f of ch.set_flags) setFlag(f);
+        }
+        if(Array.isArray(ch.clear_flags)){
+          for(const f of ch.clear_flags) clearFlag(f);
+        }
+
+        // clue
+        if(ch.add_clue) addClue(ch.add_clue);
+
+        // next scene
+        if(ch.next){
+          st.scene = ch.next;
+          save();
+          renderScene();
+        }
       };
 
-      setScenarioState(nextState);
-      renderScene();
-    };
-
-    box.appendChild(btn);
+      choicesEl.appendChild(btn);
+    }
   }
-
-  // Hint button + text refresh
-  updateHintButton();
-  renderHintText(HINT_LEVEL);
 }
 
 /* =========================
-   LANGUAGE SWITCH UI
+   RUN
 ========================= */
-async function switchLang(){
-  // Si ton ui_<lang>.json contient "langs", on s’en sert,
-  // sinon on retombe sur SUPPORTED_LANGS
-  const supported = (UI?.langs?.map(x => x.id).filter(Boolean) || SUPPORTED_LANGS)
-    .filter(id => SUPPORTED_LANGS.includes(id));
-
-  const idx = Math.max(0, supported.indexOf(LANG));
-  const next = supported[(idx + 1) % supported.length] || DEFAULT_LANG;
-
-  // Ici on persiste local + remote si userData branché
-  await setLang(next, { persistLocal: true, persistRemote: true, rerender: true });
-}
-
-/* =========================
-   BOOT
-========================= */
-async function boot(){
-  // 1) charge cache local si existe
-  loadSave();
-
-  // 2) si aucune langue sauvegardée ou invalide => device
-  const base = normalizeLang(LANG);
-  if(!base || !SUPPORTED_LANGS.includes(base)){
-    LANG = detectDeviceLang();
-  }else{
-    LANG = base;
-  }
-
-  // 3) charge l'UI dans la langue choisie
-  await reloadUI();
-
-  // 4) charge catalog
-  CATALOG = await fetchJSON(PATHS.catalog);
-
-  // 5) branche boutons topbar
-  if($("btn_lang")) $("btn_lang").onclick = () => switchLang();
-
-  if($("btn_home")){
-    $("btn_home").onclick = () => { window.location.href = "index.html"; };
-    $("btn_home").onkeydown = (e) => { if(e.key==="Enter") $("btn_home").click(); };
-  }
-
-  if($("btn_restart")){
-    $("btn_restart").onclick = () => {
-      if(!currentScenarioId || !LOGIC) return;
-      const ok = confirm(tUI("ui.confirm_restart"));
-      if(!ok) return;
-      scenarioStates[currentScenarioId] = defaultScenarioState(LOGIC.start_scene || "s01");
-      save();
-      renderScene();
-    };
-  }
-
-  if($("btn_hint")) $("btn_hint").onclick = () => openHintModal();
-  if($("hint_close")) $("hint_close").onclick = () => closeHintModal();
-  if($("hint_backdrop")) $("hint_backdrop").onclick = () => closeHintModal();
-  if($("hint_soft")) $("hint_soft").onclick = () => setHintLevel("soft");
-  if($("hint_strong")) $("hint_strong").onclick = () => setHintLevel("strong");
-
-  window.addEventListener("keydown", (e) => {
-    if(e.key === "Escape") closeHintModal();
-  });
-
-  // 6) SYNC SUPABASE (optionnel) :
-  // Si userData existe, on récupère la langue profil et on resynchronise.
-  // -> ne bloque pas le boot
-  if(window.userData && typeof window.userData.init === "function"){
-    try{
-      await window.userData.init();
-      if(typeof window.userData.getLanguage === "function"){
-        const remoteLang = await window.userData.getLanguage();
-        if(remoteLang){
-          await setLang(remoteLang, { persistLocal: true, persistRemote: false, rerender: true });
-        }
-      }
-    }catch(e){
-      // ignore: offline / pas configuré
-    }
-  }
-
-  // 7) Render page
-  if(hasMenuPage()){
-    await renderMenu();
-    return;
-  }
-
-  if(hasGamePage()){
-    renderTopbar();
-    const params = new URLSearchParams(window.location.search);
-    const fromUrl = params.get("s");
-    const scenarioId = fromUrl || currentScenarioId || CATALOG?.scenarios?.[0]?.id;
-
-    if(!scenarioId){
-      window.location.href = "index.html";
-      return;
-    }
-
-    await openScenario(scenarioId);
-    return;
-  }
-
-  // fallback
-  renderTopbar();
-}
-
-boot().catch(() => {
-  document.body.innerHTML = `
-    <div style="padding:18px;font-family:system-ui;color:white">
-      <h2>Erreur</h2>
-      <p>Ouvre le projet via un serveur local (ex: <b>python -m http.server</b>) sinon les JSON ne se chargent pas.</p>
-    </div>
-  `;
-});
+document.addEventListener("DOMContentLoaded", boot);
