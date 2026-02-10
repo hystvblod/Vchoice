@@ -442,7 +442,8 @@ function renderScene(){
 
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
-  const imgEl   = $("sceneImg");
+  const imgEl   = $("scene_img") || $("sceneImg");
+  const imgSourceEl = $("scene_img_source");
   const choicesEl = $("choices");
   const hintBtn = $("btnHint");
 
@@ -451,7 +452,9 @@ function renderScene(){
 
   if(imgEl){
     const image = LOGIC.images?.[scene.image_id];
-    imgEl.src = image ? image.file : "";
+    const imageFile = image ? image.file : "";
+    if(imgSourceEl) imgSourceEl.srcset = imageFile;
+    imgEl.src = imageFile;
     imgEl.alt = image ? (image.alt || "") : "";
   }
 
