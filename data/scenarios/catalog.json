@@ -2,7 +2,7 @@
   "scenarios": [
     {
       "id": "dossier14_appartement",
-      "cover": "assets/scenarios/dossier14_appartement/img/cover.jpg",
+      "cover": "assets/scenarios/dossier14_appartement/img/cover.webp",
       "meta": {
         "title": "Dossier 14 — L’appartement",
         "tagline": "Tu ouvres un dossier trop propre… et l’appartement qu’il décrit n’existe sur aucune carte."

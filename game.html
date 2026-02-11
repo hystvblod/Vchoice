@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Game</title>
+  <title>VChoice — Game</title>
   <link rel="stylesheet" href="css/app.css" />
 </head>
 
@@ -12,18 +12,24 @@
 
     <!-- TOP BAR -->
     <header class="topbar">
-      <div class="brand" role="button" tabindex="0" id="btn_home">
+      <div class="brand" role="button" tabindex="0" onclick="location.href='index.html'">
         <div class="brand__dot"></div>
         <div class="brand__texts">
-          <div class="brand__title" id="ui_app_title"></div>
-          <div class="brand__sub" id="ui_app_subtitle"></div>
+          <div class="brand__title" id="ui_app_title">VChoice</div>
+          <div class="brand__sub" id="ui_app_subtitle">Histoire interactive</div>
         </div>
       </div>
 
-      <div class="topbar__actions">
-        <button class="btn btn--ghost" id="btn_hint" type="button"></button>
-        <button class="btn btn--ghost" id="btn_lang" type="button"></button>
-        <button class="btn btn--ghost" id="btn_restart" type="button"></button>
+      <div class="topbar__right">
+        <div class="lang">
+          <label class="sr_only" for="langSelect">Langue</label>
+          <select id="langSelect" class="lang__select" aria-label="Langue">
+            <option value="fr" selected>FR</option>
+            <option value="en">EN</option>
+          </select>
+        </div>
+
+        <button class="btn btn--ghost" id="btnHint" type="button">?</button>
       </div>
     </header>
 
@@ -32,65 +38,50 @@
       <section class="panel panel--game">
         <div class="scene scene--overlay">
 
-          <!-- IMAGE FULLSCREEN (derrière tout) -->
+          <!-- IMAGE FULLSCREEN -->
           <div class="scene__media">
             <picture>
               <source id="scene_img_source" type="image/webp" />
               <img id="scene_img" alt="" />
             </picture>
-            <div class="img_fallback" id="scene_img_fallback"></div>
 
             <!-- voile pour lisibilité -->
             <div class="scene__shade" aria-hidden="true"></div>
           </div>
 
-          <!-- CONTENU par-dessus l'image -->
+          <!-- CONTENU -->
           <div class="scene__content">
-            <div class="meta">
-              <div class="pill" id="ui_scenario_name"></div>
-              <div class="pill pill--muted" id="ui_step"></div>
-              <div class="pill pill--muted" id="ui_endings"></div>
-            </div>
-
-            <h2 class="title" id="scene_title"></h2>
-            <p class="body" id="scene_body"></p>
+            <h2 class="title" id="sceneTitle"></h2>
+            <p class="body" id="sceneBody"></p>
 
             <div class="choices" id="choices"></div>
-
-            <div class="footer" id="ui_footer"></div>
           </div>
 
         </div>
       </section>
     </main>
 
-    <!-- HINT MODAL -->
-    <div class="modal" id="hint_modal" style="display:none" aria-hidden="true">
-      <div class="modal__backdrop" id="hint_backdrop"></div>
-      <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="hint_title">
-        <div class="modal__head">
-          <div class="modal__title" id="hint_title"></div>
-          <button class="btn btn--ghost" id="hint_close" type="button">✕</button>
+    <!-- HINT MODAL (compatible engine.js) -->
+    <div id="hintModal" class="modal hidden" aria-hidden="true">
+      <div id="hintBackdrop" class="modal__backdrop"></div>
+      <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
+        <div class="modal__header">
+          <div class="modal__title" id="hintTitle">Info</div>
+          <button id="hintClose" class="modal__close" type="button" aria-label="Fermer">✕</button>
         </div>
-
-        <div class="modal__tabs">
-          <button class="tab" id="hint_soft" type="button"></button>
-          <button class="tab" id="hint_strong" type="button"></button>
-        </div>
-
-        <p class="modal__body" id="hint_text"></p>
+        <div class="modal__body" id="hintBody"></div>
       </div>
     </div>
 
   </div>
 
-  <!-- 1) Supabase UMD (sans module) -->
+  <!-- Optionnel : Supabase UMD -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- 2) ton userData (qui utilise window.supabase) -->
+  <!-- ton userData -->
   <script src="js/userData.js"></script>
 
-  <!-- 3) ton moteur -->
+  <!-- moteur -->
   <script src="js/engine.js"></script>
 </body>
 </html>
