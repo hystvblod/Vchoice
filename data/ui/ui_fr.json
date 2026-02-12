@@ -2,7 +2,7 @@
   "ui": {
     "app_title": "VChoice",
     "app_subtitle": "Histoire interactive",
-    "index_title": "Choisis ton univers",
+    "index_title": "Choisis ton scénario",
     "index_subtitle": "Clique sur une carte pour commencer.",
     "btn_play": "Jouer",
     "btn_continue": "Continuer",
@@ -15,6 +15,22 @@
     "loading": "Chargement…",
     "locked_choice": "Indisponible pour le moment"
   },
+
+  "scenarios": {
+    "dossier14_appartement": {
+      "title": "Appartement 14",
+      "desc": "Un dossier trouvé au mauvais endroit. Un immeuble trop silencieux. Et une porte qui ne devrait pas exister."
+    },
+    "bunker_reserve": {
+      "title": "Bunker",
+      "desc": "Une réserve scellée, des consignes effacées, et l’impression que quelqu’un vit encore derrière les murs."
+    },
+    "hopital_ferme": {
+      "title": "Hôpital",
+      "desc": "Les couloirs sont vides, mais les néons répondent. Certains dossiers semblent écrits pour toi."
+    }
+  },
+
   "scenario_info": {
     "dossier14_appartement": {
       "title": "À propos",

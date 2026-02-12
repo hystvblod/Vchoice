@@ -5,12 +5,228 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VChoice</title>
   <link rel="stylesheet" href="css/app.css" />
+
+  <style>
+    :root{
+      --vc-bg0: #05060a;
+      --vc-bg1: #090b13;
+      --vc-bg2: #0b1226;
+      --vc-accent: #ff3b3b;
+      --vc-accent2:#b71b1b;
+      --vc-card-r: 18px;
+      --vc-border: rgba(255,255,255,.10);
+      --vc-veil: rgba(0,0,0,.30);
+      --vc-text: rgba(255,255,255,.94);
+      --vc-muted: rgba(255,255,255,.68);
+    }
+
+    body{
+      background:
+        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
+        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
+        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* film grain (léger) */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      z-index: 0;
+      opacity: .08;
+      background-image:
+        url("assets/img/ui/noise.png");
+      background-size: 260px 260px;
+      mix-blend-mode: overlay;
+    }
+
+    /* vignette */
+    body::after{
+      content:"";
+      position: fixed;
+      inset: -60px;
+      pointer-events:none;
+      z-index: 0;
+      background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
+    }
+
+    .page{ padding-bottom: 22px; position: relative; z-index: 1; }
+
+    /* on force les titres i18n à être bien visibles même si app.css est différent */
+    .hero__title, .brand__title{ color: var(--vc-text) !important; }
+    .hero__text, .brand__subtitle{ color: var(--vc-muted) !important; }
+
+    /* ===== Cartouches creepy ===== */
+    .vc-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .vc-card{
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      min-height: 64px;
+      height: 64px;
+      border-radius: var(--vc-card-r);
+      border: 0;
+      outline: 0;
+      cursor: pointer;
+      background: transparent;
+      padding: 0;
+      text-align: left;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.55),
+        0 2px 0 rgba(255,255,255,.04) inset;
+    }
+
+    .vc-card-bg{
+      position:absolute;
+      inset:0;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(.95) contrast(1.05);
+      transform: scale(1.04);
+      z-index:0;
+    }
+
+    /* voile + dégradé sombre */
+    .vc-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.52), rgba(0,0,0,.20) 55%, rgba(0,0,0,.45)),
+        radial-gradient(700px 120px at 15% 50%, rgba(255,59,59,.12), transparent 60%),
+        rgba(0,0,0,.10);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    /* liseré */
+    .vc-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius: var(--vc-card-r);
+      border: 1px solid var(--vc-border);
+      pointer-events:none;
+      z-index:2;
+    }
+
+    /* léger “pulse” rouge sur hover */
+    .vc-card:hover{
+      box-shadow:
+        0 22px 60px rgba(0,0,0,.62),
+        0 0 0 1px rgba(255,59,59,.18) inset;
+    }
+
+    .vc-card-content{
+      position:relative;
+      z-index:3;
+      height:100%;
+      display:flex;
+      align-items:center;
+    }
+
+    .vc-line{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 0 14px;
+    }
+
+    .vc-title{
+      margin:0;
+      color: #fff;
+      font-weight: 950;
+      font-size: 16px;
+      letter-spacing: .3px;
+      line-height: 1.1;
+      text-shadow: 0 2px 10px rgba(0,0,0,.75);
+    }
+
+    .vc-info{
+      width:40px;
+      height:40px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.95);
+      font-weight: 950;
+      font-size: 16px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+      cursor:pointer;
+      position:relative;
+      z-index:4;
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.35),
+        0 0 0 1px rgba(255,59,59,.12) inset;
+    }
+    .vc-info:hover{
+      border-color: rgba(255,59,59,.28);
+      box-shadow:
+        0 10px 28px rgba(0,0,0,.40),
+        0 0 0 1px rgba(255,59,59,.18) inset;
+    }
+    .vc-info:active{ transform: scale(.96); }
+
+    /* Tooltip */
+    .vc-tooltip{
+      position: fixed;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: min(380px, calc(100vw - 32px));
+      max-width: 380px;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.35;
+      border-radius: 14px;
+      background: rgba(7, 8, 12, 0.94);
+      border: 1px solid rgba(255,59,59,.22);
+      color: rgba(255,255,255,.95);
+      box-shadow: 0 18px 50px rgba(0,0,0,.55);
+      display:none;
+      z-index: 9999;
+    }
+    .vc-tooltip::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      border-radius: 14px;
+      pointer-events:none;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+    }
+
+    @media (max-width: 520px){
+      .vc-card{ min-height: 60px; height: 60px; }
+      .vc-title{ font-size: 14px; }
+      .vc-info{ width: 38px; height: 38px; font-size: 15px; }
+    }
+  </style>
 </head>
+
 <body>
   <header class="topbar">
     <div class="brand">
       <div class="brand__title" id="ui_app_title">VChoice</div>
-      <div class="brand__subtitle" id="ui_app_subtitle">Histoire interactive</div>
+      <div class="brand__subtitle" id="ui_app_subtitle"></div>
     </div>
 
     <div class="topbar__right">
@@ -26,27 +242,179 @@
 
   <main class="page">
     <section class="hero">
-      <h1 class="hero__title" id="ui_index_title">Choisis ton univers</h1>
-      <p class="hero__text" id="ui_index_subtitle">Clique sur une carte pour commencer.</p>
+      <h1 class="hero__title" id="ui_index_title">Choisis ton scénario</h1>
+      <p class="hero__text" id="ui_index_subtitle"></p>
     </section>
 
     <section class="menu" aria-label="Menu">
-      <div id="menuGrid" class="menu_grid"></div>
+      <div id="grid" class="vc-grid"></div>
     </section>
   </main>
 
-  <!-- Modal réutilisée pour le bouton ? -->
-  <div id="hintModal" class="modal hidden" aria-hidden="true">
-    <div id="hintBackdrop" class="modal__backdrop"></div>
-    <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
-      <div class="modal__header">
-        <div class="modal__title" id="hintTitle">Info</div>
-        <button id="hintClose" class="modal__close" type="button" aria-label="Fermer">✕</button>
-      </div>
-      <div class="modal__body" id="hintBody"></div>
-    </div>
-  </div>
+  <div id="tooltip" class="vc-tooltip"></div>
 
-  <script src="js/engine.js"></script>
+  <script>
+    // =========================
+    // i18n mini (index only)
+    // =========================
+    let VC_I18N = {};
+    function t(key, fallback){
+      const parts = (key || "").split(".");
+      let cur = VC_I18N;
+      for (const p of parts){
+        if (!cur || typeof cur !== "object" || !(p in cur)) return fallback || "";
+        cur = cur[p];
+      }
+      return (typeof cur === "string") ? cur : (fallback || "");
+    }
+
+    async function loadI18n(lang){
+      const safe = (lang === "en") ? "en" : "fr";
+      const url = `i18n/ui_${safe}.json`;
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("i18n not found: " + url);
+      VC_I18N = await res.json();
+
+      document.getElementById("ui_app_title").textContent = t("ui.app_title", "VChoice");
+      document.getElementById("ui_app_subtitle").textContent = t("ui.app_subtitle", "");
+      document.getElementById("ui_index_title").textContent = t("ui.index_title", "");
+      document.getElementById("ui_index_subtitle").textContent = t("ui.index_subtitle", "");
+    }
+
+    // =========================
+    // SCÉNARIOS EN DUR (plus de catalog.json)
+    // =========================
+    const SCENARIOS = [
+      {
+        id: "dossier14_appartement",
+        bg: "assets/img/ui/scenarios/dossier14_appartement.webp"
+      },
+      {
+        id: "bunker_reserve",
+        bg: "assets/img/ui/scenarios/bunker_reserve.webp"
+      },
+      {
+        id: "hopital_ferme",
+        bg: "assets/img/ui/scenarios/hopital_ferme.webp"
+      }
+    ];
+
+    function titleKey(id){ return `scenarios.${id}.title`; }
+    function descKey(id){ return `scenarios.${id}.desc`; }
+
+    function render(){
+      const grid = document.getElementById("grid");
+      grid.innerHTML = "";
+
+      for (const s of SCENARIOS){
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "vc-card";
+        btn.setAttribute("data-scenario", s.id);
+
+        const bg = document.createElement("div");
+        bg.className = "vc-card-bg";
+        bg.style.backgroundImage = `url('${s.bg}')`;
+
+        const content = document.createElement("div");
+        content.className = "vc-card-content";
+
+        const line = document.createElement("div");
+        line.className = "vc-line";
+
+        const h3 = document.createElement("h3");
+        h3.className = "vc-title";
+        h3.textContent = t(titleKey(s.id), s.id);
+
+        const info = document.createElement("span");
+        info.className = "vc-info";
+        info.setAttribute("role","button");
+        info.setAttribute("tabindex","0");
+        info.textContent = "?";
+        info.setAttribute("data-i18n-tip", descKey(s.id));
+
+        line.appendChild(h3);
+        line.appendChild(info);
+        content.appendChild(line);
+
+        btn.appendChild(bg);
+        btn.appendChild(content);
+
+        // clic carte
+        btn.addEventListener("click", () => {
+          localStorage.setItem("vchoice_scenario", s.id);
+          window.location.href = "game.html";
+        });
+
+        // empêche le ? de lancer la carte
+        info.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); showTooltip(info); });
+        info.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault(); e.stopPropagation(); showTooltip(info);
+          }
+        });
+
+        grid.appendChild(btn);
+      }
+    }
+
+    // =========================
+    // Tooltip (le ?)
+    // =========================
+    const tooltip = document.getElementById("tooltip");
+
+    function hideTooltip(){
+      tooltip.style.display = "none";
+    }
+
+    function showTooltip(el){
+      const key = el.getAttribute("data-i18n-tip");
+      const text = key ? t(key, "") : "";
+      tooltip.textContent = text || "…";
+      tooltip.style.display = "block";
+
+      const rect = el.getBoundingClientRect();
+      const vw = document.documentElement.clientWidth || window.innerWidth;
+      const vh = document.documentElement.clientHeight || window.innerHeight;
+
+      const tw = tooltip.offsetWidth || 0;
+      const th = tooltip.offsetHeight || 0;
+      const pad = 12;
+
+      const desiredCenter = rect.left + rect.width / 2;
+      const minCenter = pad + tw / 2;
+      const maxCenter = vw - pad - tw / 2;
+      const clampedCenter = Math.max(minCenter, Math.min(maxCenter, desiredCenter));
+
+      let top = rect.bottom + 8;
+      if (top + th > vh - pad) top = rect.top - 8 - th;
+      if (top < pad) top = pad;
+
+      tooltip.style.left = clampedCenter + "px";
+      tooltip.style.top = top + "px";
+    }
+
+    document.addEventListener("click", hideTooltip);
+    window.addEventListener("scroll", hideTooltip, { passive:true });
+    window.addEventListener("resize", hideTooltip);
+
+    // =========================
+    // Boot
+    // =========================
+    (async function(){
+      const select = document.getElementById("langSelect");
+      const saved = localStorage.getItem("vchoice_lang") || "fr";
+      select.value = (saved === "en") ? "en" : "fr";
+
+      async function applyLang(lang){
+        localStorage.setItem("vchoice_lang", lang);
+        await loadI18n(lang);
+        render();
+      }
+
+      select.addEventListener("change", () => applyLang(select.value));
+      await applyLang(select.value);
+    })();
+  </script>
 </body>
 </html>
