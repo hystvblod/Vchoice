@@ -4,18 +4,18 @@
     "app_subtitle": "Histoire interactive",
     "index_title": "Choisis ton scénario",
     "index_subtitle": "Clique sur une carte pour commencer.",
+    "language": "Langue",
+    "hint_title": "Info",
+    "hint_close": "Fermer",
     "btn_play": "Jouer",
     "btn_continue": "Continuer",
     "btn_restart": "Recommencer",
     "btn_back": "Retour",
     "btn_exit": "Quitter",
     "btn_hint": "Indice",
-    "hint_title": "Indice",
-    "hint_close": "Fermer",
     "loading": "Chargement…",
     "locked_choice": "Indisponible pour le moment"
   },
-
   "scenarios": {
     "dossier14_appartement": {
       "title": "Appartement 14",
@@ -30,11 +30,18 @@
       "desc": "Les couloirs sont vides, mais les néons répondent. Certains dossiers semblent écrits pour toi."
     }
   },
-
   "scenario_info": {
     "dossier14_appartement": {
       "title": "À propos",
       "body": "Un dossier étrange, un appartement impossible à cartographier, et des choix qui peuvent te piéger. Chaque décision peut débloquer (ou t’empêcher de voir) des indices."
+    },
+    "bunker_reserve": {
+      "title": "À propos",
+      "body": "Une réserve scellée, une logique de sécurité qui ne colle plus, et des choix où l’intuition compte autant que la prudence."
+    },
+    "hopital_ferme": {
+      "title": "À propos",
+      "body": "Un hôpital désert, des zones qui se répètent, et des dossiers qui semblent te connaître. Tes décisions changent ce que tu as le droit de comprendre."
     }
   }
 }
