@@ -15,10 +15,10 @@
 
     <div class="topbar__right">
       <div class="lang">
-        <label class="sr_only" for="langSelect">Langue</label>
+        <label class="sr_only" for="langSelect" id="ui_language_label">Langue</label>
         <select id="langSelect" class="lang__select" aria-label="Langue">
-          <option value="fr" selected>FR</option>
-          <option value="en">EN</option>
+          <option value="fr" selected id="ui_language_fr">FR</option>
+          <option value="en" id="ui_language_en">EN</option>
         </select>
       </div>
     </div>
@@ -31,7 +31,61 @@
     </section>
 
     <section class="menu" aria-label="Menu">
-      <div id="menuGrid" class="menu_grid"></div>
+      <div id="menuGrid" class="menu_grid">
+
+        <!-- =========================
+             CARTOUCHES EN DUR (3)
+             - cover: assets/scenarios/<id>/img/cover.webp
+             - titre: data-i18n="scenarios.<id>.title"
+             - ? modal: data-i18n-body="scenarios.<id>.desc"
+             ========================= -->
+
+        <!-- Appartement 14 -->
+        <button type="button"
+                class="menu_card"
+                data-scenario="dossier14_appartement"
+                style="background-image:url('assets/scenarios/dossier14_appartement/img/cover.webp')">
+          <div class="menu_row">
+            <div class="menu_title" data-i18n="scenarios.dossier14_appartement.title">Appartement 14</div>
+            <button type="button"
+                    class="menu_info"
+                    data-i18n-title="ui.info_title"
+                    data-i18n-body="scenarios.dossier14_appartement.desc"
+                    aria-label="Info">?</button>
+          </div>
+        </button>
+
+        <!-- Bunker -->
+        <button type="button"
+                class="menu_card"
+                data-scenario="bunker_reserve"
+                style="background-image:url('assets/scenarios/bunker_reserve/img/cover.webp')">
+          <div class="menu_row">
+            <div class="menu_title" data-i18n="scenarios.bunker_reserve.title">Bunker</div>
+            <button type="button"
+                    class="menu_info"
+                    data-i18n-title="ui.info_title"
+                    data-i18n-body="scenarios.bunker_reserve.desc"
+                    aria-label="Info">?</button>
+          </div>
+        </button>
+
+        <!-- Hôpital -->
+        <button type="button"
+                class="menu_card"
+                data-scenario="hopital_ferme"
+                style="background-image:url('assets/scenarios/hopital_ferme/img/cover.webp')">
+          <div class="menu_row">
+            <div class="menu_title" data-i18n="scenarios.hopital_ferme.title">Hôpital</div>
+            <button type="button"
+                    class="menu_info"
+                    data-i18n-title="ui.info_title"
+                    data-i18n-body="scenarios.hopital_ferme.desc"
+                    aria-label="Info">?</button>
+          </div>
+        </button>
+
+      </div>
     </section>
   </main>
 
@@ -40,13 +94,17 @@
     <div id="hintBackdrop" class="modal__backdrop"></div>
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
       <div class="modal__header">
-        <div class="modal__title" id="hintTitle">Info</div>
+        <div class="modal__title" id="hintTitle" data-i18n="ui.info_title">Info</div>
         <button id="hintClose" class="modal__close" type="button" aria-label="Fermer">✕</button>
       </div>
       <div class="modal__body" id="hintBody"></div>
     </div>
   </div>
 
-  <script src="js/engine.js"></script>
+  <!-- ✅ si tu as créé i18n.js + index.js, charge-les ici -->
+  <script src="js/i18n.js"></script>
+  <script src="js/index.js"></script>
+
+
 </body>
 </html>
