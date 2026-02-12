@@ -580,3 +580,141 @@ body{
   .title{ font-size: 20px; }
   .choice_btn{ padding: 13px 12px; font-size: 14.5px; }
 }
+/* =========================================================
+   VCHOICE — Cartouches style VUniverse (index)
+   À coller en bas de css/app.css
+   ========================================================= */
+
+.menu_grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+/* bouton carte */
+.menu_card{
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 64px;
+  height: 64px;
+  border-radius: 18px;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.55),
+    0 2px 0 rgba(255,255,255,.04) inset;
+}
+
+.menu_card:focus-visible{
+  outline: 2px solid rgba(255,255,255,0.65);
+  outline-offset: 3px;
+}
+
+.menu_card_bg{
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+  z-index: 0;
+  transform: scale(1.04);
+  filter: saturate(.95) contrast(1.05);
+}
+
+/* voile + dégradé sombre (lisibilité) */
+.menu_card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.20) 55%, rgba(0,0,0,.52)),
+    radial-gradient(700px 120px at 15% 50%, rgba(180, 40, 60, .14), transparent 60%),
+    rgba(0,0,0,.10);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  pointer-events:none;
+  z-index:1;
+}
+
+/* liseré */
+.menu_card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  pointer-events:none;
+  z-index:2;
+}
+
+.menu_card:hover{
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.62),
+    0 0 0 1px rgba(255,60,80,.18) inset;
+}
+
+.menu_card_content{
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.menu_card_line{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+}
+
+.menu_card_title{
+  margin: 0;
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: .2px;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0,0,0,.75);
+}
+
+/* bouton ? */
+.menu_info_btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.95);
+  font-weight: 900;
+  font-size: 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+
+  flex: 0 0 auto;   /* ✅ empêche de casser la ligne */
+  position: relative;
+  z-index: 4;
+}
+
+.menu_info_btn:hover{ background: rgba(255,255,255,.14); }
+.menu_info_btn:active{ transform: scale(.96); }
+
+@media (max-width: 520px){
+  .menu_card{ min-height: 60px; height: 60px; }
+  .menu_card_title{ font-size: 14px; }
+  .menu_info_btn{ width: 38px; height: 38px; font-size: 15px; }
+}

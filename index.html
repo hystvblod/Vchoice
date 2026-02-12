@@ -5,87 +5,344 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VChoice</title>
   <link rel="stylesheet" href="css/app.css" />
+
+  <style>
+    /* =========================================
+       VCHOICE — INDEX “PRO”
+       - plus de topbar (barre du haut)
+       - top actions (mêmes “icônes” que l’autre app)
+       - logo prévu
+       - cartouches style VUniverse mais creepy
+       - scénarios EN DUR (plus de catalog.json)
+       - 100% textes via i18n (data-i18n / js/i18n.js)
+       ========================================= */
+
+    /* ✅ on supprime la barre/header venant de app.css */
+    .topbar{ display:none !important; }
+
+    :root{
+      --vc-bg0:#05060a;
+      --vc-bg1:#090b13;
+      --vc-bg2:#0b1226;
+      --vc-accent:#ff3b3b;
+      --vc-accent2:#b71b1b;
+      --vc-card-r:18px;
+      --vc-border:rgba(255,255,255,.10);
+      --vc-text:rgba(255,255,255,.94);
+      --vc-muted:rgba(255,255,255,.68);
+    }
+
+    body{
+      background:
+        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
+        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
+        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      margin:0;
+    }
+
+    /* grain léger */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      z-index: 0;
+      opacity: .08;
+      background-image: url("assets/img/ui/noise.png");
+      background-size: 260px 260px;
+      mix-blend-mode: overlay;
+    }
+
+    /* vignette */
+    body::after{
+      content:"";
+      position: fixed;
+      inset: -60px;
+      pointer-events:none;
+      z-index: 0;
+      background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
+    }
+
+    .page{ position:relative; z-index:1; padding-bottom:22px; }
+
+    /* ===== Top actions (icônes + langue) ===== */
+    .vc-top-actions{
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
+    }
+
+    .vc-top-slot{
+      flex: 1 1 0;
+      display:flex;
+      align-items:center;
+    }
+    .vc-top-left{ justify-content:flex-start; }
+    .vc-top-center{ justify-content:center; }
+    .vc-top-right{ justify-content:flex-end; gap:10px; }
+
+    .vc-icon-button{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.26);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ✅ “mêmes svg” : on prévoit des fichiers SVG.
+       Mets tes vrais noms ici si besoin (btn_profile.svg etc). */
+    .vc-icon-button img{
+      width:30px;
+      height:30px;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
+    }
+
+    /* select langue */
+    .vc-lang{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .vc-lang label{ display:none; }
+    .vc-lang select{
+      background: rgba(0,0,0,0.26);
+      color: rgba(255,255,255,.92);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 800;
+      outline:none;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      cursor:pointer;
+    }
+
+    /* ===== Logo (prévu) ===== */
+    .vc-intro{
+      margin-top: 4px;
+      margin-bottom: 10px;
+      display:flex;
+      justify-content:center;
+      padding: 0 12px;
+    }
+    .vc-logo{
+      height: clamp(64px, 10vmin, 110px);
+      width: min(86vw, 520px);
+      object-fit: contain;
+      filter: drop-shadow(0 12px 30px rgba(0,0,0,0.45));
+      display:block;
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
+    /* ===== Hero ===== */
+    .hero{ padding: 0 12px; }
+    .hero__title{ color: var(--vc-text) !important; }
+    .hero__text{ color: var(--vc-muted) !important; }
+
+    /* ===== Cartouches (style VUniverse mais creepy) ===== */
+    .vc-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+      padding: 0 12px;
+    }
+
+    .vc-card{
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      min-height: 64px;
+      height: 64px;
+      border-radius: var(--vc-card-r);
+      border: 0;
+      outline: 0;
+      cursor: pointer;
+      background: transparent;
+      padding: 0;
+      text-align: left;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.55),
+        0 2px 0 rgba(255,255,255,.04) inset;
+    }
+
+    .vc-card-bg{
+      position:absolute;
+      inset:0;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(.92) contrast(1.08);
+      transform: scale(1.04);
+      z-index:0;
+    }
+
+    .vc-card::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.18) 55%, rgba(0,0,0,.55)),
+        radial-gradient(700px 120px at 15% 50%, rgba(255,59,59,.14), transparent 60%),
+        rgba(0,0,0,.10);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .vc-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-radius: var(--vc-card-r);
+      border: 1px solid var(--vc-border);
+      pointer-events:none;
+      z-index:2;
+    }
+
+    .vc-card:hover{
+      box-shadow:
+        0 22px 60px rgba(0,0,0,.62),
+        0 0 0 1px rgba(255,59,59,.18) inset;
+    }
+
+    .vc-card-content{
+      position:relative;
+      z-index:3;
+      height:100%;
+      display:flex;
+      align-items:center;
+    }
+
+    .vc-line{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 0 14px;
+    }
+
+    .vc-title{
+      margin:0;
+      color:#fff;
+      font-weight: 950;
+      font-size: 16px;
+      letter-spacing: .3px;
+      line-height: 1.1;
+      text-shadow: 0 2px 10px rgba(0,0,0,.75);
+    }
+
+    .vc-info{
+      width:40px;
+      height:40px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.16);
+      color: rgba(255,255,255,.95);
+      font-weight: 950;
+      font-size: 16px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      user-select:none;
+      cursor:pointer;
+      position:relative;
+      z-index:4;
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.35),
+        0 0 0 1px rgba(255,59,59,.12) inset;
+    }
+    .vc-info:hover{
+      border-color: rgba(255,59,59,.28);
+      box-shadow:
+        0 10px 28px rgba(0,0,0,.40),
+        0 0 0 1px rgba(255,59,59,.18) inset;
+    }
+    .vc-info:active{ transform: scale(.96); }
+
+    /* ===== Modal “?” (réutilise ta structure) ===== */
+    .modal.hidden{ display:none !important; }
+
+    @media (max-width: 520px){
+      .vc-icon-button{ width:40px; height:40px; }
+      .vc-icon-button img{ width:28px; height:28px; }
+      .vc-card{ min-height: 60px; height: 60px; }
+      .vc-title{ font-size: 14px; }
+      .vc-info{ width: 38px; height: 38px; font-size: 15px; }
+    }
+  </style>
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand__title" id="ui_app_title">VChoice</div>
-      <div class="brand__subtitle" id="ui_app_subtitle">Histoire interactive</div>
+  <!-- ✅ TOP ACTIONS (icônes + langue) -->
+  <div class="vc-top-actions">
+    <div class="vc-top-slot vc-top-left">
+      <a class="vc-icon-button" href="profile.html" aria-label="Profil">
+        <img src="assets/img/ui/btn_profile.svg" alt="" draggable="false" />
+      </a>
     </div>
 
-    <div class="topbar__right">
-      <div class="lang">
-        <label class="sr_only" for="langSelect" id="ui_language_label">Langue</label>
-        <select id="langSelect" class="lang__select" aria-label="Langue">
-          <option value="fr" selected id="ui_language_fr">FR</option>
+    <div class="vc-top-slot vc-top-center">
+      <a class="vc-icon-button" href="settings.html" aria-label="Paramètres">
+        <img src="assets/img/ui/btn_settings.svg" alt="" draggable="false" />
+      </a>
+    </div>
+
+    <div class="vc-top-slot vc-top-right">
+      <a class="vc-icon-button" href="shop.html" aria-label="Boutique">
+        <img src="assets/img/ui/btn_shop.svg" alt="" draggable="false" />
+      </a>
+
+      <div class="vc-lang">
+        <label for="langSelect" class="sr_only" id="ui_language_label" data-i18n="ui.language">Langue</label>
+        <select id="langSelect" aria-label="Langue">
+          <option value="fr" id="ui_language_fr">FR</option>
           <option value="en" id="ui_language_en">EN</option>
         </select>
       </div>
     </div>
-  </header>
+  </div>
+
+  <!-- ✅ LOGO (prévu) -->
+  <section class="vc-intro">
+    <!-- mets ton logo ici (svg/webp). Si tu n’en as pas encore, laisse ce fichier, ça ne casse rien. -->
+    <img class="vc-logo" src="assets/img/ui/logo_vchoice.webp" alt="VChoice" draggable="false" />
+  </section>
 
   <main class="page">
     <section class="hero">
-      <h1 class="hero__title" id="ui_index_title">Choisis ton univers</h1>
-      <p class="hero__text" id="ui_index_subtitle">Clique sur une carte pour commencer.</p>
+      <h1 class="hero__title" id="ui_index_title" data-i18n="ui.index_title"> </h1>
+      <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle"> </p>
     </section>
 
     <section class="menu" aria-label="Menu">
-      <div id="menuGrid" class="menu_grid">
-
-        <!-- =========================
-             CARTOUCHES EN DUR (3)
-             - cover: assets/scenarios/<id>/img/cover.webp
-             - titre: data-i18n="scenarios.<id>.title"
-             - ? modal: data-i18n-body="scenarios.<id>.desc"
-             ========================= -->
-
-        <!-- Appartement 14 -->
-        <button type="button"
-                class="menu_card"
-                data-scenario="dossier14_appartement"
-                style="background-image:url('assets/scenarios/dossier14_appartement/img/cover.webp')">
-          <div class="menu_row">
-            <div class="menu_title" data-i18n="scenarios.dossier14_appartement.title">Appartement 14</div>
-            <button type="button"
-                    class="menu_info"
-                    data-i18n-title="ui.info_title"
-                    data-i18n-body="scenarios.dossier14_appartement.desc"
-                    aria-label="Info">?</button>
-          </div>
-        </button>
-
-        <!-- Bunker -->
-        <button type="button"
-                class="menu_card"
-                data-scenario="bunker_reserve"
-                style="background-image:url('assets/scenarios/bunker_reserve/img/cover.webp')">
-          <div class="menu_row">
-            <div class="menu_title" data-i18n="scenarios.bunker_reserve.title">Bunker</div>
-            <button type="button"
-                    class="menu_info"
-                    data-i18n-title="ui.info_title"
-                    data-i18n-body="scenarios.bunker_reserve.desc"
-                    aria-label="Info">?</button>
-          </div>
-        </button>
-
-        <!-- Hôpital -->
-        <button type="button"
-                class="menu_card"
-                data-scenario="hopital_ferme"
-                style="background-image:url('assets/scenarios/hopital_ferme/img/cover.webp')">
-          <div class="menu_row">
-            <div class="menu_title" data-i18n="scenarios.hopital_ferme.title">Hôpital</div>
-            <button type="button"
-                    class="menu_info"
-                    data-i18n-title="ui.info_title"
-                    data-i18n-body="scenarios.hopital_ferme.desc"
-                    aria-label="Info">?</button>
-          </div>
-        </button>
-
-      </div>
+      <div id="menuGrid" class="vc-grid"></div>
     </section>
   </main>
 
@@ -94,17 +351,179 @@
     <div id="hintBackdrop" class="modal__backdrop"></div>
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
       <div class="modal__header">
-        <div class="modal__title" id="hintTitle" data-i18n="ui.info_title">Info</div>
-        <button id="hintClose" class="modal__close" type="button" aria-label="Fermer">✕</button>
+        <div class="modal__title" id="hintTitle" data-i18n="ui.hint_title"> </div>
+        <button id="hintClose" class="modal__close" type="button" aria-label="Fermer" data-i18n-aria="ui.hint_close">✕</button>
       </div>
       <div class="modal__body" id="hintBody"></div>
     </div>
   </div>
 
-  <!-- ✅ si tu as créé i18n.js + index.js, charge-les ici -->
+  <!-- ton i18n + moteur -->
   <script src="js/i18n.js"></script>
-  <script src="js/index.js"></script>
+  <script src="js/engine.js"></script>
 
+  <script>
+    // =========================================================
+    // Helpers i18n (compatible avec ton i18n.js)
+    // =========================================================
+    function _t(key, fallback){
+      try{
+        if (window.VRI18n && typeof window.VRI18n.t === "function") return window.VRI18n.t(key) || fallback || "";
+        if (typeof window.i18nGet === "function") return window.i18nGet(key) || fallback || "";
+      }catch(_){}
+      return fallback || "";
+    }
 
+    function applyI18nStatic(){
+      // Ces IDs existent déjà dans ton HTML
+      const map = [
+        ["ui_index_title", "ui.index_title", ""],
+        ["ui_index_subtitle", "ui.index_subtitle", ""],
+        ["ui_language_label", "ui.language", ""],
+        ["hintTitle", "ui.hint_title", ""],
+      ];
+      for (const [id, key, fb] of map){
+        const el = document.getElementById(id);
+        if (el) el.textContent = _t(key, fb);
+      }
+
+      // aria label close (si ton i18n gère un texte)
+      const closeBtn = document.getElementById("hintClose");
+      if (closeBtn){
+        const aria = _t("ui.hint_close", "");
+        if (aria) closeBtn.setAttribute("aria-label", aria);
+      }
+    }
+
+    // =========================================================
+    // SCÉNARIOS EN DUR (3)
+    // cover: assets/scenarios/<id>/img/cover.webp
+    // textes: i18n keys
+    //   scenarios.<id>.title
+    //   scenarios.<id>.desc
+    // =========================================================
+    const SCENARIOS = [
+      { id: "dossier14_appartement" },
+      { id: "bunker_reserve" },
+      { id: "hopital_ferme" }
+    ];
+
+    function coverPath(id){
+      return `assets/scenarios/${id}/img/cover.webp`;
+    }
+
+    function renderScenarios(){
+      const grid = document.getElementById("menuGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      for (const s of SCENARIOS){
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "vc-card";
+        btn.setAttribute("data-scenario", s.id);
+
+        const bg = document.createElement("div");
+        bg.className = "vc-card-bg";
+        bg.style.backgroundImage = `url('${coverPath(s.id)}')`;
+
+        const content = document.createElement("div");
+        content.className = "vc-card-content";
+
+        const line = document.createElement("div");
+        line.className = "vc-line";
+
+        const title = document.createElement("h3");
+        title.className = "vc-title";
+        title.textContent = _t(`scenarios.${s.id}.title`, s.id);
+
+        const info = document.createElement("span");
+        info.className = "vc-info";
+        info.setAttribute("role","button");
+        info.setAttribute("tabindex","0");
+        info.textContent = "?";
+        info.setAttribute("data-scenario", s.id);
+
+        line.appendChild(title);
+        line.appendChild(info);
+        content.appendChild(line);
+
+        btn.appendChild(bg);
+        btn.appendChild(content);
+
+        // clic carte => game
+        btn.addEventListener("click", () => {
+          localStorage.setItem("vchoice_scenario", s.id);
+          window.location.href = "game.html";
+        });
+
+        // ? => modal (stop propagation)
+        info.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openHint(s.id); });
+        info.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " "){
+            e.preventDefault(); e.stopPropagation(); openHint(s.id);
+          }
+        });
+
+        grid.appendChild(btn);
+      }
+    }
+
+    // =========================================================
+    // Modal “?”
+    // =========================================================
+    const hintModal = document.getElementById("hintModal");
+    const hintBackdrop = document.getElementById("hintBackdrop");
+    const hintClose = document.getElementById("hintClose");
+    const hintBody = document.getElementById("hintBody");
+
+    function openHint(scenarioId){
+      if (!hintModal || !hintBody) return;
+      hintBody.textContent = _t(`scenarios.${scenarioId}.desc`, "");
+      hintModal.classList.remove("hidden");
+      hintModal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeHint(){
+      if (!hintModal) return;
+      hintModal.classList.add("hidden");
+      hintModal.setAttribute("aria-hidden", "true");
+    }
+
+    if (hintBackdrop) hintBackdrop.addEventListener("click", closeHint);
+    if (hintClose) hintClose.addEventListener("click", closeHint);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeHint(); });
+
+    // =========================================================
+    // Boot (lang + i18n)
+    // =========================================================
+    (async function boot(){
+      const select = document.getElementById("langSelect");
+      const saved = localStorage.getItem("vchoice_lang") || "fr";
+      if (select) select.value = (saved === "en") ? "en" : "fr";
+
+      async function applyLang(lang){
+        localStorage.setItem("vchoice_lang", lang);
+
+        // si ton i18n.js expose un init, on l’appelle
+        try{
+          if (window.VRI18n && typeof window.VRI18n.initI18n === "function"){
+            await window.VRI18n.initI18n(lang);
+          }
+        }catch(_){}
+
+        // sinon, on laisse engine.js/i18n.js faire son boulot,
+        // et on applique au minimum les textes de cette page
+        applyI18nStatic();
+        renderScenarios();
+      }
+
+      if (select){
+        select.addEventListener("change", () => applyLang(select.value));
+      }
+
+      await applyLang(select ? select.value : saved);
+    })();
+  </script>
 </body>
 </html>
