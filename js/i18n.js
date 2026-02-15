@@ -1,76 +1,113 @@
-// js/i18n.js — i18n loader + helper t() + auto-apply [data-i18n]
+// js/i18n.js — loader i18n + compat VRI18n + i18nGet + auto-apply [data-i18n]
+// Compatible avec ton index.html actuel (helper _t() qui cherche VRI18n.t / i18nGet)
+
 (function () {
   "use strict";
 
   const UI_PATH = "data/ui";
   let _dict = {};
+  let _lang = "fr";
 
-  function t(path, fallback) {
+  function _safeLang(lang) {
+    return (String(lang || "").toLowerCase() === "en") ? "en" : "fr";
+  }
+
+  function t(path, fallback, vars) {
     const parts = (path || "").split(".");
     let cur = _dict;
+
     for (const p of parts) {
       if (!cur || typeof cur !== "object" || !(p in cur)) return fallback || "";
       cur = cur[p];
     }
-    return typeof cur === "string" ? cur : (fallback || "");
+
+    let out = (typeof cur === "string") ? cur : (fallback || "");
+    if (vars && out) {
+      try {
+        Object.keys(vars).forEach((k) => {
+          out = out.split("{" + k + "}").join(String(vars[k]));
+        });
+      } catch (_) {}
+    }
+    return out || "";
   }
 
-  function applyDataI18n(root) {
-    (root || document).querySelectorAll("[data-i18n]").forEach((el) => {
+  function apply(root) {
+    const r = root || document;
+
+    // Texte
+    r.querySelectorAll("[data-i18n]").forEach((el) => {
       const key = el.getAttribute("data-i18n");
       if (!key) return;
       const val = t(key, "");
       if (val) el.textContent = val;
     });
+
+    // Aria-label
+    r.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria");
+      if (!key) return;
+      const val = t(key, "");
+      if (val) el.setAttribute("aria-label", val);
+    });
+
+    // Title attribute (optionnel si tu l’utilises un jour)
+    r.querySelectorAll("[data-i18n-title]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-title");
+      if (!key) return;
+      const val = t(key, "");
+      if (val) el.setAttribute("title", val);
+    });
   }
 
   async function load(lang) {
-    const safe = (lang === "en") ? "en" : "fr";
-    const url = `${UI_PATH}/ui_${safe}.json`;
+    _lang = _safeLang(lang);
+
+    const url = `${UI_PATH}/ui_${_lang}.json`;
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`i18n not found: ${url}`);
     _dict = await res.json();
 
-    // html lang + title (si clés présentes)
-    document.documentElement.lang = safe;
+    // html lang + <title> si la clé existe
+    document.documentElement.lang = _lang;
     const pageTitle = t("ui.page_title", "");
     if (pageTitle) document.title = pageTitle;
 
-    // UI "fixes" si tu veux (optionnel)
-    const setText = (id, key) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      const v = t(key, "");
-      if (v) el.textContent = v;
-    };
-    setText("ui_app_title", "ui.app_title");
-    setText("ui_app_subtitle", "ui.app_subtitle");
-    setText("ui_index_title", "ui.index_title");
-    setText("ui_index_subtitle", "ui.index_subtitle");
-
-    const lbl = t("ui.language_label", "");
-    const lblEl = document.getElementById("ui_language_label");
-    const sel = document.getElementById("langSelect");
-    if (lblEl && lbl) lblEl.textContent = lbl;
-    if (sel && lbl) sel.setAttribute("aria-label", lbl);
-
-    const frTxt = t("ui.language_fr", "");
-    const enTxt = t("ui.language_en", "");
-    const frEl = document.getElementById("ui_language_fr");
-    const enEl = document.getElementById("ui_language_en");
-    if (frEl && frTxt) frEl.textContent = frTxt;
-    if (enEl && enTxt) enEl.textContent = enTxt;
-
-    // applique tous les data-i18n
-    applyDataI18n(document);
+    // Applique tout de suite
+    apply(document);
+    return true;
   }
 
-  // expose global
+  async function initI18n(lang) {
+    // alias pratique (ton index appelle VRI18n.initI18n)
+    return load(lang);
+  }
+
+  // =========================
+  // Expose globals COMPAT
+  // =========================
+
+  // ✅ ton index.html cherche ça
+  window.VRI18n = {
+    initI18n,
+    load,
+    t: (key, fallback, vars) => t(key, fallback, vars),
+    applyI18n: apply,
+    getLang: () => (localStorage.getItem("vchoice_lang") || "fr"),
+    setLang: (lang) => localStorage.setItem("vchoice_lang", _safeLang(lang))
+  };
+
+  // ✅ ton helper _t() accepte aussi i18nGet()
+  window.i18nGet = function (key) {
+    return t(key, "");
+  };
+
+  // (Optionnel) garder l’ancien nom si tu l’utilises ailleurs
   window.VCI18N = {
     load,
-    t,
-    apply: applyDataI18n,
-    getLang: () => (localStorage.getItem("vchoice_lang") || "fr"),
-    setLang: (lang) => localStorage.setItem("vchoice_lang", (lang === "en" ? "en" : "fr"))
+    t: (key, fallback, vars) => t(key, fallback, vars),
+    apply,
+    getLang: () => window.VRI18n.getLang(),
+    setLang: (lang) => window.VRI18n.setLang(lang)
   };
 })();
