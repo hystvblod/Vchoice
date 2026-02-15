@@ -535,17 +535,20 @@
     }
 
     // =========================================================
-    // Scénarios
+    // Scénarios (✅ titres en DUR ici, pas de catalog)
+    // - id => sert à cover.webp + storage + unlock
+    // - title => affiché directement (FR)
+    // - desc => affiché dans le modal "?" (FR)
     // =========================================================
     const SCENARIOS = [
-      { id: "dossier14_appartement" },
-      { id: "bunker_reserve" },
-      { id: "hopital_ferme" },
-      { id: "metro_station_zero" },
-      { id: "styx_gare" },
-      { id: "foret_relais" },
-      { id: "chateau_absents" },
-      { id: "temple_mictlan" }
+      { id: "dossier14_appartement", title: "Dossier 14 — Appartement", desc: "Un dossier interdit. Des détails qui ne collent pas. Et une porte que tu ne devais jamais ouvrir." },
+      { id: "bunker_reserve",        title: "Bunker — Réserve",       desc: "Sous la terre, quelque chose tourne encore. Et ce n’est pas censé être vivant." },
+      { id: "hopital_ferme",         title: "Hôpital — Fermé",        desc: "Couloirs vides, odeur d’antiseptique, lumières qui respirent. Tu n’es pas seul." },
+      { id: "metro_station_zero",    title: "Métro — Station Zéro",   desc: "Dernière rame. Dernier quai. Les panneaux affichent ton nom." },
+      { id: "styx_gare",             title: "STYX — Gare Terminale",  desc: "Une gare qui ne mène nulle part. Des fleuves portent des noms. Et le départ approche." },
+      { id: "foret_relais",          title: "Forêt — Relais",         desc: "Un relais au milieu de rien. Les arbres sont trop silencieux. Les traces reviennent toujours au même endroit." },
+      { id: "chateau_absents",       title: "Château — Les Absents",  desc: "Un château ouvert, comme s’il t’attendait. Certains portraits ont disparu… pas les cadres." },
+      { id: "temple_mictlan",        title: "Temple — Mictlan",       desc: "Un temple d’obsidienne et d’os. La Reine des Morts ne bouge pas… jusqu’au moment où tu clignes des yeux." }
     ];
 
     function coverPath(id){ return `assets/scenarios/${id}/img/cover.webp`; }
@@ -569,8 +572,7 @@
     // =========================================================
     const PRICE = 300;
 
-    // ⚠️ SKU store (si tu gardes les mêmes produits que l’autre app)
-    // Si tu as des SKU spécifiques VChoice, change ici.
+    // ⚠️ SKU store
     const SKU_COINS_300 = "vrealms_coins_300";
 
     const KEY_PREFIX = "vchoice";
@@ -582,17 +584,14 @@
 
     function setScenarioToLaunch(id){
       lsSet(KEY_PREFIX + "_scenario", id);
-      // compat avec ton existant
-      lsSet("vchoice_scenario", id);
+      lsSet("vchoice_scenario", id); // compat existant
     }
 
     function setShopFocusScenario(id){
       lsSet(KEY_PREFIX + "_shop_focus_scenario", id);
     }
 
-    // FREE scenarios (si tu veux en laisser 1-2 gratuits)
     function isFreeScenario(id){
-      // Exemple: dossier14 gratuit (mets ce que tu veux)
       return (id === "dossier14_appartement");
     }
 
@@ -693,7 +692,6 @@
     }
 
     function currentCoins300Price(){
-      // on supporte VRIAP (comme l’autre app) et VCIAP (alias)
       const p = window.VRIAP?.getPrice?.(SKU_COINS_300) || window.VCIAP?.getPrice?.(SKU_COINS_300) || "";
       return p ? (" " + p) : "";
     }
@@ -701,7 +699,9 @@
     function openBuyPopup(scenarioId){
       pendingScenarioId = scenarioId;
 
-      const title = _t(`scenarios.${scenarioId}.title`, scenarioId);
+      const s = SCENARIOS.find(x => x.id === scenarioId);
+      const title = s?.title || scenarioId;
+
       if (buyTitle) buyTitle.textContent = title;
 
       if (buyDesc){
@@ -777,8 +777,7 @@
         return false;
       }
 
-      // le reste se fait sur event iap_credited
-      return true;
+      return true; // suite sur event iap_credited
     }
 
     if (buyPay){
@@ -807,7 +806,6 @@
       });
     }
 
-    // Event prix dispo (bouton popup)
     window.addEventListener("vc:iap_price", () => {
       try{
         if (buyPopup && buyPopup.style.display === "flex" && buyIap){
@@ -815,7 +813,6 @@
         }
       }catch(_){}
     });
-    // compat si ton purchases.js émet encore vr:iap_price
     window.addEventListener("vr:iap_price", () => {
       try{
         if (buyPopup && buyPopup.style.display === "flex" && buyIap){
@@ -824,7 +821,6 @@
       }catch(_){}
     });
 
-    // Event achat crédité -> auto unlock si cible présente
     async function onIapCredited(ev){
       try{
         const d = ev?.detail || {};
@@ -849,10 +845,10 @@
       }catch(_){}
     }
     window.addEventListener("vc:iap_credited", onIapCredited);
-    window.addEventListener("vr:iap_credited", onIapCredited); // compat
+    window.addEventListener("vr:iap_credited", onIapCredited);
 
     // =========================================================
-    // Render cards (avec hooks lock)
+    // Render cards
     // =========================================================
     function renderScenarios(){
       const grid = document.getElementById("menuGrid");
@@ -877,7 +873,7 @@
 
         const title = document.createElement("h3");
         title.className = "vc-title";
-        title.textContent = _t(`scenarios.${s.id}.title`, s.id);
+        title.textContent = s.title; // ✅ en dur
 
         const info = document.createElement("span");
         info.className = "vc-info";
@@ -893,7 +889,6 @@
         btn.appendChild(bg);
         btn.appendChild(content);
 
-        // clic carte => launch ou popup
         btn.addEventListener("click", (e) => {
           if (isUnlocked(s.id)){
             launchScenario(s.id);
@@ -903,7 +898,6 @@
           }
         });
 
-        // ? => modal (stop propagation)
         info.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openHint(s.id); });
         info.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " "){
@@ -914,7 +908,6 @@
         grid.appendChild(btn);
       }
 
-      // applique lock visuel après render
       applyLocks();
     }
 
@@ -928,8 +921,9 @@
 
     function openHint(scenarioId){
       if (!hintModal || !hintBody) return;
-      const txt = _t(`scenarios.${scenarioId}.desc`, "");
-      hintBody.textContent = txt || "";
+      const s = SCENARIOS.find(x => x.id === scenarioId);
+      const txt = s?.desc || "";
+      hintBody.textContent = txt;
       hintModal.classList.remove("hidden");
       hintModal.setAttribute("aria-hidden", "false");
     }
@@ -945,22 +939,28 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeHint(); });
 
     // =========================================================
-    // Boot (lang + auth + userData + locks)
+    // Boot (✅ pas de catalog, et on évite le “clignotement” des locks)
+    // - On init Supabase + userData d'abord
+    // - Ensuite on render + locks
     // =========================================================
     (async function boot(){
       const select = document.getElementById("langSelect");
       const saved = localStorage.getItem("vchoice_lang") || "fr";
       if (select) select.value = (saved === "en") ? "en" : "fr";
 
+      // auth+profile (si ton supabaseBootstrap expose bootstrapAuthAndProfile)
+      try{ await window.bootstrapAuthAndProfile?.(); }catch(_){}
+
+      // init user data (remote)
+      try{ await window.VUserData?.init?.(); }catch(_){}
+
       async function applyLang(lang){
         localStorage.setItem("vchoice_lang", lang);
-
         try{
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function"){
             await window.VRI18n.initI18n(lang);
           }
         }catch(_){}
-
         applyI18nStatic();
         renderScenarios();
       }
@@ -970,13 +970,6 @@
       }
 
       await applyLang(select ? select.value : saved);
-
-      // auth+profile (si ton supabaseBootstrap expose bootstrapAuthAndProfile)
-      try{ await window.bootstrapAuthAndProfile?.(); }catch(_){}
-
-      // init user data (remote -> applyLocks ensuite)
-      try{ await window.VUserData?.init?.(); }catch(_){}
-      try{ applyLocks(); }catch(_){}
     })();
   </script>
 </body>
