@@ -8,11 +8,9 @@
 
   <style>
     /* =========================================
-       VCHOICE — INDEX “PRO”
-
+       VCHOICE — INDEX “PRO” + LOCK/UNLOCK (même principe que l’autre app)
        ========================================= */
 
-    /* ✅ on supprime la barre/header venant de app.css */
     .topbar{ display:none !important; }
 
     :root{
@@ -39,7 +37,6 @@
       margin:0;
     }
 
-    /* grain léger */
     body::before{
       content:"";
       position: fixed;
@@ -52,7 +49,6 @@
       mix-blend-mode: overlay;
     }
 
-    /* vignette */
     body::after{
       content:"";
       position: fixed;
@@ -64,7 +60,7 @@
 
     .page{ position:relative; z-index:1; padding-bottom:22px; }
 
-    /* ===== Top actions (icônes + langue) ===== */
+    /* ===== Top actions ===== */
     .vc-top-actions{
       position: relative;
       z-index: 10;
@@ -103,8 +99,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* ✅ “mêmes svg” : on prévoit des fichiers SVG.
-       Mets tes vrais noms ici si besoin (btn_profile.svg etc). */
     .vc-icon-button img{
       width:30px;
       height:30px;
@@ -115,7 +109,6 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    /* select langue */
     .vc-lang{
       display:flex;
       align-items:center;
@@ -135,7 +128,7 @@
       cursor:pointer;
     }
 
-    /* ===== Logo (prévu) ===== */
+    /* ===== Logo ===== */
     .vc-intro{
       margin-top: 4px;
       margin-bottom: 10px;
@@ -158,7 +151,7 @@
     .hero__title{ color: var(--vc-text) !important; }
     .hero__text{ color: var(--vc-muted) !important; }
 
-    /* ===== Cartouches (style VUniverse mais creepy) ===== */
+    /* ===== Cards ===== */
     .vc-grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -194,6 +187,12 @@
       filter: saturate(.92) contrast(1.08);
       transform: scale(1.04);
       z-index:0;
+    }
+
+    .vc-card-bg.fallback{
+      background:
+        radial-gradient(900px 200px at 15% 50%, rgba(255,59,59,.18), transparent 60%),
+        linear-gradient(90deg, rgba(0,0,0,.70), rgba(0,0,0,.35) 55%, rgba(0,0,0,.72));
     }
 
     .vc-card::after{
@@ -279,7 +278,6 @@
     }
     .vc-info:active{ transform: scale(.96); }
 
-    /* ===== Modal “?” (réutilise ta structure) ===== */
     .modal.hidden{ display:none !important; }
 
     @media (max-width: 520px){
@@ -289,11 +287,129 @@
       .vc-title{ font-size: 14px; }
       .vc-info{ width: 38px; height: 38px; font-size: 15px; }
     }
+
+    /* =========================================
+       LOCKED UI (même principe que Vuniverse)
+       ========================================= */
+    .vc-card.vc-card-locked::after{
+      background:
+        linear-gradient(90deg, rgba(0,0,0,.68), rgba(0,0,0,.25) 55%, rgba(0,0,0,.68)),
+        rgba(0,0,0,.18) !important;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+    .vc-card.vc-card-locked .vc-card-bg{
+      filter: blur(1.2px) saturate(.90) !important;
+      transform: scale(1.06);
+    }
+    .vc-locked-overlay{
+      position:absolute;
+      inset:0;
+      z-index:6;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      pointer-events:none;
+      user-select:none;
+    }
+    .vc-locked-bubble{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.26);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .vc-locked-bubble svg{
+      width:24px;
+      height:24px;
+      display:block;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
+      opacity:.98;
+    }
+
+    /* =========================================
+       POPUP ACHAT SCENARIO (même logique que Vuniverse)
+       ========================================= */
+    #vc-scenario-buy-popup{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:10000;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    #vc-scenario-buy-popup .vc-buy-inner{
+      width: min(520px, calc(100vw - 36px));
+      border-radius: 18px;
+      padding: 16px 16px 14px 16px;
+      background: rgba(12, 16, 32, 0.92);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      color: #fff;
+    }
+    #vc-buy-title{
+      margin:0 0 8px 0;
+      font-weight:900;
+      font-size:18px;
+      line-height:1.15;
+    }
+    #vc-buy-desc{
+      margin:0 0 12px 0;
+      opacity:.92;
+      font-size:13px;
+      line-height:1.35;
+    }
+    #vc-buy-actions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:12px;
+    }
+    .vc-buy-btn{
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.12);
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      text-align:center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-buy-btn.primary{
+      background: rgba(255,59,59,.16);
+      border-color: rgba(255,59,59,.28);
+    }
+    .vc-buy-btn.ghost{
+      background: rgba(0,0,0,.18);
+      border-color: rgba(255,255,255,.16);
+      font-weight:800;
+      opacity:.95;
+    }
+    .vc-buy-btn:active{ transform: scale(.99); }
+
+    #vc-buy-error{
+      margin-top:10px;
+      font-size:13px;
+      opacity:.95;
+      display:none;
+      color: rgba(255, 220, 220, 0.95);
+    }
   </style>
 </head>
 
 <body>
-  <!-- ✅ TOP ACTIONS (icônes + langue) -->
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="profile.html" aria-label="Profil">
@@ -322,9 +438,7 @@
     </div>
   </div>
 
-  <!-- ✅ LOGO (prévu) -->
   <section class="vc-intro">
-    <!-- mets ton logo ici (svg/webp). Si tu n’en as pas encore, laisse ce fichier, ça ne casse rien. -->
     <img class="vc-logo" src="assets/img/ui/logo_vchoice.webp" alt="VChoice" draggable="false" />
   </section>
 
@@ -339,7 +453,7 @@
     </section>
   </main>
 
-  <!-- Modal réutilisée pour le bouton ? -->
+  <!-- Modal “?” -->
   <div id="hintModal" class="modal hidden" aria-hidden="true">
     <div id="hintBackdrop" class="modal__backdrop"></div>
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
@@ -351,24 +465,57 @@
     </div>
   </div>
 
-  <!-- ton i18n + moteur -->
+  <!-- Popup achat scénario (LOCKED) -->
+  <div id="vc-scenario-buy-popup" aria-hidden="true">
+    <div class="vc-buy-inner" role="dialog" aria-modal="true" aria-label="Débloquer scénario">
+      <h2 id="vc-buy-title"></h2>
+      <p id="vc-buy-desc"></p>
+
+      <div id="vc-buy-actions">
+        <button id="vc-buy-pay" class="vc-buy-btn primary" type="button"></button>
+        <button id="vc-buy-iap" class="vc-buy-btn primary" type="button"></button>
+        <button id="vc-buy-getcoins" class="vc-buy-btn ghost" type="button"></button>
+        <button id="vc-buy-cancel" class="vc-buy-btn" type="button"></button>
+      </div>
+
+      <div id="vc-buy-error"></div>
+    </div>
+  </div>
+
+  <!-- i18n -->
   <script src="js/i18n.js"></script>
-  <script src="js/engine.js"></script>
+
+  <!-- Supabase (pour lock/unlock + coins) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabaseBootstrap.js"></script>
+
+  <!-- User + IAP -->
+  <script src="js/userData.js"></script>
+  <script src="js/purchases.js"></script>
 
   <script>
     // =========================================================
-    // Helpers i18n (compatible avec ton i18n.js)
+    // Helpers i18n
     // =========================================================
-    function _t(key, fallback){
+    function _t(key, fallback, vars){
+      let s = "";
       try{
-        if (window.VRI18n && typeof window.VRI18n.t === "function") return window.VRI18n.t(key) || fallback || "";
-        if (typeof window.i18nGet === "function") return window.i18nGet(key) || fallback || "";
+        if (window.VRI18n && typeof window.VRI18n.t === "function") s = window.VRI18n.t(key) || "";
+        else if (typeof window.i18nGet === "function") s = window.i18nGet(key) || "";
       }catch(_){}
-      return fallback || "";
+      if (!s) s = (fallback || "");
+
+      if (vars && s){
+        try{
+          Object.keys(vars).forEach((k) => {
+            s = s.split("{" + k + "}").join(String(vars[k]));
+          });
+        }catch(_){}
+      }
+      return s || "";
     }
 
     function applyI18nStatic(){
-      // Ces IDs existent déjà dans ton HTML
       const map = [
         ["ui_index_title", "ui.index_title", ""],
         ["ui_index_subtitle", "ui.index_subtitle", ""],
@@ -380,7 +527,6 @@
         if (el) el.textContent = _t(key, fb);
       }
 
-      // aria label close (si ton i18n gère un texte)
       const closeBtn = document.getElementById("hintClose");
       if (closeBtn){
         const aria = _t("ui.hint_close", "");
@@ -389,22 +535,325 @@
     }
 
     // =========================================================
-    // SCÉNARIOS EN DUR (3)
-    // cover: assets/scenarios/<id>/img/cover.webp
-    // textes: i18n keys
-    //   scenarios.<id>.title
-    //   scenarios.<id>.desc
+    // Scénarios
     // =========================================================
     const SCENARIOS = [
       { id: "dossier14_appartement" },
       { id: "bunker_reserve" },
-      { id: "hopital_ferme" }
+      { id: "hopital_ferme" },
+      { id: "metro_station_zero" },
+      { id: "styx_gare" },
+      { id: "foret_relais" },
+      { id: "chateau_absents" },
+      { id: "temple_mictlan" }
     ];
 
-    function coverPath(id){
-      return `assets/scenarios/${id}/img/cover.webp`;
+    function coverPath(id){ return `assets/scenarios/${id}/img/cover.webp`; }
+
+    function setCoverBackground(bgEl, scenarioId){
+      const src = coverPath(scenarioId);
+      const img = new Image();
+      img.onload = () => {
+        bgEl.classList.remove("fallback");
+        bgEl.style.backgroundImage = `url('${src}')`;
+      };
+      img.onerror = () => {
+        bgEl.classList.add("fallback");
+        bgEl.style.backgroundImage = "";
+      };
+      img.src = src;
     }
 
+    // =========================================================
+    // ✅ Locks (même logique que Vuniverse)
+    // =========================================================
+    const PRICE = 300;
+
+    // ⚠️ SKU store (si tu gardes les mêmes produits que l’autre app)
+    // Si tu as des SKU spécifiques VChoice, change ici.
+    const SKU_COINS_300 = "vrealms_coins_300";
+
+    const KEY_PREFIX = "vchoice";
+    const IAP_TARGET_KEY = KEY_PREFIX + "_iap_unlock_target";
+
+    function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(_){} }
+    function lsGet(k){ try { return localStorage.getItem(k); } catch(_){ return null; } }
+    function lsDel(k){ try { localStorage.removeItem(k); } catch(_){} }
+
+    function setScenarioToLaunch(id){
+      lsSet(KEY_PREFIX + "_scenario", id);
+      // compat avec ton existant
+      lsSet("vchoice_scenario", id);
+    }
+
+    function setShopFocusScenario(id){
+      lsSet(KEY_PREFIX + "_shop_focus_scenario", id);
+    }
+
+    // FREE scenarios (si tu veux en laisser 1-2 gratuits)
+    function isFreeScenario(id){
+      // Exemple: dossier14 gratuit (mets ce que tu veux)
+      return (id === "dossier14_appartement");
+    }
+
+    function isUnlocked(id){
+      if (isFreeScenario(id)) return true;
+
+      try{
+        if (window.VUserData && typeof window.VUserData.isScenarioUnlocked === "function"){
+          return !!window.VUserData.isScenarioUnlocked(id);
+        }
+      }catch(_){}
+
+      try{
+        const u = window.VUserData?.load?.() || {};
+        const arr = Array.isArray(u.unlocked_scenarios) ? u.unlocked_scenarios : [];
+        return arr.includes(id);
+      }catch(_){}
+
+      return false;
+    }
+
+    const LOCK_SVG = `
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path fill="white" d="M17 9h-1V7a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Zm-7-2a2 2 0 1 1 4 0v2h-4V7Zm2 11a2 2 0 0 1-1-3.732V13a1 1 0 1 1 2 0v1.268A2 2 0 0 1 12 18Z"/>
+      </svg>
+    `;
+
+    function ensureLockedOverlay(card){
+      let ov = card.querySelector(".vc-locked-overlay");
+      if (ov) return;
+
+      ov = document.createElement("div");
+      ov.className = "vc-locked-overlay";
+
+      const bubble = document.createElement("div");
+      bubble.className = "vc-locked-bubble";
+      bubble.innerHTML = LOCK_SVG;
+
+      ov.appendChild(bubble);
+      card.appendChild(ov);
+    }
+
+    function removeLockedOverlay(card){
+      const ov = card.querySelector(".vc-locked-overlay");
+      if (ov) ov.remove();
+    }
+
+    function applyLocks(){
+      document.querySelectorAll(".vc-card[data-scenario]").forEach((card) => {
+        const id = card.getAttribute("data-scenario");
+        if (!id) return;
+
+        if (isUnlocked(id)){
+          card.classList.remove("vc-card-locked");
+          removeLockedOverlay(card);
+          card.removeAttribute("aria-disabled");
+        }else{
+          card.classList.add("vc-card-locked");
+          ensureLockedOverlay(card);
+          card.setAttribute("aria-disabled","true");
+        }
+      });
+    }
+
+    function launchScenario(id){
+      if (!id) return;
+      setScenarioToLaunch(id);
+      window.location.href = "game.html";
+    }
+
+    // =========================================================
+    // Popup achat scénario
+    // =========================================================
+    const buyPopup  = document.getElementById("vc-scenario-buy-popup");
+    const buyTitle  = document.getElementById("vc-buy-title");
+    const buyDesc   = document.getElementById("vc-buy-desc");
+    const buyPay    = document.getElementById("vc-buy-pay");
+    const buyIap    = document.getElementById("vc-buy-iap");
+    const buyGet    = document.getElementById("vc-buy-getcoins");
+    const buyCancel = document.getElementById("vc-buy-cancel");
+    const buyErr    = document.getElementById("vc-buy-error");
+
+    let pendingScenarioId = null;
+
+    function showBuyError(msg){
+      if (!buyErr) return;
+      buyErr.textContent = msg || "";
+      buyErr.style.display = msg ? "block" : "none";
+    }
+
+    function closeBuyPopup(){
+      pendingScenarioId = null;
+      showBuyError("");
+      if (buyPopup){
+        buyPopup.style.display = "none";
+        buyPopup.setAttribute("aria-hidden","true");
+      }
+    }
+
+    function currentCoins300Price(){
+      // on supporte VRIAP (comme l’autre app) et VCIAP (alias)
+      const p = window.VRIAP?.getPrice?.(SKU_COINS_300) || window.VCIAP?.getPrice?.(SKU_COINS_300) || "";
+      return p ? (" " + p) : "";
+    }
+
+    function openBuyPopup(scenarioId){
+      pendingScenarioId = scenarioId;
+
+      const title = _t(`scenarios.${scenarioId}.title`, scenarioId);
+      if (buyTitle) buyTitle.textContent = title;
+
+      if (buyDesc){
+        buyDesc.textContent = _t(
+          "ui.scenario_buy.desc",
+          "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
+          { price: PRICE }
+        );
+      }
+
+      if (buyPay){
+        buyPay.textContent = _t(
+          "ui.scenario_buy.pay",
+          "Débloquer ({price} VCoins)",
+          { price: PRICE }
+        );
+      }
+
+      if (buyIap){
+        buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
+      }
+
+      if (buyGet) buyGet.textContent = _t("ui.scenario_buy.open_shop", "Ouvrir la boutique");
+      if (buyCancel) buyCancel.textContent = _t("common.cancel", "Annuler");
+      showBuyError("");
+
+      if (buyPopup){
+        buyPopup.style.display = "flex";
+        buyPopup.setAttribute("aria-hidden","false");
+      }
+    }
+
+    async function tryUnlockWithVcoins(scenarioId){
+      showBuyError("");
+      try{ await window.VUserData?.refresh?.(); }catch(_){}
+
+      const res = await window.VUserData?.unlockScenario?.(scenarioId);
+      if (!res?.ok){
+        showBuyError(_t("ui.scenario_buy.err_unlock", "Impossible de débloquer (VCoins insuffisants ou erreur réseau)."));
+        return false;
+      }
+
+      try{ applyLocks(); }catch(_){}
+      closeBuyPopup();
+      launchScenario(scenarioId);
+      return true;
+    }
+
+    async function buyCoins300ThenUnlock(scenarioId){
+      showBuyError("");
+
+      const iapOk = (window.VRIAP?.isAvailable?.() || window.VCIAP?.isAvailable?.());
+      if (!iapOk){
+        showBuyError(_t("ui.scenario_buy.err_app_only", "Achat store dispo uniquement dans l’app. Ouvre la boutique."));
+        return false;
+      }
+
+      lsSet(IAP_TARGET_KEY, scenarioId);
+
+      try{
+        if (typeof window.safeOrder === "function"){
+          await window.safeOrder(SKU_COINS_300);
+        }else if (window.VRIAP?.order){
+          await window.VRIAP.order(SKU_COINS_300);
+        }else if (window.VCIAP?.order){
+          await window.VCIAP.order(SKU_COINS_300);
+        }else{
+          showBuyError(_t("ui.scenario_buy.err_not_ready", "Système d’achat non prêt."));
+          return false;
+        }
+      }catch(_){
+        showBuyError(_t("ui.scenario_buy.err_buy_failed", "Achat annulé ou impossible."));
+        return false;
+      }
+
+      // le reste se fait sur event iap_credited
+      return true;
+    }
+
+    if (buyPay){
+      buyPay.addEventListener("click", () => {
+        if (!pendingScenarioId) return;
+        tryUnlockWithVcoins(pendingScenarioId);
+      });
+    }
+    if (buyIap){
+      buyIap.addEventListener("click", () => {
+        if (!pendingScenarioId) return;
+        buyCoins300ThenUnlock(pendingScenarioId);
+      });
+    }
+    if (buyGet){
+      buyGet.addEventListener("click", () => {
+        if (!pendingScenarioId) return;
+        setShopFocusScenario(pendingScenarioId);
+        window.location.href = "shop.html";
+      });
+    }
+    if (buyCancel) buyCancel.addEventListener("click", closeBuyPopup);
+    if (buyPopup){
+      buyPopup.addEventListener("click", (e) => {
+        if (e.target === buyPopup) closeBuyPopup();
+      });
+    }
+
+    // Event prix dispo (bouton popup)
+    window.addEventListener("vc:iap_price", () => {
+      try{
+        if (buyPopup && buyPopup.style.display === "flex" && buyIap){
+          buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
+        }
+      }catch(_){}
+    });
+    // compat si ton purchases.js émet encore vr:iap_price
+    window.addEventListener("vr:iap_price", () => {
+      try{
+        if (buyPopup && buyPopup.style.display === "flex" && buyIap){
+          buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
+        }
+      }catch(_){}
+    });
+
+    // Event achat crédité -> auto unlock si cible présente
+    async function onIapCredited(ev){
+      try{
+        const d = ev?.detail || {};
+        if (String(d.productId || "") !== SKU_COINS_300) return;
+
+        const target = lsGet(IAP_TARGET_KEY);
+        if (!target) return;
+
+        lsDel(IAP_TARGET_KEY);
+
+        try{ await window.VUserData?.refresh?.(); }catch(_){}
+
+        const res = await window.VUserData?.unlockScenario?.(target);
+        if (!res?.ok){
+          showBuyError(_t("ui.scenario_buy.err_unlock_after_buy", "Achat ok, mais déblocage impossible (réessaye depuis la boutique)."));
+          return;
+        }
+
+        try{ applyLocks(); }catch(_){}
+        closeBuyPopup();
+        launchScenario(target);
+      }catch(_){}
+    }
+    window.addEventListener("vc:iap_credited", onIapCredited);
+    window.addEventListener("vr:iap_credited", onIapCredited); // compat
+
+    // =========================================================
+    // Render cards (avec hooks lock)
+    // =========================================================
     function renderScenarios(){
       const grid = document.getElementById("menuGrid");
       if (!grid) return;
@@ -417,8 +866,8 @@
         btn.setAttribute("data-scenario", s.id);
 
         const bg = document.createElement("div");
-        bg.className = "vc-card-bg";
-        bg.style.backgroundImage = `url('${coverPath(s.id)}')`;
+        bg.className = "vc-card-bg fallback";
+        setCoverBackground(bg, s.id);
 
         const content = document.createElement("div");
         content.className = "vc-card-content";
@@ -444,10 +893,14 @@
         btn.appendChild(bg);
         btn.appendChild(content);
 
-        // clic carte => game
-        btn.addEventListener("click", () => {
-          localStorage.setItem("vchoice_scenario", s.id);
-          window.location.href = "game.html";
+        // clic carte => launch ou popup
+        btn.addEventListener("click", (e) => {
+          if (isUnlocked(s.id)){
+            launchScenario(s.id);
+          }else{
+            e.preventDefault();
+            openBuyPopup(s.id);
+          }
         });
 
         // ? => modal (stop propagation)
@@ -460,6 +913,9 @@
 
         grid.appendChild(btn);
       }
+
+      // applique lock visuel après render
+      applyLocks();
     }
 
     // =========================================================
@@ -472,7 +928,8 @@
 
     function openHint(scenarioId){
       if (!hintModal || !hintBody) return;
-      hintBody.textContent = _t(`scenarios.${scenarioId}.desc`, "");
+      const txt = _t(`scenarios.${scenarioId}.desc`, "");
+      hintBody.textContent = txt || "";
       hintModal.classList.remove("hidden");
       hintModal.setAttribute("aria-hidden", "false");
     }
@@ -488,7 +945,7 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeHint(); });
 
     // =========================================================
-    // Boot (lang + i18n)
+    // Boot (lang + auth + userData + locks)
     // =========================================================
     (async function boot(){
       const select = document.getElementById("langSelect");
@@ -498,15 +955,12 @@
       async function applyLang(lang){
         localStorage.setItem("vchoice_lang", lang);
 
-        // si ton i18n.js expose un init, on l’appelle
         try{
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function"){
             await window.VRI18n.initI18n(lang);
           }
         }catch(_){}
 
-        // sinon, on laisse engine.js/i18n.js faire son boulot,
-        // et on applique au minimum les textes de cette page
         applyI18nStatic();
         renderScenarios();
       }
@@ -516,6 +970,13 @@
       }
 
       await applyLang(select ? select.value : saved);
+
+      // auth+profile (si ton supabaseBootstrap expose bootstrapAuthAndProfile)
+      try{ await window.bootstrapAuthAndProfile?.(); }catch(_){}
+
+      // init user data (remote -> applyLocks ensuite)
+      try{ await window.VUserData?.init?.(); }catch(_){}
+      try{ applyLocks(); }catch(_){}
     })();
   </script>
 </body>

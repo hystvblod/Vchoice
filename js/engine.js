@@ -24,7 +24,8 @@ let CATALOG = null;
 
 let currentScenarioId = null;
 let LOGIC = null;
-let TEXT = null;
+let TEXT = null;          // objet brut du text_<lang>.json
+let TEXT_STRINGS = null;  // map des strings (si présent)
 
 // Scenario progress saved per scenario_id
 let scenarioStates = {};
@@ -42,7 +43,7 @@ async function fetchJSON(url){
 
 function deepGet(obj, path){
   if(!obj) return undefined;
-  const parts = path.split(".");
+  const parts = String(path).split(".");
   let cur = obj;
   for(const p of parts){
     if(cur && Object.prototype.hasOwnProperty.call(cur, p)) cur = cur[p];
@@ -55,19 +56,51 @@ function format(str, params={}){
   return String(str).replace(/\{(\w+)\}/g, (_, k) => (params[k] ?? `{${k}}`));
 }
 
+function safeFirstSceneId(logic){
+  const scenes = logic && logic.scenes;
+  if(!scenes || typeof scenes !== "object") return null;
+  const keys = Object.keys(scenes);
+  return keys.length ? keys[0] : null;
+}
+
+function resolveStartScene(logic){
+  // Compatible avec:
+  // - start_scene à la racine (ancien format)
+  // - meta.start_scene (nouveau format)
+  // - fallback premier id de scene
+  const root = logic?.start_scene;
+  const meta = logic?.meta?.start_scene;
+  return root || meta || safeFirstSceneId(logic);
+}
+
+function resolveSceneObject(logic, sceneId){
+  if(!logic?.scenes || !sceneId) return null;
+  const base = logic.scenes[sceneId];
+  if(!base) return null;
+  return { id: sceneId, ...base };
+}
+
+function resolveImageFile(logic, imageId){
+  if(!imageId) return null;
+  const img = logic?.images?.[imageId];
+  if(!img) return null;
+  // format attendu: {file, alt}
+  if(typeof img === "string") return { file: img, alt: "" };
+  if(typeof img === "object" && img.file) return { file: img.file, alt: img.alt || "" };
+  return null;
+}
+
 /* =========================
    LANGUAGE RESOLUTION
 ========================= */
 function normalizeLang(raw){
   if(!raw) return null;
   const s = String(raw).trim().toLowerCase();
-  // "fr-FR" -> "fr"
   const base = s.split("-")[0];
   return base || null;
 }
 
 function detectDeviceLang(){
-  // navigator.languages est souvent le plus fiable
   const list = Array.isArray(navigator.languages) && navigator.languages.length
     ? navigator.languages
     : [navigator.language];
@@ -79,11 +112,10 @@ function detectDeviceLang(){
   return DEFAULT_LANG;
 }
 
-// setLang = point unique pour changer la langue partout
 async function setLang(newLang, opts = {}){
   const {
     persistLocal = true,
-    persistRemote = false, // Supabase (via userData) si dispo
+    persistRemote = false,
     rerender = true
   } = opts;
 
@@ -94,13 +126,10 @@ async function setLang(newLang, opts = {}){
 
   LANG = safe;
 
-  // Recharge UI (toujours)
   await reloadUI();
 
-  // Sauvegarde locale (immédiate)
   if(persistLocal) save();
 
-  // Sauvegarde remote (si userData est branché)
   if(persistRemote && window.userData && typeof window.userData.setLanguage === "function"){
     try{ await window.userData.setLanguage(LANG); }catch(e){ /* ne bloque pas */ }
   }
@@ -126,13 +155,23 @@ function tUI(key, params){
 }
 
 function tS(key, params){
-  const v = deepGet(TEXT, key) ?? `[${key}]`;
+  // ✅ Compat avec tes JSON actuels:
+  // text_<lang>.json = { meta: {...}, strings: { "x.y.z": "..." } }
+  // => on doit lire TEXT_STRINGS[key] (et non deepGet(TEXT, key))
+  let v;
+
+  if(TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key)){
+    v = TEXT_STRINGS[key];
+  } else {
+    // fallback (si un jour tu changes de format)
+    v = deepGet(TEXT, key);
+  }
+
+  if(v == null) v = `[${key}]`;
   return params ? format(v, params) : v;
 }
 
 function getScenarioInfo(scenarioId){
-  // Source voulu : data/ui/ui_<lang>.json
-  // (pas dans text_<lang>.json)
   const info = deepGet(UI, `scenario_info.${scenarioId}`) || {};
   const title = (typeof info.title === 'string') ? info.title : 'Infos';
   const body  = (typeof info.body  === 'string') ? info.body  : '';
@@ -202,7 +241,6 @@ function hasGamePage(){
 
 async function reloadUI(){
   UI = await fetchJSON(PATHS.ui(LANG));
-  // sync select
   const sel = $("langSelect");
   if(sel){
     sel.value = LANG;
@@ -216,10 +254,8 @@ async function loadCatalog(){
 async function boot(){
   load();
 
-  // Lang initiale : localStorage > userData > device > default
   let initialLang = LANG;
 
-  // userData (Supabase) si dispo
   if(window.userData && typeof window.userData.getLanguage === "function"){
     try{
       const remoteLang = await window.userData.getLanguage();
@@ -229,9 +265,7 @@ async function boot(){
       // ignore
     }
   }else{
-    // device
-    const device = detectDeviceLang();
-    initialLang = device;
+    initialLang = detectDeviceLang();
   }
 
   LANG = initialLang;
@@ -246,7 +280,6 @@ async function boot(){
   }
 
   if(hasGamePage()){
-    // game.html : lecture scenarioId depuis query
     const u = new URL(location.href);
     const scenarioId = u.searchParams.get("scenario");
     if(scenarioId){
@@ -269,18 +302,17 @@ function bindTopbar(){
    MENU (index.html)
 ========================= */
 async function loadScenarioMeta(scenarioId){
-  // On lit seulement meta depuis le text_xx.json (si nécessaire)
   const txt = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
-  return txt.meta || {};
+  // meta est bien présent dans tes JSON, mais on garde un fallback
+  // au cas où tu aies seulement strings["xxx.title"] plus tard.
+  return (txt && typeof txt === "object" && txt.meta) ? txt.meta : {};
 }
 
 function goToScenario(scenarioId){
-  // Redirige vers game.html avec param scenario
   location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
 }
 
 async function renderMenu(){
-  // Topbar UI
   renderTopbar();
 
   const grid = $("menuGrid");
@@ -362,16 +394,26 @@ async function openScenario(scenarioId){
   LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
   TEXT  = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
 
+  // ✅ compat TEXT.strings
+  TEXT_STRINGS = (TEXT && typeof TEXT === "object" && TEXT.strings && typeof TEXT.strings === "object")
+    ? TEXT.strings
+    : null;
+
   // init state if missing
   if(!scenarioStates[scenarioId]){
+    const start = resolveStartScene(LOGIC);
     scenarioStates[scenarioId] = {
-      scene: LOGIC.start_scene,
+      scene: start,
       flags: {},
       clues: [],
     };
+  } else {
+    // si un scénario a été sauvegardé avec scene undefined (ancien bug), on répare
+    if(!scenarioStates[scenarioId].scene){
+      scenarioStates[scenarioId].scene = resolveStartScene(LOGIC);
+    }
   }
 
-  // Ensure required fields
   scenarioStates[scenarioId].flags ??= {};
   scenarioStates[scenarioId].clues ??= [];
 
@@ -381,8 +423,7 @@ async function openScenario(scenarioId){
 function getCurrentScene(){
   const st = scenarioStates[currentScenarioId];
   if(!st) return null;
-  const sceneId = st.scene;
-  return LOGIC.scenes[sceneId] ? { id: sceneId, ...LOGIC.scenes[sceneId] } : null;
+  return resolveSceneObject(LOGIC, st.scene);
 }
 
 function addClue(clueId){
@@ -438,7 +479,12 @@ function renderScene(){
   if(!st) return;
 
   const scene = getCurrentScene();
-  if(!scene) return;
+  if(!scene){
+    // fallback: si scene inexistante, on recolle sur start_scene
+    st.scene = resolveStartScene(LOGIC);
+    save();
+    return renderScene();
+  }
 
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
@@ -450,22 +496,37 @@ function renderScene(){
   if(titleEl) titleEl.textContent = tS(scene.title_key);
   if(bodyEl) bodyEl.textContent = tS(scene.body_key);
 
+  // image
   if(imgEl){
-    const image = LOGIC.images?.[scene.image_id];
-    const imageFile = image ? image.file : "";
-    if(imgSourceEl) imgSourceEl.srcset = imageFile;
-    imgEl.src = imageFile;
-    imgEl.alt = image ? (image.alt || "") : "";
+    const img = resolveImageFile(LOGIC, scene.image_id);
+    if(img && img.file){
+      if(imgSourceEl) imgSourceEl.srcset = img.file;
+      imgEl.src = img.file;
+      imgEl.alt = img.alt || "";
+      imgEl.classList.remove("hidden");
+    } else {
+      // pas d’image pour cette scène: on masque proprement
+      imgEl.removeAttribute("src");
+      imgEl.alt = "";
+      imgEl.classList.add("hidden");
+      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
+    }
   }
 
-  // hint
+  // hint (tes scénarios actuels n'ont pas hint_key, donc on désactive si absent)
   if(hintBtn){
     const hintKey = scene.hint_key;
-    hintBtn.onclick = () => {
-      const title = tUI("hint_title");
-      const body = hintKey ? tS(hintKey) : "";
-      showHintModal(title, body);
-    };
+    if(hintKey){
+      hintBtn.disabled = false;
+      hintBtn.onclick = () => {
+        const title = tUI("hint_title");
+        const body = tS(hintKey);
+        showHintModal(title, body);
+      };
+    } else {
+      hintBtn.disabled = true;
+      hintBtn.onclick = null;
+    }
   }
 
   // choices
@@ -484,7 +545,7 @@ function renderScene(){
         btn.title = tUI("locked_choice") || "Indisponible pour le moment";
       }
 
-      btn.onclick = async () => {
+      btn.onclick = () => {
         if(!available) return;
 
         // set/clear flags
@@ -503,7 +564,12 @@ function renderScene(){
           st.scene = ch.next;
           save();
           renderScene();
+          return;
         }
+
+        // si pas de next: on évite un click "mort"
+        // (tu peux plus tard brancher un système d'ending ici)
+        showHintModal(tUI("hint_title") || "Info", tUI("no_next_scene") || "Ce choix ne mène nulle part pour l’instant.");
       };
 
       choicesEl.appendChild(btn);
