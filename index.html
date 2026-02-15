@@ -413,19 +413,19 @@
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="profile.html" aria-label="Profil">
-        <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
+        <img src="assets/img/ui/btn_profile.svg" alt="" draggable="false" />
       </a>
     </div>
 
     <div class="vc-top-slot vc-top-center">
       <a class="vc-icon-button" href="settings.html" aria-label="Paramètres">
-        <img src="assets/img/ui/btn_settings.webp" alt="" draggable="false" />
+        <img src="assets/img/ui/btn_settings.svg" alt="" draggable="false" />
       </a>
     </div>
 
     <div class="vc-top-slot vc-top-right">
       <a class="vc-icon-button" href="shop.html" aria-label="Boutique">
-        <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
+        <img src="assets/img/ui/btn_shop.svg" alt="" draggable="false" />
       </a>
 
       <div class="vc-lang">
@@ -535,7 +535,7 @@
     }
 
     // =========================================================
-    // Scénarios (✅ only IDs ; titre + desc viennent du i18n)
+    // Scénarios
     // =========================================================
     const SCENARIOS = [
       { id: "dossier14_appartement" },
@@ -568,6 +568,9 @@
     // ✅ Locks (même logique que Vuniverse)
     // =========================================================
     const PRICE = 300;
+
+    // ⚠️ SKU store (si tu gardes les mêmes produits que l’autre app)
+    // Si tu as des SKU spécifiques VChoice, change ici.
     const SKU_COINS_300 = "vrealms_coins_300";
 
     const KEY_PREFIX = "vchoice";
@@ -579,6 +582,7 @@
 
     function setScenarioToLaunch(id){
       lsSet(KEY_PREFIX + "_scenario", id);
+      // compat avec ton existant
       lsSet("vchoice_scenario", id);
     }
 
@@ -586,7 +590,9 @@
       lsSet(KEY_PREFIX + "_shop_focus_scenario", id);
     }
 
+    // FREE scenarios (si tu veux en laisser 1-2 gratuits)
     function isFreeScenario(id){
+      // Exemple: dossier14 gratuit (mets ce que tu veux)
       return (id === "dossier14_appartement");
     }
 
@@ -687,6 +693,7 @@
     }
 
     function currentCoins300Price(){
+      // on supporte VRIAP (comme l’autre app) et VCIAP (alias)
       const p = window.VRIAP?.getPrice?.(SKU_COINS_300) || window.VCIAP?.getPrice?.(SKU_COINS_300) || "";
       return p ? (" " + p) : "";
     }
@@ -694,9 +701,8 @@
     function openBuyPopup(scenarioId){
       pendingScenarioId = scenarioId;
 
-      if (buyTitle){
-        buyTitle.textContent = _t(`scenarios.${scenarioId}.title`, scenarioId);
-      }
+      const title = _t(`scenarios.${scenarioId}.title`, scenarioId);
+      if (buyTitle) buyTitle.textContent = title;
 
       if (buyDesc){
         buyDesc.textContent = _t(
@@ -771,6 +777,7 @@
         return false;
       }
 
+      // le reste se fait sur event iap_credited
       return true;
     }
 
@@ -800,6 +807,7 @@
       });
     }
 
+    // Event prix dispo (bouton popup)
     window.addEventListener("vc:iap_price", () => {
       try{
         if (buyPopup && buyPopup.style.display === "flex" && buyIap){
@@ -807,6 +815,7 @@
         }
       }catch(_){}
     });
+    // compat si ton purchases.js émet encore vr:iap_price
     window.addEventListener("vr:iap_price", () => {
       try{
         if (buyPopup && buyPopup.style.display === "flex" && buyIap){
@@ -815,6 +824,7 @@
       }catch(_){}
     });
 
+    // Event achat crédité -> auto unlock si cible présente
     async function onIapCredited(ev){
       try{
         const d = ev?.detail || {};
@@ -839,10 +849,10 @@
       }catch(_){}
     }
     window.addEventListener("vc:iap_credited", onIapCredited);
-    window.addEventListener("vr:iap_credited", onIapCredited);
+    window.addEventListener("vr:iap_credited", onIapCredited); // compat
 
     // =========================================================
-    // Render cards (titre i18n)
+    // Render cards (avec hooks lock)
     // =========================================================
     function renderScenarios(){
       const grid = document.getElementById("menuGrid");
@@ -883,6 +893,7 @@
         btn.appendChild(bg);
         btn.appendChild(content);
 
+        // clic carte => launch ou popup
         btn.addEventListener("click", (e) => {
           if (isUnlocked(s.id)){
             launchScenario(s.id);
@@ -892,6 +903,7 @@
           }
         });
 
+        // ? => modal (stop propagation)
         info.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openHint(s.id); });
         info.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " "){
@@ -902,11 +914,12 @@
         grid.appendChild(btn);
       }
 
+      // applique lock visuel après render
       applyLocks();
     }
 
     // =========================================================
-    // Modal “?” (desc i18n)
+    // Modal “?”
     // =========================================================
     const hintModal = document.getElementById("hintModal");
     const hintBackdrop = document.getElementById("hintBackdrop");
@@ -932,23 +945,22 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeHint(); });
 
     // =========================================================
-    // Boot
+    // Boot (lang + auth + userData + locks)
     // =========================================================
     (async function boot(){
       const select = document.getElementById("langSelect");
       const saved = localStorage.getItem("vchoice_lang") || "fr";
       if (select) select.value = (saved === "en") ? "en" : "fr";
 
-      try{ await window.bootstrapAuthAndProfile?.(); }catch(_){}
-      try{ await window.VUserData?.init?.(); }catch(_){}
-
       async function applyLang(lang){
         localStorage.setItem("vchoice_lang", lang);
+
         try{
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function"){
             await window.VRI18n.initI18n(lang);
           }
         }catch(_){}
+
         applyI18nStatic();
         renderScenarios();
       }
@@ -958,6 +970,13 @@
       }
 
       await applyLang(select ? select.value : saved);
+
+      // auth+profile (si ton supabaseBootstrap expose bootstrapAuthAndProfile)
+      try{ await window.bootstrapAuthAndProfile?.(); }catch(_){}
+
+      // init user data (remote -> applyLocks ensuite)
+      try{ await window.VUserData?.init?.(); }catch(_){}
+      try{ applyLocks(); }catch(_){}
     })();
   </script>
 </body>
