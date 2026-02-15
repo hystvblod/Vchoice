@@ -106,6 +106,26 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
+    /* ✅ LOGO centré (ajout) */
+    .vc-intro{
+      margin-top: 6px;
+      margin-bottom: 8px;
+      display:flex;
+      justify-content:center;
+      padding: 0 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .vc-logo{
+      height: 78px;              /* pas trop grand */
+      width: min(86vw, 460px);   /* centré */
+      object-fit: contain;
+      display:block;
+      filter: drop-shadow(0 12px 30px rgba(0,0,0,0.45));
+      user-select:none;
+      -webkit-user-drag:none;
+    }
+
     .hero{ padding: 0 12px; }
     .hero__title{ color: var(--vc-text) !important; }
     .hero__text{ color: var(--vc-muted) !important; }
@@ -332,6 +352,12 @@
         <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
       </a>
     </div>
+  </div>
+
+  <!-- ✅ LOGO ICI (entre top buttons et hero) -->
+  <div class="vc-intro">
+    <!-- ✅ change le nom du fichier si ton logo s'appelle autrement -->
+    <img class="vc-logo" src="assets/img/ui/logo_vchoice.webp" alt="VChoice" draggable="false" />
   </div>
 
   <main class="page">
