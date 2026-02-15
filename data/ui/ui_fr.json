@@ -7,6 +7,7 @@
     "language": "Langue",
     "hint_title": "Info",
     "hint_close": "Fermer",
+    "hint_close_aria": "Fermer",
     "btn_play": "Jouer",
     "btn_continue": "Continuer",
     "btn_restart": "Recommencer",
@@ -22,7 +23,7 @@
       "iap": "Acheter 300 VCoins",
       "open_shop": "Ouvrir la boutique",
       "err_unlock": "Impossible de débloquer (VCoins insuffisants ou erreur réseau).",
-      "err_app_only": "Achat store dispo uniquement dans l’app. Ouvre la boutique.",
+      "err_app_only": "Achat Play Store dispo uniquement dans l’app. Ouvre la boutique.",
       "err_not_ready": "Système d’achat non prêt.",
       "err_buy_failed": "Achat annulé ou impossible.",
       "err_unlock_after_buy": "Achat ok, mais déblocage impossible (réessaye depuis la boutique)."
@@ -46,23 +47,23 @@
     },
     "metro_station_zero": {
       "title": "Métro — Station Zéro",
-      "desc": "Dernière rame. Dernier quai. Les panneaux affichent ton nom."
+      "desc": "Un métro figé où les couloirs ne mènent jamais au même endroit."
     },
     "styx_gare": {
       "title": "STYX — Gare Terminale",
-      "desc": "Une gare qui ne mène nulle part. Des fleuves portent des noms. Et le départ approche."
+      "desc": "Une gare hors du temps. Dernier départ. Dernière chance de prouver ta place."
     },
     "foret_relais": {
       "title": "Forêt — Relais",
-      "desc": "Un relais au milieu de rien. Les arbres sont trop silencieux. Les traces reviennent toujours au même endroit."
+      "desc": "Une route forestière, un relais désert… et quelque chose qui t’observe entre les arbres."
     },
     "chateau_absents": {
       "title": "Château — Les Absents",
-      "desc": "Un château ouvert, comme s’il t’attendait. Certains portraits ont disparu… pas les cadres."
+      "desc": "Un château silencieux où chaque pièce semble attendre quelqu’un… sauf toi."
     },
     "temple_mictlan": {
       "title": "Temple — Mictlan",
-      "desc": "Un temple d’obsidienne et d’os. La Reine des Morts ne bouge pas… jusqu’au moment où tu clignes des yeux."
+      "desc": "Un temple sous la pierre noire. Os, brume, et une reine immobile au centre."
     }
   }
 }

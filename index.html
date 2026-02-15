@@ -7,9 +7,7 @@
   <link rel="stylesheet" href="css/app.css" />
 
   <style>
-    /* =========================================
-       VCHOICE — INDEX “PRO” + LOCK/UNLOCK (même principe que l’autre app)
-       ========================================= */
+    /* ====== TON CSS (inchangé) ====== */
 
     .topbar{ display:none !important; }
 
@@ -60,7 +58,6 @@
 
     .page{ position:relative; z-index:1; padding-bottom:22px; }
 
-    /* ===== Top actions ===== */
     .vc-top-actions{
       position: relative;
       z-index: 10;
@@ -109,49 +106,10 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    .vc-lang{
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .vc-lang label{ display:none; }
-    .vc-lang select{
-      background: rgba(0,0,0,0.26);
-      color: rgba(255,255,255,.92);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 999px;
-      padding: 10px 12px;
-      font-weight: 800;
-      outline:none;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      cursor:pointer;
-    }
-
-    /* ===== Logo ===== */
-    .vc-intro{
-      margin-top: 4px;
-      margin-bottom: 10px;
-      display:flex;
-      justify-content:center;
-      padding: 0 12px;
-    }
-    .vc-logo{
-      height: clamp(64px, 10vmin, 110px);
-      width: min(86vw, 520px);
-      object-fit: contain;
-      filter: drop-shadow(0 12px 30px rgba(0,0,0,0.45));
-      display:block;
-      user-select:none;
-      -webkit-user-drag:none;
-    }
-
-    /* ===== Hero ===== */
     .hero{ padding: 0 12px; }
     .hero__title{ color: var(--vc-text) !important; }
     .hero__text{ color: var(--vc-muted) !important; }
 
-    /* ===== Cards ===== */
     .vc-grid{
       display:grid;
       grid-template-columns: 1fr;
@@ -187,12 +145,6 @@
       filter: saturate(.92) contrast(1.08);
       transform: scale(1.04);
       z-index:0;
-    }
-
-    .vc-card-bg.fallback{
-      background:
-        radial-gradient(900px 200px at 15% 50%, rgba(255,59,59,.18), transparent 60%),
-        linear-gradient(90deg, rgba(0,0,0,.70), rgba(0,0,0,.35) 55%, rgba(0,0,0,.72));
     }
 
     .vc-card::after{
@@ -231,6 +183,7 @@
       align-items:center;
     }
 
+    /* ✅ IMPORTANT : on utilise TES classes CSS (vc-line / vc-title) */
     .vc-line{
       width:100%;
       display:flex;
@@ -270,27 +223,11 @@
         0 10px 26px rgba(0,0,0,.35),
         0 0 0 1px rgba(255,59,59,.12) inset;
     }
-    .vc-info:hover{
-      border-color: rgba(255,59,59,.28);
-      box-shadow:
-        0 10px 28px rgba(0,0,0,.40),
-        0 0 0 1px rgba(255,59,59,.18) inset;
-    }
     .vc-info:active{ transform: scale(.96); }
 
     .modal.hidden{ display:none !important; }
 
-    @media (max-width: 520px){
-      .vc-icon-button{ width:40px; height:40px; }
-      .vc-icon-button img{ width:28px; height:28px; }
-      .vc-card{ min-height: 60px; height: 60px; }
-      .vc-title{ font-size: 14px; }
-      .vc-info{ width: 38px; height: 38px; font-size: 15px; }
-    }
-
-    /* =========================================
-       LOCKED UI (même principe que Vuniverse)
-       ========================================= */
+    /* LOCK UI */
     .vc-card.vc-card-locked::after{
       background:
         linear-gradient(90deg, rgba(0,0,0,.68), rgba(0,0,0,.25) 55%, rgba(0,0,0,.68)),
@@ -329,13 +266,10 @@
       width:24px;
       height:24px;
       display:block;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
       opacity:.98;
     }
 
-    /* =========================================
-       POPUP ACHAT SCENARIO (même logique que Vuniverse)
-       ========================================= */
+    /* POPUP ACHAT */
     #vc-scenario-buy-popup{
       position:fixed;
       inset:0;
@@ -357,24 +291,9 @@
       box-shadow: 0 14px 40px rgba(0,0,0,.35);
       color: #fff;
     }
-    #vc-buy-title{
-      margin:0 0 8px 0;
-      font-weight:900;
-      font-size:18px;
-      line-height:1.15;
-    }
-    #vc-buy-desc{
-      margin:0 0 12px 0;
-      opacity:.92;
-      font-size:13px;
-      line-height:1.35;
-    }
-    #vc-buy-actions{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-top:12px;
-    }
+    #vc-buy-title{ margin:0 0 8px 0; font-weight:900; font-size:18px; line-height:1.15; }
+    #vc-buy-desc{ margin:0 0 12px 0; opacity:.92; font-size:13px; line-height:1.35; }
+    #vc-buy-actions{ display:flex; flex-direction:column; gap:10px; margin-top:12px; }
     .vc-buy-btn{
       width:100%;
       padding: 12px 14px;
@@ -387,25 +306,10 @@
       text-align:center;
       -webkit-tap-highlight-color: transparent;
     }
-    .vc-buy-btn.primary{
-      background: rgba(255,59,59,.16);
-      border-color: rgba(255,59,59,.28);
-    }
-    .vc-buy-btn.ghost{
-      background: rgba(0,0,0,.18);
-      border-color: rgba(255,255,255,.16);
-      font-weight:800;
-      opacity:.95;
-    }
+    .vc-buy-btn.primary{ background: rgba(255,59,59,.16); border-color: rgba(255,59,59,.28); }
+    .vc-buy-btn.ghost{ background: rgba(0,0,0,.18); border-color: rgba(255,255,255,.16); font-weight:800; opacity:.95; }
     .vc-buy-btn:active{ transform: scale(.99); }
-
-    #vc-buy-error{
-      margin-top:10px;
-      font-size:13px;
-      opacity:.95;
-      display:none;
-      color: rgba(255, 220, 220, 0.95);
-    }
+    #vc-buy-error{ margin-top:10px; font-size:13px; opacity:.95; display:none; color: rgba(255, 220, 220, 0.95); }
   </style>
 </head>
 
@@ -436,8 +340,91 @@
       <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle"></p>
     </section>
 
+    <!-- ✅ COMME TON FICHIER “UNIVERSES” : cartes écrites en dur -->
     <section class="menu" aria-label="Menu">
-      <div id="menuGrid" class="vc-grid"></div>
+      <div class="vc-grid">
+
+        <button class="vc-card" data-scenario="dossier14_appartement" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/dossier14_appartement/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.dossier14_appartement.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.dossier14_appartement.desc">?</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="vc-card" data-scenario="bunker_reserve" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/bunker_reserve/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.bunker_reserve.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.bunker_reserve.desc">?</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="vc-card" data-scenario="hopital_ferme" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/hopital_ferme/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.hopital_ferme.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.hopital_ferme.desc">?</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="vc-card" data-scenario="metro_station_zero" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/metro_station_zero/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.metro_station_zero.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.metro_station_zero.desc">?</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="vc-card" data-scenario="styx_gare" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/styx_gare/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.styx_gare.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.styx_gare.desc">?</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="vc-card" data-scenario="foret_relais" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/foret_relais/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.foret_relais.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.foret_relais.desc">?</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="vc-card" data-scenario="chateau_absents" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/chateau_absents/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.chateau_absents.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.chateau_absents.desc">?</span>
+            </div>
+          </div>
+        </button>
+
+        <button class="vc-card" data-scenario="temple_mictlan" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/temple_mictlan/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.temple_mictlan.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.temple_mictlan.desc">?</span>
+            </div>
+          </div>
+        </button>
+
+      </div>
     </section>
   </main>
 
@@ -482,7 +469,7 @@
   <script src="js/i18n.js"></script>
 
   <script>
-    // helper i18n
+    // helper i18n (pareil que toi)
     function _t(key, fallback, vars) {
       let s = "";
       try {
@@ -491,70 +478,13 @@
       } catch (_) {}
       if (!s) s = (fallback || "");
       if (vars && s) {
-        try {
-          Object.keys(vars).forEach((k) => { s = s.split("{" + k + "}").join(String(vars[k])); });
-        } catch (_) {}
+        try { Object.keys(vars).forEach((k) => { s = s.split("{" + k + "}").join(String(vars[k])); }); } catch (_) {}
       }
       return s || "";
     }
   </script>
 
   <script>
-    // =========================================================
-    // ✅ LISTE DES SCÉNARIOS EN DUR (plus de catalogue JSON)
-    // =========================================================
-    const SCENARIOS = [
-      { id: "dossier14_appartement" },
-      { id: "bunker_reserve" },
-      { id: "hopital_ferme" },
-      { id: "metro_station_zero" },
-      { id: "styx_gare" },
-      { id: "foret_relais" },
-      { id: "chateau_absents" },
-      { id: "temple_mictlan" }
-    ];
-
-    function coverPath(id){ return `assets/scenarios/${id}/img/cover.webp`; }
-
-    function setCoverBackground(bgEl, scenarioId){
-      const src = coverPath(scenarioId);
-      const img = new Image();
-      img.onload = () => {
-        bgEl.classList.remove("fallback");
-        bgEl.style.backgroundImage = `url('${src}')`;
-      };
-      img.onerror = () => { /* on garde le fallback */ };
-      img.src = src;
-    }
-
-    // =========================================================
-    // ✅ Hint modal
-    // =========================================================
-    const hintModal = document.getElementById("hintModal");
-    const hintBackdrop = document.getElementById("hintBackdrop");
-    const hintClose = document.getElementById("hintClose");
-    const hintBody = document.getElementById("hintBody");
-
-    function openHint(scenarioId){
-      if (!hintModal || !hintBody) return;
-      const txt = _t(`scenarios.${scenarioId}.desc`, "");
-      hintBody.textContent = txt || "";
-      hintModal.classList.remove("hidden");
-      hintModal.setAttribute("aria-hidden", "false");
-    }
-
-    function closeHint(){
-      if (!hintModal) return;
-      hintModal.classList.add("hidden");
-      hintModal.setAttribute("aria-hidden", "true");
-    }
-
-    if (hintBackdrop) hintBackdrop.addEventListener("click", closeHint);
-    if (hintClose) hintClose.addEventListener("click", closeHint);
-
-    // =========================================================
-    // ✅ Locks (ta logique existante)
-    // =========================================================
     const PRICE = 300;
     const SKU_COINS_300 = "vrealms_coins_300";
     const KEY_PREFIX = "vchoice";
@@ -566,7 +496,7 @@
 
     function setScenarioToLaunch(scenarioId){
       lsSet(KEY_PREFIX + "_scenario", scenarioId);
-      lsSet("vrealms_scenario", scenarioId); // compat legacy si besoin
+      lsSet("vrealms_scenario", scenarioId);
     }
 
     function setShopFocusScenario(scenarioId){
@@ -575,12 +505,12 @@
     }
 
     function isFreeScenario(id){
-      // si tu veux des gratuits, mets-les ici (sinon false)
       return (id === "dossier14_appartement");
     }
 
     function isUnlocked(id){
       if (isFreeScenario(id)) return true;
+
       try {
         if (window.VUserData && typeof window.VUserData.isScenarioUnlocked === "function") {
           return !!window.VUserData.isScenarioUnlocked(id);
@@ -607,11 +537,9 @@
       if (ov) return;
       ov = document.createElement("div");
       ov.className = "vc-locked-overlay";
-
       const bubble = document.createElement("div");
       bubble.className = "vc-locked-bubble";
       bubble.innerHTML = LOCK_SVG;
-
       ov.appendChild(bubble);
       card.appendChild(ov);
     }
@@ -639,14 +567,30 @@
     }
 
     function launchScenario(scenarioId){
-      if (!scenarioId) return;
       setScenarioToLaunch(scenarioId);
       window.location.href = "game.html";
     }
 
-    // =========================================================
-    // ✅ Popup achat scénario (ta logique existante)
-    // =========================================================
+    // ===== Modal “?” (on lit data-i18n-tip comme dans ton autre fichier) =====
+    const hintModal = document.getElementById("hintModal");
+    const hintBackdrop = document.getElementById("hintBackdrop");
+    const hintClose = document.getElementById("hintClose");
+    const hintBody = document.getElementById("hintBody");
+
+    function openHintByKey(i18nKey){
+      const txt = _t(i18nKey, "");
+      hintBody.textContent = txt || "";
+      hintModal.classList.remove("hidden");
+      hintModal.setAttribute("aria-hidden", "false");
+    }
+    function closeHint(){
+      hintModal.classList.add("hidden");
+      hintModal.setAttribute("aria-hidden", "true");
+    }
+    if (hintBackdrop) hintBackdrop.addEventListener("click", closeHint);
+    if (hintClose) hintClose.addEventListener("click", closeHint);
+
+    // ===== Popup achat scénario =====
     const buyPopup  = document.getElementById("vc-scenario-buy-popup");
     const buyTitle  = document.getElementById("vc-buy-title");
     const buyDesc   = document.getElementById("vc-buy-desc");
@@ -659,7 +603,6 @@
     let pendingScenarioId = null;
 
     function showBuyError(msg){
-      if (!buyErr) return;
       buyErr.textContent = msg || "";
       buyErr.style.display = msg ? "block" : "none";
     }
@@ -667,10 +610,8 @@
     function closeBuyPopup(){
       pendingScenarioId = null;
       showBuyError("");
-      if (buyPopup){
-        buyPopup.style.display = "none";
-        buyPopup.setAttribute("aria-hidden","true");
-      }
+      buyPopup.style.display = "none";
+      buyPopup.setAttribute("aria-hidden","true");
     }
 
     function currentCoins300Price(){
@@ -681,50 +622,35 @@
     function openBuyPopup(scenarioId){
       pendingScenarioId = scenarioId;
 
-      const title = _t("scenarios." + scenarioId + ".title", scenarioId);
-      if (buyTitle) buyTitle.textContent = title;
+      buyTitle.textContent = _t("scenarios." + scenarioId + ".title", scenarioId);
 
-      if (buyDesc) {
-        buyDesc.textContent = _t(
-          "ui.scenario_buy.desc",
-          "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
-          { price: PRICE }
-        );
-      }
+      buyDesc.textContent = _t(
+        "ui.scenario_buy.desc",
+        "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
+        { price: PRICE }
+      );
 
-      if (buyPay) {
-        buyPay.textContent = _t("ui.scenario_buy.pay", "Débloquer ({price} VCoins)", { price: PRICE });
-      }
-
-      if (buyIap) {
-        buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
-      }
-
-      if (buyGet) buyGet.textContent = _t("ui.scenario_buy.open_shop", "Ouvrir la boutique");
-      if (buyCancel) buyCancel.textContent = _t("common.cancel", "Annuler");
+      buyPay.textContent = _t("ui.scenario_buy.pay", "Débloquer ({price} VCoins)", { price: PRICE });
+      buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
+      buyGet.textContent = _t("ui.scenario_buy.open_shop", "Ouvrir la boutique");
+      buyCancel.textContent = _t("common.cancel", "Annuler");
 
       showBuyError("");
-
-      if (buyPopup){
-        buyPopup.style.display = "flex";
-        buyPopup.setAttribute("aria-hidden","false");
-      }
+      buyPopup.style.display = "flex";
+      buyPopup.setAttribute("aria-hidden","false");
     }
 
     async function tryUnlockWithVcoins(scenarioId){
       showBuyError("");
       try { await window.VUserData?.refresh?.(); } catch(_){}
-
       const res = await window.VUserData?.unlockScenario?.(scenarioId);
       if (!res?.ok){
         showBuyError(_t("ui.scenario_buy.err_unlock", "Impossible de débloquer (VCoins insuffisants ou erreur réseau)."));
-        return false;
+        return;
       }
-
-      try { applyLocks(); } catch(_){}
+      applyLocks();
       closeBuyPopup();
       launchScenario(scenarioId);
-      return true;
     }
 
     async function buyCoins300ThenUnlock(scenarioId){
@@ -732,7 +658,7 @@
 
       if (!window.VRIAP?.isAvailable?.()){
         showBuyError(_t("ui.scenario_buy.err_app_only", "Achat Play Store dispo uniquement dans l’app. Ouvre la boutique."));
-        return false;
+        return;
       }
 
       lsSet(IAP_TARGET_KEY, scenarioId);
@@ -742,29 +668,26 @@
         else if (window.VRIAP?.order) await window.VRIAP.order(SKU_COINS_300);
         else {
           showBuyError(_t("ui.scenario_buy.err_not_ready", "Système d’achat non prêt."));
-          return false;
+          return;
         }
       } catch (_) {
         showBuyError(_t("ui.scenario_buy.err_buy_failed", "Achat annulé ou impossible."));
-        return false;
       }
-
-      return true;
     }
 
-    if (buyPay) buyPay.addEventListener("click", () => { if (pendingScenarioId) tryUnlockWithVcoins(pendingScenarioId); });
-    if (buyIap) buyIap.addEventListener("click", () => { if (pendingScenarioId) buyCoins300ThenUnlock(pendingScenarioId); });
-    if (buyGet) buyGet.addEventListener("click", () => {
+    buyPay.addEventListener("click", () => { if (pendingScenarioId) tryUnlockWithVcoins(pendingScenarioId); });
+    buyIap.addEventListener("click", () => { if (pendingScenarioId) buyCoins300ThenUnlock(pendingScenarioId); });
+    buyGet.addEventListener("click", () => {
       if (!pendingScenarioId) return;
       setShopFocusScenario(pendingScenarioId);
       window.location.href = "shop.html";
     });
-    if (buyCancel) buyCancel.addEventListener("click", closeBuyPopup);
-    if (buyPopup) buyPopup.addEventListener("click", (e) => { if (e.target === buyPopup) closeBuyPopup(); });
+    buyCancel.addEventListener("click", closeBuyPopup);
+    buyPopup.addEventListener("click", (e) => { if (e.target === buyPopup) closeBuyPopup(); });
 
     window.addEventListener("vr:iap_price", () => {
       try {
-        if (buyPopup && buyPopup.style.display === "flex" && buyIap){
+        if (buyPopup.style.display === "flex"){
           buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
         }
       } catch(_){}
@@ -777,93 +700,52 @@
 
         const target = lsGet(IAP_TARGET_KEY);
         if (!target) return;
-
         lsDel(IAP_TARGET_KEY);
 
         try { await window.VUserData?.refresh?.(); } catch(_){}
-
         const res = await window.VUserData?.unlockScenario?.(target);
         if (!res?.ok){
-          showBuyError(_t("ui.scenario_buy.err_unlock_after_buy", "Achat ok, mais unlock impossible (réessaye depuis la boutique)."));
+          showBuyError(_t("ui.scenario_buy.err_unlock_after_buy", "Achat ok, mais déblocage impossible (réessaye depuis la boutique)."));
           return;
         }
 
-        try { applyLocks(); } catch(_){}
+        applyLocks();
         closeBuyPopup();
         launchScenario(target);
       } catch(_){}
     });
 
-    // =========================================================
-    // ✅ Render cards (avec covers) — titres/desc depuis i18n
-    // =========================================================
-    function renderScenarios(){
-      const grid = document.getElementById("menuGrid");
-      if (!grid) return;
-      grid.innerHTML = "";
-
-      for (const s of SCENARIOS){
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "vc-card";
-        btn.setAttribute("data-scenario", s.id);
-
-        const bg = document.createElement("div");
-        bg.className = "vc-card-bg fallback";
-        setCoverBackground(bg, s.id);
-
-        const content = document.createElement("div");
-        content.className = "vc-card-content";
-
-        const line = document.createElement("div");
-        line.className = "vc-card-line";
-
-        const title = document.createElement("h3");
-        title.className = "vc-card-title";
-        title.textContent = _t(`scenarios.${s.id}.title`, s.id);
-
-        const info = document.createElement("span");
-        info.className = "vc-info";
-        info.setAttribute("role","button");
-        info.setAttribute("tabindex","0");
-        info.textContent = "?";
-        info.setAttribute("data-scenario", s.id);
-
-        line.appendChild(title);
-        line.appendChild(info);
-        content.appendChild(line);
-
-        btn.appendChild(bg);
-        btn.appendChild(content);
+    // ===== Bind clicks comme “universe” =====
+    function bindCards(){
+      document.querySelectorAll(".vc-card[data-scenario]").forEach((btn) => {
+        const id = btn.getAttribute("data-scenario");
+        if (!id) return;
 
         btn.addEventListener("click", (e) => {
-          if (isUnlocked(s.id)){
-            launchScenario(s.id);
-          } else {
-            e.preventDefault();
-            openBuyPopup(s.id);
-          }
+          if (isUnlocked(id)) launchScenario(id);
+          else { e.preventDefault(); openBuyPopup(id); }
         });
+      });
 
-        info.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); openHint(s.id); });
-        info.addEventListener("keydown", (e) => {
+      document.querySelectorAll(".vc-info[data-i18n-tip]").forEach((tipBtn) => {
+        tipBtn.addEventListener("click", (e) => {
+          e.preventDefault(); e.stopPropagation();
+          openHintByKey(tipBtn.getAttribute("data-i18n-tip"));
+        });
+        tipBtn.addEventListener("keydown", (e) => {
           if (e.key === "Enter" || e.key === " "){
-            e.preventDefault(); e.stopPropagation(); openHint(s.id);
+            e.preventDefault(); e.stopPropagation();
+            openHintByKey(tipBtn.getAttribute("data-i18n-tip"));
           }
         });
-
-        grid.appendChild(btn);
-      }
+      });
     }
 
-    // =========================================================
-    // ✅ Boot
-    // =========================================================
+    // ===== Boot =====
     (async function boot(){
       try { await window.bootstrapAuthAndProfile?.(); } catch(_){}
       try { await window.VUserData?.init?.(); } catch(_){}
 
-      // init i18n (si ton i18n.js expose une init)
       try {
         const lang = window.VUserData?.getLang?.() || "fr";
         if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
@@ -871,7 +753,7 @@
         }
       } catch(_){}
 
-      renderScenarios();
+      bindCards();
       applyLocks();
     })();
   </script>
