@@ -8,10 +8,11 @@
   "use strict";
 
   // ===========================
-  // 🔧 A REMPLIR PAR TOI
+  // 🔧 CONFIG SUPABASE
   // ===========================
-  const SUPABASE_URL = "https://TON-PROJET.supabase.co";
-  const SUPABASE_ANON_KEY = "TON-ANON-KEY";
+  const SUPABASE_URL = "https://eygcqhrccukwvmepacrt.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV5Z2NxaHJjY3Vrd3ZtZXBhY3J0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzExODk4NTYsImV4cCI6MjA4Njc2NTg1Nn0.fY7BoyHWz65bQHy2Kk24P_mqwxCpUVCibajgOncDhH8";
 
   // Nom global attendu par le reste du code
   const GLOBAL_CLIENT_NAME = "sb";
