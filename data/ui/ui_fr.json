@@ -29,19 +29,6 @@
       "title": "Hôpital",
       "desc": "Les couloirs sont vides, mais les néons répondent. Certains dossiers semblent écrits pour toi."
     }
-  },
-  "scenario_info": {
-    "dossier14_appartement": {
-      "title": "À propos",
-      "body": "Un dossier étrange, un appartement impossible à cartographier, et des choix qui peuvent te piéger. Chaque décision peut débloquer (ou t’empêcher de voir) des indices."
-    },
-    "bunker_reserve": {
-      "title": "À propos",
-      "body": "Une réserve scellée, une logique de sécurité qui ne colle plus, et des choix où l’intuition compte autant que la prudence."
-    },
-    "hopital_ferme": {
-      "title": "À propos",
-      "body": "Un hôpital désert, des zones qui se répètent, et des dossiers qui semblent te connaître. Tes décisions changent ce que tu as le droit de comprendre."
-    }
+  
   }
 }

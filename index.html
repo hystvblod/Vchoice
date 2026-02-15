@@ -413,19 +413,19 @@
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="profile.html" aria-label="Profil">
-        <img src="assets/img/ui/btn_profile.svg" alt="" draggable="false" />
+        <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
       </a>
     </div>
 
     <div class="vc-top-slot vc-top-center">
       <a class="vc-icon-button" href="settings.html" aria-label="Paramètres">
-        <img src="assets/img/ui/btn_settings.svg" alt="" draggable="false" />
+        <img src="assets/img/ui/btn_settings.webp" alt="" draggable="false" />
       </a>
     </div>
 
     <div class="vc-top-slot vc-top-right">
       <a class="vc-icon-button" href="shop.html" aria-label="Boutique">
-        <img src="assets/img/ui/btn_shop.svg" alt="" draggable="false" />
+        <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
       </a>
 
       <div class="vc-lang">
@@ -535,20 +535,17 @@
     }
 
     // =========================================================
-    // Scénarios (✅ titres en DUR ici, pas de catalog)
-    // - id => sert à cover.webp + storage + unlock
-    // - title => affiché directement (FR)
-    // - desc => affiché dans le modal "?" (FR)
+    // Scénarios (✅ only IDs ; titre + desc viennent du i18n)
     // =========================================================
     const SCENARIOS = [
-      { id: "dossier14_appartement", title: "Dossier 14 — Appartement", desc: "Un dossier interdit. Des détails qui ne collent pas. Et une porte que tu ne devais jamais ouvrir." },
-      { id: "bunker_reserve",        title: "Bunker — Réserve",       desc: "Sous la terre, quelque chose tourne encore. Et ce n’est pas censé être vivant." },
-      { id: "hopital_ferme",         title: "Hôpital — Fermé",        desc: "Couloirs vides, odeur d’antiseptique, lumières qui respirent. Tu n’es pas seul." },
-      { id: "metro_station_zero",    title: "Métro — Station Zéro",   desc: "Dernière rame. Dernier quai. Les panneaux affichent ton nom." },
-      { id: "styx_gare",             title: "STYX — Gare Terminale",  desc: "Une gare qui ne mène nulle part. Des fleuves portent des noms. Et le départ approche." },
-      { id: "foret_relais",          title: "Forêt — Relais",         desc: "Un relais au milieu de rien. Les arbres sont trop silencieux. Les traces reviennent toujours au même endroit." },
-      { id: "chateau_absents",       title: "Château — Les Absents",  desc: "Un château ouvert, comme s’il t’attendait. Certains portraits ont disparu… pas les cadres." },
-      { id: "temple_mictlan",        title: "Temple — Mictlan",       desc: "Un temple d’obsidienne et d’os. La Reine des Morts ne bouge pas… jusqu’au moment où tu clignes des yeux." }
+      { id: "dossier14_appartement" },
+      { id: "bunker_reserve" },
+      { id: "hopital_ferme" },
+      { id: "metro_station_zero" },
+      { id: "styx_gare" },
+      { id: "foret_relais" },
+      { id: "chateau_absents" },
+      { id: "temple_mictlan" }
     ];
 
     function coverPath(id){ return `assets/scenarios/${id}/img/cover.webp`; }
@@ -571,8 +568,6 @@
     // ✅ Locks (même logique que Vuniverse)
     // =========================================================
     const PRICE = 300;
-
-    // ⚠️ SKU store
     const SKU_COINS_300 = "vrealms_coins_300";
 
     const KEY_PREFIX = "vchoice";
@@ -584,7 +579,7 @@
 
     function setScenarioToLaunch(id){
       lsSet(KEY_PREFIX + "_scenario", id);
-      lsSet("vchoice_scenario", id); // compat existant
+      lsSet("vchoice_scenario", id);
     }
 
     function setShopFocusScenario(id){
@@ -699,10 +694,9 @@
     function openBuyPopup(scenarioId){
       pendingScenarioId = scenarioId;
 
-      const s = SCENARIOS.find(x => x.id === scenarioId);
-      const title = s?.title || scenarioId;
-
-      if (buyTitle) buyTitle.textContent = title;
+      if (buyTitle){
+        buyTitle.textContent = _t(`scenarios.${scenarioId}.title`, scenarioId);
+      }
 
       if (buyDesc){
         buyDesc.textContent = _t(
@@ -777,7 +771,7 @@
         return false;
       }
 
-      return true; // suite sur event iap_credited
+      return true;
     }
 
     if (buyPay){
@@ -848,7 +842,7 @@
     window.addEventListener("vr:iap_credited", onIapCredited);
 
     // =========================================================
-    // Render cards
+    // Render cards (titre i18n)
     // =========================================================
     function renderScenarios(){
       const grid = document.getElementById("menuGrid");
@@ -873,7 +867,7 @@
 
         const title = document.createElement("h3");
         title.className = "vc-title";
-        title.textContent = s.title; // ✅ en dur
+        title.textContent = _t(`scenarios.${s.id}.title`, s.id);
 
         const info = document.createElement("span");
         info.className = "vc-info";
@@ -912,7 +906,7 @@
     }
 
     // =========================================================
-    // Modal “?”
+    // Modal “?” (desc i18n)
     // =========================================================
     const hintModal = document.getElementById("hintModal");
     const hintBackdrop = document.getElementById("hintBackdrop");
@@ -921,9 +915,8 @@
 
     function openHint(scenarioId){
       if (!hintModal || !hintBody) return;
-      const s = SCENARIOS.find(x => x.id === scenarioId);
-      const txt = s?.desc || "";
-      hintBody.textContent = txt;
+      const txt = _t(`scenarios.${scenarioId}.desc`, "");
+      hintBody.textContent = txt || "";
       hintModal.classList.remove("hidden");
       hintModal.setAttribute("aria-hidden", "false");
     }
@@ -939,19 +932,14 @@
     document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeHint(); });
 
     // =========================================================
-    // Boot (✅ pas de catalog, et on évite le “clignotement” des locks)
-    // - On init Supabase + userData d'abord
-    // - Ensuite on render + locks
+    // Boot
     // =========================================================
     (async function boot(){
       const select = document.getElementById("langSelect");
       const saved = localStorage.getItem("vchoice_lang") || "fr";
       if (select) select.value = (saved === "en") ? "en" : "fr";
 
-      // auth+profile (si ton supabaseBootstrap expose bootstrapAuthAndProfile)
       try{ await window.bootstrapAuthAndProfile?.(); }catch(_){}
-
-      // init user data (remote)
       try{ await window.VUserData?.init?.(); }catch(_){}
 
       async function applyLang(lang){
