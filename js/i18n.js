@@ -1,5 +1,6 @@
 // js/i18n.js — loader i18n + compat VRI18n + i18nGet + auto-apply [data-i18n]
-// Compatible avec ton index.html actuel (helper _t() qui cherche VRI18n.t / i18nGet)
+// ✅ Supporte JSON imbriqué (ui: { page_title: ... }) ET JSON à clés plates ("ui.page_title": "...").
+// ✅ Compatible avec ton index.html actuel (helper _t() qui cherche VRI18n.t / i18nGet)
 
 (function () {
   "use strict";
@@ -12,24 +13,42 @@
     return (String(lang || "").toLowerCase() === "en") ? "en" : "fr";
   }
 
-  function t(path, fallback, vars) {
+  // Récupération style "a.b.c" dans un objet imbriqué
+  function _getPath(obj, path) {
     const parts = (path || "").split(".");
-    let cur = _dict;
-
+    let cur = obj;
     for (const p of parts) {
-      if (!cur || typeof cur !== "object" || !(p in cur)) return fallback || "";
+      if (!cur || typeof cur !== "object" || !(p in cur)) return undefined;
       cur = cur[p];
     }
+    return cur;
+  }
 
-    let out = (typeof cur === "string") ? cur : (fallback || "");
-    if (vars && out) {
-      try {
-        Object.keys(vars).forEach((k) => {
-          out = out.split("{" + k + "}").join(String(vars[k]));
-        });
-      } catch (_) {}
+  function _interpolate(str, vars) {
+    if (!vars || !str) return str || "";
+    let out = String(str);
+    try {
+      Object.keys(vars).forEach((k) => {
+        out = out.split("{" + k + "}").join(String(vars[k]));
+      });
+    } catch (_) {}
+    return out;
+  }
+
+  function t(key, fallback, vars) {
+    const k = String(key || "");
+    if (!k) return fallback || "";
+
+    // 1) Tentative objet imbriqué
+    let v = _getPath(_dict, k);
+
+    // 2) Fallback clés plates : { "ui.page_title": "...", "scenarios.xxx.desc": "..." }
+    if (v === undefined && _dict && typeof _dict === "object") {
+      v = _dict[k];
     }
-    return out || "";
+
+    const out = (typeof v === "string") ? v : (fallback || "");
+    return _interpolate(out, vars) || "";
   }
 
   function apply(root) {
@@ -51,12 +70,20 @@
       if (val) el.setAttribute("aria-label", val);
     });
 
-    // Title attribute (optionnel si tu l’utilises un jour)
+    // Title attribute (optionnel)
     r.querySelectorAll("[data-i18n-title]").forEach((el) => {
       const key = el.getAttribute("data-i18n-title");
       if (!key) return;
       const val = t(key, "");
       if (val) el.setAttribute("title", val);
+    });
+
+    // Placeholder (si tu l’utilises)
+    r.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (!key) return;
+      const val = t(key, "");
+      if (val) el.setAttribute("placeholder", val);
     });
   }
 
@@ -65,7 +92,7 @@
 
     const url = `${UI_PATH}/ui_${_lang}.json`;
     const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`i18n not found: ${url}`);
+    if (!res.ok) throw new Error(`i18n not found: ${url} (HTTP ${res.status})`);
     _dict = await res.json();
 
     // html lang + <title> si la clé existe
