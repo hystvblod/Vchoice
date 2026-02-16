@@ -592,10 +592,10 @@
       });
     }
 
-    function launchScenario(scenarioId){
-      setScenarioToLaunch(scenarioId);
-      window.location.href = "game.html";
-    }
+ function launchScenario(scenarioId){
+  window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
+}
+
 
     // ===== Modal “?” (on lit data-i18n-tip comme dans ton autre fichier) =====
     const hintModal = document.getElementById("hintModal");
