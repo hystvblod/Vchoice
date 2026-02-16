@@ -779,7 +779,10 @@ function launchScenario(scenarioId){
         if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
           await window.VRI18n.initI18n(lang);
         }
-      } catch(_){}
+    } catch(e){
+  console.error("[i18n boot]", e);
+}
+
 
       bindCards();
       applyLocks();
