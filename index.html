@@ -117,8 +117,8 @@
       z-index: 1;
     }
     .vc-logo{
-      height: 78px;              /* pas trop grand */
-      width: min(86vw, 460px);   /* centré */
+      height: 78px;
+      width: min(86vw, 460px);
       object-fit: contain;
       display:block;
       filter: drop-shadow(0 12px 30px rgba(0,0,0,0.45));
@@ -203,7 +203,6 @@
       align-items:center;
     }
 
-    /* ✅ IMPORTANT : on utilise TES classes CSS (vc-line / vc-title) */
     .vc-line{
       width:100%;
       display:flex;
@@ -354,9 +353,7 @@
     </div>
   </div>
 
-  <!-- ✅ LOGO ICI (entre top buttons et hero) -->
   <div class="vc-intro">
-    <!-- ✅ change le nom du fichier si ton logo s'appelle autrement -->
     <img class="vc-logo" src="assets/img/ui/logo_vchoice.webp" alt="VChoice" draggable="false" />
   </div>
 
@@ -366,7 +363,6 @@
       <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle"></p>
     </section>
 
-    <!-- ✅ COMME TON FICHIER “UNIVERSES” : cartes écrites en dur -->
     <section class="menu" aria-label="Menu">
       <div class="vc-grid">
 
@@ -592,14 +588,12 @@
       });
     }
 
-function launchScenario(scenarioId){
-  setScenarioToLaunch(scenarioId);
-  window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
-}
+    function launchScenario(scenarioId){
+      setScenarioToLaunch(scenarioId);
+      window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
+    }
 
-
-
-    // ===== Modal “?” (on lit data-i18n-tip comme dans ton autre fichier) =====
+    // ===== Modal “?” =====
     const hintModal = document.getElementById("hintModal");
     const hintBackdrop = document.getElementById("hintBackdrop");
     const hintClose = document.getElementById("hintClose");
@@ -703,19 +697,19 @@ function launchScenario(scenarioId){
       }
     }
 
-    buyPay.addEventListener("click", () => { if (pendingScenarioId) tryUnlockWithVcoins(pendingScenarioId); });
-    buyIap.addEventListener("click", () => { if (pendingScenarioId) buyCoins300ThenUnlock(pendingScenarioId); });
-    buyGet.addEventListener("click", () => {
+    if (buyPay) buyPay.addEventListener("click", () => { if (pendingScenarioId) tryUnlockWithVcoins(pendingScenarioId); });
+    if (buyIap) buyIap.addEventListener("click", () => { if (pendingScenarioId) buyCoins300ThenUnlock(pendingScenarioId); });
+    if (buyGet) buyGet.addEventListener("click", () => {
       if (!pendingScenarioId) return;
       setShopFocusScenario(pendingScenarioId);
       window.location.href = "shop.html";
     });
-    buyCancel.addEventListener("click", closeBuyPopup);
-    buyPopup.addEventListener("click", (e) => { if (e.target === buyPopup) closeBuyPopup(); });
+    if (buyCancel) buyCancel.addEventListener("click", closeBuyPopup);
+    if (buyPopup) buyPopup.addEventListener("click", (e) => { if (e.target === buyPopup) closeBuyPopup(); });
 
     window.addEventListener("vr:iap_price", () => {
       try {
-        if (buyPopup.style.display === "flex"){
+        if (buyPopup && buyPopup.style.display === "flex"){
           buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
         }
       } catch(_){}
@@ -743,7 +737,7 @@ function launchScenario(scenarioId){
       } catch(_){}
     });
 
-    // ===== Bind clicks comme “universe” =====
+    // ===== Bind clicks =====
     function bindCards(){
       document.querySelectorAll(".vc-card[data-scenario]").forEach((btn) => {
         const id = btn.getAttribute("data-scenario");
@@ -769,23 +763,42 @@ function launchScenario(scenarioId){
       });
     }
 
-    // ===== Boot =====
-    (async function boot(){
-      try { await window.bootstrapAuthAndProfile?.(); } catch(_){}
-      try { await window.VUserData?.init?.(); } catch(_){}
+    // ===== Boot (FIX) : binder tout de suite, puis faire le reste sans bloquer =====
+    (function boot(){
+      // 1) UI immédiate (clics OK même si init/auth/i18n bloque)
+      try { bindCards(); } catch(e){ console.error("[bindCards]", e); }
+      try { applyLocks(); } catch(e){ console.error("[applyLocks pre]", e); }
 
-      try {
-        const lang = window.VUserData?.getLang?.() || "fr";
-        if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
-          await window.VRI18n.initI18n(lang);
+      // 2) Background init (ne bloque pas les clics)
+      (async () => {
+        try { await window.bootstrapAuthAndProfile?.(); } catch(e){ console.error("[bootstrapAuthAndProfile]", e); }
+
+        // init peut rester en attente -> timeout soft
+        try {
+          const p = window.VUserData?.init?.();
+          if (p && typeof p.then === "function") {
+            await Promise.race([
+              p,
+              new Promise((resolve) => setTimeout(resolve, 3000))
+            ]);
+          }
+        } catch(e){
+          console.error("[VUserData.init]", e);
         }
-    } catch(e){
-  console.error("[i18n boot]", e);
-}
 
+        // i18n
+        try {
+          const lang = window.VUserData?.getLang?.() || "fr";
+          if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
+            await window.VRI18n.initI18n(lang);
+          }
+        } catch(e){
+          console.error("[i18n boot]", e);
+        }
 
-      bindCards();
-      applyLocks();
+        // locks après refresh (si remote unlock)
+        try { applyLocks(); } catch(e){ console.error("[applyLocks post]", e); }
+      })();
     })();
   </script>
 </body>
