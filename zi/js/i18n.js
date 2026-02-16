@@ -1,6 +1,6 @@
 // js/i18n.js — loader i18n + compat VRI18n + i18nGet + auto-apply [data-i18n]
 // ✅ Supporte JSON imbriqué (ui: { page_title: ... }) ET JSON à clés plates ("ui.page_title": "...").
-// ✅ Compatible avec ton index.html actuel (helper _t() qui cherche VRI18n.t / i18nGet)
+// ✅ Compatible avec ton index.html actuel (helper _t() qui cherche VRI18n._t / VRI18n.t / i18nGet)
 
 (function () {
   "use strict";
@@ -10,7 +10,7 @@
   let _lang = "fr";
 
   function _safeLang(lang) {
-    return (String(lang || "").toLowerCase() === "en") ? "en" : "fr";
+    return String(lang || "").toLowerCase() === "en" ? "en" : "fr";
   }
 
   // Récupération style "a.b.c" dans un objet imbriqué
@@ -47,7 +47,7 @@
       v = _dict[k];
     }
 
-    const out = (typeof v === "string") ? v : (fallback || "");
+    const out = typeof v === "string" ? v : fallback || "";
     return _interpolate(out, vars) || "";
   }
 
@@ -114,14 +114,23 @@
   // Expose globals COMPAT
   // =========================
 
-  // ✅ ton index.html cherche ça
+  // ✅ Compat maximale : certains endroits appellent VRI18n._t, d'autres VRI18n.t
   window.VRI18n = {
     initI18n,
     load,
+
+    // API “officielle”
     t: (key, fallback, vars) => t(key, fallback, vars),
+
+    // ✅ alias legacy (c’est ça qui te cassait le modal "?")
+    _t: (key, fallback, vars) => t(key, fallback, vars),
+
+    // apply
     applyI18n: apply,
-    getLang: () => (localStorage.getItem("vchoice_lang") || "fr"),
-    setLang: (lang) => localStorage.setItem("vchoice_lang", _safeLang(lang))
+
+    // lang storage
+    getLang: () => localStorage.getItem("vchoice_lang") || "fr",
+    setLang: (lang) => localStorage.setItem("vchoice_lang", _safeLang(lang)),
   };
 
   // ✅ ton helper _t() accepte aussi i18nGet()
@@ -129,12 +138,13 @@
     return t(key, "");
   };
 
-  // (Optionnel) garder l’ancien nom si tu l’utilises ailleurs
+  // (Optionnel) garder un ancien namespace si tu l’utilises ailleurs
   window.VCI18N = {
     load,
     t: (key, fallback, vars) => t(key, fallback, vars),
+    _t: (key, fallback, vars) => t(key, fallback, vars),
     apply,
     getLang: () => window.VRI18n.getLang(),
-    setLang: (lang) => window.VRI18n.setLang(lang)
+    setLang: (lang) => window.VRI18n.setLang(lang),
   };
 })();

@@ -4,6 +4,8 @@
    - Ajoute les “cartouches” index (grid/card) + bouton ?
    - Sécurise le game (pas de calcul foireux de height)
    - Sécurise les modals (scroll interne si contenu long)
+   - ✅ GAME: image plein écran + HUD en bas (cartouche arrondi)
+   - ✅ GAME: supprime la topbar sur game (si présente)
 ========================= */
 
 /* ====== BASE ====== */
@@ -235,7 +237,7 @@ body{
 .menu_help:hover{ background: rgba(0,0,0,.45); }
 
 /* ====== INDEX (cartouches) — style “grid/card” (AJOUT) ====== */
-/* Si ton index utilise .grid + .card (comme ton 2e CSS), tout est supporté ici */
+/* Si ton index utilise .grid + .card, tout est supporté ici */
 .page{
   width: min(1100px, calc(100% - 24px));
   margin: 0 auto;
@@ -580,9 +582,9 @@ body{
   .title{ font-size: 20px; }
   .choice_btn{ padding: 13px 12px; font-size: 14.5px; }
 }
+
 /* =========================================================
    VCHOICE — Cartouches style VUniverse (index)
-   À coller en bas de css/app.css
    ========================================================= */
 
 .menu_grid{
@@ -717,4 +719,154 @@ body{
   .menu_card{ min-height: 60px; height: 60px; }
   .menu_card_title{ font-size: 14px; }
   .menu_info_btn{ width: 38px; height: 38px; font-size: 15px; }
+}
+
+/* =========================================================
+   GAME FULLSCREEN (page-game)
+   - image plein écran, sans assombrissement
+   - HUD en bas, arrondi, style index
+   - cache topbar si elle existe
+   ========================================================= */
+
+body.page-game{
+  margin:0;
+  background:#000;
+  overflow:hidden;
+}
+
+body.page-game .topbar{ display:none !important; }
+
+body.page-game .app{ min-height:100vh; }
+
+body.page-game .main--game{
+  padding:0 !important;
+  min-height:100vh;
+  width:100%;
+}
+
+body.page-game .panel--game{
+  width:100% !important;
+  height:100vh;
+  border-radius:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+body.page-game .scene{
+  min-height:100vh;
+}
+
+body.page-game .scene__shade{ display:none !important; }
+
+body.page-game .scene__media img{
+  filter:none !important;
+}
+
+/* on n'utilise plus le layout "content" au-dessus */
+body.page-game .scene__content{ display:none !important; }
+
+/* HUD (cartouche) */
+body.page-game .scene__hud{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:max(14px, calc(env(safe-area-inset-bottom) + 14px));
+  width:min(940px, calc(100vw - 24px));
+  max-height:56vh;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+
+  padding:16px 16px 14px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.34);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.55),
+    0 2px 0 rgba(255,255,255,.04) inset;
+}
+
+body.page-game .scene__hud .title{
+  font-size:20px;
+  margin:0 0 6px;
+  text-shadow:none;
+}
+
+body.page-game .scene__hud .body{
+  margin:0;
+  max-width:none;
+  font-size:15px;
+  line-height:1.55;
+  text-shadow:none;
+}
+
+/* Choix dans le HUD */
+body.page-game .scene__hud .choices{
+  max-width:none;
+  margin-top:12px;
+}
+
+body.page-game .scene__hud .choice_btn{
+  border:0;
+  border-radius:18px;
+  background:transparent;
+  position:relative;
+  overflow:hidden;
+  padding:14px 14px;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.55),
+    0 2px 0 rgba(255,255,255,.04) inset;
+}
+
+body.page-game .scene__hud .choice_btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.52), rgba(0,0,0,.18) 55%, rgba(0,0,0,.52)),
+    rgba(0,0,0,.08);
+  pointer-events:none;
+  z-index:0;
+}
+
+body.page-game .scene__hud .choice_btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  pointer-events:none;
+  z-index:1;
+}
+
+body.page-game .scene__hud .choice_btn{
+  color: rgba(255,255,255,.96);
+}
+
+body.page-game .scene__hud .choice_btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+body.page-game .scene__hud .choice_btn.is_locked,
+body.page-game .scene__hud .choice_btn:disabled{
+  opacity:.42;
+  filter:none;
+  transform:none;
+  box-shadow:
+    0 14px 38px rgba(0,0,0,.50),
+    0 2px 0 rgba(255,255,255,.03) inset;
+}
+
+@media (max-width: 520px){
+  body.page-game .scene__hud{
+    width: calc(100vw - 16px);
+    padding:14px 14px 12px;
+    border-radius:20px;
+    max-height:60vh;
+  }
+  body.page-game .scene__hud .title{ font-size:18.5px; }
+  body.page-game .scene__hud .choice_btn{ padding:13px 12px; }
 }
