@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Game</title>
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="brand" role="button" tabindex="0" id="btn_home" aria-label="Retour accueil">
+        <div class="brand__dot"></div>
+        <div class="brand__texts">
+          <div class="brand__title" id="ui_app_title"></div>
+          <div class="brand__subtitle" id="ui_app_subtitle"></div>
+        </div>
+      </div>
+
+      <div class="topbar__right">
+        <div class="lang">
+          <label class="sr_only" for="langSelect">Langue</label>
+          <select id="langSelect" class="lang__select" aria-label="Langue">
+            <option value="fr" selected>FR</option>
+            <option value="en">EN</option>
+          </select>
+        </div>
+
+        <button class="btn btn--ghost" id="btnHint" type="button"></button>
+        <button class="btn btn--ghost" id="btnRestart" type="button"></button>
+      </div>
+    </header>
+
+    <!-- GAME SCREEN -->
+    <main class="main main--game" id="screen_game">
+      <section class="panel panel--game">
+        <div class="scene scene--overlay">
+
+          <!-- IMAGE FULLSCREEN -->
+          <div class="scene__media">
+            <picture>
+              <source id="scene_img_source" type="image/webp" />
+              <img id="scene_img" alt="" />
+            </picture>
+
+            <!-- voile pour lisibilité -->
+            <div class="scene__shade" aria-hidden="true"></div>
+          </div>
+
+          <!-- CONTENU -->
+          <div class="scene__content">
+            <div class="meta">
+              <div class="pill" id="ui_scenario_name"></div>
+              <div class="pill pill--muted" id="ui_step"></div>
+              <div class="pill pill--muted" id="ui_endings"></div>
+            </div>
+
+            <h2 class="title" id="sceneTitle"></h2>
+            <p class="body" id="sceneBody"></p>
+
+            <div class="choices" id="choices"></div>
+
+            <div class="footer" id="ui_footer"></div>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- HINT MODAL (même IDs que engine.js) -->
+    <div id="hintModal" class="modal hidden" aria-hidden="true">
+      <div id="hintBackdrop" class="modal__backdrop"></div>
+      <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
+        <div class="modal__header">
+          <div class="modal__title" id="hintTitle"></div>
+          <button id="hintClose" class="modal__close" type="button" aria-label="Fermer">✕</button>
+        </div>
+        <div class="modal__body" id="hintBody"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 1) Supabase UMD (sans module) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- 2) userData (si tu l’utilises) -->
+  <script src="js/userData.js"></script>
+
+  <!-- 3) moteur -->
+  <script src="js/engine.js"></script>
+
+  <script>
+    // Retour accueil
+    const home = document.getElementById("btn_home");
+    if(home){
+      home.addEventListener("click", () => location.href = "index.html");
+      home.addEventListener("keydown", (e) => {
+        if(e.key === "Enter" || e.key === " ") location.href = "index.html";
+      });
+    }
+
+    // Restart simple (recharge la page => l’état reste selon ton SAVE, sinon tu peux ajouter un reset dans engine.js)
+    const rst = document.getElementById("btnRestart");
+    if(rst){
+      rst.textContent = "Recommencer";
+      rst.addEventListener("click", () => location.reload());
+    }
+  </script>
+</body>
+</html>

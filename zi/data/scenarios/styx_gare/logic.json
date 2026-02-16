@@ -1,0 +1,1726 @@
+{
+  "meta": {
+    "scenario_id": "styx_gare",
+    "version": "1.0.0",
+    "title_key": "styx.title",
+    "tagline_key": "styx.tagline",
+    "start_scene": "s01",
+    "hint_ns": "styx.h",
+    "clues": [
+      "has_ticket_black",
+      "has_torn_ticket",
+      "saw_clock_0317",
+      "saw_destinations",
+      "rang_bell_thrice",
+      "saw_return_line",
+      "has_control_log",
+      "resisted_lethe",
+      "memory_fading",
+      "met_controller",
+      "accepted_fate",
+      "has_conductor_cap",
+      "activated_cabin"
+    ]
+  },
+  "paths": {
+    "logic": "data/scenarios/styx_gare/logic.json",
+    "texts_fr": "data/scenarios/styx_gare/text_fr.json",
+    "images_dir": "assets/scenarios/styx_gare/img/"
+  },
+  "images": {
+    "cover": {
+      "file": "assets/scenarios/styx_gare/img/cover.webp",
+      "alt": "Train nocturne à quai dans une gare immense et vide, brume noire au sol"
+    },
+    "wagon_empty": {
+      "file": "assets/scenarios/styx_gare/img/wagon_empty.webp",
+      "alt": "Intérieur wagon vide, lumières blafardes, sièges vides"
+    },
+    "quai_styx": {
+      "file": "assets/scenarios/styx_gare/img/quai_styx.webp",
+      "alt": "Quai désert avec panneau ancien marqué STYX, brume sombre"
+    },
+    "panneau_destinations": {
+      "file": "assets/scenarios/styx_gare/img/panneau_destinations.webp",
+      "alt": "Tableau d’affichage ancien avec destinations Léthé, Achéron, Phlégéthon, Hadès"
+    },
+    "horloge_figee": {
+      "file": "assets/scenarios/styx_gare/img/horloge_figee.webp",
+      "alt": "Horloge murale ancienne arrêtée à 03:17, fissures et poussière"
+    },
+    "silhouette_quai": {
+      "file": "assets/scenarios/styx_gare/img/silhouette_quai.webp",
+      "alt": "Silhouette floue au bout du quai, brume noire, lumière froide"
+    },
+    "escalier_souterrain": {
+      "file": "assets/scenarios/styx_gare/img/escalier_souterrain.webp",
+      "alt": "Escalier descendant vers un sous-sol brumeux et sombre"
+    },
+    "tunnel_acheron": {
+      "file": "assets/scenarios/styx_gare/img/tunnel_acheron.webp",
+      "alt": "Tunnel sombre avec inscription ACHÉRON, eau noire au sol"
+    },
+    "fleuve_lethe": {
+      "file": "assets/scenarios/styx_gare/img/fleuve_lethe.webp",
+      "alt": "Bassin d’eau noire calme en souterrain, reflet parfait"
+    },
+    "guichet_vide": {
+      "file": "assets/scenarios/styx_gare/img/guichet_vide.webp",
+      "alt": "Guichet de gare ancien fermé, cloche en laiton, vitre poussiéreuse"
+    },
+    "ticket_noir": {
+      "file": "assets/scenarios/styx_gare/img/ticket_noir.webp",
+      "alt": "Ticket noir mat sans destination, posé sur un comptoir"
+    },
+    "controleur_sans_visage": {
+      "file": "assets/scenarios/styx_gare/img/controleur_sans_visage.webp",
+      "alt": "Contrôleur en uniforme, visage avalé par l’ombre, sous une lampe"
+    },
+    "porte_hades": {
+      "file": "assets/scenarios/styx_gare/img/porte_hades.webp",
+      "alt": "Porte métallique monumentale marquée HADÈS, lueur rouge filtrant dessous"
+    },
+    "train_lueur_rouge": {
+      "file": "assets/scenarios/styx_gare/img/train_lueur_rouge.webp",
+      "alt": "Train ancien éclairé rouge au loin dans la brume sombre"
+    },
+    "charon_quai": {
+      "file": "assets/scenarios/styx_gare/img/charon_quai.webp",
+      "alt": "Vieil homme sombre tenant une lanterne sur un quai brumeux"
+    },
+    "cerbere_ombre": {
+      "file": "assets/scenarios/styx_gare/img/cerbere_ombre.webp",
+      "alt": "Ombre gigantesque d’un chien à trois têtes projetée sur un mur"
+    },
+    "cabine_conducteur": {
+      "file": "assets/scenarios/styx_gare/img/cabine_conducteur.webp",
+      "alt": "Cabine de conducteur ancienne vide, leviers métalliques, lumière froide"
+    },
+    "quai_vide_infini": {
+      "file": "assets/scenarios/styx_gare/img/quai_vide_infini.webp",
+      "alt": "Quai semblant s’étendre à l’infini dans la brume noire"
+    },
+    "salle_attente_marbres": {
+      "file": "assets/scenarios/styx_gare/img/salle_attente_marbres.webp",
+      "alt": "Salle d’attente monumentale en marbre fissuré, statues brisées"
+    },
+    "statue_hades": {
+      "file": "assets/scenarios/styx_gare/img/statue_hades.webp",
+      "alt": "Statue sombre et imposante d’Hadès dans la gare abandonnée"
+    },
+    "fleuve_traverse": {
+      "file": "assets/scenarios/styx_gare/img/fleuve_traverse.webp",
+      "alt": "Passerelle étroite au-dessus d’un fleuve noir souterrain, brume dense"
+    },
+    "salle_controle": {
+      "file": "assets/scenarios/styx_gare/img/salle_controle.webp",
+      "alt": "Salle de contrôle ferroviaire abandonnée, écrans analogiques et leviers"
+    },
+    "billet_dechire": {
+      "file": "assets/scenarios/styx_gare/img/billet_dechire.webp",
+      "alt": "Ticket noir déchiré en deux, posé sur un sol de marbre fissuré"
+    },
+    "casquette_conducteur": {
+      "file": "assets/scenarios/styx_gare/img/casquette_conducteur.webp",
+      "alt": "Casquette noire de conducteur posée seule sur une console métallique"
+    },
+    "train_depart_lumiere": {
+      "file": "assets/scenarios/styx_gare/img/train_depart_lumiere.webp",
+      "alt": "Train quittant la gare sombre vers une lumière blanche intense"
+    },
+    "enfer_portes": {
+      "file": "assets/scenarios/styx_gare/img/enfer_portes.webp",
+      "alt": "Portes monumentales ouvertes sur un abîme rouge incandescent"
+    },
+    "cerbere_visible": {
+      "file": "assets/scenarios/styx_gare/img/cerbere_visible.webp",
+      "alt": "Cerbère réaliste à trois têtes gardant une porte infernale"
+    },
+    "charon_bateau_ferroviaire": {
+      "file": "assets/scenarios/styx_gare/img/charon_bateau_ferroviaire.webp",
+      "alt": "Charon conduisant un train ancien dans un tunnel rougeoyant"
+    },
+    "cabine_active": {
+      "file": "assets/scenarios/styx_gare/img/cabine_active.webp",
+      "alt": "Cabine de train allumée, levier tiré, atmosphère mystérieuse"
+    },
+    "final_secret_conducteur": {
+      "file": "assets/scenarios/styx_gare/img/final_secret_conducteur.webp",
+      "alt": "Vue depuis la cabine sur un quai rempli de silhouettes floues dans la brume"
+    }
+  },
+  "state_model": {
+    "flags": [
+      "has_ticket_black",
+      "has_torn_ticket",
+      "saw_clock_0317",
+      "saw_destinations",
+      "rang_bell_thrice",
+      "saw_return_line",
+      "has_control_log",
+      "resisted_lethe",
+      "memory_fading",
+      "met_controller",
+      "accepted_fate",
+      "has_conductor_cap",
+      "activated_cabin"
+    ]
+  },
+  "scenes": {
+    "s01": {
+      "image_id": "cover",
+      "title_key": "styx.s01.title",
+      "body_key": "styx.s01.body",
+      "choices": [
+        {
+          "choice_key": "styx.s01.c1",
+          "next": "s02"
+        },
+        {
+          "choice_key": "styx.s01.c2",
+          "next": "s06"
+        },
+        {
+          "choice_key": "styx.s01.c3",
+          "next": "s03"
+        }
+      ]
+    },
+    "s02": {
+      "image_id": "wagon_empty",
+      "title_key": "styx.s02.title",
+      "body_key": "styx.s02.body",
+      "choices": [
+        {
+          "choice_key": "styx.s02.c1",
+          "next": "s04"
+        },
+        {
+          "choice_key": "styx.s02.c2",
+          "next": "s06"
+        },
+        {
+          "choice_key": "styx.s02.c3",
+          "next": "s19"
+        }
+      ]
+    },
+    "s03": {
+      "image_id": "wagon_empty",
+      "title_key": "styx.s03.title",
+      "body_key": "styx.s03.body",
+      "choices": [
+        {
+          "choice_key": "styx.s03.c1",
+          "next": "s02"
+        },
+        {
+          "choice_key": "styx.s03.c2",
+          "next": "s06"
+        },
+        {
+          "choice_key": "styx.s03.c3",
+          "next": "s09"
+        }
+      ]
+    },
+    "s04": {
+      "image_id": "ticket_noir",
+      "title_key": "styx.s04.title",
+      "body_key": "styx.s04.body",
+      "choices": [
+        {
+          "choice_key": "styx.s04.c1",
+          "next": "s06",
+          "set_flags": [
+            "has_ticket_black"
+          ]
+        },
+        {
+          "choice_key": "styx.s04.c2",
+          "next": "s10",
+          "set_flags": [
+            "has_ticket_black"
+          ]
+        },
+        {
+          "choice_key": "styx.s04.c3",
+          "next": "s02"
+        }
+      ]
+    },
+    "s05": {
+      "image_id": "wagon_empty",
+      "title_key": "styx.s05.title",
+      "body_key": "styx.s05.body",
+      "choices": [
+        {
+          "choice_key": "styx.s05.c1",
+          "next": "s06"
+        },
+        {
+          "choice_key": "styx.s05.c2",
+          "next": "s02"
+        },
+        {
+          "choice_key": "styx.s05.c3",
+          "next": "s03"
+        }
+      ]
+    },
+    "s06": {
+      "image_id": "quai_styx",
+      "title_key": "styx.s06.title",
+      "body_key": "styx.s06.body",
+      "choices": [
+        {
+          "choice_key": "styx.s06.c1",
+          "next": "s07"
+        },
+        {
+          "choice_key": "styx.s06.c2",
+          "next": "s08"
+        },
+        {
+          "choice_key": "styx.s06.c3",
+          "next": "s10"
+        }
+      ]
+    },
+    "s07": {
+      "image_id": "quai_styx",
+      "title_key": "styx.s07.title",
+      "body_key": "styx.s07.body",
+      "choices": [
+        {
+          "choice_key": "styx.s07.c1",
+          "next": "s16"
+        },
+        {
+          "choice_key": "styx.s07.c2",
+          "next": "s09"
+        },
+        {
+          "choice_key": "styx.s07.c3",
+          "next": "s13"
+        }
+      ]
+    },
+    "s08": {
+      "image_id": "panneau_destinations",
+      "title_key": "styx.s08.title",
+      "body_key": "styx.s08.body",
+      "choices": [
+        {
+          "choice_key": "styx.s08.c1",
+          "next": "s09",
+          "set_flags": [
+            "saw_destinations"
+          ]
+        },
+        {
+          "choice_key": "styx.s08.c2",
+          "next": "s68",
+          "requires_any_flags": [
+            "rang_bell_thrice"
+          ]
+        },
+        {
+          "choice_key": "styx.s08.c3",
+          "next": "s20"
+        }
+      ]
+    },
+    "s09": {
+      "image_id": "horloge_figee",
+      "title_key": "styx.s09.title",
+      "body_key": "styx.s09.body",
+      "choices": [
+        {
+          "choice_key": "styx.s09.c1",
+          "next": "s06",
+          "set_flags": [
+            "saw_clock_0317"
+          ]
+        },
+        {
+          "choice_key": "styx.s09.c2",
+          "next": "s22",
+          "set_flags": [
+            "saw_clock_0317"
+          ]
+        },
+        {
+          "choice_key": "styx.s09.c3",
+          "next": "s20"
+        }
+      ]
+    },
+    "s10": {
+      "image_id": "guichet_vide",
+      "title_key": "styx.s10.title",
+      "body_key": "styx.s10.body",
+      "choices": [
+        {
+          "choice_key": "styx.s10.c1",
+          "next": "s11"
+        },
+        {
+          "choice_key": "styx.s10.c2",
+          "next": "s67"
+        },
+        {
+          "choice_key": "styx.s10.c3",
+          "next": "s06"
+        }
+      ]
+    },
+    "s11": {
+      "image_id": "guichet_vide",
+      "title_key": "styx.s11.title",
+      "body_key": "styx.s11.body",
+      "choices": [
+        {
+          "choice_key": "styx.s11.c1",
+          "next": "s12"
+        },
+        {
+          "choice_key": "styx.s11.c2",
+          "next": "s20"
+        },
+        {
+          "choice_key": "styx.s11.c3",
+          "next": "s10"
+        }
+      ]
+    },
+    "s12": {
+      "image_id": "billet_dechire",
+      "title_key": "styx.s12.title",
+      "body_key": "styx.s12.body",
+      "choices": [
+        {
+          "choice_key": "styx.s12.c1",
+          "next": "s13",
+          "set_flags": [
+            "has_torn_ticket"
+          ]
+        },
+        {
+          "choice_key": "styx.s12.c2",
+          "next": "s22",
+          "set_flags": [
+            "has_torn_ticket"
+          ]
+        },
+        {
+          "choice_key": "styx.s12.c3",
+          "next": "s20"
+        }
+      ]
+    },
+    "s13": {
+      "image_id": "salle_attente_marbres",
+      "title_key": "styx.s13.title",
+      "body_key": "styx.s13.body",
+      "choices": [
+        {
+          "choice_key": "styx.s13.c1",
+          "next": "s14"
+        },
+        {
+          "choice_key": "styx.s13.c2",
+          "next": "s22"
+        },
+        {
+          "choice_key": "styx.s13.c3",
+          "next": "s06"
+        }
+      ]
+    },
+    "s14": {
+      "image_id": "salle_attente_marbres",
+      "title_key": "styx.s14.title",
+      "body_key": "styx.s14.body",
+      "choices": [
+        {
+          "choice_key": "styx.s14.c1",
+          "next": "s15"
+        },
+        {
+          "choice_key": "styx.s14.c2",
+          "next": "s39"
+        },
+        {
+          "choice_key": "styx.s14.c3",
+          "next": "s13"
+        }
+      ]
+    },
+    "s15": {
+      "image_id": "statue_hades",
+      "title_key": "styx.s15.title",
+      "body_key": "styx.s15.body",
+      "choices": [
+        {
+          "choice_key": "styx.s15.c1",
+          "next": "s21"
+        },
+        {
+          "choice_key": "styx.s15.c2",
+          "next": "s39"
+        },
+        {
+          "choice_key": "styx.s15.c3",
+          "next": "s13"
+        }
+      ]
+    },
+    "s16": {
+      "image_id": "quai_vide_infini",
+      "title_key": "styx.s16.title",
+      "body_key": "styx.s16.body",
+      "choices": [
+        {
+          "choice_key": "styx.s16.c1",
+          "next": "s17"
+        },
+        {
+          "choice_key": "styx.s16.c2",
+          "next": "s06"
+        },
+        {
+          "choice_key": "styx.s16.c3",
+          "next": "s18"
+        }
+      ]
+    },
+    "s17": {
+      "image_id": "silhouette_quai",
+      "title_key": "styx.s17.title",
+      "body_key": "styx.s17.body",
+      "choices": [
+        {
+          "choice_key": "styx.s17.c1",
+          "next": "s28"
+        },
+        {
+          "choice_key": "styx.s17.c2",
+          "next": "s20"
+        },
+        {
+          "choice_key": "styx.s17.c3",
+          "next": "s16"
+        }
+      ]
+    },
+    "s18": {
+      "image_id": "train_lueur_rouge",
+      "title_key": "styx.s18.title",
+      "body_key": "styx.s18.body",
+      "choices": [
+        {
+          "choice_key": "styx.s18.c1",
+          "next": "s22"
+        },
+        {
+          "choice_key": "styx.s18.c2",
+          "next": "s32"
+        },
+        {
+          "choice_key": "styx.s18.c3",
+          "next": "s16"
+        }
+      ]
+    },
+    "s19": {
+      "image_id": "wagon_empty",
+      "title_key": "styx.s19.title",
+      "body_key": "styx.s19.body",
+      "choices": [
+        {
+          "choice_key": "styx.s19.c1",
+          "next": "s02"
+        },
+        {
+          "choice_key": "styx.s19.c2",
+          "next": "s06"
+        },
+        {
+          "choice_key": "styx.s19.c3",
+          "next": "s70"
+        }
+      ]
+    },
+    "s20": {
+      "image_id": "controleur_sans_visage",
+      "title_key": "styx.s20.title",
+      "body_key": "styx.s20.body",
+      "choices": [
+        {
+          "choice_key": "styx.s20.c1",
+          "next": "s21",
+          "set_flags": [
+            "met_controller"
+          ]
+        },
+        {
+          "choice_key": "styx.s20.c2",
+          "next": "s47",
+          "set_flags": [
+            "met_controller"
+          ]
+        },
+        {
+          "choice_key": "styx.s20.c3",
+          "next": "s06",
+          "set_flags": [
+            "met_controller"
+          ]
+        }
+      ]
+    },
+    "s21": {
+      "image_id": "controleur_sans_visage",
+      "title_key": "styx.s21.title",
+      "body_key": "styx.s21.body",
+      "choices": [
+        {
+          "choice_key": "styx.s21.c1",
+          "next": "s49"
+        },
+        {
+          "choice_key": "styx.s21.c2",
+          "next": "s55",
+          "set_flags": [
+            "accepted_fate"
+          ]
+        },
+        {
+          "choice_key": "styx.s21.c3",
+          "next": "s22"
+        }
+      ]
+    },
+    "s22": {
+      "image_id": "escalier_souterrain",
+      "title_key": "styx.s22.title",
+      "body_key": "styx.s22.body",
+      "choices": [
+        {
+          "choice_key": "styx.s22.c1",
+          "next": "s23"
+        },
+        {
+          "choice_key": "styx.s22.c2",
+          "next": "s06"
+        },
+        {
+          "choice_key": "styx.s22.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s23": {
+      "image_id": "escalier_souterrain",
+      "title_key": "styx.s23.title",
+      "body_key": "styx.s23.body",
+      "choices": [
+        {
+          "choice_key": "styx.s23.c1",
+          "next": "s24"
+        },
+        {
+          "choice_key": "styx.s23.c2",
+          "next": "s31"
+        },
+        {
+          "choice_key": "styx.s23.c3",
+          "next": "s22"
+        }
+      ]
+    },
+    "s24": {
+      "image_id": "tunnel_acheron",
+      "title_key": "styx.s24.title",
+      "body_key": "styx.s24.body",
+      "choices": [
+        {
+          "choice_key": "styx.s24.c1",
+          "next": "s25"
+        },
+        {
+          "choice_key": "styx.s24.c2",
+          "next": "s26"
+        },
+        {
+          "choice_key": "styx.s24.c3",
+          "next": "s23"
+        }
+      ]
+    },
+    "s25": {
+      "image_id": "tunnel_acheron",
+      "title_key": "styx.s25.title",
+      "body_key": "styx.s25.body",
+      "choices": [
+        {
+          "choice_key": "styx.s25.c1",
+          "next": "s28"
+        },
+        {
+          "choice_key": "styx.s25.c2",
+          "next": "s26"
+        },
+        {
+          "choice_key": "styx.s25.c3",
+          "next": "s24"
+        }
+      ]
+    },
+    "s26": {
+      "image_id": "fleuve_traverse",
+      "title_key": "styx.s26.title",
+      "body_key": "styx.s26.body",
+      "choices": [
+        {
+          "choice_key": "styx.s26.c1",
+          "next": "s27"
+        },
+        {
+          "choice_key": "styx.s26.c2",
+          "next": "s34"
+        },
+        {
+          "choice_key": "styx.s26.c3",
+          "next": "s24"
+        }
+      ]
+    },
+    "s27": {
+      "image_id": "fleuve_traverse",
+      "title_key": "styx.s27.title",
+      "body_key": "styx.s27.body",
+      "choices": [
+        {
+          "choice_key": "styx.s27.c1",
+          "next": "s28"
+        },
+        {
+          "choice_key": "styx.s27.c2",
+          "next": "s35"
+        },
+        {
+          "choice_key": "styx.s27.c3",
+          "next": "s26"
+        }
+      ]
+    },
+    "s28": {
+      "image_id": "fleuve_lethe",
+      "title_key": "styx.s28.title",
+      "body_key": "styx.s28.body",
+      "choices": [
+        {
+          "choice_key": "styx.s28.c1",
+          "next": "s29"
+        },
+        {
+          "choice_key": "styx.s28.c2",
+          "next": "s63"
+        },
+        {
+          "choice_key": "styx.s28.c3",
+          "next": "s30"
+        }
+      ]
+    },
+    "s29": {
+      "image_id": "fleuve_lethe",
+      "title_key": "styx.s29.title",
+      "body_key": "styx.s29.body",
+      "choices": [
+        {
+          "choice_key": "styx.s29.c1",
+          "next": "s64",
+          "set_flags": [
+            "memory_fading"
+          ],
+          "clear_flags": [
+            "has_control_log",
+            "has_ticket_black",
+            "has_torn_ticket",
+            "saw_return_line"
+          ]
+        },
+        {
+          "choice_key": "styx.s29.c2",
+          "next": "s63",
+          "set_flags": [
+            "resisted_lethe"
+          ]
+        },
+        {
+          "choice_key": "styx.s29.c3",
+          "next": "s28"
+        }
+      ]
+    },
+    "s30": {
+      "image_id": "fleuve_lethe",
+      "title_key": "styx.s30.title",
+      "body_key": "styx.s30.body",
+      "choices": [
+        {
+          "choice_key": "styx.s30.c1",
+          "next": "s33",
+          "requires_any_flags": [
+            "resisted_lethe"
+          ]
+        },
+        {
+          "choice_key": "styx.s30.c2",
+          "next": "s65",
+          "requires_any_flags": [
+            "memory_fading"
+          ]
+        },
+        {
+          "choice_key": "styx.s30.c3",
+          "next": "s28"
+        }
+      ]
+    },
+    "s31": {
+      "image_id": "tunnel_acheron",
+      "title_key": "styx.s31.title",
+      "body_key": "styx.s31.body",
+      "choices": [
+        {
+          "choice_key": "styx.s31.c1",
+          "next": "s22"
+        },
+        {
+          "choice_key": "styx.s31.c2",
+          "next": "s39"
+        },
+        {
+          "choice_key": "styx.s31.c3",
+          "next": "s24"
+        }
+      ]
+    },
+    "s32": {
+      "image_id": "porte_hades",
+      "title_key": "styx.s32.title",
+      "body_key": "styx.s32.body",
+      "choices": [
+        {
+          "choice_key": "styx.s32.c1",
+          "next": "s33"
+        },
+        {
+          "choice_key": "styx.s32.c2",
+          "next": "s34"
+        },
+        {
+          "choice_key": "styx.s32.c3",
+          "next": "s22"
+        }
+      ]
+    },
+    "s33": {
+      "image_id": "porte_hades",
+      "title_key": "styx.s33.title",
+      "body_key": "styx.s33.body",
+      "choices": [
+        {
+          "choice_key": "styx.s33.c1",
+          "next": "s56"
+        },
+        {
+          "choice_key": "styx.s33.c2",
+          "next": "s34"
+        },
+        {
+          "choice_key": "styx.s33.c3",
+          "next": "s32"
+        }
+      ]
+    },
+    "s34": {
+      "image_id": "cerbere_ombre",
+      "title_key": "styx.s34.title",
+      "body_key": "styx.s34.body",
+      "choices": [
+        {
+          "choice_key": "styx.s34.c1",
+          "next": "s58"
+        },
+        {
+          "choice_key": "styx.s34.c2",
+          "next": "s57"
+        },
+        {
+          "choice_key": "styx.s34.c3",
+          "next": "s26"
+        }
+      ]
+    },
+    "s35": {
+      "image_id": "train_lueur_rouge",
+      "title_key": "styx.s35.title",
+      "body_key": "styx.s35.body",
+      "choices": [
+        {
+          "choice_key": "styx.s35.c1",
+          "next": "s59"
+        },
+        {
+          "choice_key": "styx.s35.c2",
+          "next": "s24"
+        },
+        {
+          "choice_key": "styx.s35.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s36": {
+      "image_id": "cabine_conducteur",
+      "title_key": "styx.s36.title",
+      "body_key": "styx.s36.body",
+      "choices": [
+        {
+          "choice_key": "styx.s36.c1",
+          "next": "s37"
+        },
+        {
+          "choice_key": "styx.s36.c2",
+          "next": "s39"
+        },
+        {
+          "choice_key": "styx.s36.c3",
+          "next": "s06"
+        }
+      ]
+    },
+    "s37": {
+      "image_id": "cabine_conducteur",
+      "title_key": "styx.s37.title",
+      "body_key": "styx.s37.body",
+      "choices": [
+        {
+          "choice_key": "styx.s37.c1",
+          "next": "s38"
+        },
+        {
+          "choice_key": "styx.s37.c2",
+          "next": "s45",
+          "requires_any_flags": [
+            "has_conductor_cap"
+          ]
+        },
+        {
+          "choice_key": "styx.s37.c3",
+          "next": "s36"
+        }
+      ]
+    },
+    "s38": {
+      "image_id": "casquette_conducteur",
+      "title_key": "styx.s38.title",
+      "body_key": "styx.s38.body",
+      "choices": [
+        {
+          "choice_key": "styx.s38.c1",
+          "next": "s39",
+          "set_flags": [
+            "has_conductor_cap"
+          ]
+        },
+        {
+          "choice_key": "styx.s38.c2",
+          "next": "s37",
+          "set_flags": [
+            "has_conductor_cap"
+          ]
+        },
+        {
+          "choice_key": "styx.s38.c3",
+          "next": "s06"
+        }
+      ]
+    },
+    "s39": {
+      "image_id": "salle_controle",
+      "title_key": "styx.s39.title",
+      "body_key": "styx.s39.body",
+      "choices": [
+        {
+          "choice_key": "styx.s39.c1",
+          "next": "s40"
+        },
+        {
+          "choice_key": "styx.s39.c2",
+          "next": "s41"
+        },
+        {
+          "choice_key": "styx.s39.c3",
+          "next": "s14"
+        }
+      ]
+    },
+    "s40": {
+      "image_id": "salle_controle",
+      "title_key": "styx.s40.title",
+      "body_key": "styx.s40.body",
+      "choices": [
+        {
+          "choice_key": "styx.s40.c1",
+          "next": "s42"
+        },
+        {
+          "choice_key": "styx.s40.c2",
+          "next": "s43"
+        },
+        {
+          "choice_key": "styx.s40.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s41": {
+      "image_id": "salle_controle",
+      "title_key": "styx.s41.title",
+      "body_key": "styx.s41.body",
+      "choices": [
+        {
+          "choice_key": "styx.s41.c1",
+          "next": "s42"
+        },
+        {
+          "choice_key": "styx.s41.c2",
+          "next": "s36"
+        },
+        {
+          "choice_key": "styx.s41.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s42": {
+      "image_id": "salle_controle",
+      "title_key": "styx.s42.title",
+      "body_key": "styx.s42.body",
+      "choices": [
+        {
+          "choice_key": "styx.s42.c1",
+          "next": "s71",
+          "set_flags": [
+            "has_control_log"
+          ]
+        },
+        {
+          "choice_key": "styx.s42.c2",
+          "next": "s47",
+          "set_flags": [
+            "has_control_log"
+          ]
+        },
+        {
+          "choice_key": "styx.s42.c3",
+          "next": "s39",
+          "set_flags": [
+            "has_control_log"
+          ]
+        }
+      ]
+    },
+    "s43": {
+      "image_id": "salle_controle",
+      "title_key": "styx.s43.title",
+      "body_key": "styx.s43.body",
+      "choices": [
+        {
+          "choice_key": "styx.s43.c1",
+          "next": "s44"
+        },
+        {
+          "choice_key": "styx.s43.c2",
+          "next": "s20"
+        },
+        {
+          "choice_key": "styx.s43.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s44": {
+      "image_id": "salle_controle",
+      "title_key": "styx.s44.title",
+      "body_key": "styx.s44.body",
+      "choices": [
+        {
+          "choice_key": "styx.s44.c1",
+          "next": "s45",
+          "requires_any_flags": [
+            "has_conductor_cap"
+          ]
+        },
+        {
+          "choice_key": "styx.s44.c2",
+          "next": "s36"
+        },
+        {
+          "choice_key": "styx.s44.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s45": {
+      "image_id": "cabine_active",
+      "title_key": "styx.s45.title",
+      "body_key": "styx.s45.body",
+      "choices": [
+        {
+          "choice_key": "styx.s45.c1",
+          "next": "s46",
+          "set_flags": [
+            "activated_cabin"
+          ],
+          "requires_any_flags": [
+            "has_conductor_cap"
+          ]
+        },
+        {
+          "choice_key": "styx.s45.c2",
+          "next": "s37",
+          "set_flags": [
+            "activated_cabin"
+          ],
+          "requires_any_flags": [
+            "has_conductor_cap"
+          ]
+        },
+        {
+          "choice_key": "styx.s45.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s46": {
+      "image_id": "cabine_active",
+      "title_key": "styx.s46.title",
+      "body_key": "styx.s46.body",
+      "choices": [
+        {
+          "choice_key": "styx.s46.c1",
+          "next": "s69",
+          "requires_all_flags": [
+            "has_conductor_cap",
+            "activated_cabin"
+          ]
+        },
+        {
+          "choice_key": "styx.s46.c2",
+          "next": "s47"
+        },
+        {
+          "choice_key": "styx.s46.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s47": {
+      "image_id": "quai_styx",
+      "title_key": "styx.s47.title",
+      "body_key": "styx.s47.body",
+      "choices": [
+        {
+          "choice_key": "styx.s47.c1",
+          "next": "s48"
+        },
+        {
+          "choice_key": "styx.s47.c2",
+          "next": "s08"
+        },
+        {
+          "choice_key": "styx.s47.c3",
+          "next": "s36"
+        }
+      ]
+    },
+    "s48": {
+      "image_id": "controleur_sans_visage",
+      "title_key": "styx.s48.title",
+      "body_key": "styx.s48.body",
+      "choices": [
+        {
+          "choice_key": "styx.s48.c1",
+          "next": "s49",
+          "set_flags": [
+            "met_controller"
+          ]
+        },
+        {
+          "choice_key": "styx.s48.c2",
+          "next": "s53",
+          "set_flags": [
+            "met_controller"
+          ]
+        },
+        {
+          "choice_key": "styx.s48.c3",
+          "next": "s06",
+          "set_flags": [
+            "met_controller"
+          ]
+        }
+      ]
+    },
+    "s49": {
+      "image_id": "controleur_sans_visage",
+      "title_key": "styx.s49.title",
+      "body_key": "styx.s49.body",
+      "choices": [
+        {
+          "choice_key": "styx.s49.c1",
+          "next": "s50"
+        },
+        {
+          "choice_key": "styx.s49.c2",
+          "next": "s51"
+        },
+        {
+          "choice_key": "styx.s49.c3",
+          "next": "s52"
+        }
+      ]
+    },
+    "s50": {
+      "image_id": "horloge_figee",
+      "title_key": "styx.s50.title",
+      "body_key": "styx.s50.body",
+      "choices": [
+        {
+          "choice_key": "styx.s50.c1",
+          "next": "s72",
+          "requires_any_flags": [
+            "saw_clock_0317"
+          ]
+        },
+        {
+          "choice_key": "styx.s50.c2",
+          "next": "s09"
+        },
+        {
+          "choice_key": "styx.s50.c3",
+          "next": "s49"
+        }
+      ]
+    },
+    "s51": {
+      "image_id": "panneau_destinations",
+      "title_key": "styx.s51.title",
+      "body_key": "styx.s51.body",
+      "choices": [
+        {
+          "choice_key": "styx.s51.c1",
+          "next": "s72",
+          "requires_any_flags": [
+            "saw_return_line"
+          ]
+        },
+        {
+          "choice_key": "styx.s51.c2",
+          "next": "s67"
+        },
+        {
+          "choice_key": "styx.s51.c3",
+          "next": "s49"
+        }
+      ]
+    },
+    "s52": {
+      "image_id": "ticket_noir",
+      "title_key": "styx.s52.title",
+      "body_key": "styx.s52.body",
+      "choices": [
+        {
+          "choice_key": "styx.s52.c1",
+          "next": "s72",
+          "requires_any_flags": [
+            "has_ticket_black",
+            "has_torn_ticket"
+          ]
+        },
+        {
+          "choice_key": "styx.s52.c2",
+          "next": "s12"
+        },
+        {
+          "choice_key": "styx.s52.c3",
+          "next": "s49"
+        }
+      ]
+    },
+    "s53": {
+      "image_id": "quai_vide_infini",
+      "title_key": "styx.s53.title",
+      "body_key": "styx.s53.body",
+      "choices": [
+        {
+          "choice_key": "styx.s53.c1",
+          "next": "s72"
+        },
+        {
+          "choice_key": "styx.s53.c2",
+          "next": "s55"
+        },
+        {
+          "choice_key": "styx.s53.c3",
+          "next": "s70"
+        }
+      ]
+    },
+    "s54": {
+      "image_id": "panneau_destinations",
+      "title_key": "styx.s54.title",
+      "body_key": "styx.s54.body",
+      "choices": [
+        {
+          "choice_key": "styx.s54.c1",
+          "next": "s60",
+          "requires_all_flags": [
+            "has_control_log",
+            "saw_clock_0317",
+            "saw_return_line",
+            "has_ticket_black"
+          ]
+        },
+        {
+          "choice_key": "styx.s54.c2",
+          "next": "s60",
+          "requires_all_flags": [
+            "has_control_log",
+            "saw_clock_0317",
+            "saw_return_line",
+            "has_torn_ticket"
+          ]
+        },
+        {
+          "choice_key": "styx.s54.c3",
+          "next": "s55"
+        }
+      ]
+    },
+    "s55": {
+      "image_id": "quai_vide_infini",
+      "title_key": "styx.s55.title",
+      "body_key": "styx.s55.body",
+      "choices": [
+        {
+          "choice_key": "styx.s55.c1",
+          "next": "s32"
+        },
+        {
+          "choice_key": "styx.s55.c2",
+          "next": "s56"
+        },
+        {
+          "choice_key": "styx.s55.c3",
+          "next": "s20"
+        }
+      ]
+    },
+    "s56": {
+      "image_id": "charon_quai",
+      "title_key": "styx.s56.title",
+      "body_key": "styx.s56.body",
+      "choices": [
+        {
+          "choice_key": "styx.s56.c1",
+          "next": "s57"
+        },
+        {
+          "choice_key": "styx.s56.c2",
+          "next": "s72"
+        },
+        {
+          "choice_key": "styx.s56.c3",
+          "next": "s55"
+        }
+      ]
+    },
+    "s57": {
+      "image_id": "charon_quai",
+      "title_key": "styx.s57.title",
+      "body_key": "styx.s57.body",
+      "choices": [
+        {
+          "choice_key": "styx.s57.c1",
+          "next": "end_bad"
+        },
+        {
+          "choice_key": "styx.s57.c2",
+          "next": "s58"
+        },
+        {
+          "choice_key": "styx.s57.c3",
+          "next": "s56"
+        }
+      ]
+    },
+    "s58": {
+      "image_id": "cerbere_visible",
+      "title_key": "styx.s58.title",
+      "body_key": "styx.s58.body",
+      "choices": [
+        {
+          "choice_key": "styx.s58.c1",
+          "next": "end_bad"
+        },
+        {
+          "choice_key": "styx.s58.c2",
+          "next": "s59"
+        },
+        {
+          "choice_key": "styx.s58.c3",
+          "next": "s56"
+        }
+      ]
+    },
+    "s59": {
+      "image_id": "enfer_portes",
+      "title_key": "styx.s59.title",
+      "body_key": "styx.s59.body",
+      "choices": [
+        {
+          "choice_key": "styx.s59.c1",
+          "next": "end_bad"
+        },
+        {
+          "choice_key": "styx.s59.c2",
+          "next": "s57"
+        },
+        {
+          "choice_key": "styx.s59.c3",
+          "next": "s35"
+        }
+      ]
+    },
+    "s60": {
+      "image_id": "train_depart_lumiere",
+      "title_key": "styx.s60.title",
+      "body_key": "styx.s60.body",
+      "choices": [
+        {
+          "choice_key": "styx.s60.c1",
+          "next": "end_good"
+        },
+        {
+          "choice_key": "styx.s60.c2",
+          "next": "s72"
+        },
+        {
+          "choice_key": "styx.s60.c3",
+          "next": "s46"
+        }
+      ]
+    },
+    "s61": {
+      "image_id": "final_secret_conducteur",
+      "title_key": "styx.s61.title",
+      "body_key": "styx.s61.body",
+      "choices": [
+        {
+          "choice_key": "styx.s61.c1",
+          "next": "s62",
+          "requires_all_flags": [
+            "has_conductor_cap",
+            "activated_cabin"
+          ]
+        },
+        {
+          "choice_key": "styx.s61.c2",
+          "next": "s46"
+        },
+        {
+          "choice_key": "styx.s61.c3",
+          "next": "s72"
+        }
+      ]
+    },
+    "s62": {
+      "image_id": "cabine_active",
+      "title_key": "styx.s62.title",
+      "body_key": "styx.s62.body",
+      "choices": [
+        {
+          "choice_key": "styx.s62.c1",
+          "next": "end_secret",
+          "requires_all_flags": [
+            "has_conductor_cap",
+            "activated_cabin"
+          ]
+        },
+        {
+          "choice_key": "styx.s62.c2",
+          "next": "s46"
+        },
+        {
+          "choice_key": "styx.s62.c3",
+          "next": "s72"
+        }
+      ]
+    },
+    "s63": {
+      "image_id": "fleuve_lethe",
+      "title_key": "styx.s63.title",
+      "body_key": "styx.s63.body",
+      "choices": [
+        {
+          "choice_key": "styx.s63.c1",
+          "next": "s30",
+          "set_flags": [
+            "resisted_lethe"
+          ]
+        },
+        {
+          "choice_key": "styx.s63.c2",
+          "next": "s31",
+          "set_flags": [
+            "resisted_lethe"
+          ]
+        },
+        {
+          "choice_key": "styx.s63.c3",
+          "next": "s29"
+        }
+      ]
+    },
+    "s64": {
+      "image_id": "fleuve_lethe",
+      "title_key": "styx.s64.title",
+      "body_key": "styx.s64.body",
+      "choices": [
+        {
+          "choice_key": "styx.s64.c1",
+          "next": "s65",
+          "set_flags": [
+            "memory_fading"
+          ]
+        },
+        {
+          "choice_key": "styx.s64.c2",
+          "next": "s70",
+          "set_flags": [
+            "memory_fading"
+          ]
+        },
+        {
+          "choice_key": "styx.s64.c3",
+          "next": "s28"
+        }
+      ]
+    },
+    "s65": {
+      "image_id": "quai_vide_infini",
+      "title_key": "styx.s65.title",
+      "body_key": "styx.s65.body",
+      "choices": [
+        {
+          "choice_key": "styx.s65.c1",
+          "next": "s66"
+        },
+        {
+          "choice_key": "styx.s65.c2",
+          "next": "s57"
+        },
+        {
+          "choice_key": "styx.s65.c3",
+          "next": "s31"
+        }
+      ]
+    },
+    "s66": {
+      "image_id": "guichet_vide",
+      "title_key": "styx.s66.title",
+      "body_key": "styx.s66.body",
+      "choices": [
+        {
+          "choice_key": "styx.s66.c1",
+          "next": "s12"
+        },
+        {
+          "choice_key": "styx.s66.c2",
+          "next": "s67"
+        },
+        {
+          "choice_key": "styx.s66.c3",
+          "next": "s20"
+        }
+      ]
+    },
+    "s67": {
+      "image_id": "guichet_vide",
+      "title_key": "styx.s67.title",
+      "body_key": "styx.s67.body",
+      "choices": [
+        {
+          "choice_key": "styx.s67.c1",
+          "next": "s68",
+          "set_flags": [
+            "rang_bell_thrice"
+          ]
+        },
+        {
+          "choice_key": "styx.s67.c2",
+          "next": "s10",
+          "set_flags": [
+            "rang_bell_thrice"
+          ]
+        },
+        {
+          "choice_key": "styx.s67.c3",
+          "next": "s20",
+          "set_flags": [
+            "rang_bell_thrice"
+          ]
+        }
+      ]
+    },
+    "s68": {
+      "image_id": "panneau_destinations",
+      "title_key": "styx.s68.title",
+      "body_key": "styx.s68.body",
+      "choices": [
+        {
+          "choice_key": "styx.s68.c1",
+          "next": "s54",
+          "set_flags": [
+            "saw_return_line",
+            "saw_destinations"
+          ]
+        },
+        {
+          "choice_key": "styx.s68.c2",
+          "next": "s72",
+          "set_flags": [
+            "saw_return_line"
+          ]
+        },
+        {
+          "choice_key": "styx.s68.c3",
+          "next": "s08",
+          "set_flags": [
+            "saw_return_line"
+          ]
+        }
+      ]
+    },
+    "s69": {
+      "image_id": "charon_bateau_ferroviaire",
+      "title_key": "styx.s69.title",
+      "body_key": "styx.s69.body",
+      "choices": [
+        {
+          "choice_key": "styx.s69.c1",
+          "next": "s61",
+          "requires_all_flags": [
+            "has_conductor_cap",
+            "activated_cabin"
+          ]
+        },
+        {
+          "choice_key": "styx.s69.c2",
+          "next": "s46"
+        },
+        {
+          "choice_key": "styx.s69.c3",
+          "next": "s72"
+        }
+      ]
+    },
+    "s70": {
+      "image_id": "quai_vide_infini",
+      "title_key": "styx.s70.title",
+      "body_key": "styx.s70.body",
+      "choices": [
+        {
+          "choice_key": "styx.s70.c1",
+          "next": "s16"
+        },
+        {
+          "choice_key": "styx.s70.c2",
+          "next": "s19"
+        },
+        {
+          "choice_key": "styx.s70.c3",
+          "next": "s20"
+        }
+      ]
+    },
+    "s71": {
+      "image_id": "salle_controle",
+      "title_key": "styx.s71.title",
+      "body_key": "styx.s71.body",
+      "choices": [
+        {
+          "choice_key": "styx.s71.c1",
+          "next": "s47"
+        },
+        {
+          "choice_key": "styx.s71.c2",
+          "next": "s48"
+        },
+        {
+          "choice_key": "styx.s71.c3",
+          "next": "s39"
+        }
+      ]
+    },
+    "s72": {
+      "image_id": "controleur_sans_visage",
+      "title_key": "styx.s72.title",
+      "body_key": "styx.s72.body",
+      "choices": [
+        {
+          "choice_key": "styx.s72.c1",
+          "next": "s55"
+        },
+        {
+          "choice_key": "styx.s72.c2",
+          "next": "s54"
+        },
+        {
+          "choice_key": "styx.s72.c3",
+          "next": "s62",
+          "requires_all_flags": [
+            "has_conductor_cap",
+            "activated_cabin"
+          ]
+        }
+      ]
+    },
+    "end_good": {
+      "image_id": "train_depart_lumiere",
+      "title_key": "styx.end_good.title",
+      "body_key": "styx.end_good.body",
+      "choices": []
+    },
+    "end_bad": {
+      "image_id": "enfer_portes",
+      "title_key": "styx.end_bad.title",
+      "body_key": "styx.end_bad.body",
+      "choices": []
+    },
+    "end_secret": {
+      "image_id": "final_secret_conducteur",
+      "title_key": "styx.end_secret.title",
+      "body_key": "styx.end_secret.body",
+      "choices": []
+    }
+  }
+}

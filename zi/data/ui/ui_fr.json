@@ -1,0 +1,69 @@
+{
+  "ui": {
+    "app_title": "VChoice",
+    "app_subtitle": "Histoire interactive",
+    "index_title": "Choisis ton scénario",
+    "index_subtitle": "Clique sur une carte pour commencer.",
+    "language": "Langue",
+    "hint_title": "Info",
+    "hint_close": "Fermer",
+    "hint_close_aria": "Fermer",
+    "btn_play": "Jouer",
+    "btn_continue": "Continuer",
+    "btn_restart": "Recommencer",
+    "btn_back": "Retour",
+    "btn_exit": "Quitter",
+    "btn_hint": "Indice",
+    "loading": "Chargement…",
+    "locked_choice": "Indisponible pour le moment",
+
+    "scenario_buy": {
+      "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
+      "pay": "Débloquer ({price} VCoins)",
+      "iap": "Acheter 300 VCoins",
+      "open_shop": "Ouvrir la boutique",
+      "err_unlock": "Impossible de débloquer (VCoins insuffisants ou erreur réseau).",
+      "err_app_only": "Achat Play Store dispo uniquement dans l’app. Ouvre la boutique.",
+      "err_not_ready": "Système d’achat non prêt.",
+      "err_buy_failed": "Achat annulé ou impossible.",
+      "err_unlock_after_buy": "Achat ok, mais déblocage impossible (réessaye depuis la boutique)."
+    }
+  },
+  "common": {
+    "cancel": "Annuler"
+  },
+  "scenarios": {
+    "dossier14_appartement": {
+      "title": "Appartement 14",
+      "desc": "Un dossier trouvé au mauvais endroit. Un immeuble trop silencieux. Et une porte qui ne devrait pas exister."
+    },
+    "bunker_reserve": {
+      "title": "Bunker",
+      "desc": "Une réserve scellée, des consignes effacées, et l’impression que quelqu’un vit encore derrière les murs."
+    },
+    "hopital_ferme": {
+      "title": "Hôpital",
+      "desc": "Les couloirs sont vides, mais les néons répondent. Certains dossiers semblent écrits pour toi."
+    },
+    "metro_station_zero": {
+      "title": "Métro — Station Zéro",
+      "desc": "Un métro figé où les couloirs ne mènent jamais au même endroit."
+    },
+    "styx_gare": {
+      "title": "STYX — Gare Terminale",
+      "desc": "Une gare hors du temps. Dernier départ. Dernière chance de prouver ta place."
+    },
+    "foret_relais": {
+      "title": "Forêt — Relais",
+      "desc": "Une route forestière, un relais désert… et quelque chose qui t’observe entre les arbres."
+    },
+    "chateau_absents": {
+      "title": "Château — Les Absents",
+      "desc": "Un château silencieux où chaque pièce semble attendre quelqu’un… sauf toi."
+    },
+    "temple_mictlan": {
+      "title": "Temple — Mictlan",
+      "desc": "Un temple sous la pierre noire. Os, brume, et une reine immobile au centre."
+    }
+  }
+}

@@ -1,0 +1,614 @@
+
+{
+  "scenario_id": "bunker_reserve",
+  "version": 3,
+  "start_scene": "s01",
+  "images": {
+    "cover": { "file": "assets/scenarios/bunker_reserve/img/cover.webp", "alt": "Entrée de bunker cachée dans une colline boisée" },
+    "approche": { "file": "assets/scenarios/bunker_reserve/img/approche.webp", "alt": "Clôture rouillée, cadenas neuf, traces au sol" },
+    "trappe": { "file": "assets/scenarios/bunker_reserve/img/trappe.webp", "alt": "Trappe métallique, poignée froide" },
+    "descente": { "file": "assets/scenarios/bunker_reserve/img/descente.webp", "alt": "Descente étroite vers le bunker" },
+    "sas": { "file": "assets/scenarios/bunker_reserve/img/sas.webp", "alt": "Sas à double porte, joints étanches" },
+    "couloir": { "file": "assets/scenarios/bunker_reserve/img/couloir.webp", "alt": "Couloir principal, néons faibles" },
+    "couloir_red": { "file": "assets/scenarios/bunker_reserve/img/couloir_red.webp", "alt": "Couloir sous alarme rouge" },
+    "plan": { "file": "assets/scenarios/bunker_reserve/img/plan.webp", "alt": "Plan derrière vitre, coin arraché" },
+    "controle": { "file": "assets/scenarios/bunker_reserve/img/controle.webp", "alt": "Salle de contrôle, un voyant actif" },
+    "securite": { "file": "assets/scenarios/bunker_reserve/img/securite.webp", "alt": "Salle de sécurité, écrans de surveillance" },
+    "console": { "file": "assets/scenarios/bunker_reserve/img/console.webp", "alt": "Console centrale verrouillée" },
+    "porte_badge": { "file": "assets/scenarios/bunker_reserve/img/porte_badge.webp", "alt": "Porte avec lecteur de badge" },
+    "vestiaire": { "file": "assets/scenarios/bunker_reserve/img/vestiaire.webp", "alt": "Vestiaire service, badge posé" },
+    "maintenance": { "file": "assets/scenarios/bunker_reserve/img/maintenance.webp", "alt": "Local maintenance, poussière dérangée" },
+    "stockage": { "file": "assets/scenarios/bunker_reserve/img/stockage.webp", "alt": "Réserves pleines, stocks intacts" },
+    "stockage_vide": { "file": "assets/scenarios/bunker_reserve/img/stockage_vide.webp", "alt": "Travée vidée au milieu des stocks" },
+    "dortoir": { "file": "assets/scenarios/bunker_reserve/img/dortoir.webp", "alt": "Dortoir impeccable, lit trop parfait" },
+    "infirmerie": { "file": "assets/scenarios/bunker_reserve/img/infirmerie.webp", "alt": "Infirmerie froide, tiroir entrouvert" },
+    "atelier": { "file": "assets/scenarios/bunker_reserve/img/atelier.webp", "alt": "Atelier, outils alignés, une absence" },
+    "tech": { "file": "assets/scenarios/bunker_reserve/img/tech.webp", "alt": "Salle technique, câbles et condensation" },
+    "eau": { "file": "assets/scenarios/bunker_reserve/img/eau.webp", "alt": "Filtration d’eau, empreinte sur inox" },
+    "ventilation": { "file": "assets/scenarios/bunker_reserve/img/ventilation.webp", "alt": "Ventilation, grille retirée" },
+    "porte_scellee": { "file": "assets/scenarios/bunker_reserve/img/porte_scellee.webp", "alt": "Porte scellée, cadenas, trace de chaleur" },
+    "sanctuaire": { "file": "assets/scenarios/bunker_reserve/img/sanctuaire.webp", "alt": "Pièce habitée, drap occultant, verre vide" },
+
+    "final_good": { "file": "assets/scenarios/bunker_reserve/img/final_good.webp", "alt": "Aube froide, sortie du bunker" },
+    "final_bad": { "file": "assets/scenarios/bunker_reserve/img/final_bad.webp", "alt": "Couloir rouge, porte qui se referme" },
+    "final_secret": { "file": "assets/scenarios/bunker_reserve/img/final_secret.webp", "alt": "Console en override, bunker inversé" }
+  },
+  "state_model": {
+    "flags": [
+      "has_map_fragment",
+      "has_badge",
+      "has_master_key",
+      "has_code",
+      "has_recording",
+      "has_sanctuary_mark",
+      "has_protocol_truth",
+      "has_override"
+    ]
+  },
+  "scenes": {
+    "end_good": { "image_id": "final_good", "title_key": "br.end_good.title", "body_key": "br.end_good.body", "choices": [] },
+    "end_bad": { "image_id": "final_bad", "title_key": "br.end_bad.title", "body_key": "br.end_bad.body", "choices": [] },
+    "end_secret": { "image_id": "final_secret", "title_key": "br.end_secret.title", "body_key": "br.end_secret.body", "choices": [] },
+
+    "s01": {
+      "image_id": "cover",
+      "title_key": "br.s01.title",
+      "body_key": "br.s01.body",
+      "choices": [
+        { "choice_key": "br.s01.c1", "next": "s02" },
+        { "choice_key": "br.s01.c2", "next": "s03" },
+        { "choice_key": "br.s01.c3", "next": "s02" }
+      ]
+    },
+    "s02": {
+      "image_id": "approche",
+      "title_key": "br.s02.title",
+      "body_key": "br.s02.body",
+      "choices": [
+        { "choice_key": "br.s02.c1", "next": "s03" },
+        { "choice_key": "br.s02.c2", "next": "s01" },
+        { "choice_key": "br.s02.c3", "next": "s03" }
+      ]
+    },
+    "s03": {
+      "image_id": "trappe",
+      "title_key": "br.s03.title",
+      "body_key": "br.s03.body",
+      "choices": [
+        { "choice_key": "br.s03.c1", "next": "s04" },
+        { "choice_key": "br.s03.c2", "next": "s02" },
+        { "choice_key": "br.s03.c3", "next": "s04" }
+      ]
+    },
+    "s04": {
+      "image_id": "descente",
+      "title_key": "br.s04.title",
+      "body_key": "br.s04.body",
+      "choices": [
+        { "choice_key": "br.s04.c1", "next": "s05" },
+        { "choice_key": "br.s04.c2", "next": "s03" },
+        { "choice_key": "br.s04.c3", "next": "s05" }
+      ]
+    },
+    "s05": {
+      "image_id": "sas",
+      "title_key": "br.s05.title",
+      "body_key": "br.s05.body",
+      "choices": [
+        { "choice_key": "br.s05.c1", "next": "s06" },
+        { "choice_key": "br.s05.c2", "next": "s06" },
+        { "choice_key": "br.s05.c3", "next": "s04" }
+      ]
+    },
+    "s06": {
+      "image_id": "couloir",
+      "title_key": "br.s06.title",
+      "body_key": "br.s06.body",
+      "choices": [
+        { "choice_key": "br.s06.c1", "next": "s07" },
+        { "choice_key": "br.s06.c2", "next": "s09" },
+        { "choice_key": "br.s06.c3", "next": "s14" }
+      ]
+    },
+    "s07": {
+      "image_id": "plan",
+      "title_key": "br.s07.title",
+      "body_key": "br.s07.body",
+      "choices": [
+        { "choice_key": "br.s07.c1", "next": "s08" },
+        { "choice_key": "br.s07.c2", "next": "s06" },
+        { "choice_key": "br.s07.c3", "next": "s09" }
+      ]
+    },
+    "s08": {
+      "image_id": "plan",
+      "title_key": "br.s08.title",
+      "body_key": "br.s08.body",
+      "choices": [
+        { "choice_key": "br.s08.c1", "next": "s09", "set_flags": ["has_map_fragment"] },
+        { "choice_key": "br.s08.c2", "next": "s06" },
+        { "choice_key": "br.s08.c3", "next": "s14" }
+      ]
+    },
+    "s09": {
+      "image_id": "controle",
+      "title_key": "br.s09.title",
+      "body_key": "br.s09.body",
+      "choices": [
+        { "choice_key": "br.s09.c1", "next": "s10" },
+        { "choice_key": "br.s09.c2", "next": "s11" },
+        { "choice_key": "br.s09.c3", "next": "s06" }
+      ]
+    },
+    "s10": {
+      "image_id": "controle",
+      "title_key": "br.s10.title",
+      "body_key": "br.s10.body",
+      "choices": [
+        { "choice_key": "br.s10.c1", "next": "s11" },
+        { "choice_key": "br.s10.c2", "next": "s06" },
+        { "choice_key": "br.s10.c3", "next": "s14" }
+      ]
+    },
+    "s11": {
+      "image_id": "porte_badge",
+      "title_key": "br.s11.title",
+      "body_key": "br.s11.body",
+      "choices": [
+        { "choice_key": "br.s11.c1", "next": "s12" },
+        { "choice_key": "br.s11.c2", "next": "s06" },
+        { "choice_key": "br.s11.c3", "next": "s14" }
+      ]
+    },
+    "s12": {
+      "image_id": "vestiaire",
+      "title_key": "br.s12.title",
+      "body_key": "br.s12.body",
+      "choices": [
+        { "choice_key": "br.s12.c1", "next": "s13", "set_flags": ["has_badge"] },
+        { "choice_key": "br.s12.c2", "next": "s11" },
+        { "choice_key": "br.s12.c3", "next": "s06" }
+      ]
+    },
+    "s13": {
+      "image_id": "porte_badge",
+      "title_key": "br.s13.title",
+      "body_key": "br.s13.body",
+      "choices": [
+        { "choice_key": "br.s13.c1", "next": "s27", "requires_any_flags": ["has_badge"] },
+        { "choice_key": "br.s13.c2", "next": "s06" },
+        { "choice_key": "br.s13.c3", "next": "s14" }
+      ]
+    },
+    "s14": {
+      "image_id": "stockage",
+      "title_key": "br.s14.title",
+      "body_key": "br.s14.body",
+      "choices": [
+        { "choice_key": "br.s14.c1", "next": "s15" },
+        { "choice_key": "br.s14.c2", "next": "s16" },
+        { "choice_key": "br.s14.c3", "next": "s06" }
+      ]
+    },
+    "s15": {
+      "image_id": "stockage_vide",
+      "title_key": "br.s15.title",
+      "body_key": "br.s15.body",
+      "choices": [
+        { "choice_key": "br.s15.c1", "next": "s22" },
+        { "choice_key": "br.s15.c2", "next": "s17" },
+        { "choice_key": "br.s15.c3", "next": "s14" }
+      ]
+    },
+    "s16": {
+      "image_id": "dortoir",
+      "title_key": "br.s16.title",
+      "body_key": "br.s16.body",
+      "choices": [
+        { "choice_key": "br.s16.c1", "next": "s17" },
+        { "choice_key": "br.s16.c2", "next": "s19" },
+        { "choice_key": "br.s16.c3", "next": "s14" }
+      ]
+    },
+    "s17": {
+      "image_id": "infirmerie",
+      "title_key": "br.s17.title",
+      "body_key": "br.s17.body",
+      "choices": [
+        { "choice_key": "br.s17.c1", "next": "s18" },
+        { "choice_key": "br.s17.c2", "next": "s16" },
+        { "choice_key": "br.s17.c3", "next": "s14" }
+      ]
+    },
+    "s18": {
+      "image_id": "infirmerie",
+      "title_key": "br.s18.title",
+      "body_key": "br.s18.body",
+      "choices": [
+        { "choice_key": "br.s18.c1", "next": "s19", "set_flags": ["has_master_key"] },
+        { "choice_key": "br.s18.c2", "next": "s17" },
+        { "choice_key": "br.s18.c3", "next": "s14" }
+      ]
+    },
+    "s19": {
+      "image_id": "tech",
+      "title_key": "br.s19.title",
+      "body_key": "br.s19.body",
+      "choices": [
+        { "choice_key": "br.s19.c1", "next": "s20" },
+        { "choice_key": "br.s19.c2", "next": "s21" },
+        { "choice_key": "br.s19.c3", "next": "s16" }
+      ]
+    },
+    "s20": {
+      "image_id": "tech",
+      "title_key": "br.s20.title",
+      "body_key": "br.s20.body",
+      "choices": [
+        { "choice_key": "br.s20.c1", "next": "s25" },
+        { "choice_key": "br.s20.c2", "next": "s21" },
+        { "choice_key": "br.s20.c3", "next": "s19" }
+      ]
+    },
+    "s21": {
+      "image_id": "eau",
+      "title_key": "br.s21.title",
+      "body_key": "br.s21.body",
+      "choices": [
+        { "choice_key": "br.s21.c1", "next": "s22" },
+        { "choice_key": "br.s21.c2", "next": "s20" },
+        { "choice_key": "br.s21.c3", "next": "s19" }
+      ]
+    },
+    "s22": {
+      "image_id": "porte_scellee",
+      "title_key": "br.s22.title",
+      "body_key": "br.s22.body",
+      "choices": [
+        { "choice_key": "br.s22.c1", "next": "s23" },
+        { "choice_key": "br.s22.c2", "next": "s15" },
+        { "choice_key": "br.s22.c3", "next": "s31" }
+      ]
+    },
+    "s23": {
+      "image_id": "atelier",
+      "title_key": "br.s23.title",
+      "body_key": "br.s23.body",
+      "choices": [
+        { "choice_key": "br.s23.c1", "next": "s24" },
+        { "choice_key": "br.s23.c2", "next": "s25" },
+        { "choice_key": "br.s23.c3", "next": "s22" }
+      ]
+    },
+    "s24": {
+      "image_id": "atelier",
+      "title_key": "br.s24.title",
+      "body_key": "br.s24.body",
+      "choices": [
+        { "choice_key": "br.s24.c1", "next": "s42", "set_flags": ["has_code"] },
+        { "choice_key": "br.s24.c2", "next": "s23" },
+        { "choice_key": "br.s24.c3", "next": "s31" }
+      ]
+    },
+    "s25": {
+      "image_id": "ventilation",
+      "title_key": "br.s25.title",
+      "body_key": "br.s25.body",
+      "choices": [
+        { "choice_key": "br.s25.c1", "next": "s26" },
+        { "choice_key": "br.s25.c2", "next": "s20" },
+        { "choice_key": "br.s25.c3", "next": "s31" }
+      ]
+    },
+    "s26": {
+      "image_id": "ventilation",
+      "title_key": "br.s26.title",
+      "body_key": "br.s26.body",
+      "choices": [
+        { "choice_key": "br.s26.c1", "next": "s27" },
+        { "choice_key": "br.s26.c2", "next": "s33", "requires_any_flags": ["has_master_key"] },
+        { "choice_key": "br.s26.c3", "next": "s25" }
+      ]
+    },
+    "s27": {
+      "image_id": "securite",
+      "title_key": "br.s27.title",
+      "body_key": "br.s27.body",
+      "choices": [
+        { "choice_key": "br.s27.c1", "next": "s28" },
+        { "choice_key": "br.s27.c2", "next": "s29" },
+        { "choice_key": "br.s27.c3", "next": "s31" }
+      ]
+    },
+    "s28": {
+      "image_id": "securite",
+      "title_key": "br.s28.title",
+      "body_key": "br.s28.body",
+      "choices": [
+        { "choice_key": "br.s28.c1", "next": "s30" },
+        { "choice_key": "br.s28.c2", "next": "s27" },
+        { "choice_key": "br.s28.c3", "next": "s31" }
+      ]
+    },
+    "s29": {
+      "image_id": "securite",
+      "title_key": "br.s29.title",
+      "body_key": "br.s29.body",
+      "choices": [
+        { "choice_key": "br.s29.c1", "next": "s30" },
+        { "choice_key": "br.s29.c2", "next": "s28" },
+        { "choice_key": "br.s29.c3", "next": "s31" }
+      ]
+    },
+    "s30": {
+      "image_id": "securite",
+      "title_key": "br.s30.title",
+      "body_key": "br.s30.body",
+      "choices": [
+        { "choice_key": "br.s30.c1", "next": "s32", "set_flags": ["has_recording"] },
+        { "choice_key": "br.s30.c2", "next": "s27" },
+        { "choice_key": "br.s30.c3", "next": "s31" }
+      ]
+    },
+    "s31": {
+      "image_id": "couloir_red",
+      "title_key": "br.s31.title",
+      "body_key": "br.s31.body",
+      "choices": [
+        { "choice_key": "br.s31.c1", "next": "s32" },
+        { "choice_key": "br.s31.c2", "next": "s48" },
+        { "choice_key": "br.s31.c3", "next": "s56" }
+      ]
+    },
+    "s32": {
+      "image_id": "couloir",
+      "title_key": "br.s32.title",
+      "body_key": "br.s32.body",
+      "choices": [
+        { "choice_key": "br.s32.c1", "next": "s33", "requires_any_flags": ["has_master_key"] },
+        { "choice_key": "br.s32.c2", "next": "s35" },
+        { "choice_key": "br.s32.c3", "next": "s14" }
+      ]
+    },
+    "s33": {
+      "image_id": "maintenance",
+      "title_key": "br.s33.title",
+      "body_key": "br.s33.body",
+      "choices": [
+        { "choice_key": "br.s33.c1", "next": "s34" },
+        { "choice_key": "br.s33.c2", "next": "s26" },
+        { "choice_key": "br.s33.c3", "next": "s32" }
+      ]
+    },
+    "s34": {
+      "image_id": "maintenance",
+      "title_key": "br.s34.title",
+      "body_key": "br.s34.body",
+      "choices": [
+        { "choice_key": "br.s34.c1", "next": "s36" },
+        { "choice_key": "br.s34.c2", "next": "s33" },
+        { "choice_key": "br.s34.c3", "next": "s31" }
+      ]
+    },
+    "s35": {
+      "image_id": "couloir",
+      "title_key": "br.s35.title",
+      "body_key": "br.s35.body",
+      "choices": [
+        { "choice_key": "br.s35.c1", "next": "s36" },
+        { "choice_key": "br.s35.c2", "next": "s40", "requires_any_flags": ["has_map_fragment"] },
+        { "choice_key": "br.s35.c3", "next": "s31" }
+      ]
+    },
+    "s36": {
+      "image_id": "couloir",
+      "title_key": "br.s36.title",
+      "body_key": "br.s36.body",
+      "choices": [
+        { "choice_key": "br.s36.c1", "next": "s37" },
+        { "choice_key": "br.s36.c2", "next": "s38" },
+        { "choice_key": "br.s36.c3", "next": "s35" }
+      ]
+    },
+    "s37": {
+      "image_id": "couloir",
+      "title_key": "br.s37.title",
+      "body_key": "br.s37.body",
+      "choices": [
+        { "choice_key": "br.s37.c1", "next": "s38", "set_flags": ["has_sanctuary_mark"] },
+        { "choice_key": "br.s37.c2", "next": "s36" },
+        { "choice_key": "br.s37.c3", "next": "s31" }
+      ]
+    },
+    "s38": {
+      "image_id": "sanctuaire",
+      "title_key": "br.s38.title",
+      "body_key": "br.s38.body",
+      "choices": [
+        { "choice_key": "br.s38.c1", "next": "s39" },
+        { "choice_key": "br.s38.c2", "next": "s53" },
+        { "choice_key": "br.s38.c3", "next": "s31" }
+      ]
+    },
+    "s39": {
+      "image_id": "sanctuaire",
+      "title_key": "br.s39.title",
+      "body_key": "br.s39.body",
+      "choices": [
+        { "choice_key": "br.s39.c1", "next": "s42" },
+        { "choice_key": "br.s39.c2", "next": "s50" },
+        { "choice_key": "br.s39.c3", "next": "s31" }
+      ]
+    },
+    "s40": {
+      "image_id": "plan",
+      "title_key": "br.s40.title",
+      "body_key": "br.s40.body",
+      "choices": [
+        { "choice_key": "br.s40.c1", "next": "s41" },
+        { "choice_key": "br.s40.c2", "next": "s35" },
+        { "choice_key": "br.s40.c3", "next": "s31" }
+      ]
+    },
+    "s41": {
+      "image_id": "plan",
+      "title_key": "br.s41.title",
+      "body_key": "br.s41.body",
+      "choices": [
+        { "choice_key": "br.s41.c1", "next": "s42" },
+        { "choice_key": "br.s41.c2", "next": "s40" },
+        { "choice_key": "br.s41.c3", "next": "s31" }
+      ]
+    },
+    "s42": {
+      "image_id": "console",
+      "title_key": "br.s42.title",
+      "body_key": "br.s42.body",
+      "choices": [
+        { "choice_key": "br.s42.c1", "next": "s43", "set_flags": ["has_protocol_truth"] },
+        { "choice_key": "br.s42.c2", "next": "s39" },
+        { "choice_key": "br.s42.c3", "next": "s31" }
+      ]
+    },
+    "s43": {
+      "image_id": "console",
+      "title_key": "br.s43.title",
+      "body_key": "br.s43.body",
+      "choices": [
+        { "choice_key": "br.s43.c1", "next": "s44", "requires_all_flags": ["has_badge", "has_code"] },
+        { "choice_key": "br.s43.c2", "next": "s23" },
+        { "choice_key": "br.s43.c3", "next": "s31" }
+      ]
+    },
+    "s44": {
+      "image_id": "console",
+      "title_key": "br.s44.title",
+      "body_key": "br.s44.body",
+      "choices": [
+        { "choice_key": "br.s44.c1", "next": "s45" },
+        { "choice_key": "br.s44.c2", "next": "s43" },
+        { "choice_key": "br.s44.c3", "next": "s31" }
+      ]
+    },
+    "s45": {
+      "image_id": "console",
+      "title_key": "br.s45.title",
+      "body_key": "br.s45.body",
+      "choices": [
+        { "choice_key": "br.s45.c1", "next": "s46" },
+        { "choice_key": "br.s45.c2", "next": "s47" },
+        { "choice_key": "br.s45.c3", "next": "s31" }
+      ]
+    },
+    "s46": {
+      "image_id": "console",
+      "title_key": "br.s46.title",
+      "body_key": "br.s46.body",
+      "choices": [
+        { "choice_key": "br.s46.c1", "next": "s47", "set_flags": ["has_override"] },
+        { "choice_key": "br.s46.c2", "next": "s45" },
+        { "choice_key": "br.s46.c3", "next": "s31" }
+      ]
+    },
+    "s47": {
+      "image_id": "porte_scellee",
+      "title_key": "br.s47.title",
+      "body_key": "br.s47.body",
+      "choices": [
+        { "choice_key": "br.s47.c1", "next": "s48" },
+        { "choice_key": "br.s47.c2", "next": "s49" },
+        { "choice_key": "br.s47.c3", "next": "s31" }
+      ]
+    },
+    "s48": {
+      "image_id": "couloir_red",
+      "title_key": "br.s48.title",
+      "body_key": "br.s48.body",
+      "choices": [
+        { "choice_key": "br.s48.c1", "next": "s51" },
+        { "choice_key": "br.s48.c2", "next": "s52" },
+        { "choice_key": "br.s48.c3", "next": "s56" }
+      ]
+    },
+    "s49": {
+      "image_id": "couloir",
+      "title_key": "br.s49.title",
+      "body_key": "br.s49.body",
+      "choices": [
+        { "choice_key": "br.s49.c1", "next": "s50" },
+        { "choice_key": "br.s49.c2", "next": "s52" },
+        { "choice_key": "br.s49.c3", "next": "s56" }
+      ]
+    },
+    "s50": {
+      "image_id": "sanctuaire",
+      "title_key": "br.s50.title",
+      "body_key": "br.s50.body",
+      "choices": [
+        { "choice_key": "br.s50.c1", "next": "s53" },
+        { "choice_key": "br.s50.c2", "next": "s54", "requires_any_flags": ["has_override"] },
+        { "choice_key": "br.s50.c3", "next": "s56" }
+      ]
+    },
+    "s51": {
+      "image_id": "couloir_red",
+      "title_key": "br.s51.title",
+      "body_key": "br.s51.body",
+      "choices": [
+        { "choice_key": "br.s51.c1", "next": "s56" },
+        { "choice_key": "br.s51.c2", "next": "s52" },
+        { "choice_key": "br.s51.c3", "next": "s31" }
+      ]
+    },
+    "s52": {
+      "image_id": "cover",
+      "title_key": "br.s52.title",
+      "body_key": "br.s52.body",
+      "choices": [
+        { "choice_key": "br.s52.c1", "next": "s55" },
+        { "choice_key": "br.s52.c2", "next": "s49" },
+        { "choice_key": "br.s52.c3", "next": "s56" }
+      ]
+    },
+    "s53": {
+      "image_id": "sanctuaire",
+      "title_key": "br.s53.title",
+      "body_key": "br.s53.body",
+      "choices": [
+        { "choice_key": "br.s53.c1", "next": "s54", "requires_all_flags": ["has_override", "has_protocol_truth"] },
+        { "choice_key": "br.s53.c2", "next": "s50" },
+        { "choice_key": "br.s53.c3", "next": "s56" }
+      ]
+    },
+    "s54": {
+      "image_id": "console",
+      "title_key": "br.s54.title",
+      "body_key": "br.s54.body",
+      "choices": [
+        { "choice_key": "br.s54.c1", "next": "s56" },
+        { "choice_key": "br.s54.c2", "next": "s31" },
+        { "choice_key": "br.s54.c3", "next": "s55" }
+      ]
+    },
+    "s55": {
+      "image_id": "cover",
+      "title_key": "br.s55.title",
+      "body_key": "br.s55.body",
+      "choices": [
+        { "choice_key": "br.s55.c1", "next": "s56" },
+        { "choice_key": "br.s55.c2", "next": "s52" },
+        { "choice_key": "br.s55.c3", "next": "s31" }
+      ]
+    },
+    "s56": {
+      "image_id": "couloir_red",
+      "title_key": "br.s56.title",
+      "body_key": "br.s56.body",
+      "choices": [
+        { "choice_key": "br.s56.c1", "next": "end_good", "requires_all_flags": ["has_recording"] },
+        { "choice_key": "br.s56.c2", "next": "end_bad" },
+        { "choice_key": "br.s56.c3", "next": "end_secret", "requires_all_flags": ["has_override", "has_protocol_truth", "has_recording", "has_sanctuary_mark"] }
+      ]
+    }
+  }
+}
