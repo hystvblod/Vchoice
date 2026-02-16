@@ -771,6 +771,18 @@
 
       // 2) Background init (ne bloque pas les clics)
       (async () => {
+
+        // ✅ i18n TOUT DE SUITE (sans dépendre du profil)
+        try {
+          const langEarly = window.VRI18n?.getLang?.() || "fr";
+          if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
+            await window.VRI18n.initI18n(langEarly);
+          }
+        } catch(e){
+          console.error("[i18n early]", e);
+        }
+
+        // ensuite seulement: auth/profil
         try { await window.bootstrapAuthAndProfile?.(); } catch(e){ console.error("[bootstrapAuthAndProfile]", e); }
 
         // init peut rester en attente -> timeout soft
@@ -786,9 +798,9 @@
           console.error("[VUserData.init]", e);
         }
 
-        // i18n
+        // ✅ resync i18n après profil (si la langue serveur diffère)
         try {
-          const lang = window.VUserData?.getLang?.() || "fr";
+          const lang = window.VUserData?.getLang?.() || (window.VRI18n?.getLang?.() || "fr");
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
             await window.VRI18n.initI18n(lang);
           }
