@@ -24,13 +24,6 @@
     "ending_desc": "Tu as terminé ce scénario.",
     "reward_toast": "+{reward} VCoins",
 
-    "end_congrats": "Bravo, tu as terminé la fin : {ending}.",
-    "end_reward": "Bravo, tu as gagné {reward} VCoins.",
-    "end_btn_double": "Doubler",
-    "end_btn_quit": "Quitter",
-    "end_double_wait": "Validation en cours…",
-    "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale.",
-
     "locked_title": "Choix bloqué",
     "locked_body": "Tu as raté des éléments nécessaires pour débloquer cette voie.",
     "locked_missing": "Il te manque :",
@@ -52,7 +45,14 @@
       "err_not_ready": "Système d’achat non prêt.",
       "err_buy_failed": "Achat annulé ou impossible.",
       "err_unlock_after_buy": "Achat ok, mais déblocage impossible (réessaye depuis la boutique)."
-    }
+    },
+
+    "end_congrats": "Bravo, tu as terminé la fin : {ending}.",
+    "end_reward": "Bravo, tu as gagné {reward} VCoins.",
+    "end_btn_double": "Doubler",
+    "end_btn_quit": "Quitter",
+    "end_double_wait": "Validation en cours…",
+    "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale."
   },
   "common": {
     "cancel": "Annuler"
