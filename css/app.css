@@ -771,7 +771,7 @@ body.page-game .scene__hud{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  bottom:max(14px, calc(env(safe-area-inset-bottom) + 50px));
+   bottom: max(14px, calc(env(safe-area-inset-bottom) + 50px));
   width:min(940px, calc(100vw - 24px));
   max-height:56vh;
   overflow:auto;
