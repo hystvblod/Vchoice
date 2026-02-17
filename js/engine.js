@@ -418,6 +418,7 @@ function renderTopbar(){
 ========================= */
 
 function ensureResumeModal(){
+  // Si ton HTML a déjà le modal, on ne recrée rien.
   let modal = $("resumeModal");
   if(modal) return;
 
@@ -458,6 +459,7 @@ function ensureResumeModal(){
   actions.style.gap = "10px";
   actions.style.marginTop = "14px";
 
+  // ⚠️ IDs "resumeContinue/resumeRestart" uniquement si on génère le modal nous-mêmes.
   const btnContinue = document.createElement("button");
   btnContinue.type = "button";
   btnContinue.id = "resumeContinue";
@@ -472,6 +474,7 @@ function ensureResumeModal(){
 
   actions.appendChild(btnContinue);
   actions.appendChild(btnRestart);
+
   body.appendChild(actions);
 
   panel.appendChild(head);
@@ -491,34 +494,55 @@ function showResumeModal(onContinue, onRestart){
 
   const modal = $("resumeModal");
   const title = $("resumeTitle");
-  const body = $("resumeBody");
-  const btnC = $("resumeContinue");
-  const btnR = $("resumeRestart");
+  const body  = $("resumeBody");
+
+  // ✅ Supporte les 2 variantes :
+  // - HTML: btnResumeContinue / btnResumeRestart (ton game.html)
+  // - JS-generated: resumeContinue / resumeRestart
+  const btnC = $("btnResumeContinue") || $("resumeContinue");
+  const btnR = $("btnResumeRestart")  || $("resumeRestart");
+
+  // ✅ Binder aussi close/backdrop si le modal vient du HTML
+  const close = $("resumeClose");
+  const back  = $("resumeBackdrop");
+  if(close) close.onclick = hideResumeModal;
+  if(back)  back.onclick  = hideResumeModal;
 
   if(title) title.textContent = tUI("resume_title");
+
+  // ✅ description stable (pas d’empilement)
   if(body){
-    const desc = document.createElement("div");
+    let desc = $("resumeDesc");
+    if(!desc){
+      desc = document.createElement("div");
+      desc.id = "resumeDesc";
+      desc.style.marginBottom = "10px";
+      body.insertBefore(desc, body.firstChild);
+    }
     desc.textContent = tUI("resume_desc");
-    desc.style.marginBottom = "10px";
-    body.insertBefore(desc, body.firstChild);
   }
 
-  if(btnC) btnC.onclick = () => { hideResumeModal(); onContinue && onContinue(); };
-  if(btnR) btnR.onclick = () => { hideResumeModal(); onRestart && onRestart(); };
+  if(btnC){
+    btnC.textContent = tUI("btn_continue");
+    btnC.onclick = () => { hideResumeModal(); onContinue && onContinue(); };
+  }
+  if(btnR){
+    btnR.textContent = tUI("btn_restart");
+    btnR.onclick = () => { hideResumeModal(); onRestart && onRestart(); };
+  }
 
-  modal.classList.remove("hidden");
-  modal.setAttribute("aria-hidden", "false");
+  if(modal){
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+  }
 }
 
 function hideResumeModal(){
   const modal = $("resumeModal");
   if(!modal) return;
 
-  const body = $("resumeBody");
-  if(body && body.firstChild && body.firstChild.nodeType === 1){
-    const el = body.firstChild;
-    if(el && el.tagName === "DIV") body.removeChild(el);
-  }
+  const desc = $("resumeDesc");
+  if(desc && desc.parentNode) desc.parentNode.removeChild(desc);
 
   modal.classList.add("hidden");
   modal.setAttribute("aria-hidden", "true");
