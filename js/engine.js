@@ -2,30 +2,24 @@
    CONFIG
 ========================= */
 const SAVE_KEY = "creepy_engine_save_v1";
-const DEFAULT_LANG = "fr";
-
-// Langues supportées par l'app (UI + potentiel scénarios)
-const SUPPORTED_LANGS = ["fr", "en"];
+const UI_PATH = "data/ui/ui_fr.json"; // UI de base FR (tu peux le rendre dynamique si tu veux)
+const SUPPORTED_LANGS = ["fr","en","de","es","it","nl","pt"];
 
 const PATHS = {
-  ui: (lang) => `data/ui/ui_${lang}.json`,
-  catalog: `data/scenarios/catalog.json`,
+  catalog: () => `data/scenarios/catalog.json`,
   scenarioLogic: (scenarioId) => `data/scenarios/${scenarioId}/logic.json`,
   scenarioText:  (scenarioId, lang) => `data/scenarios/${scenarioId}/text_${lang}.json`,
 };
 
-/* =========================
-   GLOBAL STATE
-========================= */
-let LANG = DEFAULT_LANG;
-
-let UI = null;
+let UI = {};
 let CATALOG = null;
 
-let currentScenarioId = null;
+let LANG = "fr";
 let LOGIC = null;
-let TEXT = null;          // objet brut du text_<lang>.json
-let TEXT_STRINGS = null;  // map des strings (si présent)
+let TEXT = null;
+let TEXT_STRINGS = null;
+
+let currentScenarioId = null;
 
 // Scenario progress saved per scenario_id
 let scenarioStates = {};
@@ -37,152 +31,69 @@ function $(id){ return document.getElementById(id); }
 
 async function fetchJSON(url){
   const r = await fetch(url, { cache: "no-store" });
-  if(!r.ok) throw new Error(`fetch ${url} => ${r.status}`);
+  if(!r.ok) throw new Error(`fetch failed: ${url} (${r.status})`);
   return await r.json();
 }
 
 function deepGet(obj, path){
-  if(!obj) return undefined;
-  const parts = String(path).split(".");
-  let cur = obj;
-  for(const p of parts){
-    if(cur && Object.prototype.hasOwnProperty.call(cur, p)) cur = cur[p];
-    else return undefined;
-  }
-  return cur;
+  try{
+    const parts = String(path||"").split(".");
+    let cur = obj;
+    for(const p of parts){
+      if(cur == null) return undefined;
+      cur = cur[p];
+    }
+    return cur;
+  }catch(e){ return undefined; }
 }
 
-function format(str, params={}){
-  return String(str).replace(/\{(\w+)\}/g, (_, k) => (params[k] ?? `{${k}}`));
+function format(str, params){
+  if(!params) return str;
+  return String(str).replace(/\{(\w+)\}/g, (_,k) => (params[k] ?? `{${k}}`));
 }
 
-function safeFirstSceneId(logic){
-  const scenes = logic && logic.scenes;
-  if(!scenes || typeof scenes !== "object") return null;
-  const keys = Object.keys(scenes);
-  return keys.length ? keys[0] : null;
-}
-
-function resolveStartScene(logic){
-  // Compatible avec:
-  // - start_scene à la racine (ancien format)
-  // - meta.start_scene (nouveau format)
-  // - fallback premier id de scene
-  const root = logic?.start_scene;
-  const meta = logic?.meta?.start_scene;
-  return root || meta || safeFirstSceneId(logic);
-}
-
-function resolveSceneObject(logic, sceneId){
-  if(!logic?.scenes || !sceneId) return null;
-  const base = logic.scenes[sceneId];
-  if(!base) return null;
-  return { id: sceneId, ...base };
-}
-
-function resolveImageFile(logic, imageId){
-  if(!imageId) return null;
-  const img = logic?.images?.[imageId];
-  if(!img) return null;
-  // format attendu: {file, alt}
-  if(typeof img === "string") return { file: img, alt: "" };
-  if(typeof img === "object" && img.file) return { file: img.file, alt: img.alt || "" };
-  return null;
-}
-
-/* =========================
-   LANGUAGE RESOLUTION
-========================= */
-function normalizeLang(raw){
-  if(!raw) return null;
-  const s = String(raw).trim().toLowerCase();
-  const base = s.split("-")[0];
-  return base || null;
+function normalizeLang(l){
+  const s = String(l||"").trim().toLowerCase();
+  if(!s) return "fr";
+  if(s.startsWith("fr")) return "fr";
+  if(s.startsWith("en")) return "en";
+  if(s.startsWith("de")) return "de";
+  if(s.startsWith("es")) return "es";
+  if(s.startsWith("it")) return "it";
+  if(s.startsWith("nl")) return "nl";
+  if(s.startsWith("pt")) return "pt";
+  return "fr";
 }
 
 function detectDeviceLang(){
-  const list = Array.isArray(navigator.languages) && navigator.languages.length
-    ? navigator.languages
-    : [navigator.language];
-
-  for(const candidate of list){
-    const base = normalizeLang(candidate);
-    if(base && SUPPORTED_LANGS.includes(base)) return base;
-  }
-  return DEFAULT_LANG;
-}
-
-async function setLang(newLang, opts = {}){
-  const {
-    persistLocal = true,
-    persistRemote = false,
-    rerender = true
-  } = opts;
-
-  const base = normalizeLang(newLang);
-  const safe = (base && SUPPORTED_LANGS.includes(base)) ? base : DEFAULT_LANG;
-
-  if(LANG === safe) return;
-
-  LANG = safe;
-
-  await reloadUI();
-
-  if(persistLocal) save();
-
-  if(persistRemote && window.userData && typeof window.userData.setLanguage === "function"){
-    try{ await window.userData.setLanguage(LANG); }catch(e){ /* ne bloque pas */ }
-  }
-
-  // Si on est en jeu, recharge scenario text dans la langue
-  if(hasGamePage() && currentScenarioId){
-    await openScenario(currentScenarioId);
-  }
-
-  if(rerender){
-    if(hasMenuPage()) await renderMenu();
-    if(hasGamePage()) renderScene();
-    renderTopbar();
-  }
+  try{
+    const nav = (navigator.language || "fr");
+    const base = normalizeLang(nav);
+    return SUPPORTED_LANGS.includes(base) ? base : "fr";
+  }catch(e){ return "fr"; }
 }
 
 /* =========================
-   UI TEXT HELPERS
+   LOGIC HELPERS
 ========================= */
-function tUI(key, params){
-  const v = deepGet(UI, `ui.${key}`) ?? `[ui.${key}]`;
-  return params ? format(v, params) : v;
+function resolveStartScene(logic){
+  if(!logic) return null;
+  return logic.start_scene || "s01";
 }
 
-function tS(key, params){
-  // ✅ Compat avec tes JSON actuels:
-  // text_<lang>.json = { meta: {...}, strings: { "x.y.z": "..." } }
-  // => on doit lire TEXT_STRINGS[key] (et non deepGet(TEXT, key))
-  let v;
-
-  if(TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key)){
-    v = TEXT_STRINGS[key];
-  } else {
-    // fallback (si un jour tu changes de format)
-    v = deepGet(TEXT, key);
-  }
-
-  if(v == null) v = `[${key}]`;
-  return params ? format(v, params) : v;
-}
-
-function getScenarioInfo(scenarioId){
-  const info = deepGet(UI, `scenario_info.${scenarioId}`) || {};
-  const title = (typeof info.title === 'string') ? info.title : 'Infos';
-  const body  = (typeof info.body  === 'string') ? info.body  : '';
-  if(!body && !title) return null;
-  return { title, body };
+function resolveSceneObject(logic, sceneId){
+  if(!logic || !logic.scenes) return null;
+  return logic.scenes[sceneId] || null;
 }
 
 function isChoiceAvailable(choice){
-  const flags = scenarioStates[currentScenarioId]?.flags || {};
-  const all = Array.isArray(choice.requires_all_flags) ? choice.requires_all_flags : null;
-  const any = Array.isArray(choice.requires_any_flags) ? choice.requires_any_flags : null;
+  // supports:
+  // requires_all_flags, requires_any_flags (arrays)
+  const st = scenarioStates[currentScenarioId];
+  const flags = (st && st.flags) ? st.flags : {};
+
+  const all = choice.requires_all_flags || [];
+  const any = choice.requires_any_flags || [];
 
   if(all && all.length){
     for(const f of all){
@@ -200,6 +111,99 @@ function isChoiceAvailable(choice){
 }
 
 /* =========================
+   RESUME / END MODALS
+========================= */
+function isEndingSceneId(sceneId){
+  const s = String(sceneId || "").toLowerCase();
+  return s === "end_good" || s === "end_bad" || s === "end_secret";
+}
+function endingTypeFromSceneId(sceneId){
+  const s = String(sceneId || "").toLowerCase();
+  if(s === "end_good") return "good";
+  if(s === "end_bad") return "bad";
+  if(s === "end_secret") return "secret";
+  return null;
+}
+
+function resetScenarioState(scenarioId){
+  const st = scenarioStates[scenarioId];
+  if(!st) return;
+  st.scene = resolveStartScene(LOGIC);
+  st.flags = {};
+  st.clues = [];
+  st.end_awarded_for = null;
+  save();
+}
+
+function showModal(modalId){
+  const modal = $(modalId);
+  if(!modal) return false;
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+  return true;
+}
+function hideModal(modalId){
+  const modal = $(modalId);
+  if(!modal) return;
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+function bindSimpleModal(modalId, closeId, backdropId){
+  const close = $(closeId);
+  const back  = $(backdropId);
+  if(close) close.onclick = () => hideModal(modalId);
+  if(back)  back.onclick  = () => hideModal(modalId);
+}
+
+function askResumeOrRestart(){
+  return new Promise((resolve) => {
+    const modalOk = showModal("resumeModal");
+    if(!modalOk) return resolve("continue");
+
+    bindSimpleModal("resumeModal","resumeClose","resumeBackdrop");
+
+    const title = $("resumeTitle");
+    const body  = $("resumeBody");
+    const bRestart = $("btnResumeRestart");
+    const bCont    = $("btnResumeContinue");
+
+    if(title) title.textContent = tUI("resume_title");
+    if(body)  body.textContent  = tUI("resume_body");
+
+    if(bRestart) bRestart.textContent = tUI("btn_restart");
+    if(bCont)    bCont.textContent    = tUI("btn_continue");
+
+    const done = (v) => {
+      hideModal("resumeModal");
+      resolve(v);
+    };
+
+    if(bRestart) bRestart.onclick = () => done("restart");
+    if(bCont)    bCont.onclick    = () => done("continue");
+  });
+}
+
+function showEndingModal(ending, reward){
+  const modalOk = showModal("endModal");
+  if(!modalOk) return;
+
+  bindSimpleModal("endModal","endClose","endBackdrop");
+
+  const t = $("endTitle");
+  const b = $("endBody");
+  const bb = $("btnEndBack");
+  const br = $("btnEndReplay");
+
+  const titleKey = ending === "good" ? "end_title_good" : ending === "bad" ? "end_title_bad" : "end_title_secret";
+  if(t) t.textContent = tUI(titleKey);
+  if(b) b.textContent = tUI("end_body", { reward: String(reward ?? 300) });
+
+  if(bb) bb.textContent = tUI("btn_back");
+  if(br) br.textContent = tUI("btn_restart");
+}
+
+/* =========================
    SAVE/LOAD
 ========================= */
 function load(){
@@ -207,11 +211,13 @@ function load(){
     const raw = localStorage.getItem(SAVE_KEY);
     if(!raw) return;
     const data = JSON.parse(raw);
+    if(!data || typeof data !== "object") return;
 
-    if(data && typeof data === "object"){
-      scenarioStates = data.scenarioStates || {};
-      const savedLang = normalizeLang(data.lang);
-      if(savedLang && SUPPORTED_LANGS.includes(savedLang)) LANG = savedLang;
+    const lang = normalizeLang(data.lang || "");
+    if(lang) LANG = lang;
+
+    if(data.scenarioStates && typeof data.scenarioStates === "object"){
+      scenarioStates = data.scenarioStates;
     }
   }catch(e){
     console.warn("load failed", e);
@@ -236,19 +242,45 @@ function hasMenuPage(){
   return !!$("menuGrid");
 }
 function hasGamePage(){
-  return !!$("sceneTitle");
+  return !!$("screen_game");
 }
 
 async function reloadUI(){
-  UI = await fetchJSON(PATHS.ui(LANG));
-  const sel = $("langSelect");
-  if(sel){
-    sel.value = LANG;
-  }
+  UI = await fetchJSON(UI_PATH);
 }
 
 async function loadCatalog(){
-  CATALOG = await fetchJSON(PATHS.catalog);
+  CATALOG = await fetchJSON(PATHS.catalog());
+}
+
+async function setLang(lang, opts){
+  const v = normalizeLang(lang);
+  if(!SUPPORTED_LANGS.includes(v)) return;
+  LANG = v;
+
+  if(opts && opts.persistLocal){
+    save();
+  }
+
+  if(opts && opts.persistRemote){
+    if(window.VUserData && typeof window.VUserData.setLanguage === "function"){
+      try{ await window.VUserData.setLanguage(v); }catch(e){}
+    }
+  }
+
+  // reload current scenario text if in game
+  if(hasGamePage() && currentScenarioId){
+    TEXT = await fetchJSON(PATHS.scenarioText(currentScenarioId, LANG));
+    TEXT_STRINGS = (TEXT && typeof TEXT === "object" && TEXT.strings && typeof TEXT.strings === "object")
+      ? TEXT.strings
+      : null;
+  }
+
+  if(opts && opts.rerender){
+    if(hasMenuPage()) await renderMenu();
+    if(hasGamePage()) renderScene();
+    renderTopbar();
+  }
 }
 
 async function boot(){
@@ -264,6 +296,11 @@ async function boot(){
     }catch(e){
       // ignore
     }
+  }else if(window.VUserData && typeof window.VUserData.getLanguage === "function"){
+    try{
+      const base = normalizeLang(window.VUserData.getLanguage());
+      if(base && SUPPORTED_LANGS.includes(base)) initialLang = base;
+    }catch(e){ /* ignore */ }
   }else{
     initialLang = detectDeviceLang();
   }
@@ -283,7 +320,22 @@ async function boot(){
     const u = new URL(location.href);
     const scenarioId = u.searchParams.get("scenario");
     if(scenarioId){
+      // NOTE: load() a déjà rempli scenarioStates depuis localStorage
+      const hadSaveBefore = !!scenarioStates[scenarioId];
+      const savedSceneBefore = scenarioStates[scenarioId]?.scene;
+
       await openScenario(scenarioId);
+
+      const start = resolveStartScene(LOGIC);
+      const hasProgress = hadSaveBefore && savedSceneBefore && savedSceneBefore !== start;
+
+      if(hasProgress){
+        const choice = await askResumeOrRestart();
+        if(choice === "restart"){
+          resetScenarioState(scenarioId);
+        }
+      }
+
       renderScene();
     }
   }
@@ -321,7 +373,6 @@ async function renderMenu(){
   grid.innerHTML = "";
 
   const list = (CATALOG && Array.isArray(CATALOG.scenarios)) ? CATALOG.scenarios : [];
-
   for(const entry of list){
     const scenarioId = entry.id;
 
@@ -349,40 +400,38 @@ async function renderMenu(){
     sub.className = "menu_sub";
     sub.textContent = subText;
 
-    card.appendChild(cover);
     metaBox.appendChild(title);
     metaBox.appendChild(sub);
-    card.appendChild(metaBox);
 
-    const info = getScenarioInfo(scenarioId);
-    if(info && info.body){
-      const help = document.createElement("button");
-      help.type = "button";
-      help.className = "menu_help";
-      help.textContent = "?";
-      help.title = "Infos";
-      help.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        showHintModal(info.title || "Infos", info.body || "");
-      });
-      card.appendChild(help);
-    }
+    card.appendChild(cover);
+    card.appendChild(metaBox);
 
     grid.appendChild(card);
   }
 }
 
-function renderTopbar(){
-  const t1 = $("ui_app_title");
-  if(t1) t1.textContent = tUI("app_title");
-  const t2 = $("ui_app_subtitle");
-  if(t2) t2.textContent = tUI("app_subtitle");
+/* =========================
+   UI TEXT HELPERS
+========================= */
+function tUI(key, params){
+  const v = deepGet(UI, `ui.${key}`) ?? `[ui.${key}]`;
+  return params ? format(v, params) : v;
+}
 
-  const i1 = $("ui_index_title");
-  if(i1) i1.textContent = tUI("index_title");
-  const i2 = $("ui_index_subtitle");
-  if(i2) i2.textContent = tUI("index_subtitle");
+function tS(key, params){
+  // ✅ Compat avec tes JSON actuels:
+  // text_<lang>.json = { meta: {...}, strings: { "x.y.z": "..." } }
+  // => on doit lire TEXT_STRINGS[key] (et non deepGet(TEXT, key))
+  let v;
+
+  if(TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key)){
+    v = TEXT_STRINGS[key];
+  }else{
+    v = deepGet(TEXT, key);
+  }
+
+  if(v == null) v = `[${key}]`;
+  return params ? format(v, params) : v;
 }
 
 /* =========================
@@ -406,16 +455,17 @@ async function openScenario(scenarioId){
       scene: start,
       flags: {},
       clues: [],
+      end_awarded_for: null,
     };
   } else {
     // si un scénario a été sauvegardé avec scene undefined (ancien bug), on répare
     if(!scenarioStates[scenarioId].scene){
       scenarioStates[scenarioId].scene = resolveStartScene(LOGIC);
     }
+    scenarioStates[scenarioId].flags ??= {};
+    scenarioStates[scenarioId].clues ??= [];
+    scenarioStates[scenarioId].end_awarded_for ??= null;
   }
-
-  scenarioStates[scenarioId].flags ??= {};
-  scenarioStates[scenarioId].clues ??= [];
 
   save();
 }
@@ -436,12 +486,6 @@ function setFlag(flag){
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
   st.flags[flag] = true;
-}
-
-function clearFlag(flag){
-  const st = scenarioStates[currentScenarioId];
-  if(!st) return;
-  delete st.flags[flag];
 }
 
 function showHintModal(title, body){
@@ -488,88 +532,131 @@ function renderScene(){
 
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
-  const imgEl   = $("scene_img") || $("sceneImg");
+  const imgEl   = $("sceneImg");
   const imgSourceEl = $("scene_img_source");
+
+  if(titleEl) titleEl.textContent = tS(scene.title_key || "");
+  if(bodyEl)  bodyEl.textContent  = tS(scene.body_key || "");
+
+  // image
+  if(imgEl && LOGIC && LOGIC.images && scene.image_id){
+    const im = LOGIC.images[scene.image_id];
+    if(im && im.file){
+      imgEl.src = `assets/scenarios/${currentScenarioId}/img/${im.file}`;
+    }
+  }
+
+  if(imgSourceEl){
+    imgSourceEl.textContent = "";
+  }
+
+  // --- ENDING detection ---
+  const endingType = endingTypeFromSceneId(st.scene);
+  if(endingType){
+    // pas de boutons de choix sur une fin
+    const choicesBox = $("choices");
+    if(choicesBox) choicesBox.innerHTML = "";
+
+    const reward = 300;
+    showEndingModal(endingType, reward);
+
+    const doAwardAndReset = async (goBackToMenu) => {
+      try{
+        if(st.end_awarded_for !== st.scene){
+          if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+            await window.VUserData.completeScenario(currentScenarioId, endingType);
+          } else if(window.sb){
+            await window.sb.rpc("secure_complete_scenario", { p_scenario: currentScenarioId, p_ending: endingType });
+          }
+          st.end_awarded_for = st.scene;
+          save();
+        }
+      }catch(e){
+        // on affiche un warning, mais on laisse le joueur continuer
+        const endBody = $("endBody");
+        if(endBody){
+          const msg = tUI("end_err_save");
+          endBody.textContent = tUI("end_body", { reward: String(reward) }) + "\n\n" + msg;
+        }
+      }
+
+      // reset local state (retour à 0)
+      resetScenarioState(currentScenarioId);
+
+      hideModal("endModal");
+      if(goBackToMenu){
+        location.href = "index.html";
+      }else{
+        renderScene();
+      }
+    };
+
+    const btnBack = $("btnEndBack");
+    const btnReplay = $("btnEndReplay");
+    if(btnBack) btnBack.onclick = () => doAwardAndReset(true);
+    if(btnReplay) btnReplay.onclick = () => doAwardAndReset(false);
+
+    return;
+  }
+
   const choicesEl = $("choices");
   const hintBtn = $("btnHint");
 
-  if(titleEl) titleEl.textContent = tS(scene.title_key);
-  if(bodyEl) bodyEl.textContent = tS(scene.body_key);
+  if(choicesEl) choicesEl.innerHTML = "";
 
-  // image
-  if(imgEl){
-    const img = resolveImageFile(LOGIC, scene.image_id);
-    if(img && img.file){
-      if(imgSourceEl) imgSourceEl.srcset = img.file;
-      imgEl.src = img.file;
-      imgEl.alt = img.alt || "";
-      imgEl.classList.remove("hidden");
-    } else {
-      // pas d’image pour cette scène: on masque proprement
-      imgEl.removeAttribute("src");
-      imgEl.alt = "";
-      imgEl.classList.add("hidden");
-      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
-    }
-  }
-
-  // hint (tes scénarios actuels n'ont pas hint_key, donc on désactive si absent)
+  // bind hint button if exists
   if(hintBtn){
-    const hintKey = scene.hint_key;
-    if(hintKey){
-      hintBtn.disabled = false;
-      hintBtn.onclick = () => {
-        const title = tUI("hint_title");
-        const body = tS(hintKey);
-        showHintModal(title, body);
-      };
-    } else {
-      hintBtn.disabled = true;
-      hintBtn.onclick = null;
-    }
+    hintBtn.onclick = () => {
+      // optional hint: first clue not found
+      const clueList = (LOGIC && LOGIC.clues) ? LOGIC.clues : {};
+      const clueIds = Object.keys(clueList);
+      if(!clueIds.length){
+        showHintModal(tUI("hint_title"), "");
+        return;
+      }
+      const first = clueIds[0];
+      const c = clueList[first];
+      const text = c ? (c.text_key ? tS(c.text_key) : (c.text || "")) : "";
+      showHintModal(tUI("hint_title"), text);
+    };
   }
 
   // choices
+  const choices = Array.isArray(scene.choices) ? scene.choices : [];
   if(choicesEl){
-    choicesEl.innerHTML = "";
-    for(const ch of (scene.choices || [])){
-      const label = tS(ch.choice_key);
+    for(const ch of choices){
       const btn = document.createElement("button");
+      btn.type = "button";
       btn.className = "choice_btn";
-      btn.textContent = label;
+      btn.textContent = tS(ch.choice_key || "");
+      btn.disabled = false;
 
+      // locked by flags
       const available = isChoiceAvailable(ch);
       if(!available){
-        btn.classList.add("is_locked");
         btn.disabled = true;
-        btn.title = tUI("locked_choice") || "Indisponible pour le moment";
+        btn.classList.add("is_locked");
       }
 
       btn.onclick = () => {
-        if(!available) return;
+        if(btn.disabled) return;
 
-        // set/clear flags
+        // apply side effects: set_flags, add_clues
         if(Array.isArray(ch.set_flags)){
           for(const f of ch.set_flags) setFlag(f);
         }
-        if(Array.isArray(ch.clear_flags)){
-          for(const f of ch.clear_flags) clearFlag(f);
+        if(Array.isArray(ch.add_clues)){
+          for(const c of ch.add_clues) addClue(c);
         }
 
-        // clue
-        if(ch.add_clue) addClue(ch.add_clue);
-
-        // next scene
+        // move
         if(ch.next){
           st.scene = ch.next;
           save();
           renderScene();
-          return;
+        }else{
+          showHintModal(tUI("hint_title") || "Info", "Ce choix ne mène nulle part pour l’instant.");
         }
-
-        // si pas de next: on évite un click "mort"
-        // (tu peux plus tard brancher un système d'ending ici)
-        showHintModal(tUI("hint_title") || "Info", tUI("no_next_scene") || "Ce choix ne mène nulle part pour l’instant.");
       };
 
       choicesEl.appendChild(btn);

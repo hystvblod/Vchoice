@@ -3,68 +3,85 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Game</title>
+  <title>VChoice — Game</title>
   <link rel="stylesheet" href="css/app.css" />
 </head>
 
 <body class="page-game">
-  <div class="app">
-
-    <!-- GAME SCREEN (plein écran) -->
-    <main class="main main--game" id="screen_game">
-      <section class="panel panel--game">
-        <div class="scene scene--overlay">
-
-          <!-- IMAGE FULLSCREEN -->
-          <div class="scene__media">
-            <picture>
-              <source id="scene_img_source" type="image/webp" />
-              <img id="scene_img" alt="" />
-            </picture>
-          </div>
-
-          <!-- HUD (cartouche) -->
-          <div class="scene__hud" aria-live="polite">
-            <h2 class="title" id="sceneTitle"></h2>
-            <p class="body" id="sceneBody"></p>
-
-            <div class="choices" id="choices"></div>
-
-            <div class="footer" id="ui_footer"></div>
-          </div>
-
-        </div>
-      </section>
-    </main>
-
-    <!-- HINT MODAL (même IDs que engine.js) -->
-    <div id="hintModal" class="modal hidden" aria-hidden="true">
-      <div id="hintBackdrop" class="modal__backdrop"></div>
-      <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
-        <div class="modal__header">
-          <div class="modal__title" id="hintTitle"></div>
-          <button id="hintClose" class="modal__close" type="button" aria-label="Fermer">✕</button>
-        </div>
-        <div class="modal__body" id="hintBody"></div>
-      </div>
+  <!-- GAME: image plein écran + cartouche bas -->
+  <main class="game_full" id="screen_game">
+    <div class="scene__media">
+      <img id="sceneImg" alt="" />
+      <div id="scene_img_source" class="sr_only" aria-hidden="true"></div>
     </div>
 
+    <div class="game_overlay">
+      <section class="story_card" aria-live="polite">
+        <h1 id="sceneTitle" class="title"></h1>
+        <p id="sceneBody" class="body"></p>
+
+        <div id="choices" class="choices"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- MODAL: Indice -->
+  <div id="hintModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div id="hintBackdrop" class="modal__backdrop"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <div id="hintTitle" class="modal__title"></div>
+        <button id="hintClose" class="modal__close" type="button">×</button>
+      </div>
+      <div id="hintBody" class="modal__body"></div>
+    </div>
   </div>
 
-  <!-- 1) Supabase UMD (sans module) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- MODAL: Reprendre / Recommencer -->
+  <div id="resumeModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div id="resumeBackdrop" class="modal__backdrop"></div>
+    <div class="modal__panel">
+      <div class="modal__head">
+        <div id="resumeTitle" class="modal__title"></div>
+        <button id="resumeClose" class="modal__close" type="button">×</button>
+      </div>
+      <div class="modal__body" id="resumeBody"></div>
+      <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
+        <button id="btnResumeRestart" class="btn btn--ghost" type="button"></button>
+        <button id="btnResumeContinue" class="btn" type="button"></button>
+      </div>
+    </div>
+  </div>
 
-  <!-- 2) userData (si tu l’utilises) -->
-  <script src="js/userData.js"></script>
+  <!-- MODAL: Fin -->
+  <div id="endModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div id="endBackdrop" class="modal__backdrop"></div>
+    <div class="modal__panel">
+      <div class="modal__head">
+        <div id="endTitle" class="modal__title"></div>
+        <button id="endClose" class="modal__close" type="button">×</button>
+      </div>
+      <div class="modal__body" id="endBody"></div>
+      <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
+        <button id="btnEndBack" class="btn btn--ghost" type="button"></button>
+        <button id="btnEndReplay" class="btn" type="button"></button>
+      </div>
+    </div>
+  </div>
 
-  <!-- 3) moteur -->
-  <script src="js/engine.js"></script>
-
-  <!-- éléments conservés (cachés) pour compat engine.js -->
+  <!-- Compat engine.js -->
   <select id="langSelect" class="sr_only" aria-hidden="true" tabindex="-1">
     <option value="fr" selected>FR</option>
     <option value="en">EN</option>
+    <option value="de">DE</option>
+    <option value="es">ES</option>
+    <option value="it">IT</option>
+    <option value="nl">NL</option>
+    <option value="pt">PT</option>
   </select>
   <button id="btnHint" class="sr_only" aria-hidden="true" tabindex="-1" type="button"></button>
+
+  <script src="js/userData.js"></script>
+  <script src="js/engine.js"></script>
 </body>
 </html>

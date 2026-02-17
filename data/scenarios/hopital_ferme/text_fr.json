@@ -114,7 +114,7 @@
 
     "hf.s18.title": "Bureau du médecin",
     "hf.s18.body": "Le bureau est rangé, trop. Un dictaphone est posé au centre, cassette dedans. Une note : « Ne pas laisser le patient sortir sans preuve. »",
-    "hf.s18.c1": "Écouter le dictaphone",
+    "hf.s18.c1": "Écouter le dictaphone et fouiller le bureau",
     "hf.s18.c2": "Prendre la cassette",
     "hf.s18.c3": "Fouiller les tiroirs",
 
@@ -170,7 +170,7 @@
     "hf.s27.body": "Tu trouves enfin : « PATIENT 0 ». Sur l’étiquette : ton nom. En dessous, une date… demain. Le carton est froid, malgré l’air humide.",
     "hf.s27.c1": "Ouvrir le dossier",
     "hf.s27.c2": "Le laisser et reculer",
-    "hf.s27.c3": "L’emporter vers toi (tu trembles)",
+    "hf.s27.c3": "L’emporter vers toi et prendre la porte de gauche",
 
     "hf.s28.title": "Salle de surveillance",
     "hf.s28.body": "Les écrans montrent les couloirs. Sur l’un, tu te vois… mais avec une seconde de retard. Le décalage est parfait, comme un battement.",
@@ -211,7 +211,7 @@
     "hf.s34.title": "Vestiaires",
     "hf.s34.body": "Des casiers. Des blouses. Et, dans un casier entrouvert, un badge au nom illisible. Tu entends un stylo écrire derrière une porte.",
     "hf.s34.c1": "Ouvrir le casier « Interne »",
-    "hf.s34.c2": "Prendre une blouse et sortir",
+    "hf.s34.c2": "Prendre une blouse et prendre la aporte de droite",
     "hf.s34.c3": "Revenir au couloir des brancards",
 
     "hf.s35.title": "Salle des déchets",

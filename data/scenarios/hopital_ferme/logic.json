@@ -104,6 +104,56 @@
       "file": "assets/scenarios/hopital_ferme/img/cour.webp",
       "alt": "Cour intérieure de l’hôpital, sortie grillagée, ciel sombre"
     },
+
+    "s01": { "file": "assets/scenarios/hopital_ferme/img/s01.webp", "alt": "Façade d’un ancien hôpital derrière une grille, nuit brumeuse" },
+    "s02": { "file": "assets/scenarios/hopital_ferme/img/s02.webp", "alt": "Façade d’un ancien hôpital derrière une grille, nuit brumeuse" },
+    "s03": { "file": "assets/scenarios/hopital_ferme/img/s03.webp", "alt": "Entrée principale de l’hôpital, panneaux récents, portes vitrées" },
+    "s04": { "file": "assets/scenarios/hopital_ferme/img/s04.webp", "alt": "Façade d’un ancien hôpital derrière une grille, nuit brumeuse" },
+    "s05": { "file": "assets/scenarios/hopital_ferme/img/s05.webp", "alt": "Hall désert, carrelage humide, bancs, néons fatigués" },
+    "s06": { "file": "assets/scenarios/hopital_ferme/img/s06.webp", "alt": "Comptoir d’accueil avec registre et clochette, écran allumé" },
+    "s07": { "file": "assets/scenarios/hopital_ferme/img/s07.webp", "alt": "Long couloir d’hôpital au néon, portes identiques" },
+    "s08": { "file": "assets/scenarios/hopital_ferme/img/s08.webp", "alt": "Comptoir d’accueil avec registre et clochette, écran allumé" },
+    "s09": { "file": "assets/scenarios/hopital_ferme/img/s09.webp", "alt": "Comptoir d’accueil avec registre et clochette, écran allumé" },
+    "s10": { "file": "assets/scenarios/hopital_ferme/img/s10.webp", "alt": "Comptoir d’accueil avec registre et clochette, écran allumé" },
+    "s11": { "file": "assets/scenarios/hopital_ferme/img/s11.webp", "alt": "Chambre de patient vide, lit défait, moniteur en veille" },
+    "s12": { "file": "assets/scenarios/hopital_ferme/img/s12.webp", "alt": "Chambre de patient vide, lit défait, moniteur en veille" },
+    "s13": { "file": "assets/scenarios/hopital_ferme/img/s13.webp", "alt": "Portes d’ascenseur entrouvertes sur le noir" },
+    "s14": { "file": "assets/scenarios/hopital_ferme/img/s14.webp", "alt": "Salle de radiologie, machine, lumière froide, écran allumé" },
+    "s15": { "file": "assets/scenarios/hopital_ferme/img/s15.webp", "alt": "Salle de radiologie, machine, lumière froide, écran allumé" },
+    "s16": { "file": "assets/scenarios/hopital_ferme/img/s16.webp", "alt": "Petite chapelle d’hôpital, bougies récentes, bancs" },
+    "s17": { "file": "assets/scenarios/hopital_ferme/img/s17.webp", "alt": "Long couloir d’hôpital au néon, portes identiques" },
+    "s18": { "file": "assets/scenarios/hopital_ferme/img/s18.webp", "alt": "Bureau de médecin, dictaphone, lampe, dossiers" },
+    "s19": { "file": "assets/scenarios/hopital_ferme/img/s19.webp", "alt": "Couloir qui se tord, perspective étrange, ombres incohérentes" },
+    "s20": { "file": "assets/scenarios/hopital_ferme/img/s20.webp", "alt": "Cage d’escalier vers le niveau -1, murs humides" },
+    "s21": { "file": "assets/scenarios/hopital_ferme/img/s21.webp", "alt": "Couloir de sous-sol avec tuyaux et condensation" },
+    "s22": { "file": "assets/scenarios/hopital_ferme/img/s22.webp", "alt": "Poste de sécurité, cartes d’accès, plan d’évacuation" },
+    "s23": { "file": "assets/scenarios/hopital_ferme/img/s23.webp", "alt": "Poste de sécurité, cartes d’accès, plan d’évacuation" },
+    "s24": { "file": "assets/scenarios/hopital_ferme/img/s24.webp", "alt": "Long couloir d’hôpital au néon, portes identiques" },
+    "s25": { "file": "assets/scenarios/hopital_ferme/img/s25.webp", "alt": "Archives : étagères, boîtes, dossiers, poussière" },
+    "s26": { "file": "assets/scenarios/hopital_ferme/img/s26.webp", "alt": "Gros plan sur un dossier patient, pages neuves au milieu" },
+    "s27": { "file": "assets/scenarios/hopital_ferme/img/s27.webp", "alt": "Gros plan sur un dossier patient, pages neuves au milieu" },
+    "s28": { "file": "assets/scenarios/hopital_ferme/img/s28.webp", "alt": "Salle de surveillance avec écrans montrant les couloirs" },
+    "s29": { "file": "assets/scenarios/hopital_ferme/img/s29.webp", "alt": "Couloir qui se tord, perspective étrange, ombres incohérentes" },
+    "s30": { "file": "assets/scenarios/hopital_ferme/img/s30.webp", "alt": "Bloc opératoire, lumière au plafond, table, métal" },
+    "s31": { "file": "assets/scenarios/hopital_ferme/img/s31.webp", "alt": "Bloc opératoire, lumière au plafond, table, métal" },
+    "s32": { "file": "assets/scenarios/hopital_ferme/img/s32.webp", "alt": "Salle de réveil, rideaux, draps, appareils en veille" },
+    "s33": { "file": "assets/scenarios/hopital_ferme/img/s33.webp", "alt": "Long couloir d’hôpital au néon, portes identiques" },
+    "s34": { "file": "assets/scenarios/hopital_ferme/img/s34.webp", "alt": "Poste de sécurité, cartes d’accès, plan d’évacuation" },
+    "s35": { "file": "assets/scenarios/hopital_ferme/img/s35.webp", "alt": "Couloir de sous-sol avec tuyaux et condensation" },
+    "s36": { "file": "assets/scenarios/hopital_ferme/img/s36.webp", "alt": "Morgue : tiroirs métalliques, froid, lumière blanche" },
+    "s37": { "file": "assets/scenarios/hopital_ferme/img/s37.webp", "alt": "Gros plan sur un dossier patient, pages neuves au milieu" },
+    "s38": { "file": "assets/scenarios/hopital_ferme/img/s38.webp", "alt": "Gros plan sur un dossier patient, pages neuves au milieu" },
+    "s39": { "file": "assets/scenarios/hopital_ferme/img/s39.webp", "alt": "Long couloir d’hôpital au néon, portes identiques" },
+    "s40": { "file": "assets/scenarios/hopital_ferme/img/s40.webp", "alt": "Cour intérieure de l’hôpital, sortie grillagée, ciel sombre" },
+    "s41": { "file": "assets/scenarios/hopital_ferme/img/s41.webp", "alt": "Cour intérieure de l’hôpital, sortie grillagée, ciel sombre" },
+    "s42": { "file": "assets/scenarios/hopital_ferme/img/s42.webp", "alt": "Couloir qui se tord, perspective étrange, ombres incohérentes" },
+    "s43": { "file": "assets/scenarios/hopital_ferme/img/s43.webp", "alt": "Bloc opératoire, lumière au plafond, table, métal" },
+    "s44": { "file": "assets/scenarios/hopital_ferme/img/s44.webp", "alt": "Salle de réveil, rideaux, draps, appareils en veille" },
+    "s45": { "file": "assets/scenarios/hopital_ferme/img/s45.webp", "alt": "Poste de sécurité, cartes d’accès, plan d’évacuation" },
+    "s46": { "file": "assets/scenarios/hopital_ferme/img/s46.webp", "alt": "Bureau froid, dossier et badge, sensation d’assignation" },
+    "s47": { "file": "assets/scenarios/hopital_ferme/img/s47.webp", "alt": "Cour intérieure de l’hôpital, sortie grillagée, ciel sombre" },
+    "s48": { "file": "assets/scenarios/hopital_ferme/img/s48.webp", "alt": "Cour intérieure de l’hôpital, sortie grillagée, ciel sombre" },
+
     "final_good": {
       "file": "assets/scenarios/hopital_ferme/img/final_good.webp",
       "alt": "Aube grise, sortie de l’hôpital, rue vide"
@@ -119,7 +169,7 @@
   },
   "scenes": {
     "s01": {
-      "image_id": "cover",
+      "image_id": "s01",
       "title_key": "hf.s01.title",
       "body_key": "hf.s01.body",
       "choices": [
@@ -129,7 +179,7 @@
       ]
     },
     "s02": {
-      "image_id": "cover",
+      "image_id": "s02",
       "title_key": "hf.s02.title",
       "body_key": "hf.s02.body",
       "choices": [
@@ -139,7 +189,7 @@
       ]
     },
     "s03": {
-      "image_id": "facade",
+      "image_id": "s03",
       "title_key": "hf.s03.title",
       "body_key": "hf.s03.body",
       "choices": [
@@ -149,7 +199,7 @@
       ]
     },
     "s04": {
-      "image_id": "cover",
+      "image_id": "s04",
       "title_key": "hf.s04.title",
       "body_key": "hf.s04.body",
       "choices": [
@@ -159,7 +209,7 @@
       ]
     },
     "s05": {
-      "image_id": "hall",
+      "image_id": "s05",
       "title_key": "hf.s05.title",
       "body_key": "hf.s05.body",
       "choices": [
@@ -169,7 +219,7 @@
       ]
     },
     "s06": {
-      "image_id": "accueil",
+      "image_id": "s06",
       "title_key": "hf.s06.title",
       "body_key": "hf.s06.body",
       "choices": [
@@ -179,7 +229,7 @@
       ]
     },
     "s07": {
-      "image_id": "couloir",
+      "image_id": "s07",
       "title_key": "hf.s07.title",
       "body_key": "hf.s07.body",
       "choices": [
@@ -189,7 +239,7 @@
       ]
     },
     "s08": {
-      "image_id": "accueil",
+      "image_id": "s08",
       "title_key": "hf.s08.title",
       "body_key": "hf.s08.body",
       "choices": [
@@ -199,7 +249,7 @@
       ]
     },
     "s09": {
-      "image_id": "accueil",
+      "image_id": "s09",
       "title_key": "hf.s09.title",
       "body_key": "hf.s09.body",
       "choices": [
@@ -209,7 +259,7 @@
       ]
     },
     "s10": {
-      "image_id": "accueil",
+      "image_id": "s10",
       "title_key": "hf.s10.title",
       "body_key": "hf.s10.body",
       "choices": [
@@ -219,7 +269,7 @@
       ]
     },
     "s11": {
-      "image_id": "chambre",
+      "image_id": "s11",
       "title_key": "hf.s11.title",
       "body_key": "hf.s11.body",
       "choices": [
@@ -229,7 +279,7 @@
       ]
     },
     "s12": {
-      "image_id": "chambre",
+      "image_id": "s12",
       "title_key": "hf.s12.title",
       "body_key": "hf.s12.body",
       "choices": [
@@ -239,7 +289,7 @@
       ]
     },
     "s13": {
-      "image_id": "ascenseur",
+      "image_id": "s13",
       "title_key": "hf.s13.title",
       "body_key": "hf.s13.body",
       "choices": [
@@ -249,7 +299,7 @@
       ]
     },
     "s14": {
-      "image_id": "radiologie",
+      "image_id": "s14",
       "title_key": "hf.s14.title",
       "body_key": "hf.s14.body",
       "choices": [
@@ -259,7 +309,7 @@
       ]
     },
     "s15": {
-      "image_id": "radiologie",
+      "image_id": "s15",
       "title_key": "hf.s15.title",
       "body_key": "hf.s15.body",
       "choices": [
@@ -269,7 +319,7 @@
       ]
     },
     "s16": {
-      "image_id": "chapelle",
+      "image_id": "s16",
       "title_key": "hf.s16.title",
       "body_key": "hf.s16.body",
       "choices": [
@@ -279,7 +329,7 @@
       ]
     },
     "s17": {
-      "image_id": "couloir",
+      "image_id": "s17",
       "title_key": "hf.s17.title",
       "body_key": "hf.s17.body",
       "choices": [
@@ -289,7 +339,7 @@
       ]
     },
     "s18": {
-      "image_id": "bureau",
+      "image_id": "s18",
       "title_key": "hf.s18.title",
       "body_key": "hf.s18.body",
       "choices": [
@@ -299,7 +349,7 @@
       ]
     },
     "s19": {
-      "image_id": "couloir_shift",
+      "image_id": "s19",
       "title_key": "hf.s19.title",
       "body_key": "hf.s19.body",
       "choices": [
@@ -309,7 +359,7 @@
       ]
     },
     "s20": {
-      "image_id": "escalier",
+      "image_id": "s20",
       "title_key": "hf.s20.title",
       "body_key": "hf.s20.body",
       "choices": [
@@ -319,7 +369,7 @@
       ]
     },
     "s21": {
-      "image_id": "soussol",
+      "image_id": "s21",
       "title_key": "hf.s21.title",
       "body_key": "hf.s21.body",
       "choices": [
@@ -329,7 +379,7 @@
       ]
     },
     "s22": {
-      "image_id": "securite",
+      "image_id": "s22",
       "title_key": "hf.s22.title",
       "body_key": "hf.s22.body",
       "choices": [
@@ -339,7 +389,7 @@
       ]
     },
     "s23": {
-      "image_id": "securite",
+      "image_id": "s23",
       "title_key": "hf.s23.title",
       "body_key": "hf.s23.body",
       "choices": [
@@ -349,7 +399,7 @@
       ]
     },
     "s24": {
-      "image_id": "couloir",
+      "image_id": "s24",
       "title_key": "hf.s24.title",
       "body_key": "hf.s24.body",
       "choices": [
@@ -359,7 +409,7 @@
       ]
     },
     "s25": {
-      "image_id": "archives",
+      "image_id": "s25",
       "title_key": "hf.s25.title",
       "body_key": "hf.s25.body",
       "choices": [
@@ -369,7 +419,7 @@
       ]
     },
     "s26": {
-      "image_id": "dossiers",
+      "image_id": "s26",
       "title_key": "hf.s26.title",
       "body_key": "hf.s26.body",
       "choices": [
@@ -379,17 +429,17 @@
       ]
     },
     "s27": {
-      "image_id": "dossiers",
+      "image_id": "s27",
       "title_key": "hf.s27.title",
       "body_key": "hf.s27.body",
       "choices": [
         { "choice_key": "hf.s27.c1", "next": "s38" },
         { "choice_key": "hf.s27.c2", "next": "s25" },
-        { "choice_key": "hf.s27.c3", "next": "s37" }
+        { "choice_key": "hf.s27.c3", "next": "s39" }
       ]
     },
     "s28": {
-      "image_id": "surveillance",
+      "image_id": "s28",
       "title_key": "hf.s28.title",
       "body_key": "hf.s28.body",
       "choices": [
@@ -399,7 +449,7 @@
       ]
     },
     "s29": {
-      "image_id": "couloir_shift",
+      "image_id": "s29",
       "title_key": "hf.s29.title",
       "body_key": "hf.s29.body",
       "choices": [
@@ -409,7 +459,7 @@
       ]
     },
     "s30": {
-      "image_id": "bloc",
+      "image_id": "s30",
       "title_key": "hf.s30.title",
       "body_key": "hf.s30.body",
       "choices": [
@@ -419,7 +469,7 @@
       ]
     },
     "s31": {
-      "image_id": "bloc",
+      "image_id": "s31",
       "title_key": "hf.s31.title",
       "body_key": "hf.s31.body",
       "choices": [
@@ -429,7 +479,7 @@
       ]
     },
     "s32": {
-      "image_id": "reveil",
+      "image_id": "s32",
       "title_key": "hf.s32.title",
       "body_key": "hf.s32.body",
       "choices": [
@@ -439,7 +489,7 @@
       ]
     },
     "s33": {
-      "image_id": "couloir",
+      "image_id": "s33",
       "title_key": "hf.s33.title",
       "body_key": "hf.s33.body",
       "choices": [
@@ -449,7 +499,7 @@
       ]
     },
     "s34": {
-      "image_id": "securite",
+      "image_id": "s34",
       "title_key": "hf.s34.title",
       "body_key": "hf.s34.body",
       "choices": [
@@ -459,7 +509,7 @@
       ]
     },
     "s35": {
-      "image_id": "soussol",
+      "image_id": "s35",
       "title_key": "hf.s35.title",
       "body_key": "hf.s35.body",
       "choices": [
@@ -469,7 +519,7 @@
       ]
     },
     "s36": {
-      "image_id": "morgue",
+      "image_id": "s36",
       "title_key": "hf.s36.title",
       "body_key": "hf.s36.body",
       "choices": [
@@ -479,7 +529,7 @@
       ]
     },
     "s37": {
-      "image_id": "dossiers",
+      "image_id": "s37",
       "title_key": "hf.s37.title",
       "body_key": "hf.s37.body",
       "choices": [
@@ -493,7 +543,7 @@
       ]
     },
     "s38": {
-      "image_id": "dossiers",
+      "image_id": "s38",
       "title_key": "hf.s38.title",
       "body_key": "hf.s38.body",
       "choices": [
@@ -503,37 +553,37 @@
       ]
     },
     "s39": {
-      "image_id": "couloir",
+      "image_id": "s39",
       "title_key": "hf.s39.title",
       "body_key": "hf.s39.body",
       "choices": [
         { "choice_key": "hf.s39.c1", "next": "s40" },
         { "choice_key": "hf.s39.c2", "next": "s33" },
-        { "choice_key": "hf.s39.c3", "next": "s41" }
+        { "choice_key": "hf.s39.c3", "next": "s40" }
       ]
     },
     "s40": {
-      "image_id": "cour",
+      "image_id": "s40",
       "title_key": "hf.s40.title",
       "body_key": "hf.s40.body",
       "choices": [
         { "choice_key": "hf.s40.c1", "next": "s48" },
-        { "choice_key": "hf.s40.c2", "next": "s42" },
+        { "choice_key": "hf.s40.c2", "next": "s41" },
         { "choice_key": "hf.s40.c3", "next": "s33" }
       ]
     },
     "s41": {
-      "image_id": "cour",
+      "image_id": "s41",
       "title_key": "hf.s41.title",
       "body_key": "hf.s41.body",
       "choices": [
         { "choice_key": "hf.s41.c1", "next": "s48" },
         { "choice_key": "hf.s41.c2", "next": "s40" },
-        { "choice_key": "hf.s41.c3", "next": "s01" }
+        { "choice_key": "hf.s41.c3", "next": "s04" }
       ]
     },
     "s42": {
-      "image_id": "couloir_shift",
+      "image_id": "s42",
       "title_key": "hf.s42.title",
       "body_key": "hf.s42.body",
       "choices": [
@@ -543,7 +593,7 @@
       ]
     },
     "s43": {
-      "image_id": "bloc",
+      "image_id": "s43",
       "title_key": "hf.s43.title",
       "body_key": "hf.s43.body",
       "choices": [
@@ -553,7 +603,7 @@
       ]
     },
     "s44": {
-      "image_id": "reveil",
+      "image_id": "s44",
       "title_key": "hf.s44.title",
       "body_key": "hf.s44.body",
       "choices": [
@@ -563,7 +613,7 @@
       ]
     },
     "s45": {
-      "image_id": "securite",
+      "image_id": "s45",
       "title_key": "hf.s45.title",
       "body_key": "hf.s45.body",
       "choices": [
@@ -577,7 +627,7 @@
       ]
     },
     "s46": {
-      "image_id": "archives",
+      "image_id": "s46",
       "title_key": "hf.s46.title",
       "body_key": "hf.s46.body",
       "choices": [
@@ -587,7 +637,7 @@
       ]
     },
     "s47": {
-      "image_id": "cour",
+      "image_id": "s47",
       "title_key": "hf.s47.title",
       "body_key": "hf.s47.body",
       "choices": [
@@ -601,7 +651,7 @@
       ]
     },
     "s48": {
-      "image_id": "cour",
+      "image_id": "s48",
       "title_key": "hf.s48.title",
       "body_key": "hf.s48.body",
       "choices": [
@@ -610,6 +660,7 @@
         { "choice_key": "hf.s48.c3", "next": "s25" }
       ]
     },
+
     "end_good": {
       "image_id": "final_good",
       "title_key": "hf.end_good.title",

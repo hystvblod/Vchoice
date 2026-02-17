@@ -17,6 +17,16 @@
     "loading": "Chargement…",
     "locked_choice": "Indisponible pour le moment",
 
+    "resume_title": "Reprendre ?",
+    "resume_body": "Une partie est en cours pour ce scénario.\n\nTu veux reprendre là où tu t’étais arrêté, ou recommencer depuis le début ?",
+
+    "end_title": "Fin du scénario",
+    "end_title_good": "Fin (bonne)",
+    "end_title_bad": "Fin (mauvaise)",
+    "end_title_secret": "Fin (secrète)",
+    "end_body": "Bravo. Tu gagnes {reward} VCoins.",
+    "end_err_save": "Impossible de mettre à jour la base en ligne. Tu peux continuer, mais les gains peuvent ne pas être enregistrés.",
+
     "scenario_buy": {
       "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
       "pay": "Débloquer ({price} VCoins)",

@@ -320,6 +320,32 @@
         _reportRemoteError("rpc.secure_unlock_scenario.exception", e);
         return { ok:false, reason:"rpc_exception", error:e };
       }
+    },
+
+    // ✅ AJOUT : fin de scénario (reward + log ending) via RPC secure_complete_scenario
+    async completeScenario(scenarioId, ending){
+      const sb = window.sb;
+      if (!sbReady()) return { ok:false, reason:"no_client" };
+      const uid = await this.ensureAuth();
+      if (!uid) return { ok:false, reason:"no_auth" };
+
+      const s = String(scenarioId || "").trim();
+      const e = String(ending || "").trim().toLowerCase();
+
+      if (!s) return { ok:false, reason:"invalid_scenario" };
+      if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
+
+      try{
+        const r = await sb.rpc("secure_complete_scenario", { p_scenario: s, p_ending: e });
+        if (r?.error){
+          _reportRemoteError("rpc.secure_complete_scenario", r.error);
+          return { ok:false, reason: r.error.message || "rpc_error", error: r.error };
+        }
+        return { ok:true, data: r?.data ?? null };
+      }catch(ex){
+        _reportRemoteError("rpc.secure_complete_scenario.exception", ex);
+        return { ok:false, reason:"rpc_exception", error: ex };
+      }
     }
   };
 
@@ -455,6 +481,37 @@
       }, "VUserData.addVcoins");
 
       return this.getVcoins();
+    },
+
+    // ✅ AJOUT : fin de scénario (wrapper simple)
+    async completeScenario(scenarioId, ending){
+      const id = String(scenarioId || "").trim();
+      const e = String(ending || "").trim().toLowerCase();
+      if (!id) return { ok:false, reason:"invalid_scenario" };
+      if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
+      if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
+
+      const res = await window.VCRemoteStore.completeScenario(id, e);
+      if (!res?.ok) return res || { ok:false, reason:"error" };
+
+      // RPC peut renvoyer {vcoins, reward} ou [{vcoins, reward}] selon ton SQL
+      const payload = Array.isArray(res.data) ? (res.data[0] || null) : res.data;
+
+      if (payload && typeof payload === "object"){
+        if (typeof payload.vcoins !== "undefined"){
+          _memState.vcoins = _clampInt(payload.vcoins);
+          _memState.updated_at = Date.now();
+          _emitProfile();
+          _persistLocal();
+        } else {
+          // fallback: refresh si pas de vcoins
+          await this.refresh().catch(() => false);
+        }
+      } else {
+        await this.refresh().catch(() => false);
+      }
+
+      return { ok:true, reason:"ok", data: payload || null };
     }
   };
 
