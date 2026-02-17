@@ -255,6 +255,35 @@ async function loadCatalog(){
   CATALOG = await fetchJSON(PATHS.catalog);
 }
 
+/* =========================
+   HUD JETONS (game.html)
+========================= */
+function updateHudJetons(){
+  const el = $("hudJetonCount");
+  if(!el) return;
+
+  let jetons = 0;
+  if(window.VUserData && typeof window.VUserData.getJetons === "function"){
+    try{ jetons = Number(window.VUserData.getJetons() || 0); }catch(e){}
+  }
+  el.textContent = String(jetons);
+}
+
+function bindJetonHud(){
+  const btn = $("btnJetonBack");
+  if(btn){
+    btn.onclick = async () => {
+      await goBackWithJeton();
+    };
+  }
+
+  // Si ton userData émet un event profil après RPC, on resync le HUD
+  window.addEventListener("vr:profile", updateHudJetons);
+  window.addEventListener("vc:profile", updateHudJetons);
+
+  updateHudJetons();
+}
+
 async function boot(){
   load();
 
@@ -275,6 +304,7 @@ async function boot(){
   await loadCatalog();
 
   bindTopbar();
+  bindJetonHud(); // ✅ AJOUT
 
   if(hasMenuPage()){
     await renderMenu();
@@ -685,6 +715,7 @@ async function goBackWithJeton(){
 
   st.scene = st.history.pop();
   save();
+  updateHudJetons(); // ✅ AJOUT
   hideHintModal();
   renderScene();
 }
@@ -700,6 +731,7 @@ async function restartWithJeton(){
   }
 
   hardResetScenario(currentScenarioId);
+  updateHudJetons(); // ✅ AJOUT
   hideHintModal();
   renderScene();
 }
@@ -794,6 +826,7 @@ async function handleEnding(ending){
 function renderScene(){
   renderTopbar();
   bindHintModal();
+  updateHudJetons(); // ✅ AJOUT (safe)
 
   const st = scenarioStates[currentScenarioId];
   if(!st) return;

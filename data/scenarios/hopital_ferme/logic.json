@@ -503,7 +503,7 @@
       "title_key": "hf.s34.title",
       "body_key": "hf.s34.body",
       "choices": [
-        { "choice_key": "hf.s34.c1", "next": "s45", "requires_any_flags": ["has_keycard"] },
+        { "choice_key": "hf.s34.c1", "next": "s45"},
         { "choice_key": "hf.s34.c2", "next": "s35" },
         { "choice_key": "hf.s34.c3", "next": "s33" }
       ]
