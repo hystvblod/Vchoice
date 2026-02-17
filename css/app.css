@@ -870,3 +870,46 @@ body.page-game .scene__hud .choice_btn:disabled{
   body.page-game .scene__hud .title{ font-size:18.5px; }
   body.page-game .scene__hud .choice_btn{ padding:13px 12px; }
 }
+/* ===== HUD TOP (Jetons) ===== */
+.hud_top{
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top));
+  right: calc(10px + env(safe-area-inset-right));
+  z-index: 50;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.hud_jeton{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.hud_jeton:disabled{
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.hud_jeton_icon{
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.hud_jeton_count{
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
+}
