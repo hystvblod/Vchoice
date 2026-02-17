@@ -1,7 +1,7 @@
 // js/userData.js
 // VChoice — Local cache + Supabase RPCs (source of truth)
 // - Profil via RPC secure_get_me
-// - Solde via RPC: secure_add_vcoins / secure_add_jetons / secure_reduce_vcoins_to
+// - Solde via RPC: secure_add_vcoins / secure_add_jetons / secure_spend_jetons / secure_reduce_vcoins_to
 // - Username via secure_set_username
 // - Lang via secure_set_lang
 // - Déblocage scénario via secure_unlock_scenario
@@ -9,7 +9,7 @@
 //
 // Notes:
 // - unlocked_scenarios = cache local UX, Supabase = vérité via secure_get_me
-// - vr:profile émis pour que l’UI se mette à jour sans “flash”
+// - vc:profile émis pour que l’UI se mette à jour sans “flash”
 
 (function () {
   "use strict";
@@ -147,6 +147,22 @@
     return !!(window.sb && window.sb.auth && typeof window.sb.rpc === "function");
   }
 
+  async function _rpcTry(name, args1, args2, where1, where2){
+    const sb = window.sb;
+    try{
+      const r1 = await sb.rpc(name, args1 || {});
+      if (!r1?.error) return r1;
+      _reportRemoteError(where1 || `rpc.${name}.try1`, r1.error);
+      if (!args2) return r1;
+      const r2 = await sb.rpc(name, args2 || {});
+      if (r2?.error) _reportRemoteError(where2 || `rpc.${name}.try2`, r2.error);
+      return r2;
+    }catch(e){
+      _reportRemoteError(`rpc.${name}.exception`, e);
+      return { error: e, data: null };
+    }
+  }
+
   window.VCRemoteStore = window.VCRemoteStore || {
     enabled(){ return sbReady(); },
 
@@ -270,6 +286,49 @@
       }
     },
 
+    // ✅ NEW: add jetons (fallback p_delta / p_value)
+    async addJetons(delta){
+      const sb = window.sb;
+      if (!sbReady()) return null;
+      const uid = await this.ensureAuth();
+      if (!uid) return null;
+
+      const d = Math.floor(Number(delta || 0));
+      if (d <= 0) return null;
+
+      // fallback: certains schémas utilisent p_delta, d’autres p_value
+      const r = await _rpcTry(
+        "secure_add_jetons",
+        { p_delta: d },
+        { p_value: d },
+        "rpc.secure_add_jetons.p_delta",
+        "rpc.secure_add_jetons.p_value"
+      );
+      if (r?.error) return null;
+      return Number(r?.data ?? 0);
+    },
+
+    // ✅ NEW: spend jetons (fallback p_cost / p_delta)
+    async spendJetons(cost){
+      const sb = window.sb;
+      if (!sbReady()) return null;
+      const uid = await this.ensureAuth();
+      if (!uid) return null;
+
+      const c = Math.max(1, Math.floor(Number(cost || 1)));
+
+      // fallback: certains schémas utilisent p_cost, d’autres p_delta
+      const r = await _rpcTry(
+        "secure_spend_jetons",
+        { p_cost: c },
+        { p_delta: c },
+        "rpc.secure_spend_jetons.p_cost",
+        "rpc.secure_spend_jetons.p_delta"
+      );
+      if (r?.error) return null;
+      return Number(r?.data ?? 0);
+    },
+
     async unlockScenario(scenarioId){
       const sb = window.sb;
       if (!sbReady()) return { ok:false, reason:"no_client" };
@@ -292,7 +351,7 @@
       }
     },
 
-    // ✅ NEW: fin scenario (reward + log ending)
+    // ✅ fin scenario (reward + log ending)
     async completeScenario(scenarioId, ending){
       const sb = window.sb;
       if (!sbReady()) return { ok:false, reason:"no_client" };
@@ -389,6 +448,7 @@
 
     getLang(){ return String(this.load().lang || "fr"); },
     getVcoins(){ return Number(this.load().vcoins || 0); },
+    getJetons(){ return Number(this.load().jetons || 0); },
 
     getUnlockedScenarios(){
       const u = this.load();
@@ -430,14 +490,33 @@
       return { ok:true, reason:"ok", data:this.load() };
     },
 
-    // ✅ NEW: fin scenario = appelle RPC, met à jour vcoins local
+    // ✅ NEW: spend jetons (server authoritative)
+    async spendJetons(cost){
+      if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
+      const v = await window.VCRemoteStore.spendJetons(cost);
+      if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
+      const cur = this.load();
+      this.save({ ...cur, jetons: v });
+      return { ok:true, jetons: v };
+    },
+
+    // ✅ NEW: add jetons (server authoritative)
+    async addJetons(delta){
+      if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
+      const v = await window.VCRemoteStore.addJetons(delta);
+      if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
+      const cur = this.load();
+      this.save({ ...cur, jetons: v });
+      return { ok:true, jetons: v };
+    },
+
+    // ✅ fin scenario = appelle RPC, met à jour vcoins local
     async completeScenario(scenarioId, ending){
       if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
 
       const res = await window.VCRemoteStore.completeScenario(scenarioId, ending);
       if (!res?.ok) return res || { ok:false, reason:"error" };
 
-      // on essaie de récupérer vcoins direct depuis la réponse
       const payload = res.data || null;
       const v = payload && typeof payload.vcoins === "number" ? payload.vcoins : null;
 

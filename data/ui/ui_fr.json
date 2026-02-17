@@ -17,15 +17,23 @@
     "loading": "Chargement…",
     "locked_choice": "Indisponible pour le moment",
 
-    "resume_title": "Reprendre ?",
-    "resume_body": "Une partie est en cours pour ce scénario.\n\nTu veux reprendre là où tu t’étais arrêté, ou recommencer depuis le début ?",
+    "resume_title": "Reprendre la partie ?",
+    "resume_desc": "Une progression existe pour ce scénario.",
 
-    "end_title": "Fin du scénario",
-    "end_title_good": "Fin (bonne)",
-    "end_title_bad": "Fin (mauvaise)",
-    "end_title_secret": "Fin (secrète)",
-    "end_body": "Bravo. Tu gagnes {reward} VCoins.",
-    "end_err_save": "Impossible de mettre à jour la base en ligne. Tu peux continuer, mais les gains peuvent ne pas être enregistrés.",
+    "ending_title": "Fin atteinte",
+    "ending_desc": "Tu as terminé ce scénario.",
+    "reward_toast": "+{reward} VCoins",
+
+    "locked_title": "Choix bloqué",
+    "locked_body": "Tu as raté des éléments nécessaires pour débloquer cette voie.",
+    "locked_missing": "Il te manque :",
+    "locked_missing_any": "Il te faut au moins un élément parmi :",
+    "locked_tip": "Astuce : explore plus, certains objets servent de preuve.",
+    "locked_back_jeton": "Revenir en arrière (1 jeton)",
+    "locked_restart_jeton": "Revenir au début (1 jeton)",
+    "locked_close": "Fermer",
+    "locked_no_back": "Aucun retour possible ici.",
+    "jeton_not_enough": "Pas assez de jetons.",
 
     "scenario_buy": {
       "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",

@@ -124,8 +124,7 @@ async function setLang(newLang, opts = {}){
   if(persistLocal) save();
 
   if(persistRemote && window.VUserData && typeof window.VUserData.getLang === "function"){
-    // ta VUserData setLang passe par RPC via VCRemoteStore.setLang si tu veux
-    // ici on ne force pas, pour éviter de casser si pas branché sur cette page
+    // optionnel
   }
 
   if(hasGamePage() && currentScenarioId){
@@ -223,7 +222,6 @@ function hasLocalRun(scenarioId){
   if(!st || typeof st !== "object") return false;
   const start = resolveStartScene(LOGIC);
   const cur = String(st.scene || "");
-  // “progression” = scène != start OU flags/clues non vides
   const hasFlags = st.flags && typeof st.flags === "object" && Object.keys(st.flags).length > 0;
   const hasClues = Array.isArray(st.clues) && st.clues.length > 0;
   return (start && cur && cur !== start) || hasFlags || hasClues;
@@ -235,7 +233,8 @@ function hardResetScenario(scenarioId){
   scenarioStates[scenarioId] = {
     scene: start,
     flags: {},
-    clues: []
+    clues: [],
+    history: []
   };
   save();
 }
@@ -261,7 +260,6 @@ async function boot(){
 
   let initialLang = LANG;
 
-  // si VUserData existe, on garde son lang local
   if(window.VUserData && typeof window.VUserData.getLang === "function"){
     try{
       const l = normalizeLang(window.VUserData.getLang());
@@ -287,7 +285,6 @@ async function boot(){
     const scenarioId = u.searchParams.get("scenario");
     if(scenarioId){
       await openScenario(scenarioId, { skipResumePrompt:false });
-      // renderScene est appelé après la décision reprise/restart
     }
   }
 }
@@ -391,8 +388,6 @@ function renderTopbar(){
 ========================= */
 
 function ensureResumeModal(){
-  // On réutilise la structure “modal” déjà présente (comme hintModal)
-  // Si tu n’as pas ces IDs dans ton HTML, on les crée dynamiquement ici.
   let modal = $("resumeModal");
   if(modal) return;
 
@@ -457,7 +452,6 @@ function ensureResumeModal(){
 
   document.body.appendChild(modal);
 
-  // binds
   close.onclick = () => hideResumeModal();
   backdrop.onclick = () => hideResumeModal();
 }
@@ -473,14 +467,12 @@ function showResumeModal(onContinue, onRestart){
 
   if(title) title.textContent = tUI("resume_title");
   if(body){
-    // texte + actions déjà dedans (buttons)
     const desc = document.createElement("div");
     desc.textContent = tUI("resume_desc");
     desc.style.marginBottom = "10px";
     body.insertBefore(desc, body.firstChild);
   }
 
-  // reset events
   if(btnC) btnC.onclick = () => { hideResumeModal(); onContinue && onContinue(); };
   if(btnR) btnR.onclick = () => { hideResumeModal(); onRestart && onRestart(); };
 
@@ -492,10 +484,8 @@ function hideResumeModal(){
   const modal = $("resumeModal");
   if(!modal) return;
 
-  // nettoie le texte ajouté en haut (desc)
   const body = $("resumeBody");
   if(body && body.firstChild && body.firstChild.nodeType === 1){
-    // supprime seulement si c’est un div desc (best-effort)
     const el = body.firstChild;
     if(el && el.tagName === "DIV") body.removeChild(el);
   }
@@ -516,13 +506,13 @@ async function openScenario(scenarioId, opts = {}){
     ? TEXT.strings
     : null;
 
-  // init state si absent
   if(!scenarioStates[scenarioId]){
     const start = resolveStartScene(LOGIC);
     scenarioStates[scenarioId] = {
       scene: start,
       flags: {},
       clues: [],
+      history: []
     };
     save();
   } else {
@@ -534,8 +524,8 @@ async function openScenario(scenarioId, opts = {}){
 
   scenarioStates[scenarioId].flags ??= {};
   scenarioStates[scenarioId].clues ??= [];
+  scenarioStates[scenarioId].history ??= [];
 
-  // Popup reprise si progression existe
   if(!skipResumePrompt && hasLocalRun(scenarioId)){
     showResumeModal(
       () => { renderScene(); },
@@ -570,6 +560,9 @@ function clearFlag(flag){
   delete st.flags[flag];
 }
 
+/* =========================
+   HINT MODAL + LOCKED MODAL
+========================= */
 function showHintModal(title, body){
   const modal = $("hintModal");
   const t = $("hintTitle");
@@ -577,7 +570,52 @@ function showHintModal(title, body){
   if(!modal || !t || !b) return;
 
   t.textContent = title || tUI("hint_title");
+  b.textContent = ""; // reset
   b.textContent = body || "";
+
+  // nettoie actions si présentes
+  const old = $("hintActions");
+  if(old && old.parentNode) old.parentNode.removeChild(old);
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function showHintModalWithActions(title, bodyLines, actions){
+  const modal = $("hintModal");
+  const t = $("hintTitle");
+  const b = $("hintBody");
+  if(!modal || !t || !b) return;
+
+  t.textContent = title || tUI("hint_title");
+
+  // reset body
+  b.textContent = "";
+  const txt = Array.isArray(bodyLines) ? bodyLines.join("\n") : String(bodyLines || "");
+  b.textContent = txt;
+
+  // remove previous actions
+  const old = $("hintActions");
+  if(old && old.parentNode) old.parentNode.removeChild(old);
+
+  // add actions
+  const wrap = document.createElement("div");
+  wrap.id = "hintActions";
+  wrap.style.display = "flex";
+  wrap.style.flexDirection = "column";
+  wrap.style.gap = "10px";
+  wrap.style.marginTop = "14px";
+
+  for(const act of (actions || [])){
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = act.className || "btn";
+    btn.textContent = act.label || "OK";
+    btn.onclick = async () => { try{ await (act.onClick && act.onClick()); }catch(e){} };
+    wrap.appendChild(btn);
+  }
+
+  b.parentNode.appendChild(wrap);
 
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden", "false");
@@ -588,6 +626,9 @@ function hideHintModal(){
   if(!modal) return;
   modal.classList.add("hidden");
   modal.setAttribute("aria-hidden", "true");
+
+  const old = $("hintActions");
+  if(old && old.parentNode) old.parentNode.removeChild(old);
 }
 
 function bindHintModal(){
@@ -597,6 +638,123 @@ function bindHintModal(){
   if(back) back.onclick = hideHintModal;
 }
 
+function prettyFlagTitle(flag){
+  const key = `hf.clue.${flag}.title`;
+  const v = (TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key)) ? TEXT_STRINGS[key] : deepGet(TEXT, key);
+  return v || flag;
+}
+
+function getMissingFlagsForChoice(choice){
+  const flags = scenarioStates[currentScenarioId]?.flags || {};
+  const all = Array.isArray(choice.requires_all_flags) ? choice.requires_all_flags : [];
+  const any = Array.isArray(choice.requires_any_flags) ? choice.requires_any_flags : [];
+
+  const missingAll = all.filter(f => !flags[f]);
+
+  let missingAny = [];
+  if(any.length){
+    const hasOne = any.some(f => !!flags[f]);
+    if(!hasOne) missingAny = any.slice(0);
+  }
+
+  return { missingAll, missingAny };
+}
+
+async function spendJetons(cost){
+  if(!window.VUserData || typeof window.VUserData.spendJetons !== "function"){
+    return { ok:false, reason:"no_userData" };
+  }
+  return await window.VUserData.spendJetons(cost);
+}
+
+async function goBackWithJeton(){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return;
+
+  st.history ??= [];
+  if(!st.history.length){
+    showHintModal(tUI("hint_title"), tUI("locked_no_back") || "Aucun retour possible ici.");
+    return;
+  }
+
+  const res = await spendJetons(1);
+  if(!res?.ok){
+    showHintModal(tUI("hint_title"), tUI("jeton_not_enough") || "Pas assez de jetons.");
+    return;
+  }
+
+  st.scene = st.history.pop();
+  save();
+  hideHintModal();
+  renderScene();
+}
+
+async function restartWithJeton(){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return;
+
+  const res = await spendJetons(1);
+  if(!res?.ok){
+    showHintModal(tUI("hint_title"), tUI("jeton_not_enough") || "Pas assez de jetons.");
+    return;
+  }
+
+  hardResetScenario(currentScenarioId);
+  hideHintModal();
+  renderScene();
+}
+
+function showLockedChoiceModal(choice){
+  const { missingAll, missingAny } = getMissingFlagsForChoice(choice);
+
+  const lines = [];
+  lines.push(tUI("locked_body") || "Tu as raté des éléments nécessaires pour débloquer cette voie.");
+
+  if(missingAll.length){
+    lines.push("");
+    lines.push(tUI("locked_missing") || "Il te manque :");
+    for(const f of missingAll){
+      lines.push(`• ${prettyFlagTitle(f)}`);
+    }
+  }
+
+  if(missingAny.length){
+    lines.push("");
+    lines.push(tUI("locked_missing_any") || "Il te faut au moins un élément parmi :");
+    for(const f of missingAny){
+      lines.push(`• ${prettyFlagTitle(f)}`);
+    }
+  }
+
+  lines.push("");
+  lines.push(tUI("locked_tip") || "Astuce : explore plus, certains objets servent de preuve.");
+
+  showHintModalWithActions(
+    tUI("locked_title") || "Choix bloqué",
+    lines,
+    [
+      {
+        label: tUI("locked_back_jeton") || "Revenir en arrière (1 jeton)",
+        className: "btn",
+        onClick: goBackWithJeton
+      },
+      {
+        label: tUI("locked_restart_jeton") || "Revenir au début (1 jeton)",
+        className: "btn btn--ghost",
+        onClick: restartWithJeton
+      },
+      {
+        label: tUI("locked_close") || "Fermer",
+        className: "btn btn--ghost",
+        onClick: () => hideHintModal()
+      }
+    ]
+  );
+}
+
+/* =========================
+   ENDINGS
+========================= */
 async function handleEnding(ending){
   const e = String(ending || "").trim().toLowerCase();
   if(!["good","bad","secret"].includes(e)){
@@ -604,10 +762,8 @@ async function handleEnding(ending){
     return;
   }
 
-  // reset local run
   hardResetScenario(currentScenarioId);
 
-  // RPC server: +300 vcoins + log ending
   let reward = 300;
   let newVcoins = null;
 
@@ -619,7 +775,6 @@ async function handleEnding(ending){
     }
   }
 
-  // petite info (réutilise hint modal)
   const title = tUI("ending_title");
   const desc  = tUI("ending_desc");
   const toast = tUI("reward_toast", { reward: String(reward) });
@@ -630,10 +785,12 @@ async function handleEnding(ending){
 
   showHintModal(title, `${desc}\n\n(${e.toUpperCase()})${extra}`);
 
-  // re-render start
   renderScene();
 }
 
+/* =========================
+   RENDER
+========================= */
 function renderScene(){
   renderTopbar();
   bindHintModal();
@@ -650,7 +807,6 @@ function renderScene(){
 
   // ✅ Fin au niveau scène
   if(scene.ending){
-    // on déclenche une seule fois, puis on s’arrête
     handleEnding(scene.ending);
     return;
   }
@@ -707,14 +863,18 @@ function renderScene(){
       btn.textContent = label;
 
       const available = isChoiceAvailable(ch);
+
+      // ✅ NOUVEAU : pas de disabled, on garde cliquable
       if(!available){
         btn.classList.add("is_locked");
-        btn.disabled = true;
         btn.title = tUI("locked_choice") || "Indisponible pour le moment";
       }
 
       btn.onclick = async () => {
-        if(!available) return;
+        if(!available){
+          showLockedChoiceModal(ch);
+          return;
+        }
 
         if(Array.isArray(ch.set_flags)){
           for(const f of ch.set_flags) setFlag(f);
@@ -734,6 +894,10 @@ function renderScene(){
 
         // next scene
         if(ch.next){
+          // ✅ history
+          st.history ??= [];
+          st.history.push(st.scene);
+
           st.scene = ch.next;
           save();
           renderScene();

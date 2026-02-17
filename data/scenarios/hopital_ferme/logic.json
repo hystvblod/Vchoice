@@ -641,7 +641,7 @@
       "title_key": "hf.s47.title",
       "body_key": "hf.s47.body",
       "choices": [
-        { "choice_key": "hf.s47.c1", "next": "end_good", "requires_any_flags": ["has_recording", "has_tape", "has_dossier"] },
+        { "choice_key": "hf.s47.c1", "next": "end_good" },
         { "choice_key": "hf.s47.c2", "next": "end_bad" },
         {
           "choice_key": "hf.s47.c3",
