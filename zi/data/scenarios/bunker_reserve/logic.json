@@ -1,37 +1,68 @@
-
 {
   "scenario_id": "bunker_reserve",
   "version": 3,
   "start_scene": "s01",
   "images": {
-    "cover": { "file": "assets/scenarios/bunker_reserve/img/cover.webp", "alt": "Entrée de bunker cachée dans une colline boisée" },
-    "approche": { "file": "assets/scenarios/bunker_reserve/img/approche.webp", "alt": "Clôture rouillée, cadenas neuf, traces au sol" },
-    "trappe": { "file": "assets/scenarios/bunker_reserve/img/trappe.webp", "alt": "Trappe métallique, poignée froide" },
-    "descente": { "file": "assets/scenarios/bunker_reserve/img/descente.webp", "alt": "Descente étroite vers le bunker" },
-    "sas": { "file": "assets/scenarios/bunker_reserve/img/sas.webp", "alt": "Sas à double porte, joints étanches" },
-    "couloir": { "file": "assets/scenarios/bunker_reserve/img/couloir.webp", "alt": "Couloir principal, néons faibles" },
-    "couloir_red": { "file": "assets/scenarios/bunker_reserve/img/couloir_red.webp", "alt": "Couloir sous alarme rouge" },
-    "plan": { "file": "assets/scenarios/bunker_reserve/img/plan.webp", "alt": "Plan derrière vitre, coin arraché" },
-    "controle": { "file": "assets/scenarios/bunker_reserve/img/controle.webp", "alt": "Salle de contrôle, un voyant actif" },
-    "securite": { "file": "assets/scenarios/bunker_reserve/img/securite.webp", "alt": "Salle de sécurité, écrans de surveillance" },
-    "console": { "file": "assets/scenarios/bunker_reserve/img/console.webp", "alt": "Console centrale verrouillée" },
-    "porte_badge": { "file": "assets/scenarios/bunker_reserve/img/porte_badge.webp", "alt": "Porte avec lecteur de badge" },
-    "vestiaire": { "file": "assets/scenarios/bunker_reserve/img/vestiaire.webp", "alt": "Vestiaire service, badge posé" },
-    "maintenance": { "file": "assets/scenarios/bunker_reserve/img/maintenance.webp", "alt": "Local maintenance, poussière dérangée" },
-    "stockage": { "file": "assets/scenarios/bunker_reserve/img/stockage.webp", "alt": "Réserves pleines, stocks intacts" },
-    "stockage_vide": { "file": "assets/scenarios/bunker_reserve/img/stockage_vide.webp", "alt": "Travée vidée au milieu des stocks" },
-    "dortoir": { "file": "assets/scenarios/bunker_reserve/img/dortoir.webp", "alt": "Dortoir impeccable, lit trop parfait" },
-    "infirmerie": { "file": "assets/scenarios/bunker_reserve/img/infirmerie.webp", "alt": "Infirmerie froide, tiroir entrouvert" },
-    "atelier": { "file": "assets/scenarios/bunker_reserve/img/atelier.webp", "alt": "Atelier, outils alignés, une absence" },
-    "tech": { "file": "assets/scenarios/bunker_reserve/img/tech.webp", "alt": "Salle technique, câbles et condensation" },
-    "eau": { "file": "assets/scenarios/bunker_reserve/img/eau.webp", "alt": "Filtration d’eau, empreinte sur inox" },
-    "ventilation": { "file": "assets/scenarios/bunker_reserve/img/ventilation.webp", "alt": "Ventilation, grille retirée" },
-    "porte_scellee": { "file": "assets/scenarios/bunker_reserve/img/porte_scellee.webp", "alt": "Porte scellée, cadenas, trace de chaleur" },
-    "sanctuaire": { "file": "assets/scenarios/bunker_reserve/img/sanctuaire.webp", "alt": "Pièce habitée, drap occultant, verre vide" },
+    "s01": { "file": "assets/scenarios/bunker_reserve/img/s01.webp" },
+    "s02": { "file": "assets/scenarios/bunker_reserve/img/s02.webp" },
+    "s03": { "file": "assets/scenarios/bunker_reserve/img/s03.webp" },
+    "s04": { "file": "assets/scenarios/bunker_reserve/img/s04.webp" },
+    "s05": { "file": "assets/scenarios/bunker_reserve/img/s05.webp" },
+    "s06": { "file": "assets/scenarios/bunker_reserve/img/s06.webp" },
+    "s07": { "file": "assets/scenarios/bunker_reserve/img/s07.webp" },
+    "s08": { "file": "assets/scenarios/bunker_reserve/img/s08.webp" },
+    "s09": { "file": "assets/scenarios/bunker_reserve/img/s09.webp" },
+    "s10": { "file": "assets/scenarios/bunker_reserve/img/s10.webp" },
+    "s11": { "file": "assets/scenarios/bunker_reserve/img/s11.webp" },
+    "s12": { "file": "assets/scenarios/bunker_reserve/img/s12.webp" },
+    "s13": { "file": "assets/scenarios/bunker_reserve/img/s13.webp" },
+    "s14": { "file": "assets/scenarios/bunker_reserve/img/s14.webp" },
+    "s15": { "file": "assets/scenarios/bunker_reserve/img/s15.webp" },
+    "s16": { "file": "assets/scenarios/bunker_reserve/img/s16.webp" },
+    "s17": { "file": "assets/scenarios/bunker_reserve/img/s17.webp" },
+    "s18": { "file": "assets/scenarios/bunker_reserve/img/s18.webp" },
+    "s19": { "file": "assets/scenarios/bunker_reserve/img/s19.webp" },
+    "s20": { "file": "assets/scenarios/bunker_reserve/img/s20.webp" },
+    "s21": { "file": "assets/scenarios/bunker_reserve/img/s21.webp" },
+    "s22": { "file": "assets/scenarios/bunker_reserve/img/s22.webp" },
+    "s23": { "file": "assets/scenarios/bunker_reserve/img/s23.webp" },
+    "s24": { "file": "assets/scenarios/bunker_reserve/img/s24.webp" },
+    "s25": { "file": "assets/scenarios/bunker_reserve/img/s25.webp" },
+    "s26": { "file": "assets/scenarios/bunker_reserve/img/s26.webp" },
+    "s27": { "file": "assets/scenarios/bunker_reserve/img/s27.webp" },
+    "s28": { "file": "assets/scenarios/bunker_reserve/img/s28.webp" },
+    "s29": { "file": "assets/scenarios/bunker_reserve/img/s29.webp" },
+    "s30": { "file": "assets/scenarios/bunker_reserve/img/s30.webp" },
+    "s31": { "file": "assets/scenarios/bunker_reserve/img/s31.webp" },
+    "s32": { "file": "assets/scenarios/bunker_reserve/img/s32.webp" },
+    "s33": { "file": "assets/scenarios/bunker_reserve/img/s33.webp" },
+    "s34": { "file": "assets/scenarios/bunker_reserve/img/s34.webp" },
+    "s35": { "file": "assets/scenarios/bunker_reserve/img/s35.webp" },
+    "s36": { "file": "assets/scenarios/bunker_reserve/img/s36.webp" },
+    "s37": { "file": "assets/scenarios/bunker_reserve/img/s37.webp" },
+    "s38": { "file": "assets/scenarios/bunker_reserve/img/s38.webp" },
+    "s39": { "file": "assets/scenarios/bunker_reserve/img/s39.webp" },
+    "s40": { "file": "assets/scenarios/bunker_reserve/img/s40.webp" },
+    "s41": { "file": "assets/scenarios/bunker_reserve/img/s41.webp" },
+    "s42": { "file": "assets/scenarios/bunker_reserve/img/s42.webp" },
+    "s43": { "file": "assets/scenarios/bunker_reserve/img/s43.webp" },
+    "s44": { "file": "assets/scenarios/bunker_reserve/img/s44.webp" },
+    "s45": { "file": "assets/scenarios/bunker_reserve/img/s45.webp" },
+    "s46": { "file": "assets/scenarios/bunker_reserve/img/s46.webp" },
+    "s47": { "file": "assets/scenarios/bunker_reserve/img/s47.webp" },
+    "s48": { "file": "assets/scenarios/bunker_reserve/img/s48.webp" },
+    "s49": { "file": "assets/scenarios/bunker_reserve/img/s49.webp" },
+    "s50": { "file": "assets/scenarios/bunker_reserve/img/s50.webp" },
+    "s51": { "file": "assets/scenarios/bunker_reserve/img/s51.webp" },
+    "s52": { "file": "assets/scenarios/bunker_reserve/img/s52.webp" },
+    "s53": { "file": "assets/scenarios/bunker_reserve/img/s53.webp" },
+    "s54": { "file": "assets/scenarios/bunker_reserve/img/s54.webp" },
+    "s55": { "file": "assets/scenarios/bunker_reserve/img/s55.webp" },
+    "s56": { "file": "assets/scenarios/bunker_reserve/img/s56.webp" },
 
-    "final_good": { "file": "assets/scenarios/bunker_reserve/img/final_good.webp", "alt": "Aube froide, sortie du bunker" },
-    "final_bad": { "file": "assets/scenarios/bunker_reserve/img/final_bad.webp", "alt": "Couloir rouge, porte qui se referme" },
-    "final_secret": { "file": "assets/scenarios/bunker_reserve/img/final_secret.webp", "alt": "Console en override, bunker inversé" }
+    "final_good": { "file": "assets/scenarios/bunker_reserve/img/final_good.webp" },
+    "final_bad": { "file": "assets/scenarios/bunker_reserve/img/final_bad.webp" },
+    "final_secret": { "file": "assets/scenarios/bunker_reserve/img/final_secret.webp" }
   },
   "state_model": {
     "flags": [
@@ -51,7 +82,7 @@
     "end_secret": { "image_id": "final_secret", "title_key": "br.end_secret.title", "body_key": "br.end_secret.body", "choices": [] },
 
     "s01": {
-      "image_id": "cover",
+      "image_id": "s01",
       "title_key": "br.s01.title",
       "body_key": "br.s01.body",
       "choices": [
@@ -61,7 +92,7 @@
       ]
     },
     "s02": {
-      "image_id": "approche",
+      "image_id": "s02",
       "title_key": "br.s02.title",
       "body_key": "br.s02.body",
       "choices": [
@@ -71,7 +102,7 @@
       ]
     },
     "s03": {
-      "image_id": "trappe",
+      "image_id": "s03",
       "title_key": "br.s03.title",
       "body_key": "br.s03.body",
       "choices": [
@@ -81,7 +112,7 @@
       ]
     },
     "s04": {
-      "image_id": "descente",
+      "image_id": "s04",
       "title_key": "br.s04.title",
       "body_key": "br.s04.body",
       "choices": [
@@ -91,7 +122,7 @@
       ]
     },
     "s05": {
-      "image_id": "sas",
+      "image_id": "s05",
       "title_key": "br.s05.title",
       "body_key": "br.s05.body",
       "choices": [
@@ -101,7 +132,7 @@
       ]
     },
     "s06": {
-      "image_id": "couloir",
+      "image_id": "s06",
       "title_key": "br.s06.title",
       "body_key": "br.s06.body",
       "choices": [
@@ -111,7 +142,7 @@
       ]
     },
     "s07": {
-      "image_id": "plan",
+      "image_id": "s07",
       "title_key": "br.s07.title",
       "body_key": "br.s07.body",
       "choices": [
@@ -121,7 +152,7 @@
       ]
     },
     "s08": {
-      "image_id": "plan",
+      "image_id": "s08",
       "title_key": "br.s08.title",
       "body_key": "br.s08.body",
       "choices": [
@@ -131,7 +162,7 @@
       ]
     },
     "s09": {
-      "image_id": "controle",
+      "image_id": "s09",
       "title_key": "br.s09.title",
       "body_key": "br.s09.body",
       "choices": [
@@ -141,7 +172,7 @@
       ]
     },
     "s10": {
-      "image_id": "controle",
+      "image_id": "s10",
       "title_key": "br.s10.title",
       "body_key": "br.s10.body",
       "choices": [
@@ -151,7 +182,7 @@
       ]
     },
     "s11": {
-      "image_id": "porte_badge",
+      "image_id": "s11",
       "title_key": "br.s11.title",
       "body_key": "br.s11.body",
       "choices": [
@@ -161,7 +192,7 @@
       ]
     },
     "s12": {
-      "image_id": "vestiaire",
+      "image_id": "s12",
       "title_key": "br.s12.title",
       "body_key": "br.s12.body",
       "choices": [
@@ -171,7 +202,7 @@
       ]
     },
     "s13": {
-      "image_id": "porte_badge",
+      "image_id": "s13",
       "title_key": "br.s13.title",
       "body_key": "br.s13.body",
       "choices": [
@@ -181,7 +212,7 @@
       ]
     },
     "s14": {
-      "image_id": "stockage",
+      "image_id": "s14",
       "title_key": "br.s14.title",
       "body_key": "br.s14.body",
       "choices": [
@@ -191,7 +222,7 @@
       ]
     },
     "s15": {
-      "image_id": "stockage_vide",
+      "image_id": "s15",
       "title_key": "br.s15.title",
       "body_key": "br.s15.body",
       "choices": [
@@ -201,7 +232,7 @@
       ]
     },
     "s16": {
-      "image_id": "dortoir",
+      "image_id": "s16",
       "title_key": "br.s16.title",
       "body_key": "br.s16.body",
       "choices": [
@@ -211,7 +242,7 @@
       ]
     },
     "s17": {
-      "image_id": "infirmerie",
+      "image_id": "s17",
       "title_key": "br.s17.title",
       "body_key": "br.s17.body",
       "choices": [
@@ -221,7 +252,7 @@
       ]
     },
     "s18": {
-      "image_id": "infirmerie",
+      "image_id": "s18",
       "title_key": "br.s18.title",
       "body_key": "br.s18.body",
       "choices": [
@@ -231,7 +262,7 @@
       ]
     },
     "s19": {
-      "image_id": "tech",
+      "image_id": "s19",
       "title_key": "br.s19.title",
       "body_key": "br.s19.body",
       "choices": [
@@ -241,7 +272,7 @@
       ]
     },
     "s20": {
-      "image_id": "tech",
+      "image_id": "s20",
       "title_key": "br.s20.title",
       "body_key": "br.s20.body",
       "choices": [
@@ -251,17 +282,17 @@
       ]
     },
     "s21": {
-      "image_id": "eau",
+      "image_id": "s21",
       "title_key": "br.s21.title",
       "body_key": "br.s21.body",
       "choices": [
         { "choice_key": "br.s21.c1", "next": "s22" },
         { "choice_key": "br.s21.c2", "next": "s20" },
-        { "choice_key": "br.s21.c3", "next": "s19" }
+        { "choice_key": "br.s21.c3", "next": "s16" }
       ]
     },
     "s22": {
-      "image_id": "porte_scellee",
+      "image_id": "s22",
       "title_key": "br.s22.title",
       "body_key": "br.s22.body",
       "choices": [
@@ -271,7 +302,7 @@
       ]
     },
     "s23": {
-      "image_id": "atelier",
+      "image_id": "s23",
       "title_key": "br.s23.title",
       "body_key": "br.s23.body",
       "choices": [
@@ -281,7 +312,7 @@
       ]
     },
     "s24": {
-      "image_id": "atelier",
+      "image_id": "s24",
       "title_key": "br.s24.title",
       "body_key": "br.s24.body",
       "choices": [
@@ -291,7 +322,7 @@
       ]
     },
     "s25": {
-      "image_id": "ventilation",
+      "image_id": "s25",
       "title_key": "br.s25.title",
       "body_key": "br.s25.body",
       "choices": [
@@ -301,7 +332,7 @@
       ]
     },
     "s26": {
-      "image_id": "ventilation",
+      "image_id": "s26",
       "title_key": "br.s26.title",
       "body_key": "br.s26.body",
       "choices": [
@@ -311,7 +342,7 @@
       ]
     },
     "s27": {
-      "image_id": "securite",
+      "image_id": "s27",
       "title_key": "br.s27.title",
       "body_key": "br.s27.body",
       "choices": [
@@ -321,7 +352,7 @@
       ]
     },
     "s28": {
-      "image_id": "securite",
+      "image_id": "s28",
       "title_key": "br.s28.title",
       "body_key": "br.s28.body",
       "choices": [
@@ -331,7 +362,7 @@
       ]
     },
     "s29": {
-      "image_id": "securite",
+      "image_id": "s29",
       "title_key": "br.s29.title",
       "body_key": "br.s29.body",
       "choices": [
@@ -341,7 +372,7 @@
       ]
     },
     "s30": {
-      "image_id": "securite",
+      "image_id": "s30",
       "title_key": "br.s30.title",
       "body_key": "br.s30.body",
       "choices": [
@@ -351,7 +382,7 @@
       ]
     },
     "s31": {
-      "image_id": "couloir_red",
+      "image_id": "s31",
       "title_key": "br.s31.title",
       "body_key": "br.s31.body",
       "choices": [
@@ -361,7 +392,7 @@
       ]
     },
     "s32": {
-      "image_id": "couloir",
+      "image_id": "s32",
       "title_key": "br.s32.title",
       "body_key": "br.s32.body",
       "choices": [
@@ -371,7 +402,7 @@
       ]
     },
     "s33": {
-      "image_id": "maintenance",
+      "image_id": "s33",
       "title_key": "br.s33.title",
       "body_key": "br.s33.body",
       "choices": [
@@ -381,7 +412,7 @@
       ]
     },
     "s34": {
-      "image_id": "maintenance",
+      "image_id": "s34",
       "title_key": "br.s34.title",
       "body_key": "br.s34.body",
       "choices": [
@@ -391,7 +422,7 @@
       ]
     },
     "s35": {
-      "image_id": "couloir",
+      "image_id": "s35",
       "title_key": "br.s35.title",
       "body_key": "br.s35.body",
       "choices": [
@@ -401,7 +432,7 @@
       ]
     },
     "s36": {
-      "image_id": "couloir",
+      "image_id": "s36",
       "title_key": "br.s36.title",
       "body_key": "br.s36.body",
       "choices": [
@@ -411,7 +442,7 @@
       ]
     },
     "s37": {
-      "image_id": "couloir",
+      "image_id": "s37",
       "title_key": "br.s37.title",
       "body_key": "br.s37.body",
       "choices": [
@@ -421,7 +452,7 @@
       ]
     },
     "s38": {
-      "image_id": "sanctuaire",
+      "image_id": "s38",
       "title_key": "br.s38.title",
       "body_key": "br.s38.body",
       "choices": [
@@ -431,7 +462,7 @@
       ]
     },
     "s39": {
-      "image_id": "sanctuaire",
+      "image_id": "s39",
       "title_key": "br.s39.title",
       "body_key": "br.s39.body",
       "choices": [
@@ -441,7 +472,7 @@
       ]
     },
     "s40": {
-      "image_id": "plan",
+      "image_id": "s40",
       "title_key": "br.s40.title",
       "body_key": "br.s40.body",
       "choices": [
@@ -451,7 +482,7 @@
       ]
     },
     "s41": {
-      "image_id": "plan",
+      "image_id": "s41",
       "title_key": "br.s41.title",
       "body_key": "br.s41.body",
       "choices": [
@@ -461,7 +492,7 @@
       ]
     },
     "s42": {
-      "image_id": "console",
+      "image_id": "s42",
       "title_key": "br.s42.title",
       "body_key": "br.s42.body",
       "choices": [
@@ -471,7 +502,7 @@
       ]
     },
     "s43": {
-      "image_id": "console",
+      "image_id": "s43",
       "title_key": "br.s43.title",
       "body_key": "br.s43.body",
       "choices": [
@@ -481,7 +512,7 @@
       ]
     },
     "s44": {
-      "image_id": "console",
+      "image_id": "s44",
       "title_key": "br.s44.title",
       "body_key": "br.s44.body",
       "choices": [
@@ -491,7 +522,7 @@
       ]
     },
     "s45": {
-      "image_id": "console",
+      "image_id": "s45",
       "title_key": "br.s45.title",
       "body_key": "br.s45.body",
       "choices": [
@@ -501,7 +532,7 @@
       ]
     },
     "s46": {
-      "image_id": "console",
+      "image_id": "s46",
       "title_key": "br.s46.title",
       "body_key": "br.s46.body",
       "choices": [
@@ -511,7 +542,7 @@
       ]
     },
     "s47": {
-      "image_id": "porte_scellee",
+      "image_id": "s47",
       "title_key": "br.s47.title",
       "body_key": "br.s47.body",
       "choices": [
@@ -521,7 +552,7 @@
       ]
     },
     "s48": {
-      "image_id": "couloir_red",
+      "image_id": "s48",
       "title_key": "br.s48.title",
       "body_key": "br.s48.body",
       "choices": [
@@ -531,7 +562,7 @@
       ]
     },
     "s49": {
-      "image_id": "couloir",
+      "image_id": "s49",
       "title_key": "br.s49.title",
       "body_key": "br.s49.body",
       "choices": [
@@ -541,7 +572,7 @@
       ]
     },
     "s50": {
-      "image_id": "sanctuaire",
+      "image_id": "s50",
       "title_key": "br.s50.title",
       "body_key": "br.s50.body",
       "choices": [
@@ -551,7 +582,7 @@
       ]
     },
     "s51": {
-      "image_id": "couloir_red",
+      "image_id": "s51",
       "title_key": "br.s51.title",
       "body_key": "br.s51.body",
       "choices": [
@@ -561,7 +592,7 @@
       ]
     },
     "s52": {
-      "image_id": "cover",
+      "image_id": "s52",
       "title_key": "br.s52.title",
       "body_key": "br.s52.body",
       "choices": [
@@ -571,7 +602,7 @@
       ]
     },
     "s53": {
-      "image_id": "sanctuaire",
+      "image_id": "s53",
       "title_key": "br.s53.title",
       "body_key": "br.s53.body",
       "choices": [
@@ -581,7 +612,7 @@
       ]
     },
     "s54": {
-      "image_id": "console",
+      "image_id": "s54",
       "title_key": "br.s54.title",
       "body_key": "br.s54.body",
       "choices": [
@@ -591,7 +622,7 @@
       ]
     },
     "s55": {
-      "image_id": "cover",
+      "image_id": "s55",
       "title_key": "br.s55.title",
       "body_key": "br.s55.body",
       "choices": [
@@ -601,7 +632,7 @@
       ]
     },
     "s56": {
-      "image_id": "couloir_red",
+      "image_id": "s56",
       "title_key": "br.s56.title",
       "body_key": "br.s56.body",
       "choices": [

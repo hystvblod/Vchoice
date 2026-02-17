@@ -1,14 +1,15 @@
 // js/userData.js
 // VChoice — Local cache + Supabase RPCs (source of truth)
 // - Profil via RPC secure_get_me
-// - Solde via RPC: secure_add_vcoins / secure_add_jetons / secure_reduce_vcoins_to
+// - Solde via RPC: secure_add_vcoins / secure_add_jetons / secure_spend_jetons / secure_reduce_vcoins_to
 // - Username via secure_set_username
 // - Lang via secure_set_lang
 // - Déblocage scénario via secure_unlock_scenario
+// - ✅ Fin scénario: secure_complete_scenario (reward +300 + log ending)
 //
 // Notes:
 // - unlocked_scenarios = cache local UX, Supabase = vérité via secure_get_me
-// - vr:profile émis pour que l’UI se mette à jour sans “flash”
+// - vc:profile émis pour que l’UI se mette à jour sans “flash”
 
 (function () {
   "use strict";
@@ -56,7 +57,6 @@
   };
 
   function _clampInt(n){ return Math.max(0, Math.floor(Number(n || 0))); }
-
   function _safeParse(raw){ try { return JSON.parse(raw); } catch { return null; } }
 
   function _readLocal(){
@@ -90,26 +90,16 @@
   function _emitProfile(){
     try{
       if (_uiPaused){ _pendingEmit = true; return; }
-      window.dispatchEvent(new CustomEvent("vr:profile", { // compat avec tes autres pages si elles écoutent déjà vr:profile
-        detail: {
-          user_id: _memState.user_id,
-          username: _memState.username,
-          lang: _memState.lang,
-          vcoins: _memState.vcoins,
-          jetons: _memState.jetons,
-          unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice(0) : []
-        }
-      }));
-      window.dispatchEvent(new CustomEvent("vc:profile", {
-        detail: {
-          user_id: _memState.user_id,
-          username: _memState.username,
-          lang: _memState.lang,
-          vcoins: _memState.vcoins,
-          jetons: _memState.jetons,
-          unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice(0) : []
-        }
-      }));
+      const detail = {
+        user_id: _memState.user_id,
+        username: _memState.username,
+        lang: _memState.lang,
+        vcoins: _memState.vcoins,
+        jetons: _memState.jetons,
+        unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice(0) : []
+      };
+      window.dispatchEvent(new CustomEvent("vr:profile", { detail })); // compat
+      window.dispatchEvent(new CustomEvent("vc:profile", { detail }));
     }catch(_){}
   }
 
@@ -134,7 +124,6 @@
     _memState.jetons = _clampInt(me.jetons || 0);
     _memState.lang = String(me.lang || "fr");
 
-    // unlocked_scenarios
     if (Array.isArray(me.unlocked_scenarios)){
       _memState.unlocked_scenarios = me.unlocked_scenarios.filter(Boolean).map(String);
     } else if (typeof me.unlocked_scenarios === "string" && me.unlocked_scenarios){
@@ -156,6 +145,22 @@
   // -------------------------
   function sbReady(){
     return !!(window.sb && window.sb.auth && typeof window.sb.rpc === "function");
+  }
+
+  async function _rpcTry(name, args1, args2, where1, where2){
+    const sb = window.sb;
+    try{
+      const r1 = await sb.rpc(name, args1 || {});
+      if (!r1?.error) return r1;
+      _reportRemoteError(where1 || `rpc.${name}.try1`, r1.error);
+      if (!args2) return r1;
+      const r2 = await sb.rpc(name, args2 || {});
+      if (r2?.error) _reportRemoteError(where2 || `rpc.${name}.try2`, r2.error);
+      return r2;
+    }catch(e){
+      _reportRemoteError(`rpc.${name}.exception`, e);
+      return { error: e, data: null };
+    }
   }
 
   window.VCRemoteStore = window.VCRemoteStore || {
@@ -264,25 +269,6 @@
       }
     },
 
-    async addJetons(delta){
-      const sb = window.sb;
-      if (!sbReady()) return null;
-      const uid = await this.ensureAuth();
-      if (!uid) return null;
-
-      const d = Math.floor(Number(delta || 0));
-      if (d <= 0) return null;
-
-      try{
-        const r = await sb.rpc("secure_add_jetons", { p_delta: d });
-        if (r?.error){ _reportRemoteError("rpc.secure_add_jetons", r.error); return null; }
-        return Number(r?.data ?? 0);
-      }catch(e){
-        _reportRemoteError("rpc.secure_add_jetons.exception", e);
-        return null;
-      }
-    },
-
     async reduceVcoinsTo(value){
       const sb = window.sb;
       if (!sbReady()) return null;
@@ -298,6 +284,49 @@
         _reportRemoteError("rpc.secure_reduce_vcoins_to.exception", e);
         return null;
       }
+    },
+
+    // ✅ NEW: add jetons (fallback p_delta / p_value)
+    async addJetons(delta){
+      const sb = window.sb;
+      if (!sbReady()) return null;
+      const uid = await this.ensureAuth();
+      if (!uid) return null;
+
+      const d = Math.floor(Number(delta || 0));
+      if (d <= 0) return null;
+
+      // fallback: certains schémas utilisent p_delta, d’autres p_value
+      const r = await _rpcTry(
+        "secure_add_jetons",
+        { p_delta: d },
+        { p_value: d },
+        "rpc.secure_add_jetons.p_delta",
+        "rpc.secure_add_jetons.p_value"
+      );
+      if (r?.error) return null;
+      return Number(r?.data ?? 0);
+    },
+
+    // ✅ NEW: spend jetons (fallback p_cost / p_delta)
+    async spendJetons(cost){
+      const sb = window.sb;
+      if (!sbReady()) return null;
+      const uid = await this.ensureAuth();
+      if (!uid) return null;
+
+      const c = Math.max(1, Math.floor(Number(cost || 1)));
+
+      // fallback: certains schémas utilisent p_cost, d’autres p_delta
+      const r = await _rpcTry(
+        "secure_spend_jetons",
+        { p_cost: c },
+        { p_delta: c },
+        "rpc.secure_spend_jetons.p_cost",
+        "rpc.secure_spend_jetons.p_delta"
+      );
+      if (r?.error) return null;
+      return Number(r?.data ?? 0);
     },
 
     async unlockScenario(scenarioId){
@@ -319,6 +348,31 @@
       }catch(e){
         _reportRemoteError("rpc.secure_unlock_scenario.exception", e);
         return { ok:false, reason:"rpc_exception", error:e };
+      }
+    },
+
+    // ✅ fin scenario (reward + log ending)
+    async completeScenario(scenarioId, ending){
+      const sb = window.sb;
+      if (!sbReady()) return { ok:false, reason:"no_client" };
+      const uid = await this.ensureAuth();
+      if (!uid) return { ok:false, reason:"no_auth" };
+
+      const s = String(scenarioId || "").trim();
+      const e = String(ending || "").trim().toLowerCase();
+      if (!s) return { ok:false, reason:"invalid_scenario" };
+      if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
+
+      try{
+        const r = await sb.rpc("secure_complete_scenario", { p_scenario: s, p_ending: e });
+        if (r?.error){
+          _reportRemoteError("rpc.secure_complete_scenario", r.error);
+          return { ok:false, reason: r.error.message || "rpc_error", error:r.error };
+        }
+        return { ok:true, data: r?.data || null };
+      }catch(err){
+        _reportRemoteError("rpc.secure_complete_scenario.exception", err);
+        return { ok:false, reason:"rpc_exception", error:err };
       }
     }
   };
@@ -394,6 +448,7 @@
 
     getLang(){ return String(this.load().lang || "fr"); },
     getVcoins(){ return Number(this.load().vcoins || 0); },
+    getJetons(){ return Number(this.load().jetons || 0); },
 
     getUnlockedScenarios(){
       const u = this.load();
@@ -435,26 +490,44 @@
       return { ok:true, reason:"ok", data:this.load() };
     },
 
-    // fire-and-forget coins (si tu en as besoin ailleurs)
-    addVcoins(delta){
-      const d = Math.floor(Number(delta || 0));
-      if (d <= 0) return this.getVcoins();
-      if (!window.VCRemoteStore?.enabled?.()) return this.getVcoins();
+    // ✅ NEW: spend jetons (server authoritative)
+    async spendJetons(cost){
+      if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
+      const v = await window.VCRemoteStore.spendJetons(cost);
+      if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
+      const cur = this.load();
+      this.save({ ...cur, jetons: v });
+      return { ok:true, jetons: v };
+    },
 
-      queueRemote(async () => {
-        const newv = await window.VCRemoteStore.addVcoins(d);
-        if (typeof newv === "number" && !Number.isNaN(newv)){
-          _memState.vcoins = _clampInt(newv);
-          _memState.updated_at = Date.now();
-          _emitProfile();
-          _persistLocal();
-        } else {
-          await this.refresh().catch(() => false);
-        }
-        return true;
-      }, "VUserData.addVcoins");
+    // ✅ NEW: add jetons (server authoritative)
+    async addJetons(delta){
+      if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
+      const v = await window.VCRemoteStore.addJetons(delta);
+      if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
+      const cur = this.load();
+      this.save({ ...cur, jetons: v });
+      return { ok:true, jetons: v };
+    },
 
-      return this.getVcoins();
+    // ✅ fin scenario = appelle RPC, met à jour vcoins local
+    async completeScenario(scenarioId, ending){
+      if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
+
+      const res = await window.VCRemoteStore.completeScenario(scenarioId, ending);
+      if (!res?.ok) return res || { ok:false, reason:"error" };
+
+      const payload = res.data || null;
+      const v = payload && typeof payload.vcoins === "number" ? payload.vcoins : null;
+
+      if (typeof v === "number" && !Number.isNaN(v)){
+        const cur = this.load();
+        this.save({ ...cur, vcoins: v });
+      } else {
+        await this.refresh().catch(() => false);
+      }
+
+      return { ok:true, data: payload };
     }
   };
 
