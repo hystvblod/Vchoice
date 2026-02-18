@@ -771,7 +771,7 @@ body.page-game .scene__hud{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-   bottom: max(14px, calc(env(safe-area-inset-bottom) + 50px));
+   bottom: max(14px, calc(env(safe-area-inset-bottom) + 80px));
   width:min(940px, calc(100vw - 24px));
   max-height:56vh;
   overflow:auto;
@@ -866,7 +866,7 @@ body.page-game .scene__hud .choice_btn:disabled{
     padding:14px 14px 12px;
     border-radius:20px;
     max-height:60vh;
-    bottom: max(24px, calc(env(safe-area-inset-bottom) + 50px));
+    bottom: max(24px, calc(env(safe-area-inset-bottom) + 80px));
   
   }
   body.page-game .scene__hud .title{ font-size:18.5px; }
