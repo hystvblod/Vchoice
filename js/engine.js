@@ -36,6 +36,9 @@ let GUIDE_STATE = {
   path: []
 };
 
+// ✅ Bypass flags (activé quand on paie 3 jetons)
+let OVERRIDE_FLAGS = false;
+
 /* =========================
    SMALL HELPERS
 ========================= */
@@ -175,7 +178,13 @@ function getScenarioInfo(scenarioId){
   return { title, body };
 }
 
+/* =========================
+   FLAGS LOCKING (avec override)
+========================= */
 function isChoiceAvailable(choice){
+  // ✅ si guide + paiement (3 jetons) => on ignore les flags
+  if(OVERRIDE_FLAGS) return true;
+
   const flags = scenarioStates[currentScenarioId]?.flags || {};
   const all = Array.isArray(choice.requires_all_flags) ? choice.requires_all_flags : null;
   const any = Array.isArray(choice.requires_any_flags) ? choice.requires_any_flags : null;
@@ -231,6 +240,10 @@ function computeGuidePlan(fromSceneId, targetType){
   const targets = new Set(_findEndingTargets(LOGIC, targetType));
   if(!targets.size) return null;
 
+  // ⚠️ IMPORTANT :
+  // On calcule le chemin en ignorant les flags SI override actif.
+  // Ici, OVERRIDE_FLAGS est encore false au moment du calcul,
+  // donc on prend une version "soft" : on ne bloque pas sur flags pendant le BFS.
   const q = [String(fromSceneId)];
   const visited = new Set(q);
   const prev = {}; // node -> prev node
@@ -246,9 +259,11 @@ function computeGuidePlan(fromSceneId, targetType){
 
     for(const ch of choices){
       if(!ch?.next) continue;
-      if(!isChoiceAvailable(ch)) continue;
 
+      // ✅ BFS: on ignore les flags pour trouver un chemin global (sinon tu peux ne jamais trouver)
+      // Le vrai verrouillage sera géré au clic (et override le bypassera après paiement)
       const nxt = String(ch.next);
+
       if(visited.has(nxt)) continue;
       if(!LOGIC.scenes[nxt]) continue; // évite liens cassés
 
@@ -450,11 +465,13 @@ function bindJetonHud(){
           return;
         }
 
-        // 3) active le guide
+        // 3) active le guide + bypass flags
         GUIDE_STATE.active = true;
         GUIDE_STATE.targetType = targetType;
         GUIDE_STATE.nextByScene = plan.nextByScene;
         GUIDE_STATE.path = plan.path || [];
+
+        OVERRIDE_FLAGS = true; // ✅ bypass flags tant que guide actif
 
         updateHudJetons();
         updateJetonModalCount();
@@ -473,6 +490,9 @@ function bindJetonHud(){
       GUIDE_STATE.targetType = null;
       GUIDE_STATE.nextByScene = {};
       GUIDE_STATE.path = [];
+
+      OVERRIDE_FLAGS = false; // ✅ restore
+
       renderScene();
       const msg = $("jetonModalMsg");
       if(msg) msg.textContent = "Guide arrêté.";
@@ -959,13 +979,19 @@ async function handleEnding(type){
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
 
+  // ✅ quand on atteint une fin => stop guide + restore flags
+  GUIDE_STATE.active = false;
+  GUIDE_STATE.targetType = null;
+  GUIDE_STATE.nextByScene = {};
+  GUIDE_STATE.path = [];
+  OVERRIDE_FLAGS = false;
+
   const endingType = String(type || "").toLowerCase();
   let title = tUI("end_title") || "Fin du scénario";
   if(endingType === "good") title = tUI("end_title_good") || "Fin (bonne)";
   if(endingType === "bad") title = tUI("end_title_bad") || "Fin (mauvaise)";
   if(endingType === "secret") title = tUI("end_title_secret") || "Fin (secrète)";
 
-  // Reward UI (ton app gère côté RPC secure_complete_scenario dans userData si tu l’appelles ailleurs)
   const body = tUI("ending_desc") || "Tu as terminé ce scénario.";
 
   showEndModal(
@@ -1061,13 +1087,14 @@ function renderScene(){
 
       const available = isChoiceAvailable(ch);
 
-      if(!available){
+      // ⚠️ si OVERRIDE_FLAGS=true => on ne montre pas locked
+      if(!available && !OVERRIDE_FLAGS){
         btn.classList.add("is_locked");
         btn.title = tUI("locked_choice") || "Indisponible pour le moment";
       }
 
       btn.onclick = async () => {
-        if(!available){
+        if(!available && !OVERRIDE_FLAGS){
           showLockedChoiceModal(ch);
           return;
         }
