@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>VChronicles — Game</title>
+  <title></title>
   <link rel="stylesheet" href="css/app.css" />
 </head>
 
@@ -46,7 +46,7 @@
       <div class="modal__content">
         <div class="modal__header">
           <div id="hintTitle" class="modal__title"></div>
-          <button id="hintClose" class="modal__close" type="button" aria-label="">×</button>
+          <button id="hintClose" class="modal__close" type="button" aria-label=""></button>
         </div>
         <div id="hintBody" class="modal__body"></div>
       </div>
@@ -58,9 +58,11 @@
       <div class="modal__panel">
         <div class="modal__head">
           <div id="resumeTitle" class="modal__title"></div>
-          <button id="resumeClose" class="modal__close" type="button" aria-label="">×</button>
+          <button id="resumeClose" class="modal__close" type="button" aria-label=""></button>
         </div>
         <div class="modal__body" id="resumeBody"></div>
+
+        <!-- boutons (pas de texte en dur) -->
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
           <button id="btnResumeRestart" class="btn btn--ghost" type="button"></button>
           <button id="btnResumeContinue" class="btn" type="button"></button>
@@ -74,9 +76,11 @@
       <div class="modal__panel">
         <div class="modal__head">
           <div id="endTitle" class="modal__title"></div>
-          <button id="endClose" class="modal__close" type="button" aria-label="">×</button>
+          <button id="endClose" class="modal__close" type="button" aria-label=""></button>
         </div>
         <div class="modal__body" id="endBody"></div>
+
+        <!-- boutons (pas de texte en dur) -->
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
           <button id="btnEndBack" class="btn btn--ghost" type="button"></button>
           <button id="btnEndReplay" class="btn" type="button"></button>
@@ -90,7 +94,7 @@
       <div class="modal__panel">
         <div class="modal__head">
           <div id="jetonModalTitle" class="modal__title"></div>
-          <button id="jetonClose" class="modal__close" type="button" aria-label="">×</button>
+          <button id="jetonClose" class="modal__close" type="button" aria-label=""></button>
         </div>
 
         <div class="modal__body">
@@ -104,7 +108,6 @@
 
           <div style="display:grid; gap:10px;">
             <button id="btnJetonBackModal" class="btn btn--ghost" type="button"></button>
-
             <button id="btnJetonGuide" class="btn" type="button"></button>
 
             <div id="jetonGuideTargets" class="hidden" style="display:grid; gap:8px;">
