@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="css/app.css" />
 
   <style>
-    /* Profil — même ambiance que l’index (fond + boutons). */
     .topbar{ display:none !important; }
 
     :root{
@@ -127,7 +126,59 @@
     .vc-pill .k{ display:block; font-size:12px; color: var(--vc-muted); margin-bottom: 2px; }
     .vc-pill .v{ display:block; font-weight: 950; font-size: 16px; letter-spacing:.2px; }
 
-    .vc-username-row{ margin-top: 12px; display:flex; gap:10px; align-items:stretch; flex-wrap:wrap; }
+    /* --- PSEUDO DISPLAY + EDIT TOGGLE --- */
+    .vc-username-block{ margin-top: 12px; }
+    .vc-row-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 8px;
+    }
+    .vc-row-head .lbl{
+      font-size: 12px;
+      color: var(--vc-muted);
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    .vc-mini-btn{
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      padding: 8px 12px;
+      font-weight: 900;
+      cursor:pointer;
+    }
+
+    .vc-username-display{
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      padding: 12px 12px;
+      font-weight: 950;
+      letter-spacing: .2px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .vc-username-display .name{
+      min-width: 0;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .vc-edit-wrap{ display:none; margin-top: 10px; }
+    .vc-edit-wrap.is-open{ display:block; }
+
+    .vc-username-row{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+      flex-wrap:wrap;
+    }
     .vc-input{
       flex: 1 1 220px;
       min-width: 180px;
@@ -152,11 +203,13 @@
       -webkit-tap-highlight-color: transparent;
     }
     .vc-btn:active{ transform: scale(.99); }
+
     .vc-hint{ margin-top: 10px; font-size: 12px; color: var(--vc-muted); line-height:1.35; }
     .vc-msg{ margin-top: 10px; font-size: 12px; line-height:1.35; display:none; }
     .vc-msg.ok{ color: rgba(220,255,230,.95); }
     .vc-msg.err{ color: rgba(255,220,220,.95); }
 
+    /* --- SCENARIOS GRID --- */
     .vc-section-head{
       display:flex;
       align-items:center;
@@ -165,24 +218,12 @@
       margin: 16px 12px 0;
     }
     .vc-section-title{ margin:0; font-weight: 950; font-size: 14px; letter-spacing: .2px; }
-    .vc-mini-btn{
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      padding: 8px 12px;
-      font-weight: 900;
-      cursor:pointer;
-    }
 
     .vc-scen-grid{
       margin: 10px 12px 0;
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-    }
-    @media (max-width: 820px){
-      .vc-scen-grid{ grid-template-columns: 1fr; }
     }
 
     .vc-scen-card{
@@ -212,25 +253,29 @@
     .vc-scen-card.is-locked{ opacity:.55; }
     .vc-scen-card.is-locked .vc-end{ filter: blur(2px); opacity:.55; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
+
+    @media (max-width: 820px){
+      .vc-scen-grid{ grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 
 <body>
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
-      <a class="vc-icon-button" href="index.html" aria-label="Retour">
+      <a class="vc-icon-button" href="index.html" data-i18n-aria="ui.aria_back">
         <img src="assets/img/ui/back.webp" alt="" draggable="false" />
       </a>
     </div>
 
     <div class="vc-top-slot vc-top-center">
-      <a class="vc-icon-button" href="settings.html" aria-label="Paramètres">
+      <a class="vc-icon-button" href="settings.html" data-i18n-aria="ui.aria_settings">
         <img src="assets/img/ui/btn_settings.webp" alt="" draggable="false" />
       </a>
     </div>
 
     <div class="vc-top-slot vc-top-right">
-      <a class="vc-icon-button" href="shop.html" aria-label="Boutique">
+      <a class="vc-icon-button" href="shop.html" data-i18n-aria="ui.aria_shop">
         <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
       </a>
     </div>
@@ -242,10 +287,11 @@
       <p class="vc-page-sub" data-i18n="ui.profile_subtitle"></p>
     </div>
 
-    <section class="vc-card" aria-label="Profil">
+    <section class="vc-card">
       <div class="vc-card-inner">
+
         <div class="vc-balances">
-          <div class="vc-pill" aria-label="Jetons">
+          <div class="vc-pill">
             <img src="assets/img/ui/jeton.webp" alt="" />
             <div>
               <span class="k" data-i18n="ui.profile_jetons"></span>
@@ -253,7 +299,7 @@
             </div>
           </div>
 
-          <div class="vc-pill" aria-label="VCoins">
+          <div class="vc-pill">
             <img src="assets/img/ui/vcoin.webp" alt="" />
             <div>
               <span class="k" data-i18n="ui.profile_vcoins"></span>
@@ -262,22 +308,45 @@
           </div>
         </div>
 
-        <div class="vc-username-row" aria-label="Pseudo">
-          <input class="vc-input" id="pf_username" type="text" inputmode="text" autocomplete="off" spellcheck="false"
-                 data-i18n-placeholder="ui.profile_username_placeholder" />
-          <button class="vc-btn" id="pf_save" type="button" data-i18n="ui.profile_username_save"></button>
+        <!-- PSEUDO : affichage + bouton modifier -->
+        <div class="vc-username-block">
+          <div class="vc-row-head">
+            <div class="lbl" data-i18n="ui.profile_username_label"></div>
+            <button class="vc-mini-btn" id="pf_edit_toggle" type="button" data-i18n="ui.profile_username_edit"></button>
+          </div>
+
+          <div class="vc-username-display">
+            <div class="name" id="pf_username_text" data-i18n="ui.profile_username_missing"></div>
+          </div>
+
+          <div class="vc-edit-wrap" id="pf_edit_wrap">
+            <div class="vc-username-row">
+              <input
+                class="vc-input"
+                id="pf_username_input"
+                type="text"
+                inputmode="text"
+                autocomplete="off"
+                spellcheck="false"
+                data-i18n-placeholder="ui.profile_username_placeholder"
+              />
+              <button class="vc-btn" id="pf_save" type="button" data-i18n="ui.profile_username_save"></button>
+              <button class="vc-mini-btn" id="pf_cancel" type="button" data-i18n="ui.profile_username_cancel"></button>
+            </div>
+
+            <div class="vc-hint" id="pf_hint" data-i18n="ui.profile_username_hint"></div>
+            <div class="vc-msg" id="pf_msg"></div>
+          </div>
         </div>
-        <div class="vc-hint" id="pf_hint" data-i18n="ui.profile_username_hint"></div>
-        <div class="vc-msg" id="pf_msg"></div>
+
       </div>
     </section>
 
     <div class="vc-section-head">
       <h2 class="vc-section-title" data-i18n="ui.profile_scenarios_title"></h2>
-      <button class="vc-mini-btn" id="pf_refresh" type="button" data-i18n="ui.profile_refresh"></button>
     </div>
 
-    <section class="vc-scen-grid" id="pf_scenarios" aria-label="Scénarios"></section>
+    <section class="vc-scen-grid" id="pf_scenarios"></section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

@@ -1,8 +1,10 @@
 // js/profile.js
-// Profil VChoice
-// - Affiche jetons/vcoins + pseudo (update via RPC secure_set_username)
-// - Liste scénarios (2 colonnes) + 3 fins (good/bad/secret) en "jauge" (empty + full superposés)
-// - Cache local des fins pour limiter la bande passante : lecture Supabase seulement si cache absent ou refresh manuel.
+// Profil VChoice (v2)
+// - Affiche jetons/vcoins + pseudo (lecture)
+// - Bouton "Modifier pseudo" => ouvre l'édition
+// - Pseudo vide => pseudo aléatoire auto (tentative setUsername en base)
+// - Liste tous scénarios en 2 colonnes + 3 fins (good/bad/secret) via jauge empty/full
+// - Cache local des fins pour limiter la bande passante : Supabase lu seulement si cache absent.
 
 (function(){
   "use strict";
@@ -73,7 +75,7 @@
       await window.VCRemoteStore.ensureAuth();
     }
 
-    // 1) scenario_status
+    // 1) scenario_status (si existe)
     try{
       const r = await sb
         .from("scenario_status")
@@ -82,26 +84,16 @@
       if (!r?.error && Array.isArray(r?.data)) {
         return buildStatusMap(r.data);
       }
-    }catch(_){ }
+    }catch(_){}
 
-    // 2) fallback scenario_endings
+    // 2) scenario_endings (ton modèle attendu)
     try{
       const r = await sb
         .from("scenario_endings")
-        .select("scenario_id,ending")
+        .select("scenario_id,good_done,bad_done,secret_done")
         .eq("user_id", userId);
       if (r?.error) throw r.error;
-      const map = {};
-      for (const row of (r?.data || [])){
-        const sid = String(row?.scenario_id || "").trim().toLowerCase();
-        const e = String(row?.ending || "").trim().toLowerCase();
-        if (!sid) continue;
-        if (!map[sid]) map[sid] = { good:false, bad:false, secret:false };
-        if (e === "good") map[sid].good = true;
-        if (e === "bad") map[sid].bad = true;
-        if (e === "secret") map[sid].secret = true;
-      }
-      return map;
+      return buildStatusMap(r?.data || []);
     }catch(e){
       throw e;
     }
@@ -133,6 +125,7 @@
 
       const card = document.createElement("div");
       card.className = "vc-scen-card" + (isUnlocked ? "" : " is-locked");
+
       const inner = document.createElement("div");
       inner.className = "vc-scen-inner";
 
@@ -188,25 +181,59 @@
     return /^[a-zA-Z0-9_]+$/.test(s);
   }
 
-  async function handleSaveUsername(){
-    const inp = $("pf_username");
-    if (!inp) return;
-    const next = String(inp.value || "").trim();
+  function genRandomUsername(){
+    // stable + simple, pas besoin de libs
+    const n = Math.floor(1000 + Math.random() * 9000);
+    return `User_${n}`;
+  }
 
+  async function ensureDefaultUsernameIfMissing(){
+    const st = window.VUserData?.load?.() || {};
+    const uid = String(st.user_id || "");
+    const cur = String(st.username || "").trim();
+    if (!uid) return;
+
+    if (cur) return; // déjà un pseudo
+
+    // on tente quelques fois si collision
+    for (let i=0; i<6; i++){
+      const candidate = genRandomUsername();
+      const r = await window.VCRemoteStore?.setUsername?.(candidate);
+      if (r && r.ok){
+        try{ await window.VUserData?.refresh?.(); }catch(_){}
+        return;
+      }
+      // si pris, on retente
+    }
+  }
+
+  function openEdit(open){
+    const wrap = $("pf_edit_wrap");
+    if (!wrap) return;
+    if (open) wrap.classList.add("is-open");
+    else wrap.classList.remove("is-open");
+  }
+
+  async function handleSaveUsername(){
+    const inp = $("pf_username_input");
+    if (!inp) return;
+
+    const next = String(inp.value || "").trim();
     if (!isValidUsername(next)){
       setMsg("err", "ui.profile_username_err_format");
       return;
     }
 
     const curState = window.VUserData?.load?.() || {};
-    const cur = String(curState.username || "");
+    const cur = String(curState.username || "").trim();
     const uid = String(curState.user_id || "");
     if (!uid){
       setMsg("err", "ui.profile_err_not_ready");
       return;
     }
-    if (String(cur).trim() === next){
+    if (cur === next){
       setMsg("ok", "ui.profile_username_ok_nochange");
+      openEdit(false);
       return;
     }
 
@@ -222,8 +249,8 @@
       }
     }
 
-    const btn = $("pf_save");
-    if (btn) btn.disabled = true;
+    const saveBtn = $("pf_save");
+    if (saveBtn) saveBtn.disabled = true;
     setMsg("ok", "ui.profile_username_working");
 
     try{
@@ -241,17 +268,18 @@
           setMsg("err", "ui.profile_username_err_cost_failed");
         }
       } else {
-        try{ localStorage.setItem(flagKey, "1"); }catch(_){ }
+        try{ localStorage.setItem(flagKey, "1"); }catch(_){}
       }
 
-      try{ await window.VUserData?.refresh?.(); }catch(_){ }
+      try{ await window.VUserData?.refresh?.(); }catch(_){}
       setMsg("ok", "ui.profile_username_ok_saved");
+      openEdit(false);
     } finally {
-      if (btn) btn.disabled = false;
+      if (saveBtn) saveBtn.disabled = false;
     }
   }
 
-  async function refreshEndings(force){
+  async function refreshEndingsOnce(){
     const st = window.VUserData?.load?.() || {};
     const uid = String(st.user_id || "");
     const unlocked = window.VUserData?.getUnlockedScenarios?.() || [];
@@ -259,29 +287,30 @@
     let ids = [];
     try{ ids = await loadCatalog(); }catch(e){ console.error("[catalog]", e); }
 
-    let endingsMap = {};
     const cache = readEndingsCache();
     const cacheOk = !!(cache && cache.user_id === uid && cache.map);
-    if (!force && cacheOk){
-      endingsMap = cache.map || {};
-      renderScenarios(ids, unlocked, endingsMap);
+
+    // si cache OK => pas de supabase
+    if (cacheOk){
+      renderScenarios(ids, unlocked, cache.map || {});
       return;
     }
 
+    // sinon, si pas d'uid => on rend juste locked sans fins
     if (!uid){
-      renderScenarios(ids, unlocked, endingsMap);
+      renderScenarios(ids, unlocked, {});
       return;
     }
 
+    // lecture supabase une seule fois (puis cache)
     try{
-      endingsMap = await fetchEndingsFromSupabase(uid);
+      const endingsMap = await fetchEndingsFromSupabase(uid);
       writeEndingsCache(uid, endingsMap);
+      renderScenarios(ids, unlocked, endingsMap);
     }catch(e){
       console.error("[fetchEndings]", e);
-      if (cacheOk) endingsMap = cache.map || {};
+      renderScenarios(ids, unlocked, {});
     }
-
-    renderScenarios(ids, unlocked, endingsMap);
   }
 
   async function boot(){
@@ -297,30 +326,53 @@
       if (p && typeof p.then === "function") await p;
     }catch(e){ console.error("[VUserData.init]", e); }
 
+    // pseudo auto si manquant (écrit en base)
+    try{ await ensureDefaultUsernameIfMissing(); }catch(e){ console.error("[ensureDefaultUsernameIfMissing]", e); }
+
+    // events UI
+    const toggle = $("pf_edit_toggle");
+    const cancel = $("pf_cancel");
+    const save = $("pf_save");
+
+    if (toggle) toggle.addEventListener("click", () => {
+      const wrap = $("pf_edit_wrap");
+      const open = !(wrap && wrap.classList.contains("is-open"));
+      openEdit(open);
+
+      // pré-remplir input avec pseudo actuel si vide
+      const st = window.VUserData?.load?.() || {};
+      const cur = String(st.username || "").trim();
+      const inp = $("pf_username_input");
+      if (open && inp){
+        inp.value = cur || "";
+        inp.focus();
+      }
+    });
+
+    if (cancel) cancel.addEventListener("click", () => {
+      setMsg("ok", "", null);
+      openEdit(false);
+    });
+
+    if (save) save.addEventListener("click", handleSaveUsername);
+
+    // affichage profil
     window.addEventListener("vc:profile", (ev) => {
       const d = ev?.detail || {};
       const jet = Number(d.jetons ?? 0);
       const vc = Number(d.vcoins ?? 0);
-      const un = String(d.username || "");
+      const un = String(d.username || "").trim();
 
       const jetEl = $("pf_jetons");
       const vcEl = $("pf_vcoins");
       if (jetEl) jetEl.textContent = String(jet);
       if (vcEl) vcEl.textContent = String(vc);
 
-      const inp = $("pf_username");
-      if (inp && !inp.value) inp.value = un;
+      const textEl = $("pf_username_text");
+      if (textEl) textEl.textContent = un || (window.VRI18n?.t?.("ui.profile_username_missing") || "—");
     });
 
-    const saveBtn = $("pf_save");
-    if (saveBtn) saveBtn.addEventListener("click", handleSaveUsername);
-
-    const refBtn = $("pf_refresh");
-    if (refBtn) refBtn.addEventListener("click", async () => {
-      await refreshEndings(true);
-    });
-
-    await refreshEndings(false);
+    await refreshEndingsOnce();
   }
 
   boot();
