@@ -407,6 +407,15 @@
     "br.h.s46.strong": "Active l’override : has_override est requis pour la fin secrète.",
 
     "br.h.s56.soft": "Le dernier choix dépend des preuves accumulées.",
-    "br.h.s56.strong": "Bonne fin : has_recording. Secrète : has_override + has_protocol_truth + has_recording + has_sanctuary_mark."
+    "br.h.s56.strong": "Bonne fin : has_recording. Secrète : has_override + has_protocol_truth + has_recording + has_sanctuary_mark.",
+
+    "br.clue.has_badge.title": "Badge",
+    "br.clue.has_code.title": "Code",
+    "br.clue.has_map_fragment.title": "Fragment de plan",
+    "br.clue.has_master_key.title": "Clé maître",
+    "br.clue.has_override.title": "Override",
+    "br.clue.has_protocol_truth.title": "Protocole (vérité)",
+    "br.clue.has_recording.title": "Enregistrement",
+    "br.clue.has_sanctuary_mark.title": "Marque du sanctuaire"
   }
 }
