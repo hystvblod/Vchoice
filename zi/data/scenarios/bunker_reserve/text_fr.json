@@ -351,6 +351,15 @@
     "br.end_secret.title": "FIN SECRÈTE — Protocole inversé",
     "br.end_secret.body": "Tu n’affrontes pas l’occupant. Tu retournes la logique du lieu. L’override aligne les voyants, l’isolement change de cible, et le sanctuaire cesse d’être un abri. Quelque chose recule… sans bruit. Puis le bunker redevient, enfin, un bunker.",
 
+    "br.clue.has_badge.title": "Badge",
+    "br.clue.has_code.title": "Code",
+    "br.clue.has_map_fragment.title": "Fragment de plan",
+    "br.clue.has_master_key.title": "Clé maître",
+    "br.clue.has_override.title": "Override",
+    "br.clue.has_protocol_truth.title": "Protocole (vérité)",
+    "br.clue.has_recording.title": "Enregistrement",
+    "br.clue.has_sanctuary_mark.title": "Marque du sanctuaire",
+
 
     "br.h.s02.soft": "Le cadenas neuf est une anomalie : quelqu’un vient encore ici.",
     "br.h.s02.strong": "Suis les traces : elles mènent directement à l’accès du bunker.",
