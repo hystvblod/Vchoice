@@ -314,6 +314,18 @@
     "d14.end_bad.body": "Le couloir se referme. La lumière au plafond devient une île au-dessus de toi. Tu comprends que tu ne “vis” plus ici… tu occupes. Et à 02:14, ton nom devient un bruit de fond.",
 
     "d14.end_secret.title": "FIN SECRÈTE — Dossier validé",
-    "d14.end_secret.body": "Tu as la preuve et le dossier. Tu comprends : l’immeuble ne prend pas des gens… il prend des places. Il remplit l’Appartement 14 comme on remplit une case. Et maintenant que tu sais, il te reconnaît."
+    "d14.end_secret.body": "Tu as la preuve et le dossier. Tu comprends : l’immeuble ne prend pas des gens… il prend des places. Il remplit l’Appartement 14 comme on remplit une case. Et maintenant que tu sais, il te reconnaît.",
+
+    "d14.h.clue.has_photo.title": "Photo",
+    "d14.h.clue.has_photo.desc": "Une preuve visuelle récupérée dans les archives.",
+
+    "d14.h.clue.has_badge.title": "Badge",
+    "d14.h.clue.has_badge.desc": "Un badge d’accès trouvé dans un casier.",
+
+    "d14.h.clue.has_key.title": "Clé",
+    "d14.h.clue.has_key.desc": "Une clé lourde destinée au digicode.",
+
+    "d14.h.clue.has_dossier.title": "Dossier",
+    "d14.h.clue.has_dossier.desc": "Le dossier principal “14” récupéré."
   }
 }

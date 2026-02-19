@@ -172,8 +172,8 @@ function tS(key, params){
 
 function getScenarioInfo(scenarioId){
   const info = deepGet(UI, `scenario_info.${scenarioId}`) || {};
-  const title = (typeof info.title === 'string') ? info.title : 'Infos';
-  const body  = (typeof info.body  === 'string') ? info.body  : '';
+  const title = (typeof info.title === "string") ? info.title : tUI("hint_title");
+  const body  = (typeof info.body  === "string") ? info.body  : "";
   if(!body && !title) return null;
   return { title, body };
 }
@@ -182,7 +182,6 @@ function getScenarioInfo(scenarioId){
    FLAGS LOCKING (avec override)
 ========================= */
 function isChoiceAvailable(choice){
-  // ✅ si guide + paiement (3 jetons) => on ignore les flags
   if(OVERRIDE_FLAGS) return true;
 
   const flags = scenarioStates[currentScenarioId]?.flags || {};
@@ -223,7 +222,6 @@ function _findEndingTargets(logic, type){
     }
   }
 
-  // fallback: toute scène sans choix = ending
   if(!out.length){
     for(const k of keys){
       const sc = scenes[k];
@@ -240,14 +238,9 @@ function computeGuidePlan(fromSceneId, targetType){
   const targets = new Set(_findEndingTargets(LOGIC, targetType));
   if(!targets.size) return null;
 
-  // ⚠️ IMPORTANT :
-  // On calcule le chemin en ignorant les flags SI override actif.
-  // Ici, OVERRIDE_FLAGS est encore false au moment du calcul,
-  // donc on prend une version "soft" : on ne bloque pas sur flags pendant le BFS.
   const q = [String(fromSceneId)];
   const visited = new Set(q);
   const prev = {}; // node -> prev node
-
   let found = null;
 
   while(q.length){
@@ -260,12 +253,11 @@ function computeGuidePlan(fromSceneId, targetType){
     for(const ch of choices){
       if(!ch?.next) continue;
 
-      // ✅ BFS: on ignore les flags pour trouver un chemin global (sinon tu peux ne jamais trouver)
-      // Le vrai verrouillage sera géré au clic (et override le bypassera après paiement)
+      // BFS: ignore flags
       const nxt = String(ch.next);
 
       if(visited.has(nxt)) continue;
-      if(!LOGIC.scenes[nxt]) continue; // évite liens cassés
+      if(!LOGIC.scenes[nxt]) continue;
 
       visited.add(nxt);
       prev[nxt] = cur;
@@ -275,7 +267,6 @@ function computeGuidePlan(fromSceneId, targetType){
 
   if(!found) return null;
 
-  // reconstruit le chemin found -> from
   const path = [];
   let cur = found;
   while(cur){
@@ -357,10 +348,57 @@ async function reloadUI(){
   UI = await fetchJSON(PATHS.ui(LANG));
   const sel = $("langSelect");
   if(sel) sel.value = LANG;
+
+  // ✅ applique i18n sur les textes statiques HTML
+  applyStaticI18n();
 }
 
 async function loadCatalog(){
   CATALOG = await fetchJSON(PATHS.catalog);
+}
+
+/* =========================
+   STATIC i18n (game.html)
+========================= */
+function applyStaticI18n(){
+  const btnJeton = $("btnJetonBack");
+  if(btnJeton) btnJeton.title = tUI("jeton_title");
+
+  const jmTitle = $("jetonModalTitle");
+  if(jmTitle) jmTitle.textContent = tUI("jeton_title");
+
+  const bal = $("jetonBalanceLabel");
+  if(bal) bal.textContent = format(tUI("jeton_balance", { count: "" }), { count: "" }).replace(/\s*:\s*$/, "") + " ";
+
+  const bBack = $("btnJetonBackModal");
+  if(bBack) bBack.textContent = tUI("jeton_back_btn");
+
+  const bGuide = $("btnJetonGuide");
+  if(bGuide) bGuide.textContent = tUI("jeton_guide_btn");
+
+  const bGood = $("btnJetonGuideGood");
+  if(bGood) bGood.textContent = tUI("jeton_guide_good");
+
+  const bBad = $("btnJetonGuideBad");
+  if(bBad) bBad.textContent = tUI("jeton_guide_bad");
+
+  const bSecret = $("btnJetonGuideSecret");
+  if(bSecret) bSecret.textContent = tUI("jeton_guide_secret");
+
+  const bStop = $("btnJetonGuideStop");
+  if(bStop) bStop.textContent = tUI("jeton_guide_stop");
+
+  const hintClose = $("hintClose");
+  if(hintClose) hintClose.setAttribute("aria-label", tUI("hint_close_aria"));
+
+  const resumeClose = $("resumeClose");
+  if(resumeClose) resumeClose.setAttribute("aria-label", tUI("hint_close_aria"));
+
+  const endClose = $("endClose");
+  if(endClose) endClose.setAttribute("aria-label", tUI("hint_close_aria"));
+
+  const jetonClose = $("jetonClose");
+  if(jetonClose) jetonClose.setAttribute("aria-label", tUI("hint_close_aria"));
 }
 
 /* =========================
@@ -407,19 +445,14 @@ function hideJetonModal(){
 function bindJetonHud(){
   const btn = $("btnJetonBack");
   if(btn){
-    // ✅ CLIC -> ouvre la popup jetons (au lieu de "retour direct")
-    btn.onclick = () => {
-      showJetonModal();
-    };
+    btn.onclick = () => { showJetonModal(); };
   }
 
-  // Fermeture modal
   const bd = $("jetonBackdrop");
   if(bd) bd.addEventListener("click", hideJetonModal);
   const close = $("jetonClose");
   if(close) close.addEventListener("click", hideJetonModal);
 
-  // Bouton "retour" depuis la popup
   const backBtn = $("btnJetonBackModal");
   if(backBtn){
     backBtn.addEventListener("click", async () => {
@@ -428,7 +461,6 @@ function bindJetonHud(){
     });
   }
 
-  // Guide (prévisualise le chemin, puis débite 3 jetons si possible)
   const guideBtn = $("btnJetonGuide");
   const targetsBox = $("jetonGuideTargets");
   if(guideBtn && targetsBox){
@@ -447,38 +479,36 @@ function bindJetonHud(){
       try{
         if(msg) msg.textContent = "";
 
-        // 1) calc chemin d'abord (si impossible -> pas de débit)
         const st = scenarioStates[currentScenarioId];
         const curId = st?.scene;
         const plan = computeGuidePlan(curId, targetType);
+
         if(!plan || !plan.nextByScene || !Object.keys(plan.nextByScene).length){
-          if(msg) msg.textContent = "Aucun chemin trouvé vers cette fin depuis ici.";
+          if(msg) msg.textContent = tUI("jeton_guide_no_path");
           return;
         }
 
-        // 2) débite 3 jetons
         const res = await spendJetons(3);
         if(!res?.ok){
-          if(msg) msg.textContent = tUI("jeton_not_enough") || "Pas assez de jetons.";
+          if(msg) msg.textContent = tUI("jeton_not_enough");
           updateHudJetons();
           updateJetonModalCount();
           return;
         }
 
-        // 3) active le guide + bypass flags
         GUIDE_STATE.active = true;
         GUIDE_STATE.targetType = targetType;
         GUIDE_STATE.nextByScene = plan.nextByScene;
         GUIDE_STATE.path = plan.path || [];
 
-        OVERRIDE_FLAGS = true; // ✅ bypass flags tant que guide actif
+        OVERRIDE_FLAGS = true;
 
         updateHudJetons();
         updateJetonModalCount();
         hideJetonModal();
         renderScene();
       }catch(e){
-        if(msg) msg.textContent = "Erreur guide.";
+        if(msg) msg.textContent = tUI("jeton_guide_error");
       }
     });
   }
@@ -490,16 +520,15 @@ function bindJetonHud(){
       GUIDE_STATE.targetType = null;
       GUIDE_STATE.nextByScene = {};
       GUIDE_STATE.path = [];
-
-      OVERRIDE_FLAGS = false; // ✅ restore
+      OVERRIDE_FLAGS = false;
 
       renderScene();
+
       const msg = $("jetonModalMsg");
-      if(msg) msg.textContent = "Guide arrêté.";
+      if(msg) msg.textContent = tUI("jeton_guide_stopped");
     });
   }
 
-  // Resync sur profil RPC
   window.addEventListener("vr:profile", () => { updateHudJetons(); updateJetonModalCount(); });
   window.addEventListener("vc:profile", () => { updateHudJetons(); updateJetonModalCount(); });
 
@@ -526,7 +555,7 @@ async function boot(){
   await loadCatalog();
 
   bindTopbar();
-  bindJetonHud(); // ✅
+  bindJetonHud();
 
   if(hasMenuPage()){
     await renderMenu();
@@ -610,11 +639,11 @@ async function renderMenu(){
       help.type = "button";
       help.className = "menu_help";
       help.textContent = "?";
-      help.title = "Infos";
+      help.title = tUI("hint_title");
       help.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
-        showHintModal(info.title || "Infos", info.body || "");
+        showHintModal(info.title || tUI("hint_title"), info.body || "");
       });
       card.appendChild(help);
     }
@@ -638,7 +667,6 @@ function renderTopbar(){
 /* =========================
    GAME (game.html)
 ========================= */
-
 function ensureResumeModal(){
   const m = $("resumeModal");
   const bd = $("resumeBackdrop");
@@ -791,7 +819,7 @@ function showHintModalWithActions(title, bodyLines, actions){
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = a.className || "btn";
-    btn.textContent = a.label || "OK";
+    btn.textContent = a.label || "[ui.btn_ok]";
     btn.onclick = async () => {
       try{ await a.onClick?.(); } finally {}
     };
@@ -905,13 +933,13 @@ async function goBackWithJeton(){
 
   st.history ??= [];
   if(!st.history.length){
-    showHintModal(tUI("hint_title"), tUI("locked_no_back") || "Aucun retour possible ici.");
+    showHintModal(tUI("hint_title"), tUI("locked_no_back"));
     return;
   }
 
   const res = await spendJetons(1);
   if(!res?.ok){
-    showHintModal(tUI("hint_title"), tUI("jeton_not_enough") || "Pas assez de jetons.");
+    showHintModal(tUI("hint_title"), tUI("jeton_not_enough"));
     return;
   }
 
@@ -943,11 +971,11 @@ function showLockedChoiceModal(choice){
   const { missingAll, missingAny } = getMissingFlagsForChoice(choice);
 
   const lines = [];
-  lines.push(tUI("locked_body") || "Tu as raté des éléments nécessaires pour débloquer cette voie.");
+  lines.push(tUI("locked_body"));
 
   if(missingAll.length){
     lines.push("");
-    lines.push(tUI("locked_missing") || "Il te manque :");
+    lines.push(tUI("locked_missing"));
     for(const f of missingAll){
       lines.push(`• ${prettyFlagTitle(f)}`);
     }
@@ -955,7 +983,7 @@ function showLockedChoiceModal(choice){
 
   if(missingAny.length){
     lines.push("");
-    lines.push(tUI("locked_missing_any") || "Il te faut au moins un élément parmi :");
+    lines.push(tUI("locked_missing_any"));
     for(const f of missingAny){
       lines.push(`• ${prettyFlagTitle(f)}`);
     }
@@ -964,10 +992,10 @@ function showLockedChoiceModal(choice){
   lines.push("");
 
   showHintModalWithActions(
-    tUI("locked_title") || tUI("hint_title"),
+    tUI("locked_title"),
     lines,
     [
-      { label: tUI("btn_close") || "Fermer", className:"btn btn--ghost", onClick: () => hideHintModal() }
+      { label: tUI("locked_close"), className:"btn btn--ghost", onClick: () => hideHintModal() }
     ]
   );
 }
@@ -979,7 +1007,6 @@ async function handleEnding(type){
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
 
-  // ✅ quand on atteint une fin => stop guide + restore flags
   GUIDE_STATE.active = false;
   GUIDE_STATE.targetType = null;
   GUIDE_STATE.nextByScene = {};
@@ -987,12 +1014,12 @@ async function handleEnding(type){
   OVERRIDE_FLAGS = false;
 
   const endingType = String(type || "").toLowerCase();
-  let title = tUI("end_title") || "Fin du scénario";
-  if(endingType === "good") title = tUI("end_title_good") || "Fin (bonne)";
-  if(endingType === "bad") title = tUI("end_title_bad") || "Fin (mauvaise)";
-  if(endingType === "secret") title = tUI("end_title_secret") || "Fin (secrète)";
+  let title = tUI("end_title");
+  if(endingType === "good") title = tUI("end_title_good");
+  if(endingType === "bad") title = tUI("end_title_bad");
+  if(endingType === "secret") title = tUI("end_title_secret");
 
-  const body = tUI("ending_desc") || "Tu as terminé ce scénario.";
+  const body = tUI("ending_desc");
 
   showEndModal(
     title,
@@ -1075,7 +1102,6 @@ function renderScene(){
       const btn = document.createElement("button");
       btn.className = "choice_btn";
 
-      // ✅ Guide: surligne le prochain choix recommandé
       if(GUIDE_STATE && GUIDE_STATE.active && GUIDE_STATE.nextByScene && ch && ch.next){
         const wanted = GUIDE_STATE.nextByScene[scene.id];
         if(wanted && String(ch.next) === String(wanted)){
@@ -1087,10 +1113,9 @@ function renderScene(){
 
       const available = isChoiceAvailable(ch);
 
-      // ⚠️ si OVERRIDE_FLAGS=true => on ne montre pas locked
       if(!available && !OVERRIDE_FLAGS){
         btn.classList.add("is_locked");
-        btn.title = tUI("locked_choice") || "Indisponible pour le moment";
+        btn.title = tUI("locked_choice");
       }
 
       btn.onclick = async () => {
@@ -1125,8 +1150,8 @@ function renderScene(){
         }
 
         showHintModal(
-          tUI("hint_title") || "Info",
-          tUI("no_next_scene") || "Ce choix ne mène nulle part pour l’instant."
+          tUI("hint_title"),
+          tUI("no_next_scene")
         );
       };
 

@@ -8,7 +8,6 @@
 </head>
 
 <body class="page-game">
-  <!-- GAME: image plein écran + cartouche bas -->
   <div class="app">
     <main class="main main--game" id="screen_game">
       <section class="panel panel--game">
@@ -35,7 +34,7 @@
 
     <!-- TOP HUD (jetons) -->
     <div class="hud_top" aria-hidden="false">
-      <button id="btnJetonBack" class="hud_jeton" type="button" title="Retour (1 jeton)">
+      <button id="btnJetonBack" class="hud_jeton" type="button" title="">
         <img src="assets/img/ui/jeton.webp" alt="" class="hud_jeton_icon" />
         <span id="hudJetonCount" class="hud_jeton_count">0</span>
       </button>
@@ -47,7 +46,7 @@
       <div class="modal__content">
         <div class="modal__header">
           <div id="hintTitle" class="modal__title"></div>
-          <button id="hintClose" class="modal__close" type="button">×</button>
+          <button id="hintClose" class="modal__close" type="button" aria-label="">×</button>
         </div>
         <div id="hintBody" class="modal__body"></div>
       </div>
@@ -59,7 +58,7 @@
       <div class="modal__panel">
         <div class="modal__head">
           <div id="resumeTitle" class="modal__title"></div>
-          <button id="resumeClose" class="modal__close" type="button">×</button>
+          <button id="resumeClose" class="modal__close" type="button" aria-label="">×</button>
         </div>
         <div class="modal__body" id="resumeBody"></div>
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
@@ -75,7 +74,7 @@
       <div class="modal__panel">
         <div class="modal__head">
           <div id="endTitle" class="modal__title"></div>
-          <button id="endClose" class="modal__close" type="button">×</button>
+          <button id="endClose" class="modal__close" type="button" aria-label="">×</button>
         </div>
         <div class="modal__body" id="endBody"></div>
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
@@ -84,6 +83,43 @@
         </div>
       </div>
     </div>
+
+    <!-- MODAL: Jetons -->
+    <div id="jetonModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+      <div id="jetonBackdrop" class="modal__backdrop"></div>
+      <div class="modal__panel">
+        <div class="modal__head">
+          <div id="jetonModalTitle" class="modal__title"></div>
+          <button id="jetonClose" class="modal__close" type="button" aria-label="">×</button>
+        </div>
+
+        <div class="modal__body">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <img src="assets/img/ui/jeton.webp" alt="" style="width:28px;height:28px;object-fit:contain;" />
+            <div style="font-weight:700;">
+              <span id="jetonBalanceLabel"></span>
+              <span id="jetonModalCount">0</span>
+            </div>
+          </div>
+
+          <div style="display:grid; gap:10px;">
+            <button id="btnJetonBackModal" class="btn btn--ghost" type="button"></button>
+
+            <button id="btnJetonGuide" class="btn" type="button"></button>
+
+            <div id="jetonGuideTargets" class="hidden" style="display:grid; gap:8px;">
+              <button id="btnJetonGuideGood" data-target="good" class="btn btn--ghost" type="button"></button>
+              <button id="btnJetonGuideBad" data-target="bad" class="btn btn--ghost" type="button"></button>
+              <button id="btnJetonGuideSecret" data-target="secret" class="btn btn--ghost" type="button"></button>
+              <button id="btnJetonGuideStop" class="btn btn--ghost" type="button"></button>
+            </div>
+
+            <div id="jetonModalMsg" style="opacity:.85; font-size:14px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Compat engine.js -->
@@ -98,11 +134,18 @@
   </select>
   <button id="btnHint" class="sr_only" aria-hidden="true" tabindex="-1" type="button"></button>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="js/supabaseBootstrap.js"></script>
-<script src="js/userData.js"></script>
-<script src="js/ads.js"></script>
-<script src="js/engine.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabaseBootstrap.js"></script>
 
+  <script src="js/userData.js"></script>
+  <script src="js/ads.js"></script>
+  <script src="js/engine.js"></script>
+
+  <script>
+  (async () => {
+    try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
+    try { await window.VUserData?.init?.(); } catch(e) {}
+  })();
+  </script>
 </body>
 </html>

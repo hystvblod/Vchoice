@@ -476,7 +476,7 @@
       "title_key": "d14.s41.title",
       "body_key": "d14.s41.body",
       "choices": [
-        { "choice_key": "d14.s41.c1", "next": "s44", "set_flags": ["has_recording"] },
+        { "choice_key": "d14.s41.c1", "next": "s44" },
         { "choice_key": "d14.s41.c2", "next": "s42" },
         { "choice_key": "d14.s41.c3", "next": "s13" }
       ]
@@ -571,7 +571,7 @@
         {
           "choice_key": "d14.s50.c3",
           "next": "end_secret",
-          "requires_all_flags": ["has_photo", "has_badge", "has_key", "has_recording", "has_dossier"]
+          "requires_all_flags": ["has_photo", "has_badge", "has_key", "has_dossier"]
         }
       ]
     },

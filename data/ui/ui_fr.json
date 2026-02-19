@@ -35,6 +35,18 @@
     "locked_no_back": "Aucun retour possible ici.",
     "jeton_not_enough": "Pas assez de jetons.",
 
+    "jeton_title": "Jetons",
+    "jeton_balance": "Solde : {count}",
+    "jeton_back_btn": "Retour en arrière — 1 jeton",
+    "jeton_guide_btn": "Guide vers une fin — 3 jetons",
+    "jeton_guide_good": "Fin bonne",
+    "jeton_guide_bad": "Fin mauvaise",
+    "jeton_guide_secret": "Fin secrète",
+    "jeton_guide_stop": "Stop guide",
+    "jeton_guide_no_path": "Aucun chemin trouvé vers cette fin depuis ici.",
+    "jeton_guide_error": "Erreur guide.",
+    "jeton_guide_stopped": "Guide arrêté.",
+
     "scenario_buy": {
       "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
       "pay": "Débloquer ({price} VCoins)",
