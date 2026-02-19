@@ -28,6 +28,14 @@ let TEXT_STRINGS = null;
 
 let scenarioStates = {};
 
+// Guide vers une fin (BFS)
+let GUIDE_STATE = {
+  active: false,
+  targetType: null,
+  nextByScene: {},
+  path: []
+};
+
 /* =========================
    SMALL HELPERS
 ========================= */
@@ -188,6 +196,91 @@ function isChoiceAvailable(choice){
 }
 
 /* =========================
+   GUIDE (BFS vers une fin)
+========================= */
+function _findEndingTargets(logic, type){
+  const scenes = logic?.scenes || {};
+  const direct = `end_${type}`;
+  if (Object.prototype.hasOwnProperty.call(scenes, direct)) return [direct];
+
+  const keys = Object.keys(scenes);
+  const out = [];
+  const needle = String(type || "").toLowerCase();
+
+  for(const k of keys){
+    const lk = k.toLowerCase();
+    if(lk.includes("end_" + needle) || lk.includes("fin_" + needle) || lk.includes("ending_" + needle)){
+      out.push(k);
+    }
+  }
+
+  // fallback: toute scène sans choix = ending
+  if(!out.length){
+    for(const k of keys){
+      const sc = scenes[k];
+      const ch = Array.isArray(sc?.choices) ? sc.choices : [];
+      if(ch.length === 0) out.push(k);
+    }
+  }
+  return out;
+}
+
+function computeGuidePlan(fromSceneId, targetType){
+  if(!LOGIC?.scenes || !fromSceneId) return null;
+
+  const targets = new Set(_findEndingTargets(LOGIC, targetType));
+  if(!targets.size) return null;
+
+  const q = [String(fromSceneId)];
+  const visited = new Set(q);
+  const prev = {}; // node -> prev node
+
+  let found = null;
+
+  while(q.length){
+    const cur = q.shift();
+    if(targets.has(cur)){ found = cur; break; }
+
+    const sc = resolveSceneObject(LOGIC, cur);
+    const choices = Array.isArray(sc?.choices) ? sc.choices : [];
+
+    for(const ch of choices){
+      if(!ch?.next) continue;
+      if(!isChoiceAvailable(ch)) continue;
+
+      const nxt = String(ch.next);
+      if(visited.has(nxt)) continue;
+      if(!LOGIC.scenes[nxt]) continue; // évite liens cassés
+
+      visited.add(nxt);
+      prev[nxt] = cur;
+      q.push(nxt);
+    }
+  }
+
+  if(!found) return null;
+
+  // reconstruit le chemin found -> from
+  const path = [];
+  let cur = found;
+  while(cur){
+    path.push(cur);
+    if(cur === String(fromSceneId)) break;
+    cur = prev[cur];
+  }
+  path.reverse();
+
+  if(path.length < 2) return { path, nextByScene: {} };
+
+  const nextByScene = {};
+  for(let i=0;i<path.length-1;i++){
+    nextByScene[path[i]] = path[i+1];
+  }
+
+  return { path, nextByScene };
+}
+
+/* =========================
    SAVE/LOAD (LOCAL)
 ========================= */
 function load(){
@@ -269,17 +362,126 @@ function updateHudJetons(){
   el.textContent = String(jetons);
 }
 
+function updateJetonModalCount(){
+  const el = $("jetonModalCount");
+  if(!el) return;
+  let jetons = 0;
+  if(window.VUserData && typeof window.VUserData.getJetons === "function"){
+    try{ jetons = Number(window.VUserData.getJetons() || 0); }catch(e){}
+  }
+  el.textContent = String(jetons);
+}
+
+function showJetonModal(){
+  const modal = $("jetonModal");
+  if(!modal) return;
+  updateJetonModalCount();
+  const msg = $("jetonModalMsg");
+  if(msg) msg.textContent = "";
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden","false");
+}
+
+function hideJetonModal(){
+  const modal = $("jetonModal");
+  if(!modal) return;
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden","true");
+}
+
 function bindJetonHud(){
   const btn = $("btnJetonBack");
   if(btn){
-    btn.onclick = async () => {
-      await goBackWithJeton();
+    // ✅ CLIC -> ouvre la popup jetons (au lieu de "retour direct")
+    btn.onclick = () => {
+      showJetonModal();
     };
   }
 
-  // Si ton userData émet un event profil après RPC, on resync le HUD
-  window.addEventListener("vr:profile", updateHudJetons);
-  window.addEventListener("vc:profile", updateHudJetons);
+  // Fermeture modal
+  const bd = $("jetonBackdrop");
+  if(bd) bd.addEventListener("click", hideJetonModal);
+  const close = $("jetonClose");
+  if(close) close.addEventListener("click", hideJetonModal);
+
+  // Bouton "retour" depuis la popup
+  const backBtn = $("btnJetonBackModal");
+  if(backBtn){
+    backBtn.addEventListener("click", async () => {
+      await goBackWithJeton();
+      hideJetonModal();
+    });
+  }
+
+  // Guide (prévisualise le chemin, puis débite 3 jetons si possible)
+  const guideBtn = $("btnJetonGuide");
+  const targetsBox = $("jetonGuideTargets");
+  if(guideBtn && targetsBox){
+    guideBtn.addEventListener("click", () => {
+      targetsBox.classList.remove("hidden");
+    });
+  }
+
+  if(targetsBox){
+    targetsBox.addEventListener("click", async (ev) => {
+      const b = ev.target && ev.target.closest ? ev.target.closest("button[data-target]") : null;
+      if(!b) return;
+      const targetType = b.getAttribute("data-target"); // good|bad|secret
+
+      const msg = $("jetonModalMsg");
+      try{
+        if(msg) msg.textContent = "";
+
+        // 1) calc chemin d'abord (si impossible -> pas de débit)
+        const st = scenarioStates[currentScenarioId];
+        const curId = st?.scene;
+        const plan = computeGuidePlan(curId, targetType);
+        if(!plan || !plan.nextByScene || !Object.keys(plan.nextByScene).length){
+          if(msg) msg.textContent = "Aucun chemin trouvé vers cette fin depuis ici.";
+          return;
+        }
+
+        // 2) débite 3 jetons
+        const res = await spendJetons(3);
+        if(!res?.ok){
+          if(msg) msg.textContent = tUI("jeton_not_enough") || "Pas assez de jetons.";
+          updateHudJetons();
+          updateJetonModalCount();
+          return;
+        }
+
+        // 3) active le guide
+        GUIDE_STATE.active = true;
+        GUIDE_STATE.targetType = targetType;
+        GUIDE_STATE.nextByScene = plan.nextByScene;
+        GUIDE_STATE.path = plan.path || [];
+
+        updateHudJetons();
+        updateJetonModalCount();
+        hideJetonModal();
+        renderScene();
+      }catch(e){
+        if(msg) msg.textContent = "Erreur guide.";
+      }
+    });
+  }
+
+  const stopBtn = $("btnJetonGuideStop");
+  if(stopBtn){
+    stopBtn.addEventListener("click", () => {
+      GUIDE_STATE.active = false;
+      GUIDE_STATE.targetType = null;
+      GUIDE_STATE.nextByScene = {};
+      GUIDE_STATE.path = [];
+      renderScene();
+      const msg = $("jetonModalMsg");
+      if(msg) msg.textContent = "Guide arrêté.";
+    });
+  }
+
+  // Resync sur profil RPC
+  window.addEventListener("vr:profile", () => { updateHudJetons(); updateJetonModalCount(); });
+  window.addEventListener("vc:profile", () => { updateHudJetons(); updateJetonModalCount(); });
 
   updateHudJetons();
 }
@@ -304,7 +506,7 @@ async function boot(){
   await loadCatalog();
 
   bindTopbar();
-  bindJetonHud(); // ✅ AJOUT
+  bindJetonHud(); // ✅
 
   if(hasMenuPage()){
     await renderMenu();
@@ -418,143 +620,180 @@ function renderTopbar(){
 ========================= */
 
 function ensureResumeModal(){
-  // Si ton HTML a déjà le modal, on ne recrée rien.
-  let modal = $("resumeModal");
-  if(modal) return;
-
-  modal = document.createElement("div");
-  modal.id = "resumeModal";
-  modal.className = "modal hidden";
-  modal.setAttribute("aria-hidden", "true");
-
-  const backdrop = document.createElement("div");
-  backdrop.id = "resumeBackdrop";
-  backdrop.className = "modal__backdrop";
-
-  const panel = document.createElement("div");
-  panel.className = "modal__content";
-
-  const head = document.createElement("div");
-  head.className = "modal__header";
-
-  const title = document.createElement("div");
-  title.id = "resumeTitle";
-  title.className = "modal__title";
-
-  const close = document.createElement("button");
-  close.type = "button";
-  close.id = "resumeClose";
-  close.className = "modal__close";
-  close.textContent = tUI("common.cancel") || "Annuler";
-
-  head.appendChild(title);
-  head.appendChild(close);
-
-  const body = document.createElement("div");
-  body.id = "resumeBody";
-  body.className = "modal__body";
-
-  const actions = document.createElement("div");
-  actions.style.display = "flex";
-  actions.style.gap = "10px";
-  actions.style.marginTop = "14px";
-
-  // ⚠️ IDs "resumeContinue/resumeRestart" uniquement si on génère le modal nous-mêmes.
-  const btnContinue = document.createElement("button");
-  btnContinue.type = "button";
-  btnContinue.id = "resumeContinue";
-  btnContinue.className = "btn";
-  btnContinue.textContent = tUI("btn_continue");
-
-  const btnRestart = document.createElement("button");
-  btnRestart.type = "button";
-  btnRestart.id = "resumeRestart";
-  btnRestart.className = "btn btn--ghost";
-  btnRestart.textContent = tUI("btn_restart");
-
-  actions.appendChild(btnContinue);
-  actions.appendChild(btnRestart);
-
-  body.appendChild(actions);
-
-  panel.appendChild(head);
-  panel.appendChild(body);
-
-  modal.appendChild(backdrop);
-  modal.appendChild(panel);
-
-  document.body.appendChild(modal);
-
-  close.onclick = () => hideResumeModal();
-  backdrop.onclick = () => hideResumeModal();
+  const m = $("resumeModal");
+  const bd = $("resumeBackdrop");
+  const c = $("resumeClose");
+  if(m && bd && !bd.__bound){
+    bd.__bound = true;
+    bd.addEventListener("click", hideResumeModal);
+  }
+  if(c && !c.__bound){
+    c.__bound = true;
+    c.addEventListener("click", hideResumeModal);
+  }
 }
 
 function showResumeModal(onContinue, onRestart){
   ensureResumeModal();
 
   const modal = $("resumeModal");
-  const title = $("resumeTitle");
-  const body  = $("resumeBody");
+  const t = $("resumeTitle");
+  const b = $("resumeBody");
+  const btnC = $("btnResumeContinue");
+  const btnR = $("btnResumeRestart");
+  if(!modal || !t || !b || !btnC || !btnR) return;
 
-  // ✅ Supporte les 2 variantes :
-  // - HTML: btnResumeContinue / btnResumeRestart (ton game.html)
-  // - JS-generated: resumeContinue / resumeRestart
-  const btnC = $("btnResumeContinue") || $("resumeContinue");
-  const btnR = $("btnResumeRestart")  || $("resumeRestart");
+  t.textContent = tUI("resume_title");
+  b.textContent = tUI("resume_body") || tUI("resume_desc") || "";
 
-  // ✅ Binder aussi close/backdrop si le modal vient du HTML
-  const close = $("resumeClose");
-  const back  = $("resumeBackdrop");
-  if(close) close.onclick = hideResumeModal;
-  if(back)  back.onclick  = hideResumeModal;
+  btnC.textContent = tUI("btn_continue");
+  btnR.textContent = tUI("btn_restart");
 
-  if(title) title.textContent = tUI("resume_title");
+  btnC.onclick = () => { hideResumeModal(); onContinue && onContinue(); };
+  btnR.onclick = () => { hideResumeModal(); onRestart && onRestart(); };
 
-  // ✅ description stable (pas d’empilement)
-  if(body){
-    let desc = $("resumeDesc");
-    if(!desc){
-      desc = document.createElement("div");
-      desc.id = "resumeDesc";
-      desc.style.marginBottom = "10px";
-      body.insertBefore(desc, body.firstChild);
-    }
-    desc.textContent = tUI("resume_desc");
-  }
-
-  if(btnC){
-    btnC.textContent = tUI("btn_continue");
-    btnC.onclick = () => { hideResumeModal(); onContinue && onContinue(); };
-  }
-  if(btnR){
-    btnR.textContent = tUI("btn_restart");
-    btnR.onclick = () => { hideResumeModal(); onRestart && onRestart(); };
-  }
-
-  if(modal){
-    modal.classList.remove("hidden");
-    modal.setAttribute("aria-hidden", "false");
-  }
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden","false");
 }
 
 function hideResumeModal(){
   const modal = $("resumeModal");
   if(!modal) return;
-
-  const desc = $("resumeDesc");
-  if(desc && desc.parentNode) desc.parentNode.removeChild(desc);
-
   modal.classList.add("hidden");
-  modal.setAttribute("aria-hidden", "true");
+  modal.setAttribute("aria-hidden","true");
 }
 
+function ensureEndModal(){
+  const m = $("endModal");
+  const bd = $("endBackdrop");
+  const c = $("endClose");
+  if(m && bd && !bd.__bound){
+    bd.__bound = true;
+    bd.addEventListener("click", hideEndModal);
+  }
+  if(c && !c.__bound){
+    c.__bound = true;
+    c.addEventListener("click", hideEndModal);
+  }
+}
+
+function showEndModal(title, body, onBack, onReplay){
+  ensureEndModal();
+
+  const modal = $("endModal");
+  const t = $("endTitle");
+  const b = $("endBody");
+  const btnBack = $("btnEndBack");
+  const btnReplay = $("btnEndReplay");
+  if(!modal || !t || !b || !btnBack || !btnReplay) return;
+
+  t.textContent = title || tUI("end_title");
+  b.textContent = body || "";
+
+  btnBack.textContent = tUI("btn_back");
+  btnReplay.textContent = tUI("btn_restart");
+
+  btnBack.onclick = () => { hideEndModal(); onBack && onBack(); };
+  btnReplay.onclick = () => { hideEndModal(); onReplay && onReplay(); };
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden","false");
+}
+
+function hideEndModal(){
+  const modal = $("endModal");
+  if(!modal) return;
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden","true");
+}
+
+function bindHintModal(){
+  const modal = $("hintModal");
+  const bd = $("hintBackdrop");
+  const c = $("hintClose");
+  if(modal && bd && !bd.__bound){
+    bd.__bound = true;
+    bd.addEventListener("click", hideHintModal);
+  }
+  if(c && !c.__bound){
+    c.__bound = true;
+    c.addEventListener("click", hideHintModal);
+  }
+}
+
+function showHintModal(title, body){
+  const modal = $("hintModal");
+  const t = $("hintTitle");
+  const b = $("hintBody");
+  if(!modal || !t || !b) return;
+
+  t.textContent = title || tUI("hint_title");
+  b.textContent = "";
+  b.textContent = body || "";
+
+  const old = $("hintActions");
+  if(old && old.parentNode) old.parentNode.removeChild(old);
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function hideHintModal(){
+  const modal = $("hintModal");
+  if(!modal) return;
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden","true");
+}
+
+function showHintModalWithActions(title, bodyLines, actions){
+  const modal = $("hintModal");
+  const t = $("hintTitle");
+  const b = $("hintBody");
+  if(!modal || !t || !b) return;
+
+  t.textContent = title || tUI("hint_title");
+  b.textContent = "";
+
+  const text = Array.isArray(bodyLines) ? bodyLines.join("\n") : String(bodyLines || "");
+  b.textContent = text;
+
+  const old = $("hintActions");
+  if(old && old.parentNode) old.parentNode.removeChild(old);
+
+  const wrap = document.createElement("div");
+  wrap.id = "hintActions";
+  wrap.style.paddingTop = "12px";
+  wrap.style.display = "flex";
+  wrap.style.gap = "10px";
+  wrap.style.justifyContent = "flex-end";
+
+  for(const a of (actions || [])){
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = a.className || "btn";
+    btn.textContent = a.label || "OK";
+    btn.onclick = async () => {
+      try{ await a.onClick?.(); } finally {}
+    };
+    wrap.appendChild(btn);
+  }
+
+  b.parentNode.appendChild(wrap);
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden","false");
+}
+
+/* =========================
+   SCENARIO OPEN
+========================= */
 async function openScenario(scenarioId, opts = {}){
   const { skipResumePrompt = false } = opts;
 
   currentScenarioId = scenarioId;
 
   LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
-  TEXT  = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
+  TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
 
   TEXT_STRINGS = (TEXT && typeof TEXT === "object" && TEXT.strings && typeof TEXT.strings === "object")
     ? TEXT.strings
@@ -615,124 +854,8 @@ function clearFlag(flag){
 }
 
 /* =========================
-   HINT MODAL + LOCKED MODAL
+   JETONS UTILS
 ========================= */
-function showHintModal(title, body){
-  const modal = $("hintModal");
-  const t = $("hintTitle");
-  const b = $("hintBody");
-  if(!modal || !t || !b) return;
-
-  t.textContent = title || tUI("hint_title");
-  b.textContent = ""; // reset
-  b.textContent = body || "";
-
-  // nettoie actions si présentes
-  const old = $("hintActions");
-  if(old && old.parentNode) old.parentNode.removeChild(old);
-
-  modal.classList.remove("hidden");
-  modal.setAttribute("aria-hidden", "false");
-}
-
-function showHintModalWithActions(title, bodyLines, actions){
-  const modal = $("hintModal");
-  const t = $("hintTitle");
-  const b = $("hintBody");
-  if(!modal || !t || !b) return;
-
-  t.textContent = title || tUI("hint_title");
-
-  // reset body
-  b.textContent = "";
-  const txt = Array.isArray(bodyLines) ? bodyLines.join("\n") : String(bodyLines || "");
-  b.textContent = txt;
-
-  // remove previous actions
-  const old = $("hintActions");
-  if(old && old.parentNode) old.parentNode.removeChild(old);
-
-  // add actions
-  const wrap = document.createElement("div");
-  wrap.id = "hintActions";
-  wrap.style.display = "flex";
-  wrap.style.flexDirection = "column";
-  wrap.style.gap = "10px";
-  wrap.style.marginTop = "14px";
-
-  for(const act of (actions || [])){
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = act.className || "btn";
-    btn.textContent = act.label || "OK";
-    btn.onclick = async () => { try{ await (act.onClick && act.onClick()); }catch(e){} };
-    wrap.appendChild(btn);
-  }
-
-  b.parentNode.appendChild(wrap);
-
-  modal.classList.remove("hidden");
-  modal.setAttribute("aria-hidden", "false");
-}
-
-function hideHintModal(){
-  const modal = $("hintModal");
-  if(!modal) return;
-  modal.classList.add("hidden");
-  modal.setAttribute("aria-hidden", "true");
-
-  const old = $("hintActions");
-  if(old && old.parentNode) old.parentNode.removeChild(old);
-}
-
-function bindHintModal(){
-  const close = $("hintClose");
-  const back = $("hintBackdrop");
-  if(close) close.onclick = hideHintModal;
-  if(back) back.onclick = hideHintModal;
-}
-
-function getScenarioNS(){
-  // 1) si meta existe (nouveaux scénarios)
-  if (LOGIC && LOGIC.meta){
-    if (LOGIC.meta.title_key) return String(LOGIC.meta.title_key).split(".")[0];
-    if (LOGIC.meta.hint_ns)   return String(LOGIC.meta.hint_ns).split(".")[0];
-  }
-
-  // 2) fallback : on déduit depuis les clés présentes dans le texte (ex: tm.s01.title)
-  if (TEXT_STRINGS){
-    const keys = Object.keys(TEXT_STRINGS);
-    for (const k of keys){
-      const m = /^([a-z0-9_]+)\.s\d{2}\.title$/i.exec(k);
-      if (m) return m[1];
-    }
-    for (const k of keys){
-      const m = /^([a-z0-9_]+)\.h\./i.exec(k);
-      if (m) return m[1];
-    }
-  }
-
-  return "hf";
-}
-
-function prettyFlagTitle(flag){
-  const ns = getScenarioNS();
-  const keys = [
-    `${ns}.clue.${flag}.title`, // <-- ce que tu veux (par scénario)
-    `hf.clue.${flag}.title`     // <-- compat si jamais
-  ];
-
-  for (const key of keys){
-    const v = (TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key))
-      ? TEXT_STRINGS[key]
-      : deepGet(TEXT, key);
-    if (v) return v;
-  }
-
-  return flag;
-}
-
-
 function getMissingFlagsForChoice(choice){
   const flags = scenarioStates[currentScenarioId]?.flags || {};
   const all = Array.isArray(choice.requires_all_flags) ? choice.requires_all_flags : [];
@@ -774,25 +897,26 @@ async function goBackWithJeton(){
 
   st.scene = st.history.pop();
   save();
-  updateHudJetons(); // ✅ AJOUT
+  updateHudJetons();
   hideHintModal();
   renderScene();
 }
 
-async function restartWithJeton(){
-  const st = scenarioStates[currentScenarioId];
-  if(!st) return;
+function prettyFlagTitle(flag){
+  const ns = LOGIC?.meta?.hint_ns || "";
+  const keys = [
+    `${ns}.clue.${flag}.title`,
+    `hf.clue.${flag}.title`
+  ];
 
-  const res = await spendJetons(1);
-  if(!res?.ok){
-    showHintModal(tUI("hint_title"), tUI("jeton_not_enough") || "Pas assez de jetons.");
-    return;
+  for (const key of keys){
+    const v = (TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key))
+      ? TEXT_STRINGS[key]
+      : deepGet(TEXT, key);
+    if (v) return v;
   }
 
-  hardResetScenario(currentScenarioId);
-  updateHudJetons(); // ✅ AJOUT
-  hideHintModal();
-  renderScene();
+  return flag;
 }
 
 function showLockedChoiceModal(choice){
@@ -818,254 +942,47 @@ function showLockedChoiceModal(choice){
   }
 
   lines.push("");
-  lines.push(tUI("locked_tip") || "Astuce : explore plus, certains objets servent de preuve.");
 
   showHintModalWithActions(
-    tUI("locked_title") || "Choix bloqué",
+    tUI("locked_title") || tUI("hint_title"),
     lines,
     [
-      {
-        label: tUI("locked_back_jeton") || "Revenir en arrière (1 jeton)",
-        className: "btn",
-        onClick: goBackWithJeton
-      },
-      {
-        label: tUI("locked_restart_jeton") || "Revenir au début (1 jeton)",
-        className: "btn btn--ghost",
-        onClick: restartWithJeton
-      },
-      {
-        label: tUI("locked_close") || "Fermer",
-        className: "btn btn--ghost",
-        onClick: () => hideHintModal()
-      }
+      { label: tUI("btn_close") || "Fermer", className:"btn btn--ghost", onClick: () => hideHintModal() }
     ]
   );
 }
 
 /* =========================
-   ENDINGS
+   ENDING (modal fin)
 ========================= */
+async function handleEnding(type){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return;
 
-// End modal (game.html) helpers
-let __endBusy = false;
+  const endingType = String(type || "").toLowerCase();
+  let title = tUI("end_title") || "Fin du scénario";
+  if(endingType === "good") title = tUI("end_title_good") || "Fin (bonne)";
+  if(endingType === "bad") title = tUI("end_title_bad") || "Fin (mauvaise)";
+  if(endingType === "secret") title = tUI("end_title_secret") || "Fin (secrète)";
 
-function ensureEndModal(){
-  // Si ton HTML a déjà le modal, on ne recrée rien.
-  let modal = $("endModal");
-  if(modal) return;
+  // Reward UI (ton app gère côté RPC secure_complete_scenario dans userData si tu l’appelles ailleurs)
+  const body = tUI("ending_desc") || "Tu as terminé ce scénario.";
 
-  modal = document.createElement("div");
-  modal.id = "endModal";
-  modal.className = "modal hidden";
-  modal.setAttribute("aria-hidden", "true");
-
-  const backdrop = document.createElement("div");
-  backdrop.id = "endBackdrop";
-  backdrop.className = "modal__backdrop";
-
-  const panel = document.createElement("div");
-  panel.className = "modal__content";
-
-  const head = document.createElement("div");
-  head.className = "modal__header";
-
-  const title = document.createElement("div");
-  title.id = "endTitle";
-  title.className = "modal__title";
-
-  const close = document.createElement("button");
-  close.type = "button";
-  close.id = "endClose";
-  close.className = "modal__close";
-  close.textContent = "×";
-
-  head.appendChild(title);
-  head.appendChild(close);
-
-  const body = document.createElement("div");
-  body.id = "endBody";
-  body.className = "modal__body";
-
-  const actions = document.createElement("div");
-  actions.style.display = "flex";
-  actions.style.gap = "10px";
-  actions.style.marginTop = "14px";
-  actions.style.justifyContent = "flex-end";
-
-  // IDs utilisés si on génère le modal nous-mêmes
-  const btnQuit = document.createElement("button");
-  btnQuit.type = "button";
-  btnQuit.id = "endQuit";
-  btnQuit.className = "btn btn--ghost";
-
-  const btnDouble = document.createElement("button");
-  btnDouble.type = "button";
-  btnDouble.id = "endDouble";
-  btnDouble.className = "btn";
-
-  actions.appendChild(btnQuit);
-  actions.appendChild(btnDouble);
-
-  body.appendChild(actions);
-
-  panel.appendChild(head);
-  panel.appendChild(body);
-
-  modal.appendChild(backdrop);
-  modal.appendChild(panel);
-
-  document.body.appendChild(modal);
-
-  close.onclick = () => hideEndModal();
-  backdrop.onclick = () => hideEndModal();
-}
-
-function setEndModalText(titleText, bodyText){
-  const t = $("endTitle");
-  const b = $("endBody");
-  if(t) t.textContent = titleText || "";
-  if(b) b.textContent = bodyText || "";
-}
-
-function showEndModal(opts){
-  ensureEndModal();
-
-  const modal = $("endModal");
-  const close = $("endClose");
-  const back  = $("endBackdrop");
-
-  const btnQuit   = $("btnEndBack")  || $("endQuit");
-  const btnDouble = $("btnEndReplay") || $("endDouble");
-
-  __endBusy = false;
-
-  if(close) close.onclick = () => { if(!__endBusy) hideEndModal(); };
-  if(back)  back.onclick  = () => { if(!__endBusy) hideEndModal(); };
-
-  if(btnQuit){
-    btnQuit.textContent = tUI("end_btn_quit") || tUI("btn_exit") || "Quitter";
-    btnQuit.disabled = false;
-  }
-  if(btnDouble){
-    btnDouble.textContent = tUI("end_btn_double") || "Doubler";
-    btnDouble.disabled = false;
-  }
-
-  if(btnQuit){
-    btnQuit.onclick = async () => {
-      if(__endBusy) return;
-      __endBusy = true;
-      btnQuit.disabled = true;
-      if(btnDouble) btnDouble.disabled = true;
-      try{ await (opts?.onQuit?.()); }catch(e){}
-    };
-  }
-
-  if(btnDouble){
-    btnDouble.onclick = async () => {
-      if(__endBusy) return;
-      __endBusy = true;
-      if(btnQuit) btnQuit.disabled = true;
-      btnDouble.disabled = true;
-      try{ await (opts?.onDouble?.()); }catch(e){}
-    };
-  }
-
-  if(modal){
-    modal.classList.remove("hidden");
-    modal.setAttribute("aria-hidden", "false");
-  }
-}
-
-function hideEndModal(){
-  const modal = $("endModal");
-  if(!modal) return;
-  modal.classList.add("hidden");
-  modal.setAttribute("aria-hidden", "true");
-}
-
-async function handleEnding(ending){
-  const e = String(ending || "").trim().toLowerCase();
-  if(!["good","bad","secret"].includes(e)){
-    showHintModal(tUI("hint_title"), "Ending invalide.");
-    return;
-  }
-
-  // On remet l'état local du scénario pour éviter de "rejouer" la fin au reload
-  hardResetScenario(currentScenarioId);
-
-  const endingLabel = (e === "good") ? "bonne" : (e === "bad") ? "mauvaise" : "secrète";
-  const baseReward = 300;
-
-  const title = tUI("ending_title") || "Fin";
-  const line1 = tUI("end_congrats", { ending: endingLabel }) || `Bravo, tu as terminé la fin : ${endingLabel}.`;
-  const line2 = tUI("end_reward", { reward: String(baseReward) }) || `Bravo, tu as gagné ${baseReward} VCoins.`;
-
-  const goIndex = () => { location.href = "index.html"; };
-
-  setEndModalText(title, `${line1}\n\n${line2}`);
-
-  showEndModal({
-    onQuit: async () => {
-      // ✅ récompense normale + log ending (server authoritative)
-      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
-        try{ await window.VUserData.completeScenario(currentScenarioId, e); }catch(_){}
-      }
-      goIndex();
-    },
-    onDouble: async () => {
-      // ✅ tente rewarded puis bonus +300 si ok
-      const wait = tUI("end_double_wait") || "Validation en cours…";
-      setEndModalText(title, `${line1}\n\n${line2}\n\n${wait}`);
-
-      const r = (window.VAds && typeof window.VAds.showRewarded === "function")
-        ? await window.VAds.showRewarded()
-        : { ok:false, reason:"no_rewarded_provider" };
-
-      if(!r?.ok){
-        // Pub indisponible → on redonne la main
-        const msg = tUI("end_double_unavailable") || "Publicité indisponible. Tu peux quitter avec la récompense normale.";
-        setEndModalText(title, `${line1}\n\n${line2}\n\n${msg}`);
-
-        __endBusy = false;
-        const btnQuit   = $("btnEndBack")  || $("endQuit");
-        const btnDouble = $("btnEndReplay") || $("endDouble");
-        if(btnQuit) btnQuit.disabled = false;
-        if(btnDouble) btnDouble.disabled = false;
-        return;
-      }
-
-      // 1) reward base + log ending
-      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
-        try{ await window.VUserData.completeScenario(currentScenarioId, e); }catch(_){}
-      }
-
-      // 2) bonus +300 (toujours RPC sécurisé)
-      if(window.VCRemoteStore && typeof window.VCRemoteStore.addVcoins === "function"){
-        try{
-          await window.VCRemoteStore.addVcoins(baseReward);
-          if(window.VUserData && typeof window.VUserData.refresh === "function"){
-            await window.VUserData.refresh().catch(() => false);
-          }
-        }catch(_){}
-      }
-
-      goIndex();
-    }
-  });
-
-  // On garde le rendu "derrière" (optionnel)
-  renderScene();
+  showEndModal(
+    title,
+    body,
+    () => { history.back(); },
+    () => { hardResetScenario(currentScenarioId); renderScene(); }
+  );
 }
 
 /* =========================
-   RENDER
+   RENDER SCENE
 ========================= */
 function renderScene(){
   renderTopbar();
   bindHintModal();
-  updateHudJetons(); // ✅ AJOUT (safe)
+  updateHudJetons();
 
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
@@ -1077,7 +994,6 @@ function renderScene(){
     return renderScene();
   }
 
-  // ✅ Fin au niveau scène
   if(scene.ending){
     handleEnding(scene.ending);
     return;
@@ -1132,11 +1048,19 @@ function renderScene(){
       const label = tS(ch.choice_key);
       const btn = document.createElement("button");
       btn.className = "choice_btn";
+
+      // ✅ Guide: surligne le prochain choix recommandé
+      if(GUIDE_STATE && GUIDE_STATE.active && GUIDE_STATE.nextByScene && ch && ch.next){
+        const wanted = GUIDE_STATE.nextByScene[scene.id];
+        if(wanted && String(ch.next) === String(wanted)){
+          btn.classList.add("is_guide");
+        }
+      }
+
       btn.textContent = label;
 
       const available = isChoiceAvailable(ch);
 
-      // ✅ NOUVEAU : pas de disabled, on garde cliquable
       if(!available){
         btn.classList.add("is_locked");
         btn.title = tUI("locked_choice") || "Indisponible pour le moment";
@@ -1157,16 +1081,13 @@ function renderScene(){
 
         if(ch.add_clue) addClue(ch.add_clue);
 
-        // ✅ Fin au niveau choix
         if(ch.ending){
           save();
           await handleEnding(ch.ending);
           return;
         }
 
-        // next scene
         if(ch.next){
-          // ✅ history
           st.history ??= [];
           st.history.push(st.scene);
 

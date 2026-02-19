@@ -915,3 +915,15 @@ body.page-game .scene__hud .choice_btn:disabled{
   min-width: 18px;
   text-align: center;
 }
+/* (fichier complet inchangé sauf l’ajout du style guide ci-dessous) */
+
+body.page-game .scene__hud .choice_btn.is_guide{
+  box-shadow: 0 0 0 2px rgba(255, 214, 102, .75), 0 12px 30px rgba(255, 214, 102, .12);
+  border-color: rgba(255, 214, 102, .85);
+}
+body.page-game .scene__hud .choice_btn.is_guide::after{
+  opacity: .85;
+  background: rgba(255, 214, 102, .18);
+}
+
+/* ✅ Le reste de ton app.css reste identique (tu remplaces par ton fichier actuel + ces règles) */

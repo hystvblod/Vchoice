@@ -35,7 +35,7 @@
 
     <!-- TOP HUD (jetons) -->
     <div class="hud_top" aria-hidden="false">
-      <button id="btnJetonBack" class="hud_jeton" type="button" title="Retour (1 jeton)">
+      <button id="btnJetonBack" class="hud_jeton" type="button" title="Jetons">
         <img src="assets/img/ui/jeton.webp" alt="" class="hud_jeton_icon" />
         <span id="hudJetonCount" class="hud_jeton_count">0</span>
       </button>
@@ -84,6 +84,44 @@
         </div>
       </div>
     </div>
+
+    <!-- MODAL: Jetons -->
+    <div id="jetonModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+      <div id="jetonBackdrop" class="modal__backdrop"></div>
+      <div class="modal__panel">
+        <div class="modal__head">
+          <div class="modal__title">Jetons</div>
+          <button id="jetonClose" class="modal__close" type="button">×</button>
+        </div>
+
+        <div class="modal__body">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            <img src="assets/img/ui/jeton.webp" alt="" style="width:28px;height:28px;object-fit:contain;" />
+            <div style="font-weight:700;">Solde : <span id="jetonModalCount">0</span></div>
+          </div>
+
+          <div style="display:grid; gap:10px;">
+            <button id="btnJetonBackModal" class="btn btn--ghost" type="button">
+              Retour en arrière — 1 jeton
+            </button>
+
+            <button id="btnJetonGuide" class="btn" type="button">
+              Guide vers une fin — 3 jetons
+            </button>
+
+            <div id="jetonGuideTargets" class="hidden" style="display:grid; gap:8px;">
+              <button data-target="good" class="btn btn--ghost" type="button">Fin bonne</button>
+              <button data-target="bad" class="btn btn--ghost" type="button">Fin mauvaise</button>
+              <button data-target="secret" class="btn btn--ghost" type="button">Fin secrète</button>
+              <button id="btnJetonGuideStop" class="btn btn--ghost" type="button">Stop guide</button>
+            </div>
+
+            <div id="jetonModalMsg" style="opacity:.85; font-size:14px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Compat engine.js -->
@@ -98,11 +136,18 @@
   </select>
   <button id="btnHint" class="sr_only" aria-hidden="true" tabindex="-1" type="button"></button>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="js/supabaseBootstrap.js"></script>
-<script src="js/userData.js"></script>
-<script src="js/ads.js"></script>
-<script src="js/engine.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabaseBootstrap.js"></script>
 
+  <script src="js/userData.js"></script>
+  <script src="js/ads.js"></script>
+  <script src="js/engine.js"></script>
+
+  <script>
+  (async () => {
+    try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
+    try { await window.VUserData?.init?.(); } catch(e) {}
+  })();
+  </script>
 </body>
 </html>
