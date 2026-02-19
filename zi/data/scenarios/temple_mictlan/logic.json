@@ -1,7 +1,7 @@
 {
   "meta": {
     "scenario_id": "temple_mictlan",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "title_key": "tm.title",
     "tagline_key": "tm.tagline",
     "start_scene": "s01",
@@ -11,7 +11,6 @@
       "has_codex",
       "has_jade",
       "has_obsidian",
-      "has_rope",
       "has_name",
       "has_offering"
     ]
@@ -113,7 +112,6 @@
       "has_codex",
       "has_jade",
       "has_obsidian",
-      "has_rope",
       "has_name",
       "has_offering"
     ]
@@ -299,7 +297,6 @@
         { "choice_key": "tm.s18.c3", "next": "s55" }
       ]
     },
-
     "s19": {
       "image_id": "s19",
       "title_key": "tm.s19.title",
@@ -320,7 +317,6 @@
         { "choice_key": "tm.s20.c3", "next": "s19" }
       ]
     },
-
     "s21": {
       "image_id": "s21",
       "title_key": "tm.s21.title",
@@ -401,7 +397,6 @@
         { "choice_key": "tm.s28.c3", "next": "s17", "set_flags": ["has_obsidian"] }
       ]
     },
-
     "s29": {
       "image_id": "s29",
       "title_key": "tm.s29.title",
@@ -422,7 +417,6 @@
         { "choice_key": "tm.s30.c3", "next": "s36" }
       ]
     },
-
     "s31": {
       "image_id": "s31",
       "title_key": "tm.s31.title",
@@ -443,7 +437,6 @@
         { "choice_key": "tm.s32.c3", "next": "s36" }
       ]
     },
-
     "s33": {
       "image_id": "s33",
       "title_key": "tm.s33.title",
@@ -464,7 +457,6 @@
         { "choice_key": "tm.s34.c3", "next": "s30" }
       ]
     },
-
     "s35": {
       "image_id": "s35",
       "title_key": "tm.s35.title",
@@ -525,7 +517,6 @@
         { "choice_key": "tm.s40.c3", "next": "s41" }
       ]
     },
-
     "s41": {
       "image_id": "s41",
       "title_key": "tm.s41.title",
@@ -575,7 +566,7 @@
       "title_key": "tm.s45.title",
       "body_key": "tm.s45.body",
       "choices": [
-        { "choice_key": "tm.s45.c1", "next": "s46", "set_flags": ["has_rope"] },
+        { "choice_key": "tm.s45.c1", "next": "s46" },
         { "choice_key": "tm.s45.c2", "next": "s46" },
         { "choice_key": "tm.s45.c3", "next": "s41" }
       ]
@@ -610,7 +601,6 @@
         { "choice_key": "tm.s48.c3", "next": "s47", "requires_any_flags": ["has_salt"] }
       ]
     },
-
     "s49": {
       "image_id": "s49",
       "title_key": "tm.s49.title",
@@ -621,7 +611,6 @@
         { "choice_key": "tm.s49.c3", "next": "s56" }
       ]
     },
-
     "s50": {
       "image_id": "s50",
       "title_key": "tm.s50.title",
@@ -632,7 +621,6 @@
         { "choice_key": "tm.s50.c3", "next": "s63" }
       ]
     },
-
     "s51": {
       "image_id": "s51",
       "title_key": "tm.s51.title",
@@ -643,7 +631,6 @@
         { "choice_key": "tm.s51.c3", "next": "s50" }
       ]
     },
-
     "s52": {
       "image_id": "s52",
       "title_key": "tm.s52.title",
@@ -654,7 +641,6 @@
         { "choice_key": "tm.s52.c3", "next": "s59" }
       ]
     },
-
     "s53": {
       "image_id": "s53",
       "title_key": "tm.s53.title",
@@ -675,7 +661,6 @@
         { "choice_key": "tm.s54.c3", "next": "s63" }
       ]
     },
-
     "s55": {
       "image_id": "s55",
       "title_key": "tm.s55.title",
@@ -686,7 +671,6 @@
         { "choice_key": "tm.s55.c3", "next": "s41" }
       ]
     },
-
     "s56": {
       "image_id": "s56",
       "title_key": "tm.s56.title",
@@ -717,7 +701,6 @@
         { "choice_key": "tm.s58.c3", "next": "s41" }
       ]
     },
-
     "s59": {
       "image_id": "s59",
       "title_key": "tm.s59.title",
@@ -728,7 +711,6 @@
         { "choice_key": "tm.s59.c3", "next": "s75" }
       ]
     },
-
     "s60": {
       "image_id": "s60",
       "title_key": "tm.s60.title",
@@ -739,7 +721,6 @@
         { "choice_key": "tm.s60.c3", "next": "s63" }
       ]
     },
-
     "s61": {
       "image_id": "s61",
       "title_key": "tm.s61.title",
@@ -750,7 +731,6 @@
         { "choice_key": "tm.s61.c3", "next": "s62" }
       ]
     },
-
     "s62": {
       "image_id": "s62",
       "title_key": "tm.s62.title",
@@ -771,7 +751,7 @@
           "next": "s64",
           "requires_all_flags": ["has_codex", "has_jade", "has_obsidian", "has_offering"]
         },
-        { "choice_key": "tm.s63.c2", "next": "s64", "requires_any_flags": ["has_codex"] },
+        { "choice_key": "tm.s63.c2", "next": "s64" },
         { "choice_key": "tm.s63.c3", "next": "s62" }
       ]
     },
@@ -902,7 +882,11 @@
       "choices": [
         { "choice_key": "tm.s76.c1", "next": "s77" },
         { "choice_key": "tm.s76.c2", "next": "end_bad" },
-        { "choice_key": "tm.s76.c3", "next": "end_secret", "requires_any_flags": ["has_name"] }
+        {
+          "choice_key": "tm.s76.c3",
+          "next": "end_secret",
+          "requires_all_flags": ["has_codex", "has_jade", "has_obsidian", "has_name", "has_offering"]
+        }
       ]
     },
     "s77": {
@@ -949,7 +933,6 @@
         }
       ]
     },
-
     "end_good": {
       "image_id": "final_good",
       "title_key": "tm.end_good.title",
