@@ -222,6 +222,7 @@ function _findEndingTargets(logic, type){
     }
   }
 
+  // fallback: toute scène sans choix = ending
   if(!out.length){
     for(const k of keys){
       const sc = scenes[k];
@@ -238,6 +239,7 @@ function computeGuidePlan(fromSceneId, targetType){
   const targets = new Set(_findEndingTargets(LOGIC, targetType));
   if(!targets.size) return null;
 
+  // BFS: ignore flags
   const q = [String(fromSceneId)];
   const visited = new Set(q);
   const prev = {}; // node -> prev node
@@ -253,7 +255,6 @@ function computeGuidePlan(fromSceneId, targetType){
     for(const ch of choices){
       if(!ch?.next) continue;
 
-      // BFS: ignore flags
       const nxt = String(ch.next);
 
       if(visited.has(nxt)) continue;
@@ -368,7 +369,7 @@ function applyStaticI18n(){
   if(jmTitle) jmTitle.textContent = tUI("jeton_title");
 
   const bal = $("jetonBalanceLabel");
-  if(bal) bal.textContent = format(tUI("jeton_balance", { count: "" }), { count: "" }).replace(/\s*:\s*$/, "") + " ";
+  if(bal) bal.textContent = tUI("jeton_balance_label");
 
   const bBack = $("btnJetonBackModal");
   if(bBack) bBack.textContent = tUI("jeton_back_btn");
@@ -389,16 +390,28 @@ function applyStaticI18n(){
   if(bStop) bStop.textContent = tUI("jeton_guide_stop");
 
   const hintClose = $("hintClose");
-  if(hintClose) hintClose.setAttribute("aria-label", tUI("hint_close_aria"));
+  if(hintClose){
+    hintClose.setAttribute("aria-label", tUI("hint_close_aria"));
+    hintClose.textContent = tUI("symbol_close");
+  }
 
   const resumeClose = $("resumeClose");
-  if(resumeClose) resumeClose.setAttribute("aria-label", tUI("hint_close_aria"));
+  if(resumeClose){
+    resumeClose.setAttribute("aria-label", tUI("hint_close_aria"));
+    resumeClose.textContent = tUI("symbol_close");
+  }
 
   const endClose = $("endClose");
-  if(endClose) endClose.setAttribute("aria-label", tUI("hint_close_aria"));
+  if(endClose){
+    endClose.setAttribute("aria-label", tUI("hint_close_aria"));
+    endClose.textContent = tUI("symbol_close");
+  }
 
   const jetonClose = $("jetonClose");
-  if(jetonClose) jetonClose.setAttribute("aria-label", tUI("hint_close_aria"));
+  if(jetonClose){
+    jetonClose.setAttribute("aria-label", tUI("hint_close_aria"));
+    jetonClose.textContent = tUI("symbol_close");
+  }
 }
 
 /* =========================
@@ -776,7 +789,6 @@ function showHintModal(title, body){
   if(!modal || !t || !b) return;
 
   t.textContent = title || tUI("hint_title");
-  b.textContent = "";
   b.textContent = body || "";
 
   const old = $("hintActions");
@@ -819,7 +831,7 @@ function showHintModalWithActions(title, bodyLines, actions){
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = a.className || "btn";
-    btn.textContent = a.label || "[ui.btn_ok]";
+    btn.textContent = a.label || tUI("btn_ok");
     btn.onclick = async () => {
       try{ await a.onClick?.(); } finally {}
     };

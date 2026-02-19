@@ -1,4 +1,10 @@
 {
+  "meta": {
+    "scenario_id": "dossier14_appartement",
+    "version": 3,
+    "start_scene": "s01",
+    "hint_ns": "d14.h"
+  },
   "scenario_id": "dossier14_appartement",
   "version": 3,
   "start_scene": "s01",
@@ -64,11 +70,11 @@
     "flags": ["has_photo", "has_badge", "has_key", "has_recording", "has_dossier"]
   },
   "clues": {
-    "has_photo": { "title_key": "d14.clue.has_photo.title", "desc_key": "d14.clue.has_photo.desc" },
-    "has_badge": { "title_key": "d14.clue.has_badge.title", "desc_key": "d14.clue.has_badge.desc" },
-    "has_key": { "title_key": "d14.clue.has_key.title", "desc_key": "d14.clue.has_key.desc" },
-    "has_recording": { "title_key": "d14.clue.has_recording.title", "desc_key": "d14.clue.has_recording.desc" },
-    "has_dossier": { "title_key": "d14.clue.has_dossier.title", "desc_key": "d14.clue.has_dossier.desc" }
+    "has_photo": { "title_key": "d14.h.clue.has_photo.title", "desc_key": "d14.h.clue.has_photo.desc" },
+    "has_badge": { "title_key": "d14.h.clue.has_badge.title", "desc_key": "d14.h.clue.has_badge.desc" },
+    "has_key": { "title_key": "d14.h.clue.has_key.title", "desc_key": "d14.h.clue.has_key.desc" },
+    "has_recording": { "title_key": "d14.h.clue.has_recording.title", "desc_key": "d14.h.clue.has_recording.desc" },
+    "has_dossier": { "title_key": "d14.h.clue.has_dossier.title", "desc_key": "d14.h.clue.has_dossier.desc" }
   },
   "scenes": {
     "s01": {

@@ -1,11 +1,5 @@
 /* =========================
-   APP.CSS — VERSION COMPLETE À JOUR
-   - Garde ton style pro (index + game)
-   - Ajoute les “cartouches” index (grid/card) + bouton ?
-   - Sécurise le game (pas de calcul foireux de height)
-   - Sécurise les modals (scroll interne si contenu long)
-   - ✅ GAME: image plein écran + HUD en bas (cartouche arrondi)
-   - ✅ GAME: supprime la topbar sur game (si présente)
+   APP.CSS — VERSION COMPLETE À JOUR (ajout Jetons UI)
 ========================= */
 
 /* ====== BASE ====== */
@@ -237,7 +231,6 @@ body{
 .menu_help:hover{ background: rgba(0,0,0,.45); }
 
 /* ====== INDEX (cartouches) — style “grid/card” (AJOUT) ====== */
-/* Si ton index utilise .grid + .card, tout est supporté ici */
 .page{
   width: min(1100px, calc(100% - 24px));
   margin: 0 auto;
@@ -430,7 +423,7 @@ body{
   align-items:stretch;
   justify-content:center;
   padding:16px;
-  min-height:0; /* IMPORTANT: évite overflow flex */
+  min-height:0;
 }
 
 .panel--game{
@@ -468,39 +461,6 @@ body{
     linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.30));
 }
 
-.scene__content{
-  position:relative;
-  z-index:2;
-  padding:18px 18px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.meta{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  align-items:center;
-}
-
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 10px;
-  border-radius: 999px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.25);
-  backdrop-filter: blur(8px);
-  font-weight: 800;
-  font-size: 12px;
-}
-.pill--muted{
-  opacity:.9;
-  font-weight: 700;
-}
-
 .title{
   margin: 2px 0 0;
   font-size: 22px;
@@ -518,7 +478,7 @@ body{
   max-width: 72ch;
 }
 
-/* CHOICES : gros boutons texte */
+/* CHOICES */
 .choices{
   margin-top: 10px;
   display:grid;
@@ -540,6 +500,7 @@ body{
   font-weight: 800;
   cursor:pointer;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: transform .10s ease, background .10s ease, border-color .10s ease, filter .10s ease;
 }
 
@@ -549,185 +510,23 @@ body{
   border-color: rgba(255,255,255,.22);
   filter:brightness(1.06);
 }
+.choice_btn:active{ transform: translateY(0px); }
 
-.choice_btn:active{
-  transform: translateY(0px);
-}
-
-/* Choix verrouillés (requires_*_flags) */
 .choice_btn.is_locked,
 .choice_btn:disabled{
   opacity: .45;
   cursor: not-allowed;
   filter:none;
 }
-.choice_btn.is_locked:hover{
-  transform:none;
-}
+.choice_btn.is_locked:hover{ transform:none; }
 
-/* Footer */
-.footer{
-  margin-top: 6px;
-  font-size: 12px;
-  color: rgba(255,255,255,.72);
-  text-align:center;
-  border-top: 1px solid var(--border);
-  padding: 14px 16px 18px;
-}
-
-/* Responsive */
 @media (max-width: 520px){
   .main--game{ padding:12px; }
-  .scene__content{ padding:14px 14px 16px; }
   .title{ font-size: 20px; }
   .choice_btn{ padding: 13px 12px; font-size: 14.5px; }
 }
 
-/* =========================================================
-   VCHOICE — Cartouches style VUniverse (index)
-   ========================================================= */
-
-.menu_grid{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-  margin-top: 14px;
-}
-
-/* bouton carte */
-.menu_card{
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  min-height: 64px;
-  height: 64px;
-  border-radius: 18px;
-  border: 0;
-  outline: 0;
-  cursor: pointer;
-  padding: 0;
-  text-align: left;
-  background: transparent;
-  -webkit-tap-highlight-color: transparent;
-
-  box-shadow:
-    0 18px 50px rgba(0,0,0,.55),
-    0 2px 0 rgba(255,255,255,.04) inset;
-}
-
-.menu_card:focus-visible{
-  outline: 2px solid rgba(255,255,255,0.65);
-  outline-offset: 3px;
-}
-
-.menu_card_bg{
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 1;
-  z-index: 0;
-  transform: scale(1.04);
-  filter: saturate(.95) contrast(1.05);
-}
-
-/* voile + dégradé sombre (lisibilité) */
-.menu_card::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.20) 55%, rgba(0,0,0,.52)),
-    radial-gradient(700px 120px at 15% 50%, rgba(180, 40, 60, .14), transparent 60%),
-    rgba(0,0,0,.10);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  pointer-events:none;
-  z-index:1;
-}
-
-/* liseré */
-.menu_card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius: 18px;
-  border: 1px solid rgba(255,255,255,.10);
-  pointer-events:none;
-  z-index:2;
-}
-
-.menu_card:hover{
-  box-shadow:
-    0 22px 60px rgba(0,0,0,.62),
-    0 0 0 1px rgba(255,60,80,.18) inset;
-}
-
-.menu_card_content{
-  position: relative;
-  z-index: 3;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
-.menu_card_line{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 0 14px;
-}
-
-.menu_card_title{
-  margin: 0;
-  color: #fff;
-  font-weight: 900;
-  font-size: 16px;
-  letter-spacing: .2px;
-  line-height: 1.1;
-  text-shadow: 0 2px 10px rgba(0,0,0,.75);
-}
-
-/* bouton ? */
-.menu_info_btn{
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.10);
-  border: 1px solid rgba(255,255,255,.18);
-  color: rgba(255,255,255,.95);
-  font-weight: 900;
-  font-size: 16px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  cursor: pointer;
-
-  flex: 0 0 auto;   /* ✅ empêche de casser la ligne */
-  position: relative;
-  z-index: 4;
-}
-
-.menu_info_btn:hover{ background: rgba(255,255,255,.14); }
-.menu_info_btn:active{ transform: scale(.96); }
-
-@media (max-width: 520px){
-  .menu_card{ min-height: 60px; height: 60px; }
-  .menu_card_title{ font-size: 14px; }
-  .menu_info_btn{ width: 38px; height: 38px; font-size: 15px; }
-}
-
-/* =========================================================
-   GAME FULLSCREEN (page-game)
-   - image plein écran, sans assombrissement
-   - HUD en bas, arrondi, style index
-   - cache topbar si elle existe
-   ========================================================= */
-
+/* ===== GAME FULLSCREEN (page-game) ===== */
 body.page-game{
   margin:0;
   background:#000;
@@ -753,25 +552,18 @@ body.page-game .panel--game{
   box-shadow:none;
 }
 
-body.page-game .scene{
-  min-height:100vh;
-}
+body.page-game .scene{ min-height:100vh; }
 
 body.page-game .scene__shade{ display:none !important; }
 
-body.page-game .scene__media img{
-  filter:none !important;
-}
-
-/* on n'utilise plus le layout "content" au-dessus */
-body.page-game .scene__content{ display:none !important; }
+body.page-game .scene__media img{ filter:none !important; }
 
 /* HUD (cartouche) */
 body.page-game .scene__hud{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-   bottom: max(14px, calc(env(safe-area-inset-bottom) + 80px));
+  bottom: max(14px, calc(env(safe-area-inset-bottom) + 80px));
   width:min(940px, calc(100vw - 24px));
   max-height:56vh;
   overflow:auto;
@@ -793,7 +585,6 @@ body.page-game .scene__hud .title{
   margin:0 0 6px;
   text-shadow:none;
 }
-
 body.page-game .scene__hud .body{
   margin:0;
   max-width:none;
@@ -801,13 +592,12 @@ body.page-game .scene__hud .body{
   line-height:1.55;
   text-shadow:none;
 }
-
-/* Choix dans le HUD */
 body.page-game .scene__hud .choices{
   max-width:none;
   margin-top:12px;
 }
 
+/* Choix cartouche */
 body.page-game .scene__hud .choice_btn{
   border:0;
   border-radius:18px;
@@ -819,7 +609,6 @@ body.page-game .scene__hud .choice_btn{
     0 18px 50px rgba(0,0,0,.55),
     0 2px 0 rgba(255,255,255,.04) inset;
 }
-
 body.page-game .scene__hud .choice_btn::after{
   content:"";
   position:absolute;
@@ -830,7 +619,6 @@ body.page-game .scene__hud .choice_btn::after{
   pointer-events:none;
   z-index:0;
 }
-
 body.page-game .scene__hud .choice_btn::before{
   content:"";
   position:absolute;
@@ -840,11 +628,7 @@ body.page-game .scene__hud .choice_btn::before{
   pointer-events:none;
   z-index:1;
 }
-
-body.page-game .scene__hud .choice_btn{
-  color: rgba(255,255,255,.96);
-}
-
+body.page-game .scene__hud .choice_btn{ color: rgba(255,255,255,.96); }
 body.page-game .scene__hud .choice_btn:hover{
   transform: translateY(-1px);
   filter: brightness(1.06);
@@ -867,11 +651,11 @@ body.page-game .scene__hud .choice_btn:disabled{
     border-radius:20px;
     max-height:60vh;
     bottom: max(24px, calc(env(safe-area-inset-bottom) + 80px));
-  
   }
   body.page-game .scene__hud .title{ font-size:18.5px; }
   body.page-game .scene__hud .choice_btn{ padding:13px 12px; }
 }
+
 /* ===== HUD TOP (Jetons) ===== */
 .hud_top{
   position: fixed;
@@ -897,16 +681,9 @@ body.page-game .scene__hud .choice_btn:disabled{
   cursor: pointer;
 }
 
-.hud_jeton:disabled{
-  opacity: 0.45;
-  cursor: not-allowed;
-}
+.hud_jeton:disabled{ opacity: 0.45; cursor: not-allowed; }
 
-.hud_jeton_icon{
-  width: 18px;
-  height: 18px;
-  display: block;
-}
+.hud_jeton_icon{ width: 18px; height: 18px; display: block; }
 
 .hud_jeton_count{
   font-weight: 700;
@@ -915,8 +692,8 @@ body.page-game .scene__hud .choice_btn:disabled{
   min-width: 18px;
   text-align: center;
 }
-/* (fichier complet inchangé sauf l’ajout du style guide ci-dessous) */
 
+/* ===== Highlight guide ===== */
 body.page-game .scene__hud .choice_btn.is_guide{
   box-shadow: 0 0 0 2px rgba(255, 214, 102, .75), 0 12px 30px rgba(255, 214, 102, .12);
   border-color: rgba(255, 214, 102, .85);
@@ -926,4 +703,104 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   background: rgba(255, 214, 102, .18);
 }
 
-/* ✅ Le reste de ton app.css reste identique (tu remplaces par ton fichier actuel + ces règles) */
+/* =========================================================
+   ✅ JETONS MODAL — refonte (titre centré, icônes + moins d’espace)
+   ========================================================= */
+.jeton_panel .modal__body{
+  padding-top: 12px;
+}
+
+.jeton_head{
+  position: relative;
+  justify-content: center; /* titre centré */
+}
+
+.jeton_title_center{
+  width: 100%;
+  text-align: center;
+  font-weight: 950;
+  letter-spacing: .2px;
+}
+
+.jeton_close_abs{
+  position: absolute;
+  right: 16px;
+  top: 12px;
+}
+
+/* Ligne solde compacte et visuelle */
+.jeton_balance_row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 12px;
+  margin: 6px 0 12px;
+}
+
+.jeton_big_icon{
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  display:block;
+}
+
+.jeton_chest_icon{
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+  display:block;
+  opacity: .95;
+}
+
+.jeton_balance_text{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 2px;
+  min-width: 88px;
+}
+
+.jeton_balance_label{
+  font-size: 12px;
+  color: rgba(255,255,255,.72);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.jeton_balance_value{
+  font-size: 28px;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.jeton_actions{
+  display:grid;
+  gap: 10px;
+}
+
+.jeton_targets{
+  display:grid;
+  gap: 8px;
+}
+
+/* Guide en “texte”, pas cartouche */
+.jeton_text_action{
+  appearance:none;
+  background: transparent;
+  border: 0;
+  padding: 6px 2px;
+  color: rgba(255,255,255,.92);
+  font-weight: 900;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  opacity: .92;
+}
+.jeton_text_action:hover{ opacity: 1; }
+.jeton_text_action:active{ transform: translateY(1px); }
+
+.jeton_msg{
+  opacity:.85;
+  font-size:14px;
+}

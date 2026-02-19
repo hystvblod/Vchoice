@@ -2,27 +2,42 @@
   "ui": {
     "app_title": "VChoice",
     "app_subtitle": "Histoire interactive",
+
     "index_title": "Choisis ton scénario",
     "index_subtitle": "Clique sur une carte pour commencer.",
     "language": "Langue",
+
+    "symbol_close": "×",
+
     "hint_title": "Info",
     "hint_close": "Fermer",
     "hint_close_aria": "Fermer",
+
+    "btn_ok": "OK",
+    "btn_close": "Fermer",
     "btn_play": "Jouer",
     "btn_continue": "Continuer",
     "btn_restart": "Recommencer",
     "btn_back": "Retour",
     "btn_exit": "Quitter",
     "btn_hint": "Indice",
+
     "loading": "Chargement…",
     "locked_choice": "Indisponible pour le moment",
+    "no_next_scene": "Ce choix ne mène nulle part pour l’instant.",
 
     "resume_title": "Reprendre la partie ?",
     "resume_desc": "Une progression existe pour ce scénario.",
+    "resume_body": "Une progression existe pour ce scénario.\n\nTu veux reprendre là où tu t’étais arrêté, ou recommencer depuis le début ?",
 
     "ending_title": "Fin atteinte",
     "ending_desc": "Tu as terminé ce scénario.",
     "reward_toast": "+{reward} VCoins",
+
+    "end_title": "Fin du scénario",
+    "end_title_good": "Fin (bonne)",
+    "end_title_bad": "Fin (mauvaise)",
+    "end_title_secret": "Fin (secrète)",
 
     "locked_title": "Choix bloqué",
     "locked_body": "Tu as raté des éléments nécessaires pour débloquer cette voie.",
@@ -36,7 +51,7 @@
     "jeton_not_enough": "Pas assez de jetons.",
 
     "jeton_title": "Jetons",
-    "jeton_balance": "Solde : {count}",
+    "jeton_balance_label": "Solde :",
     "jeton_back_btn": "Retour en arrière — 1 jeton",
     "jeton_guide_btn": "Guide vers une fin — 3 jetons",
     "jeton_guide_good": "Fin bonne",
@@ -66,9 +81,11 @@
     "end_double_wait": "Validation en cours…",
     "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale."
   },
+
   "common": {
     "cancel": "Annuler"
   },
+
   "scenarios": {
     "dossier14_appartement": {
       "title": "Appartement 14",

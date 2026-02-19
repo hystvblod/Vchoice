@@ -1,6 +1,6 @@
 {
   "ui": {
-    "app_title": "VChoice",
+    "app_title": "VChronicles",
     "app_subtitle": "Histoire interactive",
 
     "index_title": "Choisis ton scénario",
@@ -51,9 +51,9 @@
     "jeton_not_enough": "Pas assez de jetons.",
 
     "jeton_title": "Jetons",
-    "jeton_balance_label": "Solde :",
-    "jeton_back_btn": "Retour en arrière — 1 jeton",
-    "jeton_guide_btn": "Guide vers une fin — 3 jetons",
+    "jeton_balance_label": "Solde",
+    "jeton_back_btn": "Retour en arrière (1 jeton)",
+    "jeton_guide_btn": "Guide vers une fin (3 jetons)",
     "jeton_guide_good": "Fin bonne",
     "jeton_guide_bad": "Fin mauvaise",
     "jeton_guide_secret": "Fin secrète",
