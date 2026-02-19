@@ -41,20 +41,35 @@
     return _remoteQueue;
   }
 
-  // ✅ IMPORTANT: aucune whitelist “free” ici
   const _memState = {
     user_id: "",
     username: "",
     vcoins: 0,
     jetons: 0,
     lang: "fr",
-    unlocked_scenarios: [], // ✅ Supabase only
+    unlocked_scenarios: [], // Supabase only
     updated_at: Date.now(),
     last_sync_at: 0
   };
 
   function _clampInt(n){ return Math.max(0, Math.floor(Number(n || 0))); }
   function _safeParse(raw){ try { return JSON.parse(raw); } catch { return null; } }
+
+  // 🔒 NORMALISATION SCENARIO IDS (évite mismatch + espaces + casse)
+  function _normScenarioId(x){
+    const s = String(x ?? "").trim().toLowerCase();
+    return s;
+  }
+  function _normScenarioList(arr){
+    if (!Array.isArray(arr)) return [];
+    const out = [];
+    for (const v of arr){
+      const n = _normScenarioId(v);
+      if (n) out.push(n);
+    }
+    // dédoublonnage
+    return Array.from(new Set(out));
+  }
 
   function _readLocal(){
     try{
@@ -76,7 +91,7 @@
         vcoins: _clampInt(_memState.vcoins),
         jetons: _clampInt(_memState.jetons),
         lang: String(_memState.lang || "fr"),
-        unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice(0) : [],
+        unlocked_scenarios: _normScenarioList(_memState.unlocked_scenarios),
         updated_at: Date.now(),
         last_sync_at: Number(_memState.last_sync_at || 0)
       });
@@ -93,7 +108,7 @@
         lang: _memState.lang,
         vcoins: _memState.vcoins,
         jetons: _memState.jetons,
-        unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice(0) : []
+        unlocked_scenarios: _normScenarioList(_memState.unlocked_scenarios)
       };
       window.dispatchEvent(new CustomEvent("vr:profile", { detail })); // compat
       window.dispatchEvent(new CustomEvent("vc:profile", { detail }));
@@ -108,11 +123,12 @@
       jetons: 0,
       lang: "fr",
       unlocked_scenarios: [],
-      updated_at: Date.now()
+      updated_at: Date.now(),
+      last_sync_at: 0
     };
   }
 
-  // ✅ NORMALISE: certaines RPC Supabase renvoient [ { ... } ] au lieu de { ... }
+  // NORMALISE: certaines RPC Supabase renvoient [ { ... } ] au lieu de { ... }
   function _normalizeRow(data){
     if (!data) return null;
     if (Array.isArray(data)) return data[0] || null;
@@ -125,14 +141,14 @@
 
     _memState.user_id = String(me.id || "");
     _memState.username = String(me.username || "");
-    _memState.vcoins = _clampInt(me.vcoins || 0);
-    _memState.jetons = _clampInt(me.jetons || 0);
+    _memState.vcoins = _clampInt(me.vcoins ?? 0);
+    _memState.jetons = _clampInt(me.jetons ?? 0);
     _memState.lang = String(me.lang || "fr");
 
     if (Array.isArray(me.unlocked_scenarios)){
-      _memState.unlocked_scenarios = me.unlocked_scenarios.filter(Boolean).map(String);
+      _memState.unlocked_scenarios = _normScenarioList(me.unlocked_scenarios);
     } else if (typeof me.unlocked_scenarios === "string" && me.unlocked_scenarios){
-      _memState.unlocked_scenarios = [String(me.unlocked_scenarios)];
+      _memState.unlocked_scenarios = _normScenarioList([me.unlocked_scenarios]);
     } else {
       _memState.unlocked_scenarios = [];
     }
@@ -140,8 +156,8 @@
     _memState.updated_at = Date.now();
     _memState.last_sync_at = Date.now();
 
-    _emitProfile();
     _persistLocal();
+    _emitProfile();
     return true;
   }
 
@@ -212,11 +228,7 @@
       try{
         const r = await sb.rpc("secure_get_me");
         if (r?.error){ _reportRemoteError("rpc.secure_get_me", r.error); return null; }
-
-        // ✅ FIX CRITIQUE: secure_get_me peut renvoyer [row]
-        const data = _normalizeRow(r?.data);
-        return data || null;
-
+        return _normalizeRow(r?.data) || null;
       }catch(e){
         _reportRemoteError("rpc.secure_get_me.exception", e);
         return null;
@@ -320,7 +332,7 @@
       const uid = await this.ensureAuth();
       if (!uid) return { ok:false, reason:"no_auth" };
 
-      const s = String(scenarioId || "").trim();
+      const s = _normScenarioId(scenarioId);
       if (!s) return { ok:false, reason:"invalid_scenario" };
 
       try{
@@ -342,7 +354,7 @@
       const uid = await this.ensureAuth();
       if (!uid) return { ok:false, reason:"no_auth" };
 
-      const s = String(scenarioId || "").trim();
+      const s = _normScenarioId(scenarioId);
       const e = String(ending || "").trim().toLowerCase();
       if (!s) return { ok:false, reason:"invalid_scenario" };
       if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
@@ -397,28 +409,36 @@
           vcoins: _clampInt(_memState.vcoins || 0),
           jetons: _clampInt(_memState.jetons || 0),
           lang: String(_memState.lang || "fr"),
-          unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice(0) : [],
-          updated_at: Number(_memState.updated_at || Date.now())
+          unlocked_scenarios: _normScenarioList(_memState.unlocked_scenarios),
+          updated_at: Number(_memState.updated_at || Date.now()),
+          last_sync_at: Number(_memState.last_sync_at || 0)
         };
       }catch{
         return _default();
       }
     },
 
+    // ⚠️ Important: ne pas écraser unlocked_scenarios si save() reçoit un objet partiel
     save(u, opts){
       const silent = !!(opts && opts.silent);
       try{
         const data = (u && typeof u === "object") ? u : _default();
-        _memState.user_id = String(data.user_id || _memState.user_id || "");
-        _memState.username = String(data.username || _memState.username || "");
-        _memState.vcoins = _clampInt(typeof data.vcoins !== "undefined" ? data.vcoins : _memState.vcoins);
-        _memState.jetons = _clampInt(typeof data.jetons !== "undefined" ? data.jetons : _memState.jetons);
-        _memState.lang = String(data.lang || _memState.lang || "fr");
 
-        if (Array.isArray(data.unlocked_scenarios)){
-          _memState.unlocked_scenarios = data.unlocked_scenarios.filter(Boolean).map(String);
-        } else {
-          _memState.unlocked_scenarios = [];
+        _memState.user_id = String(
+          (typeof data.user_id !== "undefined" ? data.user_id : _memState.user_id) || ""
+        );
+
+        _memState.username = String(
+          (typeof data.username !== "undefined" ? data.username : _memState.username) || ""
+        );
+
+        if (typeof data.vcoins !== "undefined") _memState.vcoins = _clampInt(data.vcoins);
+        if (typeof data.jetons !== "undefined") _memState.jetons = _clampInt(data.jetons);
+        if (typeof data.lang !== "undefined") _memState.lang = String(data.lang || "fr");
+
+        // ✅ Ne toucher à unlocked_scenarios que si le champ est présent
+        if (Object.prototype.hasOwnProperty.call(data, "unlocked_scenarios")){
+          _memState.unlocked_scenarios = _normScenarioList(data.unlocked_scenarios);
         }
 
         _memState.updated_at = Date.now();
@@ -433,18 +453,17 @@
 
     getUnlockedScenarios(){
       const u = this.load();
-      const arr = Array.isArray(u.unlocked_scenarios) ? u.unlocked_scenarios : [];
-      return arr.filter(Boolean).map(String);
+      return _normScenarioList(u.unlocked_scenarios);
     },
 
     isScenarioUnlocked(scenarioId){
-      const id = String(scenarioId || "");
+      const id = _normScenarioId(scenarioId);
       if (!id) return false;
       return new Set(this.getUnlockedScenarios()).has(id);
     },
 
     async unlockScenario(scenarioId){
-      const id = String(scenarioId || "").trim();
+      const id = _normScenarioId(scenarioId);
       if (!id) return { ok:false, reason:"invalid_scenario" };
       if (this.isScenarioUnlocked(id)) return { ok:true, reason:"already", data:this.load() };
       if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
@@ -462,7 +481,7 @@
           vcoins: (typeof me.vcoins !== "undefined") ? me.vcoins : cur.vcoins,
           jetons: (typeof me.jetons !== "undefined") ? me.jetons : cur.jetons,
           lang: String(me.lang || cur.lang || "fr"),
-          unlocked_scenarios: Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios : []
+          unlocked_scenarios: Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios : cur.unlocked_scenarios
         });
       }else{
         await this.refresh().catch(() => false);
@@ -476,7 +495,7 @@
       const v = await window.VCRemoteStore.spendJetons(cost);
       if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
       const cur = this.load();
-      this.save({ ...cur, jetons: v });
+      this.save({ ...cur, jetons: v }); // cur inclut unlocked_scenarios, et save() ne l’écrase plus si absent
       return { ok:true, jetons: v };
     },
 
