@@ -2,7 +2,7 @@
 // ✅ Mets tes clés ICI (et seulement ici). Aucun autre fichier ne contient de clé.
 // - Expose window.sb (client Supabase)
 // - Assure une session anon (signInAnonymously) si besoin
-// - Optionnel: window.bootstrapAuthAndProfile() utilisé par userData.js
+// - Expose window.bootstrapAuthAndProfile() (NE DOIT PAS appeler VUserData.refresh -> sinon boucle)
 
 (function () {
   "use strict";
@@ -93,25 +93,17 @@
   // ===========================
   // Public API
   // ===========================
-  // Attendre que window.sb soit prêt
   window.vcWaitBootstrap = async function vcWaitBootstrap() {
     if (_getClient()) return true;
     createClientOnce();
     return true;
   };
 
-  // Bootstrap complet: client + anon + (optionnel) refresh profile
+  // ✅ IMPORTANT: bootstrapAuthAndProfile ne doit PAS toucher VUserData
+  // Sinon: userData.ensureAuth -> bootstrapAuthAndProfile -> VUserData.refresh -> VCRemoteStore.getMe -> ensureAuth -> ...
   window.bootstrapAuthAndProfile = async function bootstrapAuthAndProfile() {
     const sb = _getClient() || createClientOnce();
     const session = await ensureAnonSession();
-
-    // Optionnel: si userData.js est chargé, on refresh le profil
-    try {
-      if (window.VUserData && typeof window.VUserData.refresh === "function") {
-        await window.VUserData.refresh();
-      }
-    } catch (_) {}
-
     return session?.user || null;
   };
 

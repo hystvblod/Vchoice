@@ -67,7 +67,6 @@
       const n = _normScenarioId(v);
       if (n) out.push(n);
     }
-    // dédoublonnage
     return Array.from(new Set(out));
   }
 
@@ -184,19 +183,14 @@
   window.VCRemoteStore = window.VCRemoteStore || {
     enabled(){ return sbReady(); },
 
+    // ✅ FIX: ensureAuth ne doit plus appeler bootstrapAuthAndProfile (qui pouvait rappeler refresh)
+    // On fait simple: getUser -> sinon signInAnonymously -> getUser
     async ensureAuth(){
       const sb = window.sb;
       if (!sb || !sb.auth) return null;
 
-      try{
-        if (typeof window.bootstrapAuthAndProfile === "function"){
-          const p = await window.bootstrapAuthAndProfile();
-          return p?.id || (await this._getUid());
-        }
-      }catch(e){ _reportRemoteError("ensureAuth.bootstrapAuthAndProfile", e); }
-
-      const uid = await this._getUid();
-      if (uid) return uid;
+      const uid1 = await this._getUid();
+      if (uid1) return uid1;
 
       try{
         const r = await sb.auth.signInAnonymously();
@@ -436,7 +430,6 @@
         if (typeof data.jetons !== "undefined") _memState.jetons = _clampInt(data.jetons);
         if (typeof data.lang !== "undefined") _memState.lang = String(data.lang || "fr");
 
-        // ✅ Ne toucher à unlocked_scenarios que si le champ est présent
         if (Object.prototype.hasOwnProperty.call(data, "unlocked_scenarios")){
           _memState.unlocked_scenarios = _normScenarioList(data.unlocked_scenarios);
         }
@@ -495,7 +488,7 @@
       const v = await window.VCRemoteStore.spendJetons(cost);
       if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
       const cur = this.load();
-      this.save({ ...cur, jetons: v }); // cur inclut unlocked_scenarios, et save() ne l’écrase plus si absent
+      this.save({ ...cur, jetons: v });
       return { ok:true, jetons: v };
     },
 
