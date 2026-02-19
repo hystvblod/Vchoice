@@ -51,7 +51,7 @@
     vcoins: 0,
     jetons: 0,
     lang: "fr",
-    unlocked_scenarios: ["dossier14_appartement"], // FREE par défaut (à adapter)
+    unlocked_scenarios: [], // ✅ PATCH: plus aucun FREE par défaut
     updated_at: Date.now(),
     last_sync_at: 0
   };
@@ -110,7 +110,7 @@
       vcoins: 0,
       jetons: 0,
       lang: "fr",
-      unlocked_scenarios: ["dossier14_appartement"],
+      unlocked_scenarios: [], // ✅ PATCH: plus aucun FREE par défaut
       updated_at: Date.now()
     };
   }
@@ -128,8 +128,9 @@
       _memState.unlocked_scenarios = me.unlocked_scenarios.filter(Boolean).map(String);
     } else if (typeof me.unlocked_scenarios === "string" && me.unlocked_scenarios){
       _memState.unlocked_scenarios = [String(me.unlocked_scenarios)];
-    } else if (!Array.isArray(_memState.unlocked_scenarios) || !_memState.unlocked_scenarios.length){
-      _memState.unlocked_scenarios = ["dossier14_appartement"];
+    } else {
+      // ✅ PATCH: si le serveur ne renvoie rien, on reste vide (pas de fallback App14)
+      _memState.unlocked_scenarios = [];
     }
 
     _memState.updated_at = Date.now();
@@ -436,8 +437,9 @@
 
         if (Array.isArray(data.unlocked_scenarios)){
           _memState.unlocked_scenarios = data.unlocked_scenarios.filter(Boolean).map(String);
-        } else if (!Array.isArray(_memState.unlocked_scenarios) || !_memState.unlocked_scenarios.length){
-          _memState.unlocked_scenarios = ["dossier14_appartement"];
+        } else {
+          // ✅ PATCH: pas de fallback App14
+          if (!Array.isArray(_memState.unlocked_scenarios)) _memState.unlocked_scenarios = [];
         }
 
         _memState.updated_at = Date.now();

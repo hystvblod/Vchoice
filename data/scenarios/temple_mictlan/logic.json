@@ -246,7 +246,8 @@
       "choices": [
         { "choice_key": "tm.s12.c1", "next": "s13" },
         { "choice_key": "tm.s12.c2", "next": "s15" },
-        { "choice_key": "tm.s12.c3", "next": "s14" }
+        { "choice_key": "tm.s12.c3", "next": "s14" },
+        { "choice_key": "tm.s12.c4", "next": "s17", "requires_any_flags": ["has_obsidian"] }
       ]
     },
 
@@ -310,7 +311,7 @@
       "title_key": "tm.s18.title",
       "body_key": "tm.s18.body",
       "choices": [
-        { "choice_key": "tm.s18.c1", "next": "s19" },
+        { "choice_key": "tm.s18.c1", "next": "s29" },
         { "choice_key": "tm.s18.c2", "next": "s33" },
         { "choice_key": "tm.s18.c3", "next": "s12" }
       ]
@@ -413,7 +414,7 @@
       "choices": [
         { "choice_key": "tm.s28.c1", "next": "s12", "set_flags": ["has_obsidian"] },
         { "choice_key": "tm.s28.c2", "next": "s12" },
-        { "choice_key": "tm.s28.c3", "next": "s12", "set_flags": ["has_obsidian"] }
+        { "choice_key": "tm.s28.c3", "next": "s17", "set_flags": ["has_obsidian"] }
       ]
     },
     "s29": {
@@ -457,6 +458,7 @@
         { "choice_key": "tm.s32.c3", "next": "s36" }
       ]
     },
+
     "s33": {
       "image_id": "s33",
       "title_key": "tm.s33.title",

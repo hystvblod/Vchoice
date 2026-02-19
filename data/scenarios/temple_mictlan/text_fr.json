@@ -81,6 +81,7 @@
     "tm.s12.c1": "Chercher autour (alcôves, sol, fissures)",
     "tm.s12.c2": "Tenter de forcer (mauvaise idée)",
     "tm.s12.c3": "Prendre un autre passage",
+    "tm.s12.c4": "Insérer l’obsidienne dans le creux",
 
     "tm.s13.title": "Alcôves et crânes",
     "tm.s13.body": "Des crânes alignés, impeccables, presque polis. Dans certaines orbites : des perles de jade. Le décor est trop “rangé” pour être mort.",
@@ -100,18 +101,17 @@
     "tm.s15.c2": "Chercher l’obsidienne ailleurs",
     "tm.s15.c3": "Abandonner la porte pour l’instant",
 
-   
-  "tm.s16.title": "L’éclat d’obsidienne",
-  "tm.s16.body": "Dans une fissure, un éclat d’obsidienne, taillé exprès. Quand tu le tiens, tu sens une chaleur minuscule au bout des doigts.",
-  "tm.s16.c1": "Le garder précieusement",
-  "tm.s16.c2": "Le tester immédiatement sur la porte",
-  "tm.s16.c3": "Le remettre en place (par prudence)",
+    "tm.s16.title": "L’éclat d’obsidienne",
+    "tm.s16.body": "Dans une fissure, un éclat d’obsidienne, taillé exprès. Quand tu le tiens, tu sens une chaleur minuscule au bout des doigts.",
+    "tm.s16.c1": "Le garder précieusement",
+    "tm.s16.c2": "Le tester immédiatement sur la porte",
+    "tm.s16.c3": "Le remettre en place (par prudence)",
 
-  "tm.s17.title": "La porte cède",
-  "tm.s17.body": "L’éclat s’insère. Un déclic de pierre. La porte glisse sans bruit… comme si elle n’avait jamais été lourde.",
-  "tm.s17.c1": "Entrer",
-  "tm.s17.c2": "Éclairer d’abord l’intérieur",
-  "tm.s17.c3": "Revenir prévenir le camp avant d’entrer",
+    "tm.s17.title": "La porte cède",
+    "tm.s17.body": "L’éclat s’insère. Un déclic de pierre. La porte glisse sans bruit… comme si elle n’avait jamais été lourde.",
+    "tm.s17.c1": "Entrer",
+    "tm.s17.c2": "Éclairer d’abord l’intérieur",
+    "tm.s17.c3": "Revenir prévenir le camp avant d’entrer",
 
     "tm.s18.title": "Galerie des fresques",
     "tm.s18.body": "Murales de procession : silhouettes sans visages, offrandes d’os, de dents, de cheveux. Au bout, une figure “couronnée” regarde sans yeux.",
@@ -491,14 +491,14 @@
     "tm.s80.c2": "Revenir sceller le temple",
     "tm.s80.c3": "Accepter le pacte (vérité complète)",
 
-    "tm.end_good.title": "Fin — La fuite (avec preuves)",
-    "tm.end_good.body": "Tu cours jusqu’au camp, tu montres la page, les photos, la perle. On te croit à moitié… mais on ferme le site. Cette nuit-là, tu dors peu. Chaque fois que tu respires trop fort, tu crois sentir une brume froide au bord de tes lèvres.",
+    "tm.end_good.title": "Fin — La fuite ",
+    "tm.end_good.body": "Tu cours jusqu’au camp, tu racontes ce que tu as vécu. On te croit à moitié… mais on ferme le site. Cette nuit-là, tu dors peu. Chaque fois que tu respires trop fort, tu crois sentir une brume froide au bord de tes lèvres.",
 
     "tm.end_bad.title": "Fin — Avalé",
-    "tm.end_bad.body": "Tu reviens pour sceller. La dalle bouge “toute seule”. La brume monte, douce, presque tendre. Tu inspires — et tu comprends trop tard que c’était ce qu’elle attendait. Dans la salle, un nouvel os trouve sa place, parfaitement aligné.",
+    "tm.end_bad.body": "Tu reviens pour sceller. La dalle bouge toute seule. La brume monte, douce, presque tendre. Tu inspires — et tu comprends trop tard que c’était ce qu’elle attendait. Dans la salle, un nouvel os trouve sa place, parfaitement aligné.",
 
     "tm.end_secret.title": "Fin secrète — Contrat de cendres",
-    "tm.end_secret.body": "Tu prononces le nom choisi. Le sceau répond. La sortie s’ouvre comme une bouche qui te relâche. Mais sur toi, la marque froide reste. Désormais, quand tu prononces ton propre nom… il sonne légèrement faux. Et tu sais qu’un jour, elle te rappellera.",
+    "tm.end_secret.body": "Tu prononces un nom. Le sceau répond. La sortie s’ouvre comme une bouche qui te relâche. Mais sur toi, la marque froide reste. Désormais, tu n'es plus tout à fait le même. Et tu sais qu’un jour, elle te rappellera.",
 
     "tm.clue.has_salt.title": "Sachet de sel",
     "tm.clue.has_salt.desc": "Un petit sac de sel sec, laissé comme une protection évidente.",
