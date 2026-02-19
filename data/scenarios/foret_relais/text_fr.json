@@ -671,6 +671,24 @@
   "frt.end_secret.title": "Assignation complète",
   "frt.end_secret.body": "La procédure se déroule comme si elle avait été répétée mille fois. Fréquence. Code. Cassette. Enregistrement. Le champ NOM se remplit — pas avec ton écriture, mais avec ton rythme. Tu comprends alors la vérité : l’Opérateur n’est pas un fantôme. C’est un poste. Une fonction. Et la forêt n’est pas un lieu : c’est l’interface qui recrute. Tu pourrais partir… mais tu sais désormais exactement comment ça marche. Et cette connaissance te suit, plus sûrement que la brume.",
   "frt.h.end_secret.soft": "Comprendre n’est pas un antidote : c’est un lien.",
-  "frt.h.end_secret.strong": "Tu as décodé la logique complète (fréquence + nom + protocole)."
+  "frt.h.end_secret.strong": "Tu as décodé la logique complète (fréquence + nom + protocole).",
+
+  "frt.clue.entered_facility.title": "Installation atteinte",
+  "frt.clue.found_cabin_note.title": "Note de cabane",
+  "frt.clue.has_bunker_key.title": "Clé du bunker",
+  "frt.clue.has_code.title": "Code",
+  "frt.clue.has_compass.title": "Boussole",
+  "frt.clue.has_frequency.title": "Fréquence radio",
+  "frt.clue.has_map.title": "Carte",
+  "frt.clue.has_ribbon.title": "Ruban",
+  "frt.clue.has_tape.title": "Cassette",
+  "frt.clue.heard_broadcast.title": "Diffusion entendue",
+  "frt.clue.knows_name_is_used.title": "Nom “utilisé”",
+  "frt.clue.made_recording.title": "Enregistrement fait",
+  "frt.clue.met_operator.title": "Opérateur rencontré",
+  "frt.clue.opened_bunker.title": "Bunker ouvert",
+  "frt.clue.saw_tower.title": "Tour aperçue",
+  "frt.clue.stabilized_path.title": "Chemin stabilisé",
+  "frt.clue.truth_unlocked.title": "Vérité déverrouillée"
 }
 }
