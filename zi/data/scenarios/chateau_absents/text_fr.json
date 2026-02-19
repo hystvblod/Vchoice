@@ -38,7 +38,7 @@
     "ca.s05.body": "Le hall sent la poussière froide. Le lustre est éteint, mais l’ombre qu’il projette semble trop nette. La porte derrière toi paraît plus lourde qu’avant.",
     "ca.s05.c1": "Avancer sans regarder derrière",
     "ca.s05.c2": "Retourner vers la cour",
-    "ca.s05.c3": "Chercher un plan, un panneau, un indice",
+    "ca.s05.c3": "prendre à gauche",
 
     "ca.s06.title": "Écho de pas",
     "ca.s06.body": "Chaque pas se répète avec une fraction de seconde de retard, comme si quelqu’un imitait ta marche. Tu distingues trois directions possibles.",
@@ -474,11 +474,6 @@
     "ca.s77.c2": "Retourner au cercle",
     "ca.s77.c3": "Revenir au couloir (dernière vérif)",
 
-    "ca.s78.title": "Hall — dernière respiration",
-    "ca.s78.body": "Le hall te donne une dernière chance de te tromper. Le lustre ne bouge pas, mais son ombre, elle, s’étire vers toi.",
-    "ca.s78.c1": "Rejoindre le couloir",
-    "ca.s78.c2": "Rejoindre la salle de bal",
-    "ca.s78.c3": "Aller vers la crypte",
 
     "ca.end_good.title": "Fin — Aube froide",
     "ca.end_good.body": "Tu franchis la grille. L’air du matin te brûle les poumons. Derrière toi, le château paraît normal… sauf un détail : tes pas, dans la boue, ne reviennent pas.",

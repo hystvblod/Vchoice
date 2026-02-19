@@ -526,8 +526,9 @@
       lsSet("vrealms_shop_focus_scenario", scenarioId);
     }
 
+    // ✅ PATCH: plus aucun FREE côté front (Supabase = vérité)
     function isFreeScenario(id){
-      return (id === "dossier14_appartement");
+      return false;
     }
 
     function isUnlocked(id){
@@ -768,6 +769,12 @@
       // 1) UI immédiate (clics OK même si init/auth/i18n bloque)
       try { bindCards(); } catch(e){ console.error("[bindCards]", e); }
       try { applyLocks(); } catch(e){ console.error("[applyLocks pre]", e); }
+
+      // ✅ PATCH: re-apply locks dès que le profil est mis à jour (après secure_get_me / unlock / etc.)
+      try {
+        window.addEventListener("vc:profile", () => { try { applyLocks(); } catch(_){} });
+        window.addEventListener("vr:profile", () => { try { applyLocks(); } catch(_){} }); // compat
+      } catch(_) {}
 
       // 2) Background init (ne bloque pas les clics)
       (async () => {

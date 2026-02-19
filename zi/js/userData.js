@@ -5,11 +5,7 @@
 // - Username via secure_set_username
 // - Lang via secure_set_lang
 // - Déblocage scénario via secure_unlock_scenario
-// - ✅ Fin scénario: secure_complete_scenario (reward +300 + log ending)
-//
-// Notes:
-// - unlocked_scenarios = cache local UX, Supabase = vérité via secure_get_me
-// - vc:profile émis pour que l’UI se mette à jour sans “flash”
+// - Fin scénario: secure_complete_scenario (reward + log ending)
 
 (function () {
   "use strict";
@@ -45,13 +41,14 @@
     return _remoteQueue;
   }
 
+  // ✅ IMPORTANT: aucune whitelist “free” ici
   const _memState = {
     user_id: "",
     username: "",
     vcoins: 0,
     jetons: 0,
     lang: "fr",
-    unlocked_scenarios: ["dossier14_appartement"], // FREE par défaut (à adapter)
+    unlocked_scenarios: [], // ✅ Supabase only
     updated_at: Date.now(),
     last_sync_at: 0
   };
@@ -110,7 +107,7 @@
       vcoins: 0,
       jetons: 0,
       lang: "fr",
-      unlocked_scenarios: ["dossier14_appartement"],
+      unlocked_scenarios: [],
       updated_at: Date.now()
     };
   }
@@ -128,8 +125,8 @@
       _memState.unlocked_scenarios = me.unlocked_scenarios.filter(Boolean).map(String);
     } else if (typeof me.unlocked_scenarios === "string" && me.unlocked_scenarios){
       _memState.unlocked_scenarios = [String(me.unlocked_scenarios)];
-    } else if (!Array.isArray(_memState.unlocked_scenarios) || !_memState.unlocked_scenarios.length){
-      _memState.unlocked_scenarios = ["dossier14_appartement"];
+    } else {
+      _memState.unlocked_scenarios = [];
     }
 
     _memState.updated_at = Date.now();
@@ -140,9 +137,6 @@
     return true;
   }
 
-  // -------------------------
-  // Remote store (Supabase)
-  // -------------------------
   function sbReady(){
     return !!(window.sb && window.sb.auth && typeof window.sb.rpc === "function");
   }
@@ -269,24 +263,6 @@
       }
     },
 
-    async reduceVcoinsTo(value){
-      const sb = window.sb;
-      if (!sbReady()) return null;
-      const uid = await this.ensureAuth();
-      if (!uid) return null;
-
-      const v = Math.max(0, Math.floor(Number(value || 0)));
-      try{
-        const r = await sb.rpc("secure_reduce_vcoins_to", { p_value: v });
-        if (r?.error){ _reportRemoteError("rpc.secure_reduce_vcoins_to", r.error); return null; }
-        return Number(r?.data ?? 0);
-      }catch(e){
-        _reportRemoteError("rpc.secure_reduce_vcoins_to.exception", e);
-        return null;
-      }
-    },
-
-    // ✅ NEW: add jetons (fallback p_delta / p_value)
     async addJetons(delta){
       const sb = window.sb;
       if (!sbReady()) return null;
@@ -296,7 +272,6 @@
       const d = Math.floor(Number(delta || 0));
       if (d <= 0) return null;
 
-      // fallback: certains schémas utilisent p_delta, d’autres p_value
       const r = await _rpcTry(
         "secure_add_jetons",
         { p_delta: d },
@@ -308,7 +283,6 @@
       return Number(r?.data ?? 0);
     },
 
-    // ✅ NEW: spend jetons (fallback p_cost / p_delta)
     async spendJetons(cost){
       const sb = window.sb;
       if (!sbReady()) return null;
@@ -317,7 +291,6 @@
 
       const c = Math.max(1, Math.floor(Number(cost || 1)));
 
-      // fallback: certains schémas utilisent p_cost, d’autres p_delta
       const r = await _rpcTry(
         "secure_spend_jetons",
         { p_cost: c },
@@ -351,7 +324,6 @@
       }
     },
 
-    // ✅ fin scenario (reward + log ending)
     async completeScenario(scenarioId, ending){
       const sb = window.sb;
       if (!sbReady()) return { ok:false, reason:"no_client" };
@@ -377,9 +349,6 @@
     }
   };
 
-  // -------------------------
-  // VUserData (API)
-  // -------------------------
   const VUserData = {
     async init(){
       const cached = _readLocal();
@@ -416,7 +385,7 @@
           vcoins: _clampInt(_memState.vcoins || 0),
           jetons: _clampInt(_memState.jetons || 0),
           lang: String(_memState.lang || "fr"),
-          unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice(0) : d.unlocked_scenarios,
+          unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice(0) : [],
           updated_at: Number(_memState.updated_at || Date.now())
         };
       }catch{
@@ -436,8 +405,8 @@
 
         if (Array.isArray(data.unlocked_scenarios)){
           _memState.unlocked_scenarios = data.unlocked_scenarios.filter(Boolean).map(String);
-        } else if (!Array.isArray(_memState.unlocked_scenarios) || !_memState.unlocked_scenarios.length){
-          _memState.unlocked_scenarios = ["dossier14_appartement"];
+        } else {
+          _memState.unlocked_scenarios = [];
         }
 
         _memState.updated_at = Date.now();
@@ -481,7 +450,7 @@
           vcoins: (typeof me.vcoins !== "undefined") ? me.vcoins : cur.vcoins,
           jetons: (typeof me.jetons !== "undefined") ? me.jetons : cur.jetons,
           lang: String(me.lang || cur.lang || "fr"),
-          unlocked_scenarios: Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios : cur.unlocked_scenarios
+          unlocked_scenarios: Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios : []
         });
       }else{
         await this.refresh().catch(() => false);
@@ -490,7 +459,6 @@
       return { ok:true, reason:"ok", data:this.load() };
     },
 
-    // ✅ NEW: spend jetons (server authoritative)
     async spendJetons(cost){
       if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
       const v = await window.VCRemoteStore.spendJetons(cost);
@@ -500,7 +468,6 @@
       return { ok:true, jetons: v };
     },
 
-    // ✅ NEW: add jetons (server authoritative)
     async addJetons(delta){
       if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
       const v = await window.VCRemoteStore.addJetons(delta);
@@ -510,7 +477,6 @@
       return { ok:true, jetons: v };
     },
 
-    // ✅ fin scenario = appelle RPC, met à jour vcoins local
     async completeScenario(scenarioId, ending){
       if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
 

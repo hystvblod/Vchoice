@@ -13,28 +13,88 @@
     "images_dir": "assets/scenarios/foret_relais/img/"
   },
   "images": {
-    "cover": { "file": "assets/scenarios/foret_relais/img/cover.webp", "alt": "Entrée de forêt de nuit, brume, portique, lampadaire isolé" },
-    "trailhead_sign": { "file": "assets/scenarios/foret_relais/img/trailhead_sign.webp", "alt": "Poteau de randonnée avec flèches, une flèche paraît récente" },
-    "deep_path": { "file": "assets/scenarios/foret_relais/img/deep_path.webp", "alt": "Sentier étroit dans une forêt dense, nuit et brume" },
-    "fork_paths": { "file": "assets/scenarios/foret_relais/img/fork_paths.webp", "alt": "Bifurcation de sentiers quasi identiques, traces dans la boue" },
-    "name_sign": { "file": "assets/scenarios/foret_relais/img/name_sign.webp", "alt": "Petit panneau bricolé semblant afficher un prénom flou" },
-    "ribbon_tree": { "file": "assets/scenarios/foret_relais/img/ribbon_tree.webp", "alt": "Arbre marqué d’un ruban clair, repère fragile" },
-    "stones_circle": { "file": "assets/scenarios/foret_relais/img/stones_circle.webp", "alt": "Cercle de pierres au sol, centre anormalement sombre" },
-    "fallen_tree": { "file": "assets/scenarios/foret_relais/img/fallen_tree.webp", "alt": "Tronc tombé bloquant le chemin, passage possible dessous" },
-    "map_wet": { "file": "assets/scenarios/foret_relais/img/map_wet.webp", "alt": "Carte humide, lignes déformées, gouttes" },
-    "compass_close": { "file": "assets/scenarios/foret_relais/img/compass_close.webp", "alt": "Boussole en gros plan, aiguille instable" },
-    "old_cabin": { "file": "assets/scenarios/foret_relais/img/old_cabin.webp", "alt": "Cabane abandonnée, fenêtre noire, bois humide" },
-    "cabin_interior": { "file": "assets/scenarios/foret_relais/img/cabin_interior.webp", "alt": "Intérieur de cabane, table, carnet, poussière humide" },
-    "radio_tower_far": { "file": "assets/scenarios/foret_relais/img/radio_tower_far.webp", "alt": "Relais radio au loin entre les arbres, lumière rouge faible" },
-    "relay_fence": { "file": "assets/scenarios/foret_relais/img/relay_fence.webp", "alt": "Clôture grillagée du relais, portail, pancarte illisible" },
-    "relay_yard": { "file": "assets/scenarios/foret_relais/img/relay_yard.webp", "alt": "Cour du relais, herbes hautes, câbles au sol" },
-    "bunker_door": { "file": "assets/scenarios/foret_relais/img/bunker_door.webp", "alt": "Porte de bunker métallique semi-enterrée" },
-    "corridor_concrete": { "file": "assets/scenarios/foret_relais/img/corridor_concrete.webp", "alt": "Couloir béton sous-terrain, humidité, néon fatigué" },
-    "control_room": { "file": "assets/scenarios/foret_relais/img/control_room.webp", "alt": "Salle de commande, consoles anciennes, voyants faibles" },
-    "mic_table": { "file": "assets/scenarios/foret_relais/img/mic_table.webp", "alt": "Micro et magnétophone/cassette sur table" },
-    "speaker_wall": { "file": "assets/scenarios/foret_relais/img/speaker_wall.webp", "alt": "Haut-parleur mural, vibration subtile" },
-    "red_light_corridor": { "file": "assets/scenarios/foret_relais/img/red_light_corridor.webp", "alt": "Couloir au rouge d’alarme, brume interne" },
-    "ghost_reflection": { "file": "assets/scenarios/foret_relais/img/ghost_reflection.webp", "alt": "Reflet flou suggérant une présence derrière l’épaule" },
+    "s01": { "file": "assets/scenarios/foret_relais/img/s01.webp" },
+    "s02": { "file": "assets/scenarios/foret_relais/img/s02.webp" },
+    "s03": { "file": "assets/scenarios/foret_relais/img/s03.webp" },
+    "s04": { "file": "assets/scenarios/foret_relais/img/s04.webp" },
+    "s05": { "file": "assets/scenarios/foret_relais/img/s05.webp" },
+    "s06": { "file": "assets/scenarios/foret_relais/img/s06.webp" },
+    "s07": { "file": "assets/scenarios/foret_relais/img/s07.webp" },
+    "s08": { "file": "assets/scenarios/foret_relais/img/s08.webp" },
+    "s09": { "file": "assets/scenarios/foret_relais/img/s09.webp" },
+    "s10": { "file": "assets/scenarios/foret_relais/img/s10.webp" },
+    "s11": { "file": "assets/scenarios/foret_relais/img/s11.webp" },
+    "s12": { "file": "assets/scenarios/foret_relais/img/s12.webp" },
+    "s13": { "file": "assets/scenarios/foret_relais/img/s13.webp" },
+    "s14": { "file": "assets/scenarios/foret_relais/img/s14.webp" },
+    "s15": { "file": "assets/scenarios/foret_relais/img/s15.webp" },
+    "s16": { "file": "assets/scenarios/foret_relais/img/s16.webp" },
+    "s17": { "file": "assets/scenarios/foret_relais/img/s17.webp" },
+    "s18": { "file": "assets/scenarios/foret_relais/img/s18.webp" },
+    "s19": { "file": "assets/scenarios/foret_relais/img/s19.webp" },
+    "s20": { "file": "assets/scenarios/foret_relais/img/s20.webp" },
+    "s21": { "file": "assets/scenarios/foret_relais/img/s21.webp" },
+    "s22": { "file": "assets/scenarios/foret_relais/img/s22.webp" },
+    "s23": { "file": "assets/scenarios/foret_relais/img/s23.webp" },
+    "s24": { "file": "assets/scenarios/foret_relais/img/s24.webp" },
+    "s25": { "file": "assets/scenarios/foret_relais/img/s25.webp" },
+    "s26": { "file": "assets/scenarios/foret_relais/img/s26.webp" },
+    "s27": { "file": "assets/scenarios/foret_relais/img/s27.webp" },
+    "s28": { "file": "assets/scenarios/foret_relais/img/s28.webp" },
+    "s29": { "file": "assets/scenarios/foret_relais/img/s29.webp" },
+    "s30": { "file": "assets/scenarios/foret_relais/img/s30.webp" },
+    "s31": { "file": "assets/scenarios/foret_relais/img/s31.webp" },
+    "s32": { "file": "assets/scenarios/foret_relais/img/s32.webp" },
+    "s33": { "file": "assets/scenarios/foret_relais/img/s33.webp" },
+    "s34": { "file": "assets/scenarios/foret_relais/img/s34.webp" },
+    "s35": { "file": "assets/scenarios/foret_relais/img/s35.webp" },
+    "s36": { "file": "assets/scenarios/foret_relais/img/s36.webp" },
+    "s37": { "file": "assets/scenarios/foret_relais/img/s37.webp" },
+    "s38": { "file": "assets/scenarios/foret_relais/img/s38.webp" },
+    "s39": { "file": "assets/scenarios/foret_relais/img/s39.webp" },
+    "s40": { "file": "assets/scenarios/foret_relais/img/s40.webp" },
+    "s41": { "file": "assets/scenarios/foret_relais/img/s41.webp" },
+    "s42": { "file": "assets/scenarios/foret_relais/img/s42.webp" },
+    "s43": { "file": "assets/scenarios/foret_relais/img/s43.webp" },
+    "s44": { "file": "assets/scenarios/foret_relais/img/s44.webp" },
+    "s45": { "file": "assets/scenarios/foret_relais/img/s45.webp" },
+    "s46": { "file": "assets/scenarios/foret_relais/img/s46.webp" },
+    "s47": { "file": "assets/scenarios/foret_relais/img/s47.webp" },
+    "s48": { "file": "assets/scenarios/foret_relais/img/s48.webp" },
+    "s49": { "file": "assets/scenarios/foret_relais/img/s49.webp" },
+    "s50": { "file": "assets/scenarios/foret_relais/img/s50.webp" },
+    "s51": { "file": "assets/scenarios/foret_relais/img/s51.webp" },
+    "s52": { "file": "assets/scenarios/foret_relais/img/s52.webp" },
+    "s53": { "file": "assets/scenarios/foret_relais/img/s53.webp" },
+    "s54": { "file": "assets/scenarios/foret_relais/img/s54.webp" },
+    "s55": { "file": "assets/scenarios/foret_relais/img/s55.webp" },
+    "s56": { "file": "assets/scenarios/foret_relais/img/s56.webp" },
+    "s57": { "file": "assets/scenarios/foret_relais/img/s57.webp" },
+    "s58": { "file": "assets/scenarios/foret_relais/img/s58.webp" },
+    "s59": { "file": "assets/scenarios/foret_relais/img/s59.webp" },
+    "s60": { "file": "assets/scenarios/foret_relais/img/s60.webp" },
+    "s61": { "file": "assets/scenarios/foret_relais/img/s61.webp" },
+    "s62": { "file": "assets/scenarios/foret_relais/img/s62.webp" },
+    "s63": { "file": "assets/scenarios/foret_relais/img/s63.webp" },
+    "s64": { "file": "assets/scenarios/foret_relais/img/s64.webp" },
+    "s65": { "file": "assets/scenarios/foret_relais/img/s65.webp" },
+    "s66": { "file": "assets/scenarios/foret_relais/img/s66.webp" },
+    "s67": { "file": "assets/scenarios/foret_relais/img/s67.webp" },
+    "s68": { "file": "assets/scenarios/foret_relais/img/s68.webp" },
+    "s69": { "file": "assets/scenarios/foret_relais/img/s69.webp" },
+    "s70": { "file": "assets/scenarios/foret_relais/img/s70.webp" },
+    "s71": { "file": "assets/scenarios/foret_relais/img/s71.webp" },
+    "s72": { "file": "assets/scenarios/foret_relais/img/s72.webp" },
+    "s73": { "file": "assets/scenarios/foret_relais/img/s73.webp" },
+    "s74": { "file": "assets/scenarios/foret_relais/img/s74.webp" },
+    "s75": { "file": "assets/scenarios/foret_relais/img/s75.webp" },
+    "s76": { "file": "assets/scenarios/foret_relais/img/s76.webp" },
+    "s77": { "file": "assets/scenarios/foret_relais/img/s77.webp" },
+    "s78": { "file": "assets/scenarios/foret_relais/img/s78.webp" },
+    "s79": { "file": "assets/scenarios/foret_relais/img/s79.webp" },
+    "s80": { "file": "assets/scenarios/foret_relais/img/s80.webp" },
+    "s81": { "file": "assets/scenarios/foret_relais/img/s81.webp" },
+
     "final_good": { "file": "assets/scenarios/foret_relais/img/final_good.webp", "alt": "Sortie de forêt à l’aube, route vide, brume qui recule" },
     "final_bad": { "file": "assets/scenarios/foret_relais/img/final_bad.webp", "alt": "Intérieur sombre sous lumière rouge, sensation d’être capté" },
     "final_secret": { "file": "assets/scenarios/foret_relais/img/final_secret.webp", "alt": "Salle de commande active, voyant REC allumé, chaise tournée" }
@@ -62,7 +122,7 @@
   },
   "scenes": {
     "s01": {
-      "image_id": "cover",
+      "image_id": "s01",
       "title_key": "frt.s01.title",
       "body_key": "frt.s01.body",
       "choices": [
@@ -72,7 +132,7 @@
       ]
     },
     "s02": {
-      "image_id": "trailhead_sign",
+      "image_id": "s02",
       "title_key": "frt.s02.title",
       "body_key": "frt.s02.body",
       "choices": [
@@ -82,7 +142,7 @@
       ]
     },
     "s03": {
-      "image_id": "deep_path",
+      "image_id": "s03",
       "title_key": "frt.s03.title",
       "body_key": "frt.s03.body",
       "choices": [
@@ -92,7 +152,7 @@
       ]
     },
     "s04": {
-      "image_id": "name_sign",
+      "image_id": "s04",
       "title_key": "frt.s04.title",
       "body_key": "frt.s04.body",
       "choices": [
@@ -102,7 +162,7 @@
       ]
     },
     "s05": {
-      "image_id": "fork_paths",
+      "image_id": "s05",
       "title_key": "frt.s05.title",
       "body_key": "frt.s05.body",
       "choices": [
@@ -112,7 +172,7 @@
       ]
     },
     "s06": {
-      "image_id": "ribbon_tree",
+      "image_id": "s06",
       "title_key": "frt.s06.title",
       "body_key": "frt.s06.body",
       "choices": [
@@ -122,7 +182,7 @@
       ]
     },
     "s07": {
-      "image_id": "stones_circle",
+      "image_id": "s07",
       "title_key": "frt.s07.title",
       "body_key": "frt.s07.body",
       "choices": [
@@ -132,7 +192,7 @@
       ]
     },
     "s08": {
-      "image_id": "deep_path",
+      "image_id": "s08",
       "title_key": "frt.s08.title",
       "body_key": "frt.s08.body",
       "choices": [
@@ -142,7 +202,7 @@
       ]
     },
     "s09": {
-      "image_id": "fork_paths",
+      "image_id": "s09",
       "title_key": "frt.s09.title",
       "body_key": "frt.s09.body",
       "choices": [
@@ -152,7 +212,7 @@
       ]
     },
     "s10": {
-      "image_id": "map_wet",
+      "image_id": "s10",
       "title_key": "frt.s10.title",
       "body_key": "frt.s10.body",
       "choices": [
@@ -162,7 +222,7 @@
       ]
     },
     "s11": {
-      "image_id": "ribbon_tree",
+      "image_id": "s11",
       "title_key": "frt.s11.title",
       "body_key": "frt.s11.body",
       "choices": [
@@ -172,7 +232,7 @@
       ]
     },
     "s12": {
-      "image_id": "deep_path",
+      "image_id": "s12",
       "title_key": "frt.s12.title",
       "body_key": "frt.s12.body",
       "choices": [
@@ -182,7 +242,7 @@
       ]
     },
     "s13": {
-      "image_id": "fallen_tree",
+      "image_id": "s13",
       "title_key": "frt.s13.title",
       "body_key": "frt.s13.body",
       "choices": [
@@ -192,7 +252,7 @@
       ]
     },
     "s14": {
-      "image_id": "compass_close",
+      "image_id": "s14",
       "title_key": "frt.s14.title",
       "body_key": "frt.s14.body",
       "choices": [
@@ -202,7 +262,7 @@
       ]
     },
     "s15": {
-      "image_id": "name_sign",
+      "image_id": "s15",
       "title_key": "frt.s15.title",
       "body_key": "frt.s15.body",
       "choices": [
@@ -212,7 +272,7 @@
       ]
     },
     "s16": {
-      "image_id": "map_wet",
+      "image_id": "s16",
       "title_key": "frt.s16.title",
       "body_key": "frt.s16.body",
       "choices": [
@@ -222,7 +282,7 @@
       ]
     },
     "s17": {
-      "image_id": "stones_circle",
+      "image_id": "s17",
       "title_key": "frt.s17.title",
       "body_key": "frt.s17.body",
       "choices": [
@@ -232,7 +292,7 @@
       ]
     },
     "s18": {
-      "image_id": "ghost_reflection",
+      "image_id": "s18",
       "title_key": "frt.s18.title",
       "body_key": "frt.s18.body",
       "choices": [
@@ -242,7 +302,7 @@
       ]
     },
     "s19": {
-      "image_id": "radio_tower_far",
+      "image_id": "s19",
       "title_key": "frt.s19.title",
       "body_key": "frt.s19.body",
       "choices": [
@@ -252,7 +312,7 @@
       ]
     },
     "s20": {
-      "image_id": "fork_paths",
+      "image_id": "s20",
       "title_key": "frt.s20.title",
       "body_key": "frt.s20.body",
       "choices": [
@@ -262,7 +322,7 @@
       ]
     },
     "s21": {
-      "image_id": "fallen_tree",
+      "image_id": "s21",
       "title_key": "frt.s21.title",
       "body_key": "frt.s21.body",
       "choices": [
@@ -272,7 +332,7 @@
       ]
     },
     "s22": {
-      "image_id": "compass_close",
+      "image_id": "s22",
       "title_key": "frt.s22.title",
       "body_key": "frt.s22.body",
       "choices": [
@@ -282,7 +342,7 @@
       ]
     },
     "s23": {
-      "image_id": "old_cabin",
+      "image_id": "s23",
       "title_key": "frt.s23.title",
       "body_key": "frt.s23.body",
       "choices": [
@@ -292,7 +352,7 @@
       ]
     },
     "s24": {
-      "image_id": "map_wet",
+      "image_id": "s24",
       "title_key": "frt.s24.title",
       "body_key": "frt.s24.body",
       "choices": [
@@ -302,7 +362,7 @@
       ]
     },
     "s25": {
-      "image_id": "speaker_wall",
+      "image_id": "s25",
       "title_key": "frt.s25.title",
       "body_key": "frt.s25.body",
       "choices": [
@@ -312,7 +372,7 @@
       ]
     },
     "s26": {
-      "image_id": "stones_circle",
+      "image_id": "s26",
       "title_key": "frt.s26.title",
       "body_key": "frt.s26.body",
       "choices": [
@@ -322,7 +382,7 @@
       ]
     },
     "s27": {
-      "image_id": "ghost_reflection",
+      "image_id": "s27",
       "title_key": "frt.s27.title",
       "body_key": "frt.s27.body",
       "choices": [
@@ -332,7 +392,7 @@
       ]
     },
     "s28": {
-      "image_id": "radio_tower_far",
+      "image_id": "s28",
       "title_key": "frt.s28.title",
       "body_key": "frt.s28.body",
       "choices": [
@@ -342,7 +402,7 @@
       ]
     },
     "s29": {
-      "image_id": "deep_path",
+      "image_id": "s29",
       "title_key": "frt.s29.title",
       "body_key": "frt.s29.body",
       "choices": [
@@ -352,7 +412,7 @@
       ]
     },
     "s30": {
-      "image_id": "name_sign",
+      "image_id": "s30",
       "title_key": "frt.s30.title",
       "body_key": "frt.s30.body",
       "choices": [
@@ -362,7 +422,7 @@
       ]
     },
     "s31": {
-      "image_id": "old_cabin",
+      "image_id": "s31",
       "title_key": "frt.s31.title",
       "body_key": "frt.s31.body",
       "choices": [
@@ -372,7 +432,7 @@
       ]
     },
     "s32": {
-      "image_id": "deep_path",
+      "image_id": "s32",
       "title_key": "frt.s32.title",
       "body_key": "frt.s32.body",
       "choices": [
@@ -382,7 +442,7 @@
       ]
     },
     "s33": {
-      "image_id": "compass_close",
+      "image_id": "s33",
       "title_key": "frt.s33.title",
       "body_key": "frt.s33.body",
       "choices": [
@@ -392,7 +452,7 @@
       ]
     },
     "s34": {
-      "image_id": "cabin_interior",
+      "image_id": "s34",
       "title_key": "frt.s34.title",
       "body_key": "frt.s34.body",
       "choices": [
@@ -402,7 +462,7 @@
       ]
     },
     "s35": {
-      "image_id": "old_cabin",
+      "image_id": "s35",
       "title_key": "frt.s35.title",
       "body_key": "frt.s35.body",
       "choices": [
@@ -412,7 +472,7 @@
       ]
     },
     "s36": {
-      "image_id": "deep_path",
+      "image_id": "s36",
       "title_key": "frt.s36.title",
       "body_key": "frt.s36.body",
       "choices": [
@@ -422,7 +482,7 @@
       ]
     },
     "s37": {
-      "image_id": "ribbon_tree",
+      "image_id": "s37",
       "title_key": "frt.s37.title",
       "body_key": "frt.s37.body",
       "choices": [
@@ -432,7 +492,7 @@
       ]
     },
     "s38": {
-      "image_id": "speaker_wall",
+      "image_id": "s38",
       "title_key": "frt.s38.title",
       "body_key": "frt.s38.body",
       "choices": [
@@ -442,7 +502,7 @@
       ]
     },
     "s39": {
-      "image_id": "deep_path",
+      "image_id": "s39",
       "title_key": "frt.s39.title",
       "body_key": "frt.s39.body",
       "choices": [
@@ -452,7 +512,7 @@
       ]
     },
     "s40": {
-      "image_id": "stones_circle",
+      "image_id": "s40",
       "title_key": "frt.s40.title",
       "body_key": "frt.s40.body",
       "choices": [
@@ -462,7 +522,7 @@
       ]
     },
     "s41": {
-      "image_id": "ghost_reflection",
+      "image_id": "s41",
       "title_key": "frt.s41.title",
       "body_key": "frt.s41.body",
       "choices": [
@@ -472,7 +532,7 @@
       ]
     },
     "s42": {
-      "image_id": "relay_fence",
+      "image_id": "s42",
       "title_key": "frt.s42.title",
       "body_key": "frt.s42.body",
       "choices": [
@@ -482,7 +542,7 @@
       ]
     },
     "s43": {
-      "image_id": "relay_yard",
+      "image_id": "s43",
       "title_key": "frt.s43.title",
       "body_key": "frt.s43.body",
       "choices": [
@@ -492,7 +552,7 @@
       ]
     },
     "s44": {
-      "image_id": "ribbon_tree",
+      "image_id": "s44",
       "title_key": "frt.s44.title",
       "body_key": "frt.s44.body",
       "choices": [
@@ -502,7 +562,7 @@
       ]
     },
     "s45": {
-      "image_id": "name_sign",
+      "image_id": "s45",
       "title_key": "frt.s45.title",
       "body_key": "frt.s45.body",
       "choices": [
@@ -512,7 +572,7 @@
       ]
     },
     "s46": {
-      "image_id": "cabin_interior",
+      "image_id": "s46",
       "title_key": "frt.s46.title",
       "body_key": "frt.s46.body",
       "choices": [
@@ -522,7 +582,7 @@
       ]
     },
     "s47": {
-      "image_id": "deep_path",
+      "image_id": "s47",
       "title_key": "frt.s47.title",
       "body_key": "frt.s47.body",
       "choices": [
@@ -532,7 +592,7 @@
       ]
     },
     "s48": {
-      "image_id": "cabin_interior",
+      "image_id": "s48",
       "title_key": "frt.s48.title",
       "body_key": "frt.s48.body",
       "choices": [
@@ -542,7 +602,7 @@
       ]
     },
     "s49": {
-      "image_id": "mic_table",
+      "image_id": "s49",
       "title_key": "frt.s49.title",
       "body_key": "frt.s49.body",
       "choices": [
@@ -552,7 +612,7 @@
       ]
     },
     "s50": {
-      "image_id": "ghost_reflection",
+      "image_id": "s50",
       "title_key": "frt.s50.title",
       "body_key": "frt.s50.body",
       "choices": [
@@ -562,7 +622,7 @@
       ]
     },
     "s51": {
-      "image_id": "radio_tower_far",
+      "image_id": "s51",
       "title_key": "frt.s51.title",
       "body_key": "frt.s51.body",
       "choices": [
@@ -572,7 +632,7 @@
       ]
     },
     "s52": {
-      "image_id": "ribbon_tree",
+      "image_id": "s52",
       "title_key": "frt.s52.title",
       "body_key": "frt.s52.body",
       "choices": [
@@ -582,7 +642,7 @@
       ]
     },
     "s53": {
-      "image_id": "speaker_wall",
+      "image_id": "s53",
       "title_key": "frt.s53.title",
       "body_key": "frt.s53.body",
       "choices": [
@@ -592,7 +652,7 @@
       ]
     },
     "s54": {
-      "image_id": "deep_path",
+      "image_id": "s54",
       "title_key": "frt.s54.title",
       "body_key": "frt.s54.body",
       "choices": [
@@ -602,7 +662,7 @@
       ]
     },
     "s55": {
-      "image_id": "name_sign",
+      "image_id": "s55",
       "title_key": "frt.s55.title",
       "body_key": "frt.s55.body",
       "choices": [
@@ -612,7 +672,7 @@
       ]
     },
     "s56": {
-      "image_id": "stones_circle",
+      "image_id": "s56",
       "title_key": "frt.s56.title",
       "body_key": "frt.s56.body",
       "choices": [
@@ -622,7 +682,7 @@
       ]
     },
     "s57": {
-      "image_id": "ghost_reflection",
+      "image_id": "s57",
       "title_key": "frt.s57.title",
       "body_key": "frt.s57.body",
       "choices": [
@@ -632,7 +692,7 @@
       ]
     },
     "s58": {
-      "image_id": "deep_path",
+      "image_id": "s58",
       "title_key": "frt.s58.title",
       "body_key": "frt.s58.body",
       "choices": [
@@ -642,7 +702,7 @@
       ]
     },
     "s59": {
-      "image_id": "relay_yard",
+      "image_id": "s59",
       "title_key": "frt.s59.title",
       "body_key": "frt.s59.body",
       "choices": [
@@ -652,7 +712,7 @@
       ]
     },
     "s60": {
-      "image_id": "bunker_door",
+      "image_id": "s60",
       "title_key": "frt.s60.title",
       "body_key": "frt.s60.body",
       "choices": [
@@ -662,7 +722,7 @@
       ]
     },
     "s61": {
-      "image_id": "relay_fence",
+      "image_id": "s61",
       "title_key": "frt.s61.title",
       "body_key": "frt.s61.body",
       "choices": [
@@ -672,7 +732,7 @@
       ]
     },
     "s62": {
-      "image_id": "relay_yard",
+      "image_id": "s62",
       "title_key": "frt.s62.title",
       "body_key": "frt.s62.body",
       "choices": [
@@ -682,7 +742,7 @@
       ]
     },
     "s63": {
-      "image_id": "mic_table",
+      "image_id": "s63",
       "title_key": "frt.s63.title",
       "body_key": "frt.s63.body",
       "choices": [
@@ -692,7 +752,7 @@
       ]
     },
     "s64": {
-      "image_id": "speaker_wall",
+      "image_id": "s64",
       "title_key": "frt.s64.title",
       "body_key": "frt.s64.body",
       "choices": [
@@ -702,7 +762,7 @@
       ]
     },
     "s65": {
-      "image_id": "cabin_interior",
+      "image_id": "s65",
       "title_key": "frt.s65.title",
       "body_key": "frt.s65.body",
       "choices": [
@@ -712,7 +772,7 @@
       ]
     },
     "s66": {
-      "image_id": "map_wet",
+      "image_id": "s66",
       "title_key": "frt.s66.title",
       "body_key": "frt.s66.body",
       "choices": [
@@ -722,7 +782,7 @@
       ]
     },
     "s67": {
-      "image_id": "mic_table",
+      "image_id": "s67",
       "title_key": "frt.s67.title",
       "body_key": "frt.s67.body",
       "choices": [
@@ -732,7 +792,7 @@
       ]
     },
     "s68": {
-      "image_id": "map_wet",
+      "image_id": "s68",
       "title_key": "frt.s68.title",
       "body_key": "frt.s68.body",
       "choices": [
@@ -742,7 +802,7 @@
       ]
     },
     "s69": {
-      "image_id": "ghost_reflection",
+      "image_id": "s69",
       "title_key": "frt.s69.title",
       "body_key": "frt.s69.body",
       "choices": [
@@ -752,7 +812,7 @@
       ]
     },
     "s70": {
-      "image_id": "ribbon_tree",
+      "image_id": "s70",
       "title_key": "frt.s70.title",
       "body_key": "frt.s70.body",
       "choices": [
@@ -762,7 +822,7 @@
       ]
     },
     "s71": {
-      "image_id": "relay_fence",
+      "image_id": "s71",
       "title_key": "frt.s71.title",
       "body_key": "frt.s71.body",
       "choices": [
@@ -772,7 +832,7 @@
       ]
     },
     "s72": {
-      "image_id": "red_light_corridor",
+      "image_id": "s72",
       "title_key": "frt.s72.title",
       "body_key": "frt.s72.body",
       "choices": [
@@ -782,7 +842,7 @@
       ]
     },
     "s73": {
-      "image_id": "red_light_corridor",
+      "image_id": "s73",
       "title_key": "frt.s73.title",
       "body_key": "frt.s73.body",
       "choices": [
@@ -792,7 +852,7 @@
       ]
     },
     "s74": {
-      "image_id": "speaker_wall",
+      "image_id": "s74",
       "title_key": "frt.s74.title",
       "body_key": "frt.s74.body",
       "choices": [
@@ -802,7 +862,7 @@
       ]
     },
     "s75": {
-      "image_id": "relay_yard",
+      "image_id": "s75",
       "title_key": "frt.s75.title",
       "body_key": "frt.s75.body",
       "choices": [
@@ -812,7 +872,7 @@
       ]
     },
     "s76": {
-      "image_id": "ghost_reflection",
+      "image_id": "s76",
       "title_key": "frt.s76.title",
       "body_key": "frt.s76.body",
       "choices": [
@@ -827,7 +887,7 @@
       ]
     },
     "s77": {
-      "image_id": "deep_path",
+      "image_id": "s77",
       "title_key": "frt.s77.title",
       "body_key": "frt.s77.body",
       "choices": [
@@ -837,7 +897,7 @@
       ]
     },
     "s78": {
-      "image_id": "bunker_door",
+      "image_id": "s78",
       "title_key": "frt.s78.title",
       "body_key": "frt.s78.body",
       "choices": [
@@ -847,7 +907,7 @@
       ]
     },
     "s79": {
-      "image_id": "corridor_concrete",
+      "image_id": "s79",
       "title_key": "frt.s79.title",
       "body_key": "frt.s79.body",
       "choices": [
@@ -857,7 +917,7 @@
       ]
     },
     "s80": {
-      "image_id": "control_room",
+      "image_id": "s80",
       "title_key": "frt.s80.title",
       "body_key": "frt.s80.body",
       "choices": [
@@ -875,7 +935,7 @@
       ]
     },
     "s81": {
-      "image_id": "control_room",
+      "image_id": "s81",
       "title_key": "frt.s81.title",
       "body_key": "frt.s81.body",
       "choices": [

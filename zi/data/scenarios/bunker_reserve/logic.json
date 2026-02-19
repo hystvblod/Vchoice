@@ -596,7 +596,7 @@
       "title_key": "br.s52.title",
       "body_key": "br.s52.body",
       "choices": [
-        { "choice_key": "br.s52.c1", "next": "s55" },
+        { "choice_key": "br.s52.c1", "next": "end_good" },
         { "choice_key": "br.s52.c2", "next": "s49" },
         { "choice_key": "br.s52.c3", "next": "s56" }
       ]

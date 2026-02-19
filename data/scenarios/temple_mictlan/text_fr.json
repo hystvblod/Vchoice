@@ -80,8 +80,8 @@
     "tm.s12.body": "Une porte de pierre. Pas de poignée. Juste un creux en forme d’éclat d’obsidienne. Une serrure… sans métal. Elle attend quelque chose de précis.",
     "tm.s12.c1": "Chercher autour (alcôves, sol, fissures)",
     "tm.s12.c2": "Tenter de forcer (mauvaise idée)",
-    "tm.s12.c3": "Prendre un autre passage",
-    "tm.s12.c4": "Insérer l’obsidienne dans le creux",
+    "tm.s12.c3": "Insérer l’obsidienne dans le creux",
+    
 
     "tm.s13.title": "Alcôves et crânes",
     "tm.s13.body": "Des crânes alignés, impeccables, presque polis. Dans certaines orbites : des perles de jade. Le décor est trop “rangé” pour être mort.",
@@ -444,7 +444,7 @@
     "tm.s72.c3": "Reprendre tes objets (risqué)",
 
     "tm.s73.title": "Le mensonge",
-    "tm.s73.body": "Tu promets de revenir. Le temple “accepte” — pas comme une personne, comme un mécanisme. Tu sens une marque froide : un contrat.",
+    "tm.s73.body": "Tu promets de revenir. Le temple “accepte”. Tu sens une marque froide : un contrat.",
     "tm.s73.c1": "Fuir tant que c’est possible",
     "tm.s73.c2": "Rester et chercher une vraie sortie",
     "tm.s73.c3": "Te taire et respirer le moins possible",

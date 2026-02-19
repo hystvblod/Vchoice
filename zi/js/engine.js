@@ -811,6 +811,145 @@ function showLockedChoiceModal(choice){
 /* =========================
    ENDINGS
 ========================= */
+
+// End modal (game.html) helpers
+let __endBusy = false;
+
+function ensureEndModal(){
+  // Si ton HTML a déjà le modal, on ne recrée rien.
+  let modal = $("endModal");
+  if(modal) return;
+
+  modal = document.createElement("div");
+  modal.id = "endModal";
+  modal.className = "modal hidden";
+  modal.setAttribute("aria-hidden", "true");
+
+  const backdrop = document.createElement("div");
+  backdrop.id = "endBackdrop";
+  backdrop.className = "modal__backdrop";
+
+  const panel = document.createElement("div");
+  panel.className = "modal__content";
+
+  const head = document.createElement("div");
+  head.className = "modal__header";
+
+  const title = document.createElement("div");
+  title.id = "endTitle";
+  title.className = "modal__title";
+
+  const close = document.createElement("button");
+  close.type = "button";
+  close.id = "endClose";
+  close.className = "modal__close";
+  close.textContent = "×";
+
+  head.appendChild(title);
+  head.appendChild(close);
+
+  const body = document.createElement("div");
+  body.id = "endBody";
+  body.className = "modal__body";
+
+  const actions = document.createElement("div");
+  actions.style.display = "flex";
+  actions.style.gap = "10px";
+  actions.style.marginTop = "14px";
+  actions.style.justifyContent = "flex-end";
+
+  // IDs utilisés si on génère le modal nous-mêmes
+  const btnQuit = document.createElement("button");
+  btnQuit.type = "button";
+  btnQuit.id = "endQuit";
+  btnQuit.className = "btn btn--ghost";
+
+  const btnDouble = document.createElement("button");
+  btnDouble.type = "button";
+  btnDouble.id = "endDouble";
+  btnDouble.className = "btn";
+
+  actions.appendChild(btnQuit);
+  actions.appendChild(btnDouble);
+
+  body.appendChild(actions);
+
+  panel.appendChild(head);
+  panel.appendChild(body);
+
+  modal.appendChild(backdrop);
+  modal.appendChild(panel);
+
+  document.body.appendChild(modal);
+
+  close.onclick = () => hideEndModal();
+  backdrop.onclick = () => hideEndModal();
+}
+
+function setEndModalText(titleText, bodyText){
+  const t = $("endTitle");
+  const b = $("endBody");
+  if(t) t.textContent = titleText || "";
+  if(b) b.textContent = bodyText || "";
+}
+
+function showEndModal(opts){
+  ensureEndModal();
+
+  const modal = $("endModal");
+  const close = $("endClose");
+  const back  = $("endBackdrop");
+
+  const btnQuit   = $("btnEndBack")  || $("endQuit");
+  const btnDouble = $("btnEndReplay") || $("endDouble");
+
+  __endBusy = false;
+
+  if(close) close.onclick = () => { if(!__endBusy) hideEndModal(); };
+  if(back)  back.onclick  = () => { if(!__endBusy) hideEndModal(); };
+
+  if(btnQuit){
+    btnQuit.textContent = tUI("end_btn_quit") || tUI("btn_exit") || "Quitter";
+    btnQuit.disabled = false;
+  }
+  if(btnDouble){
+    btnDouble.textContent = tUI("end_btn_double") || "Doubler";
+    btnDouble.disabled = false;
+  }
+
+  if(btnQuit){
+    btnQuit.onclick = async () => {
+      if(__endBusy) return;
+      __endBusy = true;
+      btnQuit.disabled = true;
+      if(btnDouble) btnDouble.disabled = true;
+      try{ await (opts?.onQuit?.()); }catch(e){}
+    };
+  }
+
+  if(btnDouble){
+    btnDouble.onclick = async () => {
+      if(__endBusy) return;
+      __endBusy = true;
+      if(btnQuit) btnQuit.disabled = true;
+      btnDouble.disabled = true;
+      try{ await (opts?.onDouble?.()); }catch(e){}
+    };
+  }
+
+  if(modal){
+    modal.classList.remove("hidden");
+    modal.setAttribute("aria-hidden", "false");
+  }
+}
+
+function hideEndModal(){
+  const modal = $("endModal");
+  if(!modal) return;
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden", "true");
+}
+
 async function handleEnding(ending){
   const e = String(ending || "").trim().toLowerCase();
   if(!["good","bad","secret"].includes(e)){
@@ -818,29 +957,70 @@ async function handleEnding(ending){
     return;
   }
 
+  // On remet l'état local du scénario pour éviter de "rejouer" la fin au reload
   hardResetScenario(currentScenarioId);
 
-  let reward = 300;
-  let newVcoins = null;
+  const endingLabel = (e === "good") ? "bonne" : (e === "bad") ? "mauvaise" : "secrète";
+  const baseReward = 300;
 
-  if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
-    const res = await window.VUserData.completeScenario(currentScenarioId, e);
-    if(res?.ok && res?.data){
-      reward = Number(res.data.reward ?? 300);
-      newVcoins = (typeof res.data.vcoins === "number") ? res.data.vcoins : null;
+  const title = tUI("ending_title") || "Fin";
+  const line1 = tUI("end_congrats", { ending: endingLabel }) || `Bravo, tu as terminé la fin : ${endingLabel}.`;
+  const line2 = tUI("end_reward", { reward: String(baseReward) }) || `Bravo, tu as gagné ${baseReward} VCoins.`;
+
+  const goIndex = () => { location.href = "index.html"; };
+
+  setEndModalText(title, `${line1}\n\n${line2}`);
+
+  showEndModal({
+    onQuit: async () => {
+      // ✅ récompense normale + log ending (server authoritative)
+      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+        try{ await window.VUserData.completeScenario(currentScenarioId, e); }catch(_){}
+      }
+      goIndex();
+    },
+    onDouble: async () => {
+      // ✅ tente rewarded puis bonus +300 si ok
+      const wait = tUI("end_double_wait") || "Validation en cours…";
+      setEndModalText(title, `${line1}\n\n${line2}\n\n${wait}`);
+
+      const r = (window.VAds && typeof window.VAds.showRewarded === "function")
+        ? await window.VAds.showRewarded()
+        : { ok:false, reason:"no_rewarded_provider" };
+
+      if(!r?.ok){
+        // Pub indisponible → on redonne la main
+        const msg = tUI("end_double_unavailable") || "Publicité indisponible. Tu peux quitter avec la récompense normale.";
+        setEndModalText(title, `${line1}\n\n${line2}\n\n${msg}`);
+
+        __endBusy = false;
+        const btnQuit   = $("btnEndBack")  || $("endQuit");
+        const btnDouble = $("btnEndReplay") || $("endDouble");
+        if(btnQuit) btnQuit.disabled = false;
+        if(btnDouble) btnDouble.disabled = false;
+        return;
+      }
+
+      // 1) reward base + log ending
+      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+        try{ await window.VUserData.completeScenario(currentScenarioId, e); }catch(_){}
+      }
+
+      // 2) bonus +300 (toujours RPC sécurisé)
+      if(window.VCRemoteStore && typeof window.VCRemoteStore.addVcoins === "function"){
+        try{
+          await window.VCRemoteStore.addVcoins(baseReward);
+          if(window.VUserData && typeof window.VUserData.refresh === "function"){
+            await window.VUserData.refresh().catch(() => false);
+          }
+        }catch(_){}
+      }
+
+      goIndex();
     }
-  }
+  });
 
-  const title = tUI("ending_title");
-  const desc  = tUI("ending_desc");
-  const toast = tUI("reward_toast", { reward: String(reward) });
-
-  const extra = (typeof newVcoins === "number")
-    ? `\n\n${toast}\nVCoins: ${newVcoins}`
-    : `\n\n${toast}`;
-
-  showHintModal(title, `${desc}\n\n(${e.toUpperCase()})${extra}`);
-
+  // On garde le rendu "derrière" (optionnel)
   renderScene();
 }
 

@@ -692,11 +692,46 @@ function bindHintModal(){
   if(back) back.onclick = hideHintModal;
 }
 
-function prettyFlagTitle(flag){
-  const key = `hf.clue.${flag}.title`;
-  const v = (TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key)) ? TEXT_STRINGS[key] : deepGet(TEXT, key);
-  return v || flag;
+function getScenarioNS(){
+  // 1) si meta existe (nouveaux scénarios)
+  if (LOGIC && LOGIC.meta){
+    if (LOGIC.meta.title_key) return String(LOGIC.meta.title_key).split(".")[0];
+    if (LOGIC.meta.hint_ns)   return String(LOGIC.meta.hint_ns).split(".")[0];
+  }
+
+  // 2) fallback : on déduit depuis les clés présentes dans le texte (ex: tm.s01.title)
+  if (TEXT_STRINGS){
+    const keys = Object.keys(TEXT_STRINGS);
+    for (const k of keys){
+      const m = /^([a-z0-9_]+)\.s\d{2}\.title$/i.exec(k);
+      if (m) return m[1];
+    }
+    for (const k of keys){
+      const m = /^([a-z0-9_]+)\.h\./i.exec(k);
+      if (m) return m[1];
+    }
+  }
+
+  return "hf";
 }
+
+function prettyFlagTitle(flag){
+  const ns = getScenarioNS();
+  const keys = [
+    `${ns}.clue.${flag}.title`, // <-- ce que tu veux (par scénario)
+    `hf.clue.${flag}.title`     // <-- compat si jamais
+  ];
+
+  for (const key of keys){
+    const v = (TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key))
+      ? TEXT_STRINGS[key]
+      : deepGet(TEXT, key);
+    if (v) return v;
+  }
+
+  return flag;
+}
+
 
 function getMissingFlagsForChoice(choice){
   const flags = scenarioStates[currentScenarioId]?.flags || {};
