@@ -924,8 +924,10 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 }
 
 /* =========================================================
-   ✅ MODAL JETONS — AJOUTS (titre centré + header compact + guide label)
+   ✅ MODAL JETONS — AJOUTS (SANS COFFRE, POLICES + GRANDES, ALIGNEMENTS OK)
    ========================================================= */
+
+/* titre centré + X à droite */
 #jetonModal .modal__head{
   justify-content: center;
   position: relative;
@@ -933,6 +935,8 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 #jetonModal .modal__title{
   text-align: center;
   width: 100%;
+  font-size: 18px;      /* + lisible */
+  letter-spacing: .2px;
 }
 #jetonModal .modal__close{
   position: absolute;
@@ -941,44 +945,42 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   transform: translateY(-50%);
 }
 
-/* header compact */
+/* bloc du haut : jeton à gauche / solde à droite */
 .jeton_top{
   display:flex;
   align-items:center;
   justify-content: space-between;
   gap:12px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
+
 .jeton_top__coin{
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  flex: 0 0 auto;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
-}
-.jeton_top__chest{
-  width: 44px;
+  width: 44px;          /* visible mais pas “hyper gros” */
   height: 44px;
   object-fit: contain;
   flex: 0 0 auto;
-  opacity: .92;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,.30));
 }
+
 .jeton_top__info{
   flex: 1 1 auto;
   min-width: 0;
   display:flex;
   flex-direction: column;
+  align-items: flex-end; /* ✅ “en face” */
   gap: 2px;
 }
+
 .jeton_top__label{
-  font-weight: 800;
-  opacity: .9;
-  font-size: 14px;
+  font-weight: 850;
+  opacity: .92;
+  font-size: 15px;      /* + grand */
+  line-height: 1.15;
 }
+
 .jeton_top__count{
   font-weight: 950;
-  font-size: 20px;
+  font-size: 18px;      /* + grand */
   line-height: 1.1;
 }
 
@@ -988,16 +990,19 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   gap: 10px;
 }
 
-/* “Guide…” en texte simple */
-.jeton_guide_label{
-  margin-top: 2px;
-  padding: 0 2px;
-  font-weight: 900;
-  font-size: 13px;
-  opacity: .88;
+/* boutons popup un peu + grands */
+#jetonModal .btn{
+  padding: 11px 14px;
+  font-size: 15px;      /* ✅ plus lisible */
+  border-radius: 14px;
 }
 
-/* cibles visibles direct */
+/* centre le texte du bouton guide */
+.jeton_guide_btn{
+  text-align: center;
+}
+
+/* targets */
 .jeton_targets{
   display:grid;
   gap: 8px;
@@ -1006,5 +1011,15 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 
 .jeton_msg{
   opacity:.85;
-  font-size:14px;
+  font-size:14.5px;
+  line-height: 1.4;
+}
+
+/* mobile */
+@media (max-width: 520px){
+  #jetonModal .modal__title{ font-size: 17px; }
+  .jeton_top__coin{ width: 42px; height: 42px; }
+  .jeton_top__label{ font-size: 14.5px; }
+  .jeton_top__count{ font-size: 17px; }
+  #jetonModal .btn{ font-size: 14.8px; }
 }

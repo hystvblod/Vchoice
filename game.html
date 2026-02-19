@@ -62,6 +62,7 @@
         </div>
         <div class="modal__body" id="resumeBody"></div>
 
+        <!-- boutons (pas de texte en dur) -->
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
           <button id="btnResumeRestart" class="btn btn--ghost" type="button"></button>
           <button id="btnResumeContinue" class="btn" type="button"></button>
@@ -79,6 +80,7 @@
         </div>
         <div class="modal__body" id="endBody"></div>
 
+        <!-- boutons (pas de texte en dur) -->
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
           <button id="btnEndBack" class="btn btn--ghost" type="button"></button>
           <button id="btnEndReplay" class="btn" type="button"></button>
@@ -97,19 +99,23 @@
 
         <div class="modal__body">
 
-          <!-- ✅ Ligne solde : icône gauche / solde droite -->
-          <div class="jeton_balance_row">
-            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_balance_icon" />
-            <div class="jeton_balance_text">
-              <span id="jetonBalanceLabel"></span>
-              <span id="jetonModalCount">0</span>
+          <!-- ✅ Jeton à gauche / Solde à droite (sans coffre) -->
+          <div class="jeton_top">
+            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
+            <div class="jeton_top__info">
+              <div class="jeton_top__label">
+                <span id="jetonBalanceLabel"></span>
+              </div>
+              <div class="jeton_top__count">
+                <span id="jetonModalCount">0</span>
+              </div>
             </div>
           </div>
 
           <div class="jeton_actions">
             <button id="btnJetonBackModal" class="btn btn--ghost" type="button"></button>
 
-            <!-- ✅ Centre le texte -->
+            <!-- ✅ texte bien centré -->
             <button id="btnJetonGuide" class="btn jeton_guide_btn" type="button"></button>
 
             <div id="jetonGuideTargets" class="hidden jeton_targets">
