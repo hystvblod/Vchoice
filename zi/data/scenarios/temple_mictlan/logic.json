@@ -1,7 +1,7 @@
 {
   "meta": {
     "scenario_id": "temple_mictlan",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title_key": "tm.title",
     "tagline_key": "tm.tagline",
     "start_scene": "s01",
@@ -246,8 +246,7 @@
       "choices": [
         { "choice_key": "tm.s12.c1", "next": "s13" },
         { "choice_key": "tm.s12.c2", "next": "s15" },
-        { "choice_key": "tm.s12.c3", "next": " s17", "requires_any_flags": ["has_obsidian"] }
-      
+        { "choice_key": "tm.s12.c3", "next": "s17", "requires_any_flags": ["has_obsidian"] }
       ]
     },
 
@@ -258,7 +257,7 @@
       "choices": [
         { "choice_key": "tm.s13.c1", "next": "s15", "set_flags": ["has_jade"] },
         { "choice_key": "tm.s13.c2", "next": "s12" },
-        { "choice_key": "tm.s13.c3", "next": "s18" }
+        { "choice_key": "tm.s13.c3", "next": "s14" }
       ]
     },
 
@@ -316,6 +315,7 @@
         { "choice_key": "tm.s18.c3", "next": "s12" }
       ]
     },
+
     "s19": {
       "image_id": "s19",
       "title_key": "tm.s19.title",
@@ -417,6 +417,7 @@
         { "choice_key": "tm.s28.c3", "next": "s17", "set_flags": ["has_obsidian"] }
       ]
     },
+
     "s29": {
       "image_id": "s29",
       "title_key": "tm.s29.title",
@@ -464,7 +465,7 @@
       "title_key": "tm.s33.title",
       "body_key": "tm.s33.body",
       "choices": [
-        { "choice_key": "tm.s33.c1", "next": "s34" },
+        { "choice_key": "tm.s33.c1", "next": "s34", "set_flags": ["has_jade"] },
         { "choice_key": "tm.s33.c2", "next": "s19" },
         { "choice_key": "tm.s33.c3", "next": "s18" }
       ]
@@ -474,11 +475,12 @@
       "title_key": "tm.s34.title",
       "body_key": "tm.s34.body",
       "choices": [
-        { "choice_key": "tm.s34.c1", "next": "s43", "requires_any_flags": ["has_codex", "has_jade"] },
+        { "choice_key": "tm.s34.c1", "next": "s43", "requires_all_flags": ["has_codex", "has_jade"] },
         { "choice_key": "tm.s34.c2", "next": "s30" },
         { "choice_key": "tm.s34.c3", "next": "s30" }
       ]
     },
+
     "s35": {
       "image_id": "s35",
       "title_key": "tm.s35.title",
@@ -620,7 +622,7 @@
       "body_key": "tm.s48.body",
       "choices": [
         { "choice_key": "tm.s48.c1", "next": "s47" },
-        { "choice_key": "tm.s48.c2", "next": "s49" },
+        { "choice_key": "tm.s48.c2", "next": "s56" },
         { "choice_key": "tm.s48.c3", "next": "s47", "requires_any_flags": ["has_salt"] }
       ]
     },
@@ -639,7 +641,7 @@
       "title_key": "tm.s50.title",
       "body_key": "tm.s50.body",
       "choices": [
-        { "choice_key": "tm.s50.c1", "next": "s53" },
+        { "choice_key": "tm.s50.c1", "next": "s53", "requires_any_flags": ["has_codex"] },
         { "choice_key": "tm.s50.c2", "next": "s35" },
         { "choice_key": "tm.s50.c3", "next": "s63" }
       ]
@@ -786,10 +788,11 @@
       "body_key": "tm.s64.body",
       "choices": [
         { "choice_key": "tm.s64.c1", "next": "s67" },
-        { "choice_key": "tm.s64.c2", "next": "s75" },
+        { "choice_key": "tm.s64.c2", "next": "s65" },
         { "choice_key": "tm.s64.c3", "next": "s66", "requires_any_flags": ["has_codex"] }
       ]
     },
+
     "s65": {
       "image_id": "s65",
       "title_key": "tm.s65.title",
@@ -800,6 +803,7 @@
         { "choice_key": "tm.s65.c3", "next": "s71" }
       ]
     },
+
     "s66": {
       "image_id": "s66",
       "title_key": "tm.s66.title",
@@ -810,6 +814,7 @@
         { "choice_key": "tm.s66.c3", "next": "s68" }
       ]
     },
+
     "s67": {
       "image_id": "s67",
       "title_key": "tm.s67.title",
@@ -825,7 +830,7 @@
       "title_key": "tm.s68.title",
       "body_key": "tm.s68.body",
       "choices": [
-        { "choice_key": "tm.s68.c1", "next": "s70" },
+        { "choice_key": "tm.s68.c1", "next": "s70", "set_flags": ["has_name"] },
         { "choice_key": "tm.s68.c2", "next": "s67" },
         { "choice_key": "tm.s68.c3", "next": "s69" }
       ]
@@ -867,7 +872,7 @@
       "body_key": "tm.s72.body",
       "choices": [
         { "choice_key": "tm.s72.c1", "next": "s75" },
-        { "choice_key": "tm.s72.c2", "next": "s75", "requires_any_flags": ["has_name"] },
+        { "choice_key": "tm.s72.c2", "next": "s70", "requires_any_flags": ["has_name"] },
         { "choice_key": "tm.s72.c3", "next": "s57" }
       ]
     },
@@ -878,11 +883,7 @@
       "choices": [
         { "choice_key": "tm.s73.c1", "next": "s75" },
         { "choice_key": "tm.s73.c2", "next": "s80" },
-        {
-          "choice_key": "tm.s73.c3",
-          "next": "end_secret",
-          "requires_all_flags": ["has_codex", "has_jade", "has_obsidian", "has_rope"]
-        }
+        { "choice_key": "tm.s73.c3", "next": "s70" }
       ]
     },
     "s74": {
@@ -912,7 +913,7 @@
       "choices": [
         { "choice_key": "tm.s76.c1", "next": "s77" },
         { "choice_key": "tm.s76.c2", "next": "end_bad" },
-        { "choice_key": "tm.s76.c3", "next": "s73", "requires_any_flags": ["has_name", "has_offering"] }
+        { "choice_key": "tm.s76.c3", "next": "end_secret", "requires_any_flags": ["has_name"] }
       ]
     },
     "s77": {
@@ -955,7 +956,7 @@
         {
           "choice_key": "tm.s80.c3",
           "next": "end_secret",
-          "requires_all_flags": ["has_codex", "has_jade", "has_obsidian", "has_rope", "has_name", "has_offering"]
+          "requires_all_flags": ["has_codex", "has_jade", "has_obsidian", "has_name", "has_offering"]
         }
       ]
     },

@@ -468,12 +468,6 @@
 
     "msz.end_secret.title": "Fin secrète — Opérateur actif",
     "msz.end_secret.body": "Toutes tes preuves s’alignent. La station se stabilise… et révèle sa fonction : trier, valider, assigner. Les écrans affichent : « OPÉRATEUR ACTIF ». Le siège t’attend. Et tu sens, avec une horreur calme, que la prochaine annonce… c’est toi qui la feras.",
-    "msz.clue.has_map_fragment.title": "Fragment de plan",
-    "msz.clue.has_name_tag.title": "Étiquette de nom",
-    "msz.clue.has_phone_recording.title": "Enregistrement téléphone",
-    "msz.clue.has_service_key.title": "Clé de service",
-    "msz.clue.has_zero_ticket.title": "Ticket Zéro",
-
 
     "msz.h.s11.soft": "Les panneaux ne guident pas : ils testent ce que tu suis.",
     "msz.h.s11.strong": "Trouve un moyen d’obtenir un ticket « 0 » : c’est une reconnaissance d’accès.",
@@ -494,6 +488,12 @@
     "msz.h.s68.strong": "Pour une sortie “réelle”, garde des preuves (au moins 1) et évite la rame.",
 
     "msz.h.s72.soft": "Le choix est une signature.",
-    "msz.h.s72.strong": "La rame mène à la fin mauvaise. La voie “ISSUE” mène vers la sortie réelle."
+    "msz.h.s72.strong": "La rame mène à la fin mauvaise. La voie “ISSUE” mène vers la sortie réelle.",
+
+    "msz.clue.has_map_fragment.title": "Fragment de plan",
+    "msz.clue.has_name_tag.title": "Étiquette de nom",
+    "msz.clue.has_phone_recording.title": "Enregistrement téléphone",
+    "msz.clue.has_service_key.title": "Clé de service",
+    "msz.clue.has_zero_ticket.title": "Ticket Zéro"
   }
 }

@@ -481,17 +481,6 @@
     "ca.end_bad.body": "Tu restes. Les rideaux se referment sans vent. Les miroirs ne te montrent plus. Tu comprends trop tard : tu n’étais pas invité… tu étais attendu.",
     "ca.end_secret.title": "Fin secrète — Rupture",
     "ca.end_secret.body": "Le symbole s’active. La poussière spirale, puis tombe d’un coup. Tu sens le lien se rompre, net. Le château devient un décor vide — enfin. Mais tu gardes en toi la certitude que tu as “coupé” quelque chose qui savait ton nom.",
-    "ca.clue.entered_crypt.title": "Crypte atteinte",
-    "ca.clue.found_secret_passage.title": "Passage secret",
-    "ca.clue.has_chapel_key.title": "Clé de la chapelle",
-    "ca.clue.has_diary_page.title": "Page de journal",
-    "ca.clue.has_map_fragment.title": "Fragment de plan",
-    "ca.clue.has_recording.title": "Enregistrement",
-    "ca.clue.has_signet.title": "Chevalière",
-    "ca.clue.knows_symbol.title": "Symbole compris",
-    "ca.clue.refused_call.title": "Appel refusé",
-    "ca.clue.touched_mirror.title": "Miroir touché",
-
 
     "ca.h.s14.soft": "La page arrachée n’est pas un lore : c’est une preuve.",
     "ca.h.s14.strong": "Prends la page au bureau (has_diary_page) : elle compte pour sortir correctement.",
@@ -509,6 +498,17 @@
     "ca.h.s56.strong": "Sans has_map_fragment + knows_symbol, tu ne peux pas ouvrir l’alcôve vers le passage secret.",
 
     "ca.h.s73.soft": "La crypte ne te juge pas sur le courage, mais sur la cohérence.",
-    "ca.h.s73.strong": "Pour s73→s74, il faut tout : has_signet + has_chapel_key + has_diary_page + has_recording + has_map_fragment."
+    "ca.h.s73.strong": "Pour s73→s74, il faut tout : has_signet + has_chapel_key + has_diary_page + has_recording + has_map_fragment.",
+
+    "ca.clue.entered_crypt.title": "Crypte atteinte",
+    "ca.clue.found_secret_passage.title": "Passage secret",
+    "ca.clue.has_chapel_key.title": "Clé de la chapelle",
+    "ca.clue.has_diary_page.title": "Page de journal",
+    "ca.clue.has_map_fragment.title": "Fragment de plan",
+    "ca.clue.has_recording.title": "Enregistrement",
+    "ca.clue.has_signet.title": "Chevalière",
+    "ca.clue.knows_symbol.title": "Symbole compris",
+    "ca.clue.refused_call.title": "Appel refusé",
+    "ca.clue.touched_mirror.title": "Miroir touché"
   }
 }

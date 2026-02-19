@@ -23,7 +23,6 @@
   },
   "images": {
     "cover": { "file": "assets/scenarios/temple_mictlan/img/cover.webp" },
-
     "s01": { "file": "assets/scenarios/temple_mictlan/img/s01.webp" },
     "s02": { "file": "assets/scenarios/temple_mictlan/img/s02.webp" },
     "s03": { "file": "assets/scenarios/temple_mictlan/img/s03.webp" },
@@ -34,7 +33,6 @@
     "s08": { "file": "assets/scenarios/temple_mictlan/img/s08.webp" },
     "s09": { "file": "assets/scenarios/temple_mictlan/img/s09.webp" },
     "s10": { "file": "assets/scenarios/temple_mictlan/img/s10.webp" },
-
     "s11": { "file": "assets/scenarios/temple_mictlan/img/s11.webp" },
     "s12": { "file": "assets/scenarios/temple_mictlan/img/s12.webp" },
     "s13": { "file": "assets/scenarios/temple_mictlan/img/s13.webp" },
@@ -45,7 +43,6 @@
     "s18": { "file": "assets/scenarios/temple_mictlan/img/s18.webp" },
     "s19": { "file": "assets/scenarios/temple_mictlan/img/s19.webp" },
     "s20": { "file": "assets/scenarios/temple_mictlan/img/s20.webp" },
-
     "s21": { "file": "assets/scenarios/temple_mictlan/img/s21.webp" },
     "s22": { "file": "assets/scenarios/temple_mictlan/img/s22.webp" },
     "s23": { "file": "assets/scenarios/temple_mictlan/img/s23.webp" },
@@ -56,7 +53,6 @@
     "s28": { "file": "assets/scenarios/temple_mictlan/img/s28.webp" },
     "s29": { "file": "assets/scenarios/temple_mictlan/img/s29.webp" },
     "s30": { "file": "assets/scenarios/temple_mictlan/img/s30.webp" },
-
     "s31": { "file": "assets/scenarios/temple_mictlan/img/s31.webp" },
     "s32": { "file": "assets/scenarios/temple_mictlan/img/s32.webp" },
     "s33": { "file": "assets/scenarios/temple_mictlan/img/s33.webp" },
@@ -67,7 +63,6 @@
     "s38": { "file": "assets/scenarios/temple_mictlan/img/s38.webp" },
     "s39": { "file": "assets/scenarios/temple_mictlan/img/s39.webp" },
     "s40": { "file": "assets/scenarios/temple_mictlan/img/s40.webp" },
-
     "s41": { "file": "assets/scenarios/temple_mictlan/img/s41.webp" },
     "s42": { "file": "assets/scenarios/temple_mictlan/img/s42.webp" },
     "s43": { "file": "assets/scenarios/temple_mictlan/img/s43.webp" },
@@ -78,7 +73,6 @@
     "s48": { "file": "assets/scenarios/temple_mictlan/img/s48.webp" },
     "s49": { "file": "assets/scenarios/temple_mictlan/img/s49.webp" },
     "s50": { "file": "assets/scenarios/temple_mictlan/img/s50.webp" },
-
     "s51": { "file": "assets/scenarios/temple_mictlan/img/s51.webp" },
     "s52": { "file": "assets/scenarios/temple_mictlan/img/s52.webp" },
     "s53": { "file": "assets/scenarios/temple_mictlan/img/s53.webp" },
@@ -89,7 +83,6 @@
     "s58": { "file": "assets/scenarios/temple_mictlan/img/s58.webp" },
     "s59": { "file": "assets/scenarios/temple_mictlan/img/s59.webp" },
     "s60": { "file": "assets/scenarios/temple_mictlan/img/s60.webp" },
-
     "s61": { "file": "assets/scenarios/temple_mictlan/img/s61.webp" },
     "s62": { "file": "assets/scenarios/temple_mictlan/img/s62.webp" },
     "s63": { "file": "assets/scenarios/temple_mictlan/img/s63.webp" },
@@ -100,7 +93,6 @@
     "s68": { "file": "assets/scenarios/temple_mictlan/img/s68.webp" },
     "s69": { "file": "assets/scenarios/temple_mictlan/img/s69.webp" },
     "s70": { "file": "assets/scenarios/temple_mictlan/img/s70.webp" },
-
     "s71": { "file": "assets/scenarios/temple_mictlan/img/s71.webp" },
     "s72": { "file": "assets/scenarios/temple_mictlan/img/s72.webp" },
     "s73": { "file": "assets/scenarios/temple_mictlan/img/s73.webp" },
@@ -111,7 +103,6 @@
     "s78": { "file": "assets/scenarios/temple_mictlan/img/s78.webp" },
     "s79": { "file": "assets/scenarios/temple_mictlan/img/s79.webp" },
     "s80": { "file": "assets/scenarios/temple_mictlan/img/s80.webp" },
-
     "final_good": { "file": "assets/scenarios/temple_mictlan/img/final_good.webp" },
     "final_bad": { "file": "assets/scenarios/temple_mictlan/img/final_bad.webp" },
     "final_secret": { "file": "assets/scenarios/temple_mictlan/img/final_secret.webp" }
@@ -228,7 +219,6 @@
         { "choice_key": "tm.s10.c3", "next": "s11" }
       ]
     },
-
     "s11": {
       "image_id": "s11",
       "title_key": "tm.s11.title",
@@ -249,7 +239,6 @@
         { "choice_key": "tm.s12.c3", "next": "s17", "requires_any_flags": ["has_obsidian"] }
       ]
     },
-
     "s13": {
       "image_id": "s13",
       "title_key": "tm.s13.title",
@@ -260,7 +249,6 @@
         { "choice_key": "tm.s13.c3", "next": "s14" }
       ]
     },
-
     "s14": {
       "image_id": "s14",
       "title_key": "tm.s14.title",
@@ -271,7 +259,6 @@
         { "choice_key": "tm.s14.c3", "next": "s18" }
       ]
     },
-
     "s15": {
       "image_id": "s15",
       "title_key": "tm.s15.title",
@@ -282,7 +269,6 @@
         { "choice_key": "tm.s15.c3", "next": "s18" }
       ]
     },
-
     "s16": {
       "image_id": "s16",
       "title_key": "tm.s16.title",
@@ -293,7 +279,6 @@
         { "choice_key": "tm.s16.c3", "next": "s12" }
       ]
     },
-
     "s17": {
       "image_id": "s17",
       "title_key": "tm.s17.title",
@@ -304,7 +289,6 @@
         { "choice_key": "tm.s17.c3", "next": "s02" }
       ]
     },
-
     "s18": {
       "image_id": "s18",
       "title_key": "tm.s18.title",
@@ -312,7 +296,7 @@
       "choices": [
         { "choice_key": "tm.s18.c1", "next": "s29" },
         { "choice_key": "tm.s18.c2", "next": "s33" },
-        { "choice_key": "tm.s18.c3", "next": "s12" }
+        { "choice_key": "tm.s18.c3", "next": "s55" }
       ]
     },
 
@@ -488,7 +472,7 @@
       "choices": [
         { "choice_key": "tm.s35.c1", "next": "s24", "requires_any_flags": ["has_salt"] },
         { "choice_key": "tm.s35.c2", "next": "s30" },
-        { "choice_key": "tm.s35.c3", "next": "s58" }
+        { "choice_key": "tm.s35.c3", "next": "s52" }
       ]
     },
     "s36": {
@@ -601,7 +585,7 @@
       "title_key": "tm.s46.title",
       "body_key": "tm.s46.body",
       "choices": [
-        { "choice_key": "tm.s46.c1", "next": "s47" },
+        { "choice_key": "tm.s46.c1", "next": "s61" },
         { "choice_key": "tm.s46.c2", "next": "s45" },
         { "choice_key": "tm.s46.c3", "next": "s47", "requires_any_flags": ["has_salt"] }
       ]
@@ -626,6 +610,7 @@
         { "choice_key": "tm.s48.c3", "next": "s47", "requires_any_flags": ["has_salt"] }
       ]
     },
+
     "s49": {
       "image_id": "s49",
       "title_key": "tm.s49.title",
@@ -636,13 +621,14 @@
         { "choice_key": "tm.s49.c3", "next": "s56" }
       ]
     },
+
     "s50": {
       "image_id": "s50",
       "title_key": "tm.s50.title",
       "body_key": "tm.s50.body",
       "choices": [
         { "choice_key": "tm.s50.c1", "next": "s53", "requires_any_flags": ["has_codex"] },
-        { "choice_key": "tm.s50.c2", "next": "s35" },
+        { "choice_key": "tm.s50.c2", "next": "s49" },
         { "choice_key": "tm.s50.c3", "next": "s63" }
       ]
     },
@@ -657,6 +643,7 @@
         { "choice_key": "tm.s51.c3", "next": "s50" }
       ]
     },
+
     "s52": {
       "image_id": "s52",
       "title_key": "tm.s52.title",
@@ -664,9 +651,10 @@
       "choices": [
         { "choice_key": "tm.s52.c1", "next": "s35", "requires_any_flags": ["has_salt"] },
         { "choice_key": "tm.s52.c2", "next": "s43" },
-        { "choice_key": "tm.s52.c3", "next": "s60" }
+        { "choice_key": "tm.s52.c3", "next": "s59" }
       ]
     },
+
     "s53": {
       "image_id": "s53",
       "title_key": "tm.s53.title",
@@ -687,6 +675,7 @@
         { "choice_key": "tm.s54.c3", "next": "s63" }
       ]
     },
+
     "s55": {
       "image_id": "s55",
       "title_key": "tm.s55.title",
@@ -697,6 +686,7 @@
         { "choice_key": "tm.s55.c3", "next": "s41" }
       ]
     },
+
     "s56": {
       "image_id": "s56",
       "title_key": "tm.s56.title",
@@ -727,6 +717,7 @@
         { "choice_key": "tm.s58.c3", "next": "s41" }
       ]
     },
+
     "s59": {
       "image_id": "s59",
       "title_key": "tm.s59.title",
@@ -737,6 +728,7 @@
         { "choice_key": "tm.s59.c3", "next": "s75" }
       ]
     },
+
     "s60": {
       "image_id": "s60",
       "title_key": "tm.s60.title",
@@ -758,6 +750,7 @@
         { "choice_key": "tm.s61.c3", "next": "s62" }
       ]
     },
+
     "s62": {
       "image_id": "s62",
       "title_key": "tm.s62.title",
@@ -792,7 +785,6 @@
         { "choice_key": "tm.s64.c3", "next": "s66", "requires_any_flags": ["has_codex"] }
       ]
     },
-
     "s65": {
       "image_id": "s65",
       "title_key": "tm.s65.title",
@@ -803,7 +795,6 @@
         { "choice_key": "tm.s65.c3", "next": "s71" }
       ]
     },
-
     "s66": {
       "image_id": "s66",
       "title_key": "tm.s66.title",
@@ -814,7 +805,6 @@
         { "choice_key": "tm.s66.c3", "next": "s68" }
       ]
     },
-
     "s67": {
       "image_id": "s67",
       "title_key": "tm.s67.title",
@@ -855,7 +845,6 @@
         { "choice_key": "tm.s70.c3", "next": "s71" }
       ]
     },
-
     "s71": {
       "image_id": "s71",
       "title_key": "tm.s71.title",

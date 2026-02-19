@@ -112,7 +112,15 @@
     };
   }
 
+  // ✅ NORMALISE: certaines RPC Supabase renvoient [ { ... } ] au lieu de { ... }
+  function _normalizeRow(data){
+    if (!data) return null;
+    if (Array.isArray(data)) return data[0] || null;
+    return data;
+  }
+
   function _applyMe(me){
+    me = _normalizeRow(me);
     if (!me) return false;
 
     _memState.user_id = String(me.id || "");
@@ -204,7 +212,11 @@
       try{
         const r = await sb.rpc("secure_get_me");
         if (r?.error){ _reportRemoteError("rpc.secure_get_me", r.error); return null; }
-        return r?.data || null;
+
+        // ✅ FIX CRITIQUE: secure_get_me peut renvoyer [row]
+        const data = _normalizeRow(r?.data);
+        return data || null;
+
       }catch(e){
         _reportRemoteError("rpc.secure_get_me.exception", e);
         return null;
@@ -440,7 +452,7 @@
       const res = await window.VCRemoteStore.unlockScenario(id);
       if (!res?.ok) return res || { ok:false, reason:"error" };
 
-      const me = Array.isArray(res.data) ? (res.data[0] || null) : res.data;
+      const me = _normalizeRow(res.data);
       if (me && typeof me === "object"){
         const cur = this.load();
         this.save({
