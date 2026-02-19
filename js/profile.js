@@ -1,22 +1,27 @@
 // js/profile.js
-// Profil VChoice (v3)
+// Profil VChoice (v3.1)
 // - Scénarios EN DUR (plus de catalog.json)
 // - Fix pseudo (i18n ne réécrit plus le texte)
 // - Scénarios en 1 colonne
 // - UI sans encadrés sur bloc profil + pills
+// - Assigne un pseudo automatique si manquant (tentative en base, sinon fallback local)
 
 (function(){
   "use strict";
 
   const ENDINGS_CACHE_KEY = "vchoice_endings_cache_v1";
 
-  // ✅ METS ICI TOUS TES SCÉNARIOS (IDs exacts)
-  // Exemple: dossier14_appartement, bunker_reserve, chateau_absents, etc.
+  // ✅ IDs EXACTS (d'après ton dossier assets/scenarios/)
+  // (On garde le même ordre que ta capture)
   const SCENARIO_IDS = [
-    "dossier14_appartement",
     "bunker_reserve",
-    "chateau_absents"
-    // ajoute ici tous les autres...
+    "chateau_absents",
+    "dossier14_appartement",
+    "foret_relais",
+    "hopital_ferme",
+    "metro_station_zero",
+    "styx_gare",
+    "temple_mictlan"
   ];
 
   function $(id){ return document.getElementById(id); }
@@ -172,6 +177,7 @@
     return /^[a-zA-Z0-9_]+$/.test(s);
   }
 
+  // ✅ pseudo auto (sera TENTÉ d’être écrit dans Supabase via VCRemoteStore.setUsername)
   function genRandomUsername(){
     const n = Math.floor(1000 + Math.random() * 9000);
     return `User_${n}`;
@@ -182,15 +188,27 @@
     const uid = String(st.user_id || "");
     const cur = String(st.username || "").trim();
     if (!uid) return;
+
+    // Déjà un pseudo => OK
     if (cur) return;
 
-    for (let i=0; i<6; i++){
+    // Si VUserData a un fallback local, on l’affiche tout de suite, mais on tente quand même la base
+    const textEl = $("pf_username_text");
+    if (textEl) textEl.textContent = (window.VRI18n?.t?.("ui.profile_username_missing") || "—");
+
+    // Tentatives d’écriture en base (gère collisions via index unique lower(username))
+    for (let i=0; i<8; i++){
       const candidate = genRandomUsername();
       const r = await window.VCRemoteStore?.setUsername?.(candidate);
+
+      // si setUsername n’existe pas, on ne peut rien faire côté base
+      if (r === undefined) return;
+
       if (r && r.ok){
         try{ await window.VUserData?.refresh?.(); }catch(_){}
         return;
       }
+      // si "taken" => on retente
     }
   }
 
@@ -326,9 +344,11 @@
       if (p && typeof p.then === "function") await p;
     }catch(e){ console.error("[VUserData.init]", e); }
 
-    // ✅ Affiche immédiatement (même si l’event vc:profile n’arrive pas)
+    // ✅ Affiche immédiatement
     renderProfileFromState();
 
+    // ✅ Pseudo auto si manquant : OUI, il sera attribué si possible
+    // -> on tente de l’écrire en base via setUsername (sinon fallback local "—")
     try{ await ensureDefaultUsernameIfMissing(); }catch(e){ console.error("[ensureDefaultUsernameIfMissing]", e); }
     renderProfileFromState();
 
