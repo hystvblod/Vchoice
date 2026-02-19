@@ -1,5 +1,5 @@
 /* =========================
-   ENGINE.JS — VERSION MISE À JOUR (Jetons UI)
+   CONFIG
 ========================= */
 const SAVE_KEY = "creepy_engine_save_v1";
 const DEFAULT_LANG = "fr";
@@ -354,6 +354,10 @@ async function reloadUI(){
   applyStaticI18n();
 }
 
+async function loadCatalog(){
+  CATALOG = await fetchJSON(PATHS.catalog);
+}
+
 /* =========================
    STATIC i18n (game.html)
 ========================= */
@@ -434,33 +438,14 @@ function updateJetonModalCount(){
   el.textContent = String(jetons);
 }
 
-/* ✅ Affichage Stop guide uniquement quand guide actif */
-function updateJetonGuideUI(){
-  const targetsBox = $("jetonGuideTargets");
-  const stopBtn = $("btnJetonGuideStop");
-  if(stopBtn){
-    stopBtn.classList.toggle("hidden", !(GUIDE_STATE && GUIDE_STATE.active));
-  }
-
-  // si guide pas actif, on ferme le bloc targets quand on ferme la modal (clean)
-  if(!GUIDE_STATE?.active && targetsBox){
-    // on ne force pas hidden ici pour laisser l’ouverture manuelle,
-    // mais on garde stop caché (géré ci-dessus)
-  }
-}
-
 function showJetonModal(){
   const modal = $("jetonModal");
   if(!modal) return;
   updateJetonModalCount();
-
   const msg = $("jetonModalMsg");
   if(msg) msg.textContent = "";
-
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden","false");
-
-  updateJetonGuideUI();
 }
 
 function hideJetonModal(){
@@ -489,13 +474,11 @@ function bindJetonHud(){
     });
   }
 
-  // Guide "texte" (visuellement) => ouvre les cibles
   const guideBtn = $("btnJetonGuide");
   const targetsBox = $("jetonGuideTargets");
   if(guideBtn && targetsBox){
     guideBtn.addEventListener("click", () => {
-      targetsBox.classList.toggle("hidden");
-      updateJetonGuideUI();
+      targetsBox.classList.remove("hidden");
     });
   }
 
@@ -535,8 +518,6 @@ function bindJetonHud(){
 
         updateHudJetons();
         updateJetonModalCount();
-
-        updateJetonGuideUI();
         hideJetonModal();
         renderScene();
       }catch(e){
@@ -554,7 +535,6 @@ function bindJetonHud(){
       GUIDE_STATE.path = [];
       OVERRIDE_FLAGS = false;
 
-      updateJetonGuideUI();
       renderScene();
 
       const msg = $("jetonModalMsg");
@@ -615,10 +595,6 @@ function bindTopbar(){
 /* =========================
    MENU (index.html)
 ========================= */
-async function loadCatalog(){
-  CATALOG = await fetchJSON(PATHS.catalog);
-}
-
 async function loadScenarioMeta(scenarioId){
   const txt = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
   return (txt && typeof txt === "object" && txt.meta) ? txt.meta : {};
