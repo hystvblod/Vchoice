@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>VChoice</title>
+  <link rel="stylesheet" href="css/app.css" />
+
+  <style>
+    /* Profil — même ambiance que l’index (fond + boutons). */
+    .topbar{ display:none !important; }
+
+    :root{
+      --vc-bg0:#05060a;
+      --vc-bg1:#090b13;
+      --vc-bg2:#0b1226;
+      --vc-card-r:18px;
+      --vc-border:rgba(255,255,255,.10);
+      --vc-text:rgba(255,255,255,.94);
+      --vc-muted:rgba(255,255,255,.68);
+    }
+
+    body{
+      background:
+        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
+        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
+        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      margin:0;
+      color: var(--vc-text);
+    }
+
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      z-index: 0;
+      opacity: .08;
+      background-image: url("assets/img/ui/noise.png");
+      background-size: 260px 260px;
+      mix-blend-mode: overlay;
+    }
+
+    body::after{
+      content:"";
+      position: fixed;
+      inset: -60px;
+      pointer-events:none;
+      z-index: 0;
+      background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
+    }
+
+    .page{ position:relative; z-index:1; padding-bottom:22px; }
+
+    .vc-top-actions{
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
+    }
+    .vc-top-slot{ flex: 1 1 0; display:flex; align-items:center; }
+    .vc-top-left{ justify-content:flex-start; }
+    .vc-top-center{ justify-content:center; }
+    .vc-top-right{ justify-content:flex-end; gap:10px; }
+
+    .vc-icon-button{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.26);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-icon-button img{
+      width:30px;
+      height:30px;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
+    }
+
+    .vc-title-wrap{ padding: 4px 12px 0; }
+    .vc-page-title{ margin: 8px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; }
+    .vc-page-sub{ margin: 6px 0 0; color: var(--vc-muted); font-size: 13px; line-height:1.35; }
+
+    .vc-card{
+      margin: 14px 12px 0;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      box-shadow: 0 18px 50px rgba(0,0,0,.40);
+      overflow:hidden;
+    }
+    .vc-card-inner{ padding: 14px; }
+
+    .vc-balances{ display:flex; gap: 10px; flex-wrap:wrap; }
+    .vc-pill{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      min-width: 160px;
+    }
+    .vc-pill img{ width:28px; height:28px; object-fit:contain; filter: drop-shadow(0 2px 10px rgba(0,0,0,.5)); }
+    .vc-pill .k{ display:block; font-size:12px; color: var(--vc-muted); margin-bottom: 2px; }
+    .vc-pill .v{ display:block; font-weight: 950; font-size: 16px; letter-spacing:.2px; }
+
+    .vc-username-row{ margin-top: 12px; display:flex; gap:10px; align-items:stretch; flex-wrap:wrap; }
+    .vc-input{
+      flex: 1 1 220px;
+      min-width: 180px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      color: #fff;
+      padding: 12px 12px;
+      outline: none;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    .vc-btn{
+      flex: 0 0 auto;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,59,59,.14);
+      color: #fff;
+      padding: 12px 14px;
+      font-weight: 950;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-btn:active{ transform: scale(.99); }
+    .vc-hint{ margin-top: 10px; font-size: 12px; color: var(--vc-muted); line-height:1.35; }
+    .vc-msg{ margin-top: 10px; font-size: 12px; line-height:1.35; display:none; }
+    .vc-msg.ok{ color: rgba(220,255,230,.95); }
+    .vc-msg.err{ color: rgba(255,220,220,.95); }
+
+    .vc-section-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin: 16px 12px 0;
+    }
+    .vc-section-title{ margin:0; font-weight: 950; font-size: 14px; letter-spacing: .2px; }
+    .vc-mini-btn{
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:#fff;
+      padding: 8px 12px;
+      font-weight: 900;
+      cursor:pointer;
+    }
+
+    .vc-scen-grid{
+      margin: 10px 12px 0;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 820px){
+      .vc-scen-grid{ grid-template-columns: 1fr; }
+    }
+
+    .vc-scen-card{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      box-shadow: 0 18px 50px rgba(0,0,0,.28);
+      overflow:hidden;
+    }
+    .vc-scen-inner{ padding: 12px; }
+    .vc-scen-name{ margin:0; font-weight: 950; font-size: 13px; letter-spacing:.2px; }
+    .vc-scen-ends{ margin-top: 10px; display:flex; gap:10px; }
+
+    .vc-end{
+      position:relative;
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+    }
+    .vc-end img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+    .vc-end .full{ opacity:0; transition: opacity .18s ease; }
+    .vc-end.unlocked .full{ opacity:1; }
+
+    .vc-scen-card.is-locked{ opacity:.55; }
+    .vc-scen-card.is-locked .vc-end{ filter: blur(2px); opacity:.55; }
+    .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
+  </style>
+</head>
+
+<body>
+  <div class="vc-top-actions">
+    <div class="vc-top-slot vc-top-left">
+      <a class="vc-icon-button" href="index.html" aria-label="Retour">
+        <img src="assets/img/ui/back.webp" alt="" draggable="false" />
+      </a>
+    </div>
+
+    <div class="vc-top-slot vc-top-center">
+      <a class="vc-icon-button" href="settings.html" aria-label="Paramètres">
+        <img src="assets/img/ui/btn_settings.webp" alt="" draggable="false" />
+      </a>
+    </div>
+
+    <div class="vc-top-slot vc-top-right">
+      <a class="vc-icon-button" href="shop.html" aria-label="Boutique">
+        <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
+      </a>
+    </div>
+  </div>
+
+  <main class="page">
+    <div class="vc-title-wrap">
+      <h1 class="vc-page-title" data-i18n="ui.profile_title"></h1>
+      <p class="vc-page-sub" data-i18n="ui.profile_subtitle"></p>
+    </div>
+
+    <section class="vc-card" aria-label="Profil">
+      <div class="vc-card-inner">
+        <div class="vc-balances">
+          <div class="vc-pill" aria-label="Jetons">
+            <img src="assets/img/ui/jeton.webp" alt="" />
+            <div>
+              <span class="k" data-i18n="ui.profile_jetons"></span>
+              <span class="v" id="pf_jetons">0</span>
+            </div>
+          </div>
+
+          <div class="vc-pill" aria-label="VCoins">
+            <img src="assets/img/ui/vcoin.webp" alt="" />
+            <div>
+              <span class="k" data-i18n="ui.profile_vcoins"></span>
+              <span class="v" id="pf_vcoins">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="vc-username-row" aria-label="Pseudo">
+          <input class="vc-input" id="pf_username" type="text" inputmode="text" autocomplete="off" spellcheck="false"
+                 data-i18n-placeholder="ui.profile_username_placeholder" />
+          <button class="vc-btn" id="pf_save" type="button" data-i18n="ui.profile_username_save"></button>
+        </div>
+        <div class="vc-hint" id="pf_hint" data-i18n="ui.profile_username_hint"></div>
+        <div class="vc-msg" id="pf_msg"></div>
+      </div>
+    </section>
+
+    <div class="vc-section-head">
+      <h2 class="vc-section-title" data-i18n="ui.profile_scenarios_title"></h2>
+      <button class="vc-mini-btn" id="pf_refresh" type="button" data-i18n="ui.profile_refresh"></button>
+    </div>
+
+    <section class="vc-scen-grid" id="pf_scenarios" aria-label="Scénarios"></section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabaseBootstrap.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/userData.js"></script>
+  <script src="js/profile.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 {
   "ui": {
-    "app_title": "VChronicles",
+    "app_title": "VChoice",
     "app_subtitle": "Histoire interactive",
 
     "index_title": "Choisis ton scénario",
@@ -39,6 +39,30 @@
     "end_title_bad": "Fin (mauvaise)",
     "end_title_secret": "Fin (secrète)",
 
+    "profile_title": "Profil",
+    "profile_subtitle": "Ton solde et tes fins débloquées.",
+    "profile_jetons": "Jetons",
+    "profile_vcoins": "VCoins",
+    "profile_username_placeholder": "Pseudo",
+    "profile_username_save": "Enregistrer",
+    "profile_username_hint": "Tu peux modifier ton pseudo une fois gratuitement. Ensuite, chaque changement coûte 1 jeton.",
+    "profile_refresh": "Actualiser",
+    "profile_scenarios_title": "Scénarios",
+
+    "profile_err_not_ready": "Profil non prêt. Réessaie dans quelques secondes.",
+    "profile_username_working": "Mise à jour…",
+    "profile_username_ok_saved": "Pseudo mis à jour.",
+    "profile_username_ok_nochange": "Aucun changement.",
+    "profile_username_err_format": "Pseudo invalide (3–20 caractères, lettres/chiffres/underscore).",
+    "profile_username_err_taken": "Pseudo déjà pris.",
+    "profile_username_err_nojeton": "Pas assez de jetons.",
+    "profile_username_err_generic": "Impossible de modifier le pseudo.",
+    "profile_username_err_cost_failed": "Pseudo changé, mais débit de jeton impossible. Ouvre l’app plus tard pour resynchroniser.",
+
+    "shop_title": "Boutique",
+    "settings_title": "Paramètres",
+    "page_soon_body": "Bientôt disponible.",
+
     "locked_title": "Choix bloqué",
     "locked_body": "Tu as raté des éléments nécessaires pour débloquer cette voie.",
     "locked_missing": "Il te manque :",
@@ -51,9 +75,9 @@
     "jeton_not_enough": "Pas assez de jetons.",
 
     "jeton_title": "Jetons",
-    "jeton_balance_label": "Solde",
-    "jeton_back_btn": "Retour en arrière (1 jeton)",
-    "jeton_guide_btn": "Guide vers une fin (3 jetons)",
+    "jeton_balance_label": "Solde :",
+    "jeton_back_btn": "Retour en arrière — 1 jeton",
+    "jeton_guide_btn": "Guide vers une fin — 3 jetons",
     "jeton_guide_good": "Fin bonne",
     "jeton_guide_bad": "Fin mauvaise",
     "jeton_guide_secret": "Fin secrète",
