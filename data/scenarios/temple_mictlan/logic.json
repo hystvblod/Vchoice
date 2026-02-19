@@ -246,7 +246,7 @@
       "choices": [
         { "choice_key": "tm.s12.c1", "next": "s13" },
         { "choice_key": "tm.s12.c2", "next": "s15" },
-        { "choice_key": "tm.s12.c3", "next": " s17", "requires_any_flags": ["has_obsidian"] }
+        { "choice_key": "tm.s12.c3", "next": "s17", "requires_any_flags": ["has_obsidian"] }
       
       ]
     },
