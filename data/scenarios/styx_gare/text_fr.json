@@ -479,6 +479,20 @@
     "styx.end_bad.body": "Tu franchis le seuil. La chaleur ne te brûle pas : elle t’enregistre.\n\nCharon t’attend comme un employé ancien. Cerbère garde la porte sans colère.\n\nTu comprends enfin : ce n’était pas un arrêt.\n\nC’était une arrivée.\n\nDerrière toi, STYX referme ses portes avec la douceur d’un dossier classé.",
 
     "styx.end_secret.title": "END SECRET — Conducteur",
-    "styx.end_secret.body": "Tu prends la casquette noire.\n\nQuand tu la mets, la gare se tait d’un silence parfait, comme si elle saluait.\n\nLes trains continuent d’arriver. Les silhouettes descendent. Le quai se remplit d’ombres dociles.\n\nEt cette fois… tu es dans la cabine.\n\nLe levier répond à ta main.\n\nTu ne cherches plus la sortie.\n\nTu fais les arrivées."
+    "styx.end_secret.body": "Tu prends la casquette noire.\n\nQuand tu la mets, la gare se tait d’un silence parfait, comme si elle saluait.\n\nLes trains continuent d’arriver. Les silhouettes descendent. Le quai se remplit d’ombres dociles.\n\nEt cette fois… tu es dans la cabine.\n\nLe levier répond à ta main.\n\nTu ne cherches plus la sortie.\n\nTu fais les arrivées.",
+
+    "styx.clue.accepted_fate.title": "Destin accepté",
+    "styx.clue.activated_cabin.title": "Cabine activée",
+    "styx.clue.has_conductor_cap.title": "Casquette du conducteur",
+    "styx.clue.has_control_log.title": "Journal de contrôle",
+    "styx.clue.has_ticket_black.title": "Billet noir",
+    "styx.clue.has_torn_ticket.title": "Billet déchiré",
+    "styx.clue.memory_fading.title": "Mémoire qui s’efface",
+    "styx.clue.met_controller.title": "Contrôleur rencontré",
+    "styx.clue.rang_bell_thrice.title": "Cloche sonnée x3",
+    "styx.clue.resisted_lethe.title": "Résistance au Léthé",
+    "styx.clue.saw_clock_0317.title": "Horloge 03:17 vue",
+    "styx.clue.saw_destinations.title": "Destinations vues",
+    "styx.clue.saw_return_line.title": "Ligne de retour vue"
   }
 }
