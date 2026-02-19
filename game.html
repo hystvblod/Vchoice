@@ -1,4 +1,3 @@
-<!-- game.html — VERSION COMPLETE À JOUR -->
 <!doctype html>
 <html lang="fr">
 <head>
@@ -63,7 +62,6 @@
         </div>
         <div class="modal__body" id="resumeBody"></div>
 
-        <!-- boutons (pas de texte en dur) -->
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
           <button id="btnResumeRestart" class="btn btn--ghost" type="button"></button>
           <button id="btnResumeContinue" class="btn" type="button"></button>
@@ -81,7 +79,6 @@
         </div>
         <div class="modal__body" id="endBody"></div>
 
-        <!-- boutons (pas de texte en dur) -->
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
           <button id="btnEndBack" class="btn btn--ghost" type="button"></button>
           <button id="btnEndReplay" class="btn" type="button"></button>
@@ -99,36 +96,32 @@
         </div>
 
         <div class="modal__body">
-          <!-- ✅ Header compact : jeton gros + solde + coffre -->
-          <div class="jeton_top">
-            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
-            <div class="jeton_top__info">
-              <div class="jeton_top__label">
-                <span id="jetonBalanceLabel"></span>
-              </div>
-              <div id="jetonModalCount" class="jeton_top__count">0</div>
+
+          <!-- ✅ Ligne solde : icône gauche / solde droite -->
+          <div class="jeton_balance_row">
+            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_balance_icon" />
+            <div class="jeton_balance_text">
+              <span id="jetonBalanceLabel"></span>
+              <span id="jetonModalCount">0</span>
             </div>
-            <img src="assets/img/ui/coffre.webp" alt="" class="jeton_top__chest" />
           </div>
 
           <div class="jeton_actions">
             <button id="btnJetonBackModal" class="btn btn--ghost" type="button"></button>
 
-            <!-- ✅ plus un bouton : juste un texte -->
-            <div id="jetonGuideLabel" class="jeton_guide_label"></div>
+            <!-- ✅ Centre le texte -->
+            <button id="btnJetonGuide" class="btn jeton_guide_btn" type="button"></button>
 
-            <!-- ✅ visible direct (plus hidden, plus besoin de cliquer) -->
-            <div id="jetonGuideTargets" class="jeton_targets">
+            <div id="jetonGuideTargets" class="hidden jeton_targets">
               <button id="btnJetonGuideGood" data-target="good" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideBad" data-target="bad" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideSecret" data-target="secret" class="btn btn--ghost" type="button"></button>
-
-              <!-- ✅ “Stop guide” affiché uniquement si guide actif (géré en JS) -->
               <button id="btnJetonGuideStop" class="btn btn--ghost" type="button"></button>
             </div>
 
             <div id="jetonModalMsg" class="jeton_msg"></div>
           </div>
+
         </div>
       </div>
     </div>

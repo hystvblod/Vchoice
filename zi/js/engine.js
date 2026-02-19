@@ -1,3 +1,5 @@
+/* engine.js — VERSION COMPLETE À JOUR (avec popup Jetons modifiée) */
+
 /* =========================
    CONFIG
 ========================= */
@@ -92,6 +94,12 @@ function resolveImageFile(logic, imageId){
   if(typeof img === "string") return { file: img, alt: "" };
   if(typeof img === "object" && img.file) return { file: img.file, alt: img.alt || "" };
   return null;
+}
+
+/* ✅ supprime les "—" / "-" dans les libellés jetons (sans toucher aux JSON i18n) */
+function sanitizeJetonLabel(s){
+  if(s == null) return "";
+  return String(s).replace(/\s*[—–-]\s*/g, " ").replace(/\s{2,}/g, " ").trim();
 }
 
 /* =========================
@@ -372,22 +380,23 @@ function applyStaticI18n(){
   if(bal) bal.textContent = tUI("jeton_balance_label");
 
   const bBack = $("btnJetonBackModal");
-  if(bBack) bBack.textContent = tUI("jeton_back_btn");
+  if(bBack) bBack.textContent = sanitizeJetonLabel(tUI("jeton_back_btn"));
 
-  const bGuide = $("btnJetonGuide");
-  if(bGuide) bGuide.textContent = tUI("jeton_guide_btn");
+  // ✅ “Guide vers une fin…” n’est plus un bouton : texte simple
+  const guideLabel = $("jetonGuideLabel");
+  if(guideLabel) guideLabel.textContent = sanitizeJetonLabel(tUI("jeton_guide_btn"));
 
   const bGood = $("btnJetonGuideGood");
-  if(bGood) bGood.textContent = tUI("jeton_guide_good");
+  if(bGood) bGood.textContent = sanitizeJetonLabel(tUI("jeton_guide_good"));
 
   const bBad = $("btnJetonGuideBad");
-  if(bBad) bBad.textContent = tUI("jeton_guide_bad");
+  if(bBad) bBad.textContent = sanitizeJetonLabel(tUI("jeton_guide_bad"));
 
   const bSecret = $("btnJetonGuideSecret");
-  if(bSecret) bSecret.textContent = tUI("jeton_guide_secret");
+  if(bSecret) bSecret.textContent = sanitizeJetonLabel(tUI("jeton_guide_secret"));
 
   const bStop = $("btnJetonGuideStop");
-  if(bStop) bStop.textContent = tUI("jeton_guide_stop");
+  if(bStop) bStop.textContent = sanitizeJetonLabel(tUI("jeton_guide_stop"));
 
   const hintClose = $("hintClose");
   if(hintClose){
@@ -438,12 +447,23 @@ function updateJetonModalCount(){
   el.textContent = String(jetons);
 }
 
+/* ✅ Stop guide visible uniquement si guide actif */
+function updateJetonGuideUI(){
+  const stopBtn = $("btnJetonGuideStop");
+  if(stopBtn){
+    stopBtn.style.display = (GUIDE_STATE && GUIDE_STATE.active) ? "" : "none";
+  }
+}
+
 function showJetonModal(){
   const modal = $("jetonModal");
   if(!modal) return;
   updateJetonModalCount();
+  updateJetonGuideUI();
+
   const msg = $("jetonModalMsg");
   if(msg) msg.textContent = "";
+
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden","false");
 }
@@ -474,21 +494,16 @@ function bindJetonHud(){
     });
   }
 
-  const guideBtn = $("btnJetonGuide");
+  // ✅ plus de click “guide” : les cibles sont déjà visibles
   const targetsBox = $("jetonGuideTargets");
-  if(guideBtn && targetsBox){
-    guideBtn.addEventListener("click", () => {
-      targetsBox.classList.remove("hidden");
-    });
-  }
-
   if(targetsBox){
     targetsBox.addEventListener("click", async (ev) => {
       const b = ev.target && ev.target.closest ? ev.target.closest("button[data-target]") : null;
       if(!b) return;
-      const targetType = b.getAttribute("data-target"); // good|bad|secret
 
+      const targetType = b.getAttribute("data-target"); // good|bad|secret
       const msg = $("jetonModalMsg");
+
       try{
         if(msg) msg.textContent = "";
 
@@ -501,6 +516,21 @@ function bindJetonHud(){
           return;
         }
 
+        // ✅ si guide déjà actif : on bascule la cible sans repayer
+        if(GUIDE_STATE.active){
+          GUIDE_STATE.active = true;
+          GUIDE_STATE.targetType = targetType;
+          GUIDE_STATE.nextByScene = plan.nextByScene;
+          GUIDE_STATE.path = plan.path || [];
+          OVERRIDE_FLAGS = true;
+
+          updateJetonGuideUI();
+          hideJetonModal();
+          renderScene();
+          return;
+        }
+
+        // ✅ sinon, paiement 3 jetons
         const res = await spendJetons(3);
         if(!res?.ok){
           if(msg) msg.textContent = tUI("jeton_not_enough");
@@ -518,6 +548,7 @@ function bindJetonHud(){
 
         updateHudJetons();
         updateJetonModalCount();
+        updateJetonGuideUI();
         hideJetonModal();
         renderScene();
       }catch(e){
@@ -535,6 +566,7 @@ function bindJetonHud(){
       GUIDE_STATE.path = [];
       OVERRIDE_FLAGS = false;
 
+      updateJetonGuideUI();
       renderScene();
 
       const msg = $("jetonModalMsg");
@@ -1024,6 +1056,8 @@ async function handleEnding(type){
   GUIDE_STATE.nextByScene = {};
   GUIDE_STATE.path = [];
   OVERRIDE_FLAGS = false;
+
+  updateJetonGuideUI();
 
   const endingType = String(type || "").toLowerCase();
   let title = tUI("end_title");

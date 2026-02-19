@@ -1,3 +1,4 @@
+<!-- game.html — VERSION COMPLETE À JOUR -->
 <!doctype html>
 <html lang="fr">
 <head>
@@ -98,26 +99,35 @@
         </div>
 
         <div class="modal__body">
-          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-            <img src="assets/img/ui/jeton.webp" alt="" style="width:28px;height:28px;object-fit:contain;" />
-            <div style="font-weight:700;">
-              <span id="jetonBalanceLabel"></span>
-              <span id="jetonModalCount">0</span>
+          <!-- ✅ Header compact : jeton gros + solde + coffre -->
+          <div class="jeton_top">
+            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
+            <div class="jeton_top__info">
+              <div class="jeton_top__label">
+                <span id="jetonBalanceLabel"></span>
+              </div>
+              <div id="jetonModalCount" class="jeton_top__count">0</div>
             </div>
+            <img src="assets/img/ui/coffre.webp" alt="" class="jeton_top__chest" />
           </div>
 
-          <div style="display:grid; gap:10px;">
+          <div class="jeton_actions">
             <button id="btnJetonBackModal" class="btn btn--ghost" type="button"></button>
-            <button id="btnJetonGuide" class="btn" type="button"></button>
 
-            <div id="jetonGuideTargets" class="hidden" style="display:grid; gap:8px;">
+            <!-- ✅ plus un bouton : juste un texte -->
+            <div id="jetonGuideLabel" class="jeton_guide_label"></div>
+
+            <!-- ✅ visible direct (plus hidden, plus besoin de cliquer) -->
+            <div id="jetonGuideTargets" class="jeton_targets">
               <button id="btnJetonGuideGood" data-target="good" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideBad" data-target="bad" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideSecret" data-target="secret" class="btn btn--ghost" type="button"></button>
+
+              <!-- ✅ “Stop guide” affiché uniquement si guide actif (géré en JS) -->
               <button id="btnJetonGuideStop" class="btn btn--ghost" type="button"></button>
             </div>
 
-            <div id="jetonModalMsg" style="opacity:.85; font-size:14px;"></div>
+            <div id="jetonModalMsg" class="jeton_msg"></div>
           </div>
         </div>
       </div>

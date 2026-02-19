@@ -1,15 +1,23 @@
 // js/profile.js
-// Profil VChoice (v2)
-// - Affiche jetons/vcoins + pseudo (lecture)
-// - Bouton "Modifier pseudo" => ouvre l'édition
-// - Pseudo vide => pseudo aléatoire auto (tentative setUsername en base)
-// - Liste tous scénarios en 2 colonnes + 3 fins (good/bad/secret) via jauge empty/full
-// - Cache local des fins pour limiter la bande passante : Supabase lu seulement si cache absent.
+// Profil VChoice (v3)
+// - Scénarios EN DUR (plus de catalog.json)
+// - Fix pseudo (i18n ne réécrit plus le texte)
+// - Scénarios en 1 colonne
+// - UI sans encadrés sur bloc profil + pills
 
 (function(){
   "use strict";
 
   const ENDINGS_CACHE_KEY = "vchoice_endings_cache_v1";
+
+  // ✅ METS ICI TOUS TES SCÉNARIOS (IDs exacts)
+  // Exemple: dossier14_appartement, bunker_reserve, chateau_absents, etc.
+  const SCENARIO_IDS = [
+    "dossier14_appartement",
+    "bunker_reserve",
+    "chateau_absents"
+    // ajoute ici tous les autres...
+  ];
 
   function $(id){ return document.getElementById(id); }
   function _safeParse(raw){ try { return JSON.parse(raw); } catch { return null; } }
@@ -31,19 +39,6 @@
         map: map || {}
       }));
     }catch(_){ }
-  }
-
-  async function loadCatalog(){
-    const r = await fetch("data/scenarios/catalog.json", { cache: "no-store" });
-    if (!r.ok) throw new Error("catalog_not_found");
-    const data = await r.json();
-    const list = Array.isArray(data) ? data : (Array.isArray(data?.scenarios) ? data.scenarios : []);
-    const ids = [];
-    for (const it of list){
-      const id = String(it?.id || it?.scenario_id || "").trim();
-      if (id) ids.push(id);
-    }
-    return ids;
   }
 
   function normalizeStatusRow(row){
@@ -75,7 +70,7 @@
       await window.VCRemoteStore.ensureAuth();
     }
 
-    // 1) scenario_status (si existe)
+    // 1) scenario_status
     try{
       const r = await sb
         .from("scenario_status")
@@ -86,17 +81,13 @@
       }
     }catch(_){}
 
-    // 2) scenario_endings (ton modèle attendu)
-    try{
-      const r = await sb
-        .from("scenario_endings")
-        .select("scenario_id,good_done,bad_done,secret_done")
-        .eq("user_id", userId);
-      if (r?.error) throw r.error;
-      return buildStatusMap(r?.data || []);
-    }catch(e){
-      throw e;
-    }
+    // 2) scenario_endings
+    const r = await sb
+      .from("scenario_endings")
+      .select("scenario_id,good_done,bad_done,secret_done")
+      .eq("user_id", userId);
+    if (r?.error) throw r.error;
+    return buildStatusMap(r?.data || []);
   }
 
   function endingIconPaths(){
@@ -182,7 +173,6 @@
   }
 
   function genRandomUsername(){
-    // stable + simple, pas besoin de libs
     const n = Math.floor(1000 + Math.random() * 9000);
     return `User_${n}`;
   }
@@ -192,10 +182,8 @@
     const uid = String(st.user_id || "");
     const cur = String(st.username || "").trim();
     if (!uid) return;
+    if (cur) return;
 
-    if (cur) return; // déjà un pseudo
-
-    // on tente quelques fois si collision
     for (let i=0; i<6; i++){
       const candidate = genRandomUsername();
       const r = await window.VCRemoteStore?.setUsername?.(candidate);
@@ -203,7 +191,6 @@
         try{ await window.VUserData?.refresh?.(); }catch(_){}
         return;
       }
-      // si pris, on retente
     }
   }
 
@@ -279,30 +266,43 @@
     }
   }
 
+  function renderProfileFromState(){
+    const st = window.VUserData?.load?.() || {};
+    const jet = Number(st.jetons ?? 0);
+    const vc = Number(st.vcoins ?? 0);
+    const un = String(st.username || "").trim();
+
+    const jetEl = $("pf_jetons");
+    const vcEl = $("pf_vcoins");
+    if (jetEl) jetEl.textContent = String(jet);
+    if (vcEl) vcEl.textContent = String(vc);
+
+    const textEl = $("pf_username_text");
+    if (textEl){
+      textEl.textContent = un || (window.VRI18n?.t?.("ui.profile_username_missing") || "—");
+    }
+  }
+
   async function refreshEndingsOnce(){
     const st = window.VUserData?.load?.() || {};
     const uid = String(st.user_id || "");
     const unlocked = window.VUserData?.getUnlockedScenarios?.() || [];
 
-    let ids = [];
-    try{ ids = await loadCatalog(); }catch(e){ console.error("[catalog]", e); }
+    const ids = SCENARIO_IDS.slice();
 
     const cache = readEndingsCache();
     const cacheOk = !!(cache && cache.user_id === uid && cache.map);
 
-    // si cache OK => pas de supabase
     if (cacheOk){
       renderScenarios(ids, unlocked, cache.map || {});
       return;
     }
 
-    // sinon, si pas d'uid => on rend juste locked sans fins
     if (!uid){
       renderScenarios(ids, unlocked, {});
       return;
     }
 
-    // lecture supabase une seule fois (puis cache)
     try{
       const endingsMap = await fetchEndingsFromSupabase(uid);
       writeEndingsCache(uid, endingsMap);
@@ -326,10 +326,12 @@
       if (p && typeof p.then === "function") await p;
     }catch(e){ console.error("[VUserData.init]", e); }
 
-    // pseudo auto si manquant (écrit en base)
-    try{ await ensureDefaultUsernameIfMissing(); }catch(e){ console.error("[ensureDefaultUsernameIfMissing]", e); }
+    // ✅ Affiche immédiatement (même si l’event vc:profile n’arrive pas)
+    renderProfileFromState();
 
-    // events UI
+    try{ await ensureDefaultUsernameIfMissing(); }catch(e){ console.error("[ensureDefaultUsernameIfMissing]", e); }
+    renderProfileFromState();
+
     const toggle = $("pf_edit_toggle");
     const cancel = $("pf_cancel");
     const save = $("pf_save");
@@ -339,7 +341,6 @@
       const open = !(wrap && wrap.classList.contains("is-open"));
       openEdit(open);
 
-      // pré-remplir input avec pseudo actuel si vide
       const st = window.VUserData?.load?.() || {};
       const cur = String(st.username || "").trim();
       const inp = $("pf_username_input");
@@ -356,20 +357,8 @@
 
     if (save) save.addEventListener("click", handleSaveUsername);
 
-    // affichage profil
-    window.addEventListener("vc:profile", (ev) => {
-      const d = ev?.detail || {};
-      const jet = Number(d.jetons ?? 0);
-      const vc = Number(d.vcoins ?? 0);
-      const un = String(d.username || "").trim();
-
-      const jetEl = $("pf_jetons");
-      const vcEl = $("pf_vcoins");
-      if (jetEl) jetEl.textContent = String(jet);
-      if (vcEl) vcEl.textContent = String(vc);
-
-      const textEl = $("pf_username_text");
-      if (textEl) textEl.textContent = un || (window.VRI18n?.t?.("ui.profile_username_missing") || "—");
+    window.addEventListener("vc:profile", () => {
+      renderProfileFromState();
     });
 
     await refreshEndingsOnce();

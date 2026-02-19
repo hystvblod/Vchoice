@@ -101,33 +101,35 @@
     .vc-page-title{ margin: 8px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; }
     .vc-page-sub{ margin: 6px 0 0; color: var(--vc-muted); font-size: 13px; line-height:1.35; }
 
+    /* ✅ PLUS D’ENCADRÉ AUTOUR DU BLOC PROFIL */
     .vc-card{
       margin: 14px 12px 0;
       border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-      box-shadow: 0 18px 50px rgba(0,0,0,.40);
-      overflow:hidden;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
     }
-    .vc-card-inner{ padding: 14px; }
+    .vc-card-inner{ padding: 0; }
 
-    .vc-balances{ display:flex; gap: 10px; flex-wrap:wrap; }
+    /* ✅ Jetons / VCoins : plus d’encadrés */
+    .vc-balances{ display:flex; gap: 14px; flex-wrap:wrap; margin-top: 10px; }
     .vc-pill{
       display:flex;
       align-items:center;
       gap:10px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
+      padding: 0;
+      border-radius: 0;
+      border: none;
+      background: transparent;
       min-width: 160px;
     }
     .vc-pill img{ width:28px; height:28px; object-fit:contain; filter: drop-shadow(0 2px 10px rgba(0,0,0,.5)); }
     .vc-pill .k{ display:block; font-size:12px; color: var(--vc-muted); margin-bottom: 2px; }
     .vc-pill .v{ display:block; font-weight: 950; font-size: 16px; letter-spacing:.2px; }
 
-    /* --- PSEUDO DISPLAY + EDIT TOGGLE --- */
-    .vc-username-block{ margin-top: 12px; }
+    /* --- PSEUDO --- */
+    .vc-username-block{ margin-top: 16px; }
     .vc-row-head{
       display:flex;
       align-items:center;
@@ -141,20 +143,12 @@
       font-weight: 900;
       letter-spacing: .2px;
     }
-    .vc-mini-btn{
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      padding: 8px 12px;
-      font-weight: 900;
-      cursor:pointer;
-    }
 
+    /* ✅ barre pseudo sans encadré */
     .vc-username-display{
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
+      border: none;
+      background: rgba(0,0,0,.10);
       padding: 12px 12px;
       font-weight: 950;
       letter-spacing: .2px;
@@ -170,6 +164,24 @@
       white-space: nowrap;
     }
 
+    /* ✅ bouton modifier sous la barre pseudo */
+    .vc-actions-under{
+      margin-top: 10px;
+      display:flex;
+      justify-content:flex-end;
+    }
+    .vc-mini-btn{
+      border-radius: 999px;
+      border: none;
+      background: rgba(255,255,255,.07);
+      color:#fff;
+      padding: 10px 14px;
+      font-weight: 950;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-mini-btn:active{ transform: scale(.99); }
+
     .vc-edit-wrap{ display:none; margin-top: 10px; }
     .vc-edit-wrap.is-open{ display:block; }
 
@@ -178,6 +190,7 @@
       gap:10px;
       align-items:stretch;
       flex-wrap:wrap;
+      margin-top: 10px;
     }
     .vc-input{
       flex: 1 1 220px;
@@ -209,20 +222,20 @@
     .vc-msg.ok{ color: rgba(220,255,230,.95); }
     .vc-msg.err{ color: rgba(255,220,220,.95); }
 
-    /* --- SCENARIOS GRID --- */
+    /* --- SCENARIOS GRID : ✅ 1 COLONNE --- */
     .vc-section-head{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      margin: 16px 12px 0;
+      margin: 18px 12px 0;
     }
     .vc-section-title{ margin:0; font-weight: 950; font-size: 14px; letter-spacing: .2px; }
 
     .vc-scen-grid{
       margin: 10px 12px 0;
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 12px;
     }
 
@@ -253,10 +266,6 @@
     .vc-scen-card.is-locked{ opacity:.55; }
     .vc-scen-card.is-locked .vc-end{ filter: blur(2px); opacity:.55; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
-
-    @media (max-width: 820px){
-      .vc-scen-grid{ grid-template-columns: 1fr; }
-    }
   </style>
 </head>
 
@@ -308,15 +317,19 @@
           </div>
         </div>
 
-        <!-- PSEUDO : affichage + bouton modifier -->
         <div class="vc-username-block">
           <div class="vc-row-head">
             <div class="lbl" data-i18n="ui.profile_username_label"></div>
-            <button class="vc-mini-btn" id="pf_edit_toggle" type="button" data-i18n="ui.profile_username_edit"></button>
           </div>
 
           <div class="vc-username-display">
-            <div class="name" id="pf_username_text" data-i18n="ui.profile_username_missing"></div>
+            <!-- ✅ on enlève data-i18n ici (sinon l’i18n réécrase ton pseudo) -->
+            <div class="name" id="pf_username_text">—</div>
+          </div>
+
+          <!-- ✅ bouton sous la barre -->
+          <div class="vc-actions-under">
+            <button class="vc-mini-btn" id="pf_edit_toggle" type="button" data-i18n="ui.profile_username_edit"></button>
           </div>
 
           <div class="vc-edit-wrap" id="pf_edit_wrap">
