@@ -940,8 +940,8 @@
       "title_key": "tm.s79.title",
       "body_key": "tm.s79.body",
       "choices": [
-        { "choice_key": "tm.s79.c1", "next": "end_good", "requires_any_flags": ["has_codex"] },
-        { "choice_key": "tm.s79.c2", "next": "end_good", "requires_any_flags": ["has_codex"] },
+        { "choice_key": "tm.s79.c1", "next": "end_good" },
+        { "choice_key": "tm.s79.c2", "next": "end_good" },
         { "choice_key": "tm.s79.c3", "next": "s80" }
       ]
     },
@@ -950,7 +950,7 @@
       "title_key": "tm.s80.title",
       "body_key": "tm.s80.body",
       "choices": [
-        { "choice_key": "tm.s80.c1", "next": "end_good", "requires_any_flags": ["has_codex"] },
+        { "choice_key": "tm.s80.c1", "next": "end_good" },
         { "choice_key": "tm.s80.c2", "next": "end_bad" },
         {
           "choice_key": "tm.s80.c3",
