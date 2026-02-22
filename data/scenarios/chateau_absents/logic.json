@@ -225,7 +225,7 @@
       "title_key": "ca.s12.title",
       "body_key": "ca.s12.body",
       "choices": [
-        { "choice_key": "ca.s12.c1", "next": "s49", "set_flags": ["knows_symbol"] },
+        { "choice_key": "ca.s12.c1", "next": "s11", "set_flags": ["knows_symbol"] },
         { "choice_key": "ca.s12.c2", "next": "s10" },
         { "choice_key": "ca.s12.c3", "next": "s13" }
       ]
@@ -327,7 +327,7 @@
       "choices": [
         { "choice_key": "ca.s22.c1", "next": "s23", "set_flags": ["has_recording"] },
         { "choice_key": "ca.s22.c2", "next": "s21" },
-        { "choice_key": "ca.s22.c3", "next": "s24" }
+        { "choice_key": "ca.s22.c3", "next": "s21" }
       ]
     },
     "s23": {
@@ -337,7 +337,7 @@
       "choices": [
         { "choice_key": "ca.s23.c1", "next": "s21" },
         { "choice_key": "ca.s23.c2", "next": "s55" },
-        { "choice_key": "ca.s23.c3", "next": "s24" }
+        { "choice_key": "ca.s23.c3", "next": "s21" }
       ]
     },
     "s24": {
@@ -367,7 +367,7 @@
       "choices": [
         { "choice_key": "ca.s26.c1", "next": "s27", "set_flags": ["has_chapel_key"] },
         { "choice_key": "ca.s26.c2", "next": "s25" },
-        { "choice_key": "ca.s26.c3", "next": "s69"}
+        { "choice_key": "ca.s26.c3", "next": "s69" }
       ]
     },
     "s27": {
@@ -525,7 +525,7 @@
       "title_key": "ca.s42.title",
       "body_key": "ca.s42.body",
       "choices": [
-        { "choice_key": "ca.s42.c1", "next": "s71" },
+        { "choice_key": "ca.s42.c1", "next": "s55" },
         { "choice_key": "ca.s42.c2", "next": "s40" },
         { "choice_key": "ca.s42.c3", "next": "s43" }
       ]
