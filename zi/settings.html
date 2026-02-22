@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title></title>
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+
+<body class="page-settings">
+  <div class="app">
+    <main class="main">
+      <section class="panel">
+        <div class="panel__head" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+          <div>
+            <h1 id="settingsTitle" class="title"></h1>
+            <p id="settingsLangDesc" class="muted" style="margin-top:6px;"></p>
+          </div>
+
+          <a id="btnBackSettings" class="btn btn--ghost" href="index.html" aria-label="">
+            <span id="settingsBackLabel"></span>
+          </a>
+        </div>
+
+        <div class="panel__body" style="padding-top:14px;">
+          <label class="field" style="display:block;">
+            <div id="settingsLangLabel" class="field__label" style="margin-bottom:8px;"></div>
+            <select id="settingsLangSelect" class="field__select" style="width:100%;"></select>
+          </label>
+
+          <div id="settingsMsg" class="muted" style="margin-top:10px;"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabaseBootstrap.js"></script>
+  <script src="js/userData.js"></script>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/settings.js"></script>
+
+  <script>
+  (async () => {
+    try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
+    try { await window.VUserData?.init?.(); } catch(e) {}
+    try { await window.VRI18n?.initI18n?.(); } catch(e) {}
+  })();
+  </script>
+</body>
+</html>

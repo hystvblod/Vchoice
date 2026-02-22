@@ -924,11 +924,19 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 }
 
 /* =========================================================
-   ✅ MODAL JETONS — HEADER COMPACT (SANS COFFRE)
+   ✅ MODAL JETONS — COMPACT + JETON PLUS GROS
+   - corrige le bug de commentaire qui cassait le CSS
    ========================================================= */
 
-/* titre centré + X à droite */
+/* ✅ réduit le padding interne UNIQUEMENT pour la popup Jetons */
+#jetonModal .modal__body{
+  padding: 8px 12px 10px;     /* moins de vide global */
+  line-height: 1.25;          /* évite l'effet “gonflé” */
+}
+
+/* ✅ header plus compact + titre centré + X à droite */
 #jetonModal .modal__head{
+  padding: 10px 12px;         /* réduit la barre du haut */
   justify-content: center;
   position: relative;
 }
@@ -940,92 +948,96 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 }
 #jetonModal .modal__close{
   position: absolute;
-  right: 12px;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
 }
 
-/* ✅ Header compact : jeton (gros) + solde à côté */
-.jeton_top{
+/* ✅ Header compact : jeton + solde CENTRÉS (plus serré, moins de vide) */
+#jetonModal .jeton_top{
   display:flex;
   align-items:center;
-  justify-content:flex-start;
-  gap:12px;
-  margin-bottom: 10px; /* réduit le vide */
+  justify-content:center;
+  gap:10px;
+  margin: 0;                 /* supprime vide au-dessus/en-dessous */
+  padding: 0;
 }
 
-.jeton_top__coin{
-  width: 64px;
-  height: 64px;
+/* ✅ jeton plus gros */
+#jetonModal .jeton_top__coin{
+  width: 72px;               /* AUGMENTE ICI si tu veux encore plus */
+  height: 72px;
   object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,.30));
+  display:block;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
   flex: 0 0 auto;
 }
 
-.jeton_top__info_inline{
+#jetonModal .jeton_top__info_inline{
   display:flex;
-  align-items: baseline;
-  gap:10px;
-  flex: 1 1 auto;
+  align-items: center;
+  gap:8px;
+  flex: 0 0 auto;
   min-width: 0;
 }
 
-.jeton_top__label{
+#jetonModal .jeton_top__label{
   font-weight: 850;
   opacity: .92;
   font-size: 15px;
-  line-height: 1.15;
+  line-height: 1;
   white-space: nowrap;
 }
 
-.jeton_top__count{
+#jetonModal .jeton_top__count{
   font-weight: 950;
-  font-size: 18px;
-  line-height: 1.1;
+  font-size: 19px;
+  line-height: 1;
   white-space: nowrap;
 }
 
 /* actions */
-.jeton_actions{
+#jetonModal .jeton_actions{
   display:grid;
-  gap: 10px;
+  gap: 8px;                  /* réduit l’espace entre éléments */
+  margin-top: 8px;           /* petit espace après le jeton */
 }
 
-/* boutons popup un peu + grands */
+/* boutons popup un peu + grands (mais pas “trop”) */
 #jetonModal .btn{
-  padding: 11px 14px;
+  padding: 10px 14px;
   font-size: 15px;
   border-radius: 14px;
 }
 
 /* “Guide vers une fin …” = texte simple */
-.jeton_guide_label{
+#jetonModal .jeton_guide_label{
   text-align: center;
   font-weight: 900;
   letter-spacing: .2px;
   opacity: .92;
   font-size: 15px;
-  padding: 6px 0 0;
+  padding: 2px 0 0;
 }
 
 /* targets */
-.jeton_targets{
+#jetonModal .jeton_targets{
   display:grid;
   gap: 8px;
   margin-top: 2px;
 }
 
-.jeton_msg{
+#jetonModal .jeton_msg{
   opacity:.85;
   font-size:14.5px;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 /* mobile */
 @media (max-width: 520px){
   #jetonModal .modal__title{ font-size: 17px; }
-  .jeton_top__coin{ width: 56px; height: 56px; }
-  .jeton_top__label{ font-size: 14.5px; }
-  .jeton_top__count{ font-size: 17px; }
+  #jetonModal .jeton_top__coin{ width: 76px; height: 76px; }
+  #jetonModal .jeton_top__label{ font-size: 14.5px; }
+  #jetonModal .jeton_top__count{ font-size: 18px; }
   #jetonModal .btn{ font-size: 14.8px; }
 }

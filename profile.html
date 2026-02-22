@@ -10,7 +10,7 @@
     /* ====== TUNING (change ici, garanti) ====== */
     :root{
       --gapAfterBtn: 42px;   /* espace sous “Modifier pseudo” */
-      --badgeSize: 130px;    /* ✅ taille badges (carré) — AUGMENTÉE */
+      --badgeSize: 120px;    /* ✅ gros MAIS reste en ligne (3 badges) */
     }
 
     /* ✅ Anti-débordement / responsive */
@@ -194,7 +194,7 @@
 
     .vc-actions-under{
       margin-top: 10px !important;
-      margin-bottom: var(--gapAfterBtn) !important; /* ✅ espace FORCÉ */
+      margin-bottom: var(--gapAfterBtn) !important;
       display:flex;
       justify-content:center;
     }
@@ -266,6 +266,7 @@
       text-align:center;
     }
 
+    /* ✅ 2 scénarios par ligne, quoi qu'il arrive */
     .vc-scen-grid{
       margin: 12px 0 0;
       display:grid;
@@ -284,6 +285,8 @@
       padding: 0 !important;
       min-width: 0 !important;
       text-align:center;
+      opacity: 1 !important;            /* ✅ plus de “blanchiment” */
+      filter: none !important;          /* ✅ plus de gris */
     }
     .vc-scen-inner{ padding: 0 !important; min-width:0; }
 
@@ -296,30 +299,30 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align:center;
+      color: var(--vc-text) !important; /* ✅ couleur identique locked/unlocked */
+      opacity: 1 !important;
     }
 
+    /* ✅ 3 badges sur UNE ligne (pas de wrap) */
     .vc-scen-ends{
       margin-top: 10px;
       display:flex;
-      gap: 18px;
+      gap: 10px;                 /* ✅ resserre pour que ça rentre */
       align-items:center;
       justify-content:center;
       min-width:0;
-
-      /* ✅ IMPORTANT : empêche le flex de “rétrécir” tes badges */
-      flex-wrap: wrap;
+      flex-wrap: nowrap !important;      /* ✅ interdit le retour à la ligne */
     }
 
-    /* ✅ BADGES : le vrai souci le + courant ici = FLEX-SHRINK + display inline (ou tag <a>) */
+    /* ✅ BADGES gros + pas shrink */
     .vc-end{
-      /* ✅ force un “bloc” dimensionnable + empêche shrink */
       display: inline-block !important;
       flex: 0 0 var(--badgeSize) !important;
       width: var(--badgeSize) !important;
       height: var(--badgeSize) !important;
       min-width: var(--badgeSize) !important;
       min-height: var(--badgeSize) !important;
-
+      flex-shrink: 0 !important;         /* ✅ clé */
       border: none !important;
       outline: none !important;
       background: transparent !important;
@@ -329,8 +332,9 @@
       position: relative;
       padding: 0 !important;
       margin: 0 !important;
-      filter: none !important;
-      line-height: 0 !important; /* ✅ évite un “mini espace” fantôme */
+      line-height: 0 !important;
+      filter: none !important;           /* ✅ pas de gris */
+      opacity: 1 !important;             /* ✅ pas de blanc */
     }
 
     .vc-end img{
@@ -343,31 +347,39 @@
       border: 0 !important;
       outline: 0 !important;
       box-shadow: none !important;
-      filter: none !important;
+      filter: none !important;           /* ✅ pas de gris */
     }
 
     .vc-end .full{ opacity:0; transition: opacity .18s ease; }
     .vc-end.unlocked .full{ opacity:1; }
 
-    .vc-scen-card.is-locked{ opacity:.40; }
-    .vc-scen-card.is-locked .vc-end{ opacity:.28; filter: grayscale(1) blur(.2px) !important; }
+    /* ✅ IMPORTANT: ne PAS griser/blanchir les scénarios lockés.
+       On garde juste l'effet “full caché” (badges non obtenus). */
+    .vc-scen-card.is-locked{ opacity: 1 !important; filter: none !important; }
+    .vc-scen-card.is-locked .vc-end{
+      opacity: 1 !important;
+      filter: none !important;
+    }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
-    /* ✅ Filet de sécurité si profile.js ne met PAS la classe .vc-end sur le wrapper
-       (ça arrive souvent : img direct dans .vc-scen-ends).
-       -> Dans ce cas, au moins les <img> grossissent quand tu changes --badgeSize. */
+    /* ✅ Filet de sécurité si profile.js injecte des <img> directement */
     .vc-scen-ends > img{
       width: var(--badgeSize) !important;
       height: var(--badgeSize) !important;
       object-fit: contain !important;
       flex: 0 0 var(--badgeSize) !important;
+      flex-shrink: 0 !important;
+      filter: none !important;
+      opacity: 1 !important;
     }
 
+    /* ✅ Sur très petits écrans, on garde 2 colonnes ET on réduit juste les badges automatiquement */
     @media (max-width: 360px){
-      .vc-scen-grid{ grid-template-columns: 1fr !important; }
+      :root{ --badgeSize: 104px; }
+      .vc-scen-ends{ gap: 8px; }
     }
 
-    /* ✅ DEBUG (tu peux enlever ensuite) : si tu vois une petite barre en bas, c’est ce CSS */
+    /* ✅ DEBUG (tu peux enlever ensuite) */
     .vc-debug-bar{
       position: fixed;
       left: 10px;
