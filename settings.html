@@ -240,7 +240,6 @@
       overflow:hidden;
       text-overflow:ellipsis;
     }
-
   </style>
 </head>
 
@@ -286,7 +285,8 @@
                 <p id="adsDesc" class="toggleDesc"></p>
               </div>
 
-              <label class="switch" aria-label="">
+              <!-- ✅ ID ajouté pour éviter le null -->
+              <label id="adsSwitch" class="switch" aria-label="">
                 <input id="adsPersonalized" type="checkbox" />
                 <span class="switchUi"></span>
               </label>
@@ -399,29 +399,42 @@
     };
 
     function renderTexts(){
+      const elTitle = $("settingsTitle");
+      const elDesc  = $("settingsLangDesc");
+      if(elTitle) elTitle.textContent = t("ui.settings_title", "Settings");
+      if(elDesc)  elDesc.textContent  = t("ui.settings_lang_desc", "Choisis la langue. Elle est sauvegardée sur l’appareil et sur ton profil.");
+
       document.title = t("ui.settings_title", "Settings");
-      $("settingsTitle").textContent = t("ui.settings_title", "Settings");
-      $("settingsLangDesc").textContent = t("ui.settings_lang_desc",
-        "Choisis la langue. Elle est sauvegardée sur l’appareil et sur ton profil."
-      );
 
       // topbar aria
-      $("btnBackHome").setAttribute("aria-label", t("ui.settings_back_home_aria", "Back to home"));
-      $("btnGoProfile").setAttribute("aria-label", t("ui.settings_open_profile_aria", "Open profile"));
+      const back = $("btnBackHome");
+      const prof = $("btnGoProfile");
+      if(back) back.setAttribute("aria-label", t("ui.settings_back_home_aria", "Back to home"));
+      if(prof) prof.setAttribute("aria-label", t("ui.settings_open_profile_aria", "Open profile"));
 
       // grid aria
-      $("settingsLangGrid").setAttribute("aria-label", t("ui.language", "Language"));
+      const grid = $("settingsLangGrid");
+      if(grid) grid.setAttribute("aria-label", t("ui.language", "Language"));
 
       // pubs
-      $("settingsAdsTitle").textContent = t("ui.settings_ads_title", "Ads");
-      $("adsLabel").textContent = t("ui.settings_ads_personalized_label", "Personalized ads");
-      $("adsDesc").textContent = t("ui.settings_ads_personalized_desc", "");
-      $(".switch").setAttribute("aria-label", t("ui.settings_ads_personalized_label", "Personalized ads"));
+      const adsTitle = $("settingsAdsTitle");
+      const adsLabel = $("adsLabel");
+      const adsDesc  = $("adsDesc");
+      const adsSw    = $("adsSwitch");
+
+      if(adsTitle) adsTitle.textContent = t("ui.settings_ads_title", "Ads");
+      if(adsLabel) adsLabel.textContent = t("ui.settings_ads_personalized_label", "Personalized ads");
+      if(adsDesc)  adsDesc.textContent  = t("ui.settings_ads_personalized_desc", "");
+      if(adsSw)    adsSw.setAttribute("aria-label", t("ui.settings_ads_personalized_label", "Personalized ads"));
 
       // help
-      $("settingsHelpTitle").textContent = t("ui.settings_help_title", "Help");
-      $("helpEmailLabel").textContent = t("ui.settings_help_email_label", "Contact:");
-      $("helpEmailValue").textContent = t("ui.settings_help_email", "help.vboldstudio@gmail.com");
+      const helpTitle = $("settingsHelpTitle");
+      const helpLab   = $("helpEmailLabel");
+      const helpVal   = $("helpEmailValue");
+
+      if(helpTitle) helpTitle.textContent = t("ui.settings_help_title", "Help");
+      if(helpLab)   helpLab.textContent   = t("ui.settings_help_email_label", "Contact:");
+      if(helpVal)   helpVal.textContent   = t("ui.settings_help_email", "help.vboldstudio@gmail.com");
     }
 
     function buildGrid(){
@@ -459,8 +472,7 @@
         btn.appendChild(flag);
         btn.appendChild(txt);
 
-        const aria = t("ui.settings_choose_lang_aria", "Choisir la langue : {code}")
-          .replace("{code}", L.ui);
+        const aria = t("ui.settings_choose_lang_aria", "Choisir la langue : {code}").replace("{code}", L.ui);
         btn.setAttribute("aria-label", aria);
 
         btn.addEventListener("click", () => setLanguage(L.code, { showMsg:true }));
@@ -518,14 +530,14 @@
       }
     }
 
-    // ====== PUBS PERSONNALISÉES (stock + envoi aux régies via ads.js) ======
+    // ====== PUBS PERSONNALISÉES (stock + envoi au bridge) ======
     function getAdsPref(){
       try{
         const v = localStorage.getItem(AdsPrefKey);
         if(v === "1") return true;
         if(v === "0") return false;
       }catch(_){}
-      // ✅ par défaut: OFF (plus safe GDPR). Tu peux changer à true si tu veux.
+      // défaut OFF (le plus safe)
       return false;
     }
 
@@ -533,13 +545,12 @@
       const on = !!value;
       try{ localStorage.setItem(AdsPrefKey, on ? "1" : "0"); }catch(_){}
 
-      // expose côté ads.js (si présent)
+      // push au module ads.js (qui push ensuite au natif si dispo)
       try{ window.VAds?.setPersonalized?.(on); }catch(_){}
 
-      // UI
-      try{ $("adsPersonalized").checked = on; }catch(_){}
+      const box = $("adsPersonalized");
+      if(box) box.checked = on;
 
-      // msg
       const msg = $("settingsMsg");
       if(msg && showMsg){
         msg.textContent = t("ui.settings_ads_saved", "Préférence publicitaire enregistrée.");
@@ -573,9 +584,9 @@
       adsBox.checked = getAdsPref();
       adsBox.addEventListener("change", () => setAdsPref(adsBox.checked, { showMsg:true }));
     }
-    // push pref to ads.js now
-    try{ window.VAds?.setPersonalized?.(getAdsPref()); }catch(_){}
 
+    // push pref now
+    try{ window.VAds?.setPersonalized?.(getAdsPref()); }catch(_){}
   })();
   </script>
 </body>
