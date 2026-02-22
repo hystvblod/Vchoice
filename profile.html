@@ -9,8 +9,15 @@
   <style>
     /* ====== TUNING (change ici, garanti) ====== */
     :root{
-      --gapAfterBtn: 42px;   /* espace sous “Modifier pseudo” */
-      --badgeSize: 120px;    /* ✅ gros MAIS reste en ligne (3 badges) */
+      --gapAfterBtn: 42px;
+
+      /* ✅ Objectif: badges GROS mais TOUJOURS:
+         - 3 badges sur 1 ligne
+         - pas de superposition
+         - pas de débordement (reste dans le cadre)
+         - 2 scénarios par ligne */
+      --badgeMax: 120px;   /* ✅ plafond “gros” */
+      --endsGap: 10px;     /* ✅ écart entre badges */
     }
 
     /* ✅ Anti-débordement / responsive */
@@ -108,7 +115,6 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    /* ✅ Titre centré + i18n. Sous-titre supprimé. */
     .vc-title-wrap{ padding: 4px 0 0; text-align:center; }
     .vc-page-title{ margin: 10px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; text-align:center; }
     .vc-page-sub{ display:none !important; }
@@ -122,7 +128,6 @@
     }
     .vc-card-inner{ padding: 0; }
 
-    /* ✅ icône + nombre même ligne */
     .vc-balances{
       margin-top: 10px;
       display:flex;
@@ -266,7 +271,7 @@
       text-align:center;
     }
 
-    /* ✅ 2 scénarios par ligne, quoi qu'il arrive */
+    /* ✅ 2 scénarios par ligne */
     .vc-scen-grid{
       margin: 12px 0 0;
       display:grid;
@@ -281,12 +286,14 @@
       border: none !important;
       background: transparent !important;
       box-shadow: none !important;
-      overflow: visible !important;
+      overflow: hidden !important;          /* ✅ rien ne déborde du “cadre” */
       padding: 0 !important;
       min-width: 0 !important;
       text-align:center;
-      opacity: 1 !important;            /* ✅ plus de “blanchiment” */
-      filter: none !important;          /* ✅ plus de gris */
+
+      /* ✅ même rendu locked/unlocked */
+      opacity: 1 !important;
+      filter: none !important;
     }
     .vc-scen-inner{ padding: 0 !important; min-width:0; }
 
@@ -299,42 +306,47 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align:center;
-      color: var(--vc-text) !important; /* ✅ couleur identique locked/unlocked */
+      color: var(--vc-text) !important;
       opacity: 1 !important;
     }
 
-    /* ✅ 3 badges sur UNE ligne (pas de wrap) */
+    /* ✅ Ligne badges PRO:
+       - toujours 3 sur 1 ligne
+       - taille = “le plus gros possible” sans jamais dépasser
+       - pas de wrap, pas de overlap */
     .vc-scen-ends{
       margin-top: 10px;
+      width: 100%;
       display:flex;
-      gap: 10px;                 /* ✅ resserre pour que ça rentre */
       align-items:center;
-      justify-content:center;
-      min-width:0;
-      flex-wrap: nowrap !important;      /* ✅ interdit le retour à la ligne */
+      justify-content:space-between;        /* ✅ utilise toute la largeur */
+      gap: var(--endsGap);
+      flex-wrap: nowrap !important;        /* ✅ interdit retour ligne */
+      overflow: hidden;                    /* ✅ sécurité anti débordement */
+      padding: 0 2px;                      /* ✅ micro marge pour éviter crop */
     }
 
-    /* ✅ BADGES gros + pas shrink */
+    /* ✅ La taille réelle est calculée pour FIT:
+       badgeFit = (100% - 2*gaps) / 3
+       puis on applique un MAX (badgeMax) */
     .vc-end{
-      display: inline-block !important;
-      flex: 0 0 var(--badgeSize) !important;
-      width: var(--badgeSize) !important;
-      height: var(--badgeSize) !important;
-      min-width: var(--badgeSize) !important;
-      min-height: var(--badgeSize) !important;
-      flex-shrink: 0 !important;         /* ✅ clé */
-      border: none !important;
-      outline: none !important;
-      background: transparent !important;
-      box-shadow: none !important;
-      border-radius: 0 !important;
-      overflow: visible !important;
+      flex: 0 0 auto !important;
+      width: min(var(--badgeMax), calc((100% - (2 * var(--endsGap))) / 3)) !important;
+      height: min(var(--badgeMax), calc((100% - (2 * var(--endsGap))) / 3)) !important;
+      flex-shrink: 0 !important;
+
+      display:block !important;
       position: relative;
       padding: 0 !important;
       margin: 0 !important;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
       line-height: 0 !important;
-      filter: none !important;           /* ✅ pas de gris */
-      opacity: 1 !important;             /* ✅ pas de blanc */
+      overflow: hidden !important;         /* ✅ rien ne dépasse */
+      opacity: 1 !important;
+      filter: none !important;
     }
 
     .vc-end img{
@@ -342,58 +354,40 @@
       inset:0;
       width:100% !important;
       height:100% !important;
-      object-fit:contain;
+      object-fit: contain !important;
       background: transparent !important;
       border: 0 !important;
       outline: 0 !important;
       box-shadow: none !important;
-      filter: none !important;           /* ✅ pas de gris */
+      filter: none !important;
     }
 
+    /* ✅ Logique “obtenu / pas obtenu”:
+       on ne change PAS la couleur globale du scénario,
+       on cache juste le calque "full" tant que non obtenu. */
     .vc-end .full{ opacity:0; transition: opacity .18s ease; }
     .vc-end.unlocked .full{ opacity:1; }
 
-    /* ✅ IMPORTANT: ne PAS griser/blanchir les scénarios lockés.
-       On garde juste l'effet “full caché” (badges non obtenus). */
+    /* ✅ Neutralise complètement l’effet “blanc/gris” sur locked */
     .vc-scen-card.is-locked{ opacity: 1 !important; filter: none !important; }
-    .vc-scen-card.is-locked .vc-end{
-      opacity: 1 !important;
-      filter: none !important;
-    }
+    .vc-scen-card.is-locked .vc-end{ opacity: 1 !important; filter: none !important; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
-    /* ✅ Filet de sécurité si profile.js injecte des <img> directement */
+    /* ✅ Filet de sécurité si profile.js injecte des <img> directement (sans wrapper .vc-end) */
     .vc-scen-ends > img{
-      width: var(--badgeSize) !important;
-      height: var(--badgeSize) !important;
+      width: min(var(--badgeMax), calc((100% - (2 * var(--endsGap))) / 3)) !important;
+      height: min(var(--badgeMax), calc((100% - (2 * var(--endsGap))) / 3)) !important;
       object-fit: contain !important;
-      flex: 0 0 var(--badgeSize) !important;
+      flex: 0 0 auto !important;
       flex-shrink: 0 !important;
       filter: none !important;
       opacity: 1 !important;
     }
 
-    /* ✅ Sur très petits écrans, on garde 2 colonnes ET on réduit juste les badges automatiquement */
+    /* ✅ On garde 2 colonnes même petit, et les badges se “fit” automatiquement.
+       Si tu veux forcer 1 colonne sur mini écrans, dis-le, mais là tu as demandé 2. */
     @media (max-width: 360px){
-      :root{ --badgeSize: 104px; }
-      .vc-scen-ends{ gap: 8px; }
-    }
-
-    /* ✅ DEBUG (tu peux enlever ensuite) */
-    .vc-debug-bar{
-      position: fixed;
-      left: 10px;
-      bottom: 10px;
-      z-index: 9999;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.14);
-      color: rgba(255,255,255,.9);
-      font-weight: 900;
-      font-size: 11px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      :root{ --badgeMax: 110px; --endsGap: 8px; }
     }
   </style>
 </head>
