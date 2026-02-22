@@ -961,8 +961,8 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 }
 
 .jeton_top__coin{
-  width: 52px;         /* ✅ un peu plus petit */
-  height: 52px;
+  width: 72px;         /* ✅ un peu plus petit */
+  height: 72px;
   object-fit: contain;
   filter: drop-shadow(0 10px 20px rgba(0,0,0,.30));
   flex: 0 0 auto;
