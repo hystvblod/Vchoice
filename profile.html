@@ -9,15 +9,14 @@
   <style>
     /* ====== TUNING (change ici, garanti) ====== */
     :root{
-      --gapAfterBtn: 42px;   /* espace sous “Modifier pseudo” */
+      --gapAfterBtn: 42px;
 
-      /* ✅ badges responsifs (s’adaptent à la largeur de la colonne) */
+      /* ✅ badges responsifs */
       --badgeGap: 10px;
-      --badgeMin: 70px;
-      --badgeMax: 112px;
+      --badgeMin: 56px;      /* ✅ plus safe en portrait */
+      --badgeMax: 100px;
 
-      /* ✅ IMPORTANT: marge interne identique pour EMPTY + FULL
-         => empêche le "full" d'avoir l'air plus gros que "empty" */
+      /* ✅ padding interne identique EMPTY+FULL => full jamais "plus gros" */
       --badgePad: 7%;
     }
 
@@ -116,7 +115,6 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    /* ✅ Titre centré + i18n. Sous-titre supprimé. */
     .vc-title-wrap{ padding: 4px 0 0; text-align:center; }
     .vc-page-title{ margin: 10px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; text-align:center; }
     .vc-page-sub{ display:none !important; }
@@ -130,7 +128,6 @@
     }
     .vc-card-inner{ padding: 0; }
 
-    /* ✅ icône + nombre même ligne */
     .vc-balances{
       margin-top: 10px;
       display:flex;
@@ -274,7 +271,7 @@
       text-align:center;
     }
 
-    /* ✅ 2 scénarios par ligne, quoi qu'il arrive */
+    /* ✅ 2 scénarios par ligne, stable */
     .vc-scen-grid{
       margin: 12px 0 0;
       display:grid;
@@ -296,7 +293,7 @@
       opacity: 1 !important;
       filter: none !important;
 
-      /* ✅ taille badge calculée par colonne */
+      /* ✅ taille “cible” calculée dans la colonne */
       --badgeSize: clamp(
         var(--badgeMin),
         calc((100% - (2 * var(--badgeGap))) / 3),
@@ -318,35 +315,33 @@
       opacity: 1 !important;
     }
 
-    /* ✅ 3 badges sur UNE ligne */
+    /* =========================
+       ✅ FIX ULTIME BADGES
+       - plus de flex : GRID 3 colonnes
+       - jamais de débordement
+       - 3 slots toujours visibles
+       ========================= */
     .vc-scen-ends{
       margin-top: 10px;
-      display:flex;
+      width: 100%;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: var(--badgeGap);
       align-items:center;
-      justify-content:space-between;
-      width: 100%;
-      min-width: 0;
-      flex-wrap: nowrap !important;
-      overflow: hidden;
+      justify-items:center;
+      overflow: hidden; /* sécurité */
     }
 
-    /* ✅ 1 slot badge = une box fixe */
+    /* Chaque slot prend 100% de sa cellule, carré, puis clamp via max-width */
     .vc-end{
-      display:block !important;
-      flex: 0 0 var(--badgeSize) !important;
-      width: var(--badgeSize) !important;
-      height: var(--badgeSize) !important;
-      min-width: var(--badgeSize) !important;
-      min-height: var(--badgeSize) !important;
-      flex-shrink: 0 !important;
+      width: 100% !important;
+      aspect-ratio: 1 / 1 !important;     /* ✅ carré parfait */
+      max-width: var(--badgeSize) !important; /* ✅ taille auto dans la colonne */
       border: none !important;
-      outline: none !important;
       background: transparent !important;
       box-shadow: none !important;
-      border-radius: 0 !important;
-      overflow: hidden !important; /* ✅ IMPORTANT: coupe proprement si images bizarre */
-      position: relative;
+      position: relative !important;
+      overflow: hidden !important;
       padding: 0 !important;
       margin: 0 !important;
       line-height: 0 !important;
@@ -354,21 +349,21 @@
       opacity: 1 !important;
     }
 
-    /* ✅ EMPTY et FULL = EXACTEMENT la même géométrie (padding identique) */
+    /* Empty + Full superposés, EXACTEMENT même taille */
     .vc-end img{
-      position:absolute;
-      inset:0;
+      position:absolute !important;
+      inset:0 !important;
       width:100% !important;
       height:100% !important;
-      object-fit: contain;
-      background: transparent !important;
-      border: 0 !important;
-      outline: 0 !important;
-      box-shadow: none !important;
-      filter: none !important;
-      opacity: 1 !important;
-      padding: var(--badgePad) !important;      /* ✅ clé anti "full plus gros" */
+      object-fit: contain !important;
+      padding: var(--badgePad) !important;   /* ✅ clé anti “full plus gros” */
       box-sizing: border-box !important;
+      border:0 !important;
+      outline:0 !important;
+      background: transparent !important;
+      box-shadow:none !important;
+      filter:none !important;
+      opacity:1 !important;
     }
 
     .vc-end .full{ opacity:0; transition: opacity .18s ease; }
@@ -378,21 +373,20 @@
     .vc-scen-card.is-locked .vc-end{ opacity: 1 !important; filter: none !important; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
-    /* ✅ Filet de sécurité si profile.js injecte des <img> directement */
+    /* Filet de sécurité si des <img> sont injectés directement (moins recommandé) */
     .vc-scen-ends > img{
-      width: var(--badgeSize) !important;
-      height: var(--badgeSize) !important;
+      width: 100% !important;
+      aspect-ratio: 1 / 1 !important;
+      max-width: var(--badgeSize) !important;
       object-fit: contain !important;
-      flex: 0 0 var(--badgeSize) !important;
-      flex-shrink: 0 !important;
-      filter: none !important;
-      opacity: 1 !important;
       padding: var(--badgePad) !important;
       box-sizing: border-box !important;
+      filter: none !important;
+      opacity: 1 !important;
     }
 
     @media (max-width: 360px){
-      :root{ --badgeMin: 64px; --badgeMax: 104px; --badgePad: 8%; }
+      :root{ --badgeMin: 52px; --badgeMax: 92px; --badgePad: 8%; }
       .vc-scen-ends{ gap: 8px; }
     }
   </style>
