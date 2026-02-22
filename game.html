@@ -99,9 +99,14 @@
 
         <div class="modal__body">
 
-          <!-- ✅ Jeton à gauche / Solde à droite (sans coffre) -->
+          <!-- ✅ Header compact : Jeton + Coffre à gauche / Solde à droite -->
           <div class="jeton_top">
-            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
+            <div class="jeton_top__left">
+              <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
+              <!-- ⚠️ Si ton fichier coffre a un autre nom, remplace juste le src ici -->
+              <img src="assets/img/ui/chest.webp" alt="" class="jeton_top__chest" />
+            </div>
+
             <div class="jeton_top__info">
               <div class="jeton_top__label">
                 <span id="jetonBalanceLabel"></span>
@@ -115,15 +120,18 @@
           <div class="jeton_actions">
             <button id="btnJetonBackModal" class="btn btn--ghost" type="button"></button>
 
-            <!-- ✅ texte bien centré -->
-            <button id="btnJetonGuide" class="btn jeton_guide_btn" type="button"></button>
+            <!-- ✅ “Guide vers une fin 3 jetons” = texte simple (pas un bouton) -->
+            <div id="jetonGuideLabel" class="jeton_guide_label"></div>
 
-            <div id="jetonGuideTargets" class="hidden jeton_targets">
+            <!-- ✅ cibles visibles directement -->
+            <div id="jetonGuideTargets" class="jeton_targets">
               <button id="btnJetonGuideGood" data-target="good" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideBad" data-target="bad" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideSecret" data-target="secret" class="btn btn--ghost" type="button"></button>
-              <button id="btnJetonGuideStop" class="btn btn--ghost" type="button"></button>
             </div>
+
+            <!-- ✅ Stop guide visible seulement si guide actif (géré dans engine.js) -->
+            <button id="btnJetonGuideStop" class="btn btn--ghost" type="button"></button>
 
             <div id="jetonModalMsg" class="jeton_msg"></div>
           </div>
