@@ -927,6 +927,11 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
    ✅ MODAL JETONS — HEADER COMPACT (SANS COFFRE)
    ========================================================= */
 
+/* ✅ réduit le padding interne UNIQUEMENT pour la popup Jetons */
+#jetonModal .modal__body{
+  padding: 10px 14px 12px;
+}
+
 /* titre centré + X à droite */
 #jetonModal .modal__head{
   justify-content: center;
@@ -945,18 +950,19 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   transform: translateY(-50%);
 }
 
-/* ✅ Header compact : jeton (gros) + solde à côté */
+/* ✅ Header compact : jeton + solde CENTRÉS */
 .jeton_top{
   display:flex;
   align-items:center;
-  justify-content:flex-start;
+  justify-content:center;   /* ✅ center */
   gap:12px;
-  margin-bottom: 10px; /* réduit le vide */
+  margin: 0 0 8px;          /* ✅ moins de vide */
+  padding: 6px 0 4px;       /* ✅ moins de vide */
 }
 
 .jeton_top__coin{
-  width: 64px;
-  height: 64px;
+  width: 58px;              /* ✅ un peu plus compact */
+  height: 58px;
   object-fit: contain;
   filter: drop-shadow(0 10px 20px rgba(0,0,0,.30));
   flex: 0 0 auto;
@@ -964,9 +970,9 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 
 .jeton_top__info_inline{
   display:flex;
-  align-items: baseline;
-  gap:10px;
-  flex: 1 1 auto;
+  align-items: center;      /* ✅ au lieu de baseline */
+  gap:8px;                  /* ✅ un peu plus serré */
+  flex: 0 0 auto;
   min-width: 0;
 }
 
@@ -974,14 +980,14 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   font-weight: 850;
   opacity: .92;
   font-size: 15px;
-  line-height: 1.15;
+  line-height: 1;
   white-space: nowrap;
 }
 
 .jeton_top__count{
   font-weight: 950;
   font-size: 18px;
-  line-height: 1.1;
+  line-height: 1;
   white-space: nowrap;
 }
 
@@ -1024,7 +1030,7 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 /* mobile */
 @media (max-width: 520px){
   #jetonModal .modal__title{ font-size: 17px; }
-  .jeton_top__coin{ width: 56px; height: 56px; }
+  .jeton_top__coin{ width: 54px; height: 54px; }
   .jeton_top__label{ font-size: 14.5px; }
   .jeton_top__count{ font-size: 17px; }
   #jetonModal .btn{ font-size: 14.8px; }

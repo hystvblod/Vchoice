@@ -7,14 +7,23 @@
   <link rel="stylesheet" href="css/app.css" />
 
   <style>
+    /* ====== TUNING (change ici, garanti) ====== */
+    :root{
+      --gapAfterBtn: 42px;   /* espace sous “Modifier pseudo” */
+      --badgeSize: 86px;     /* taille badges (carré) */
+    }
+
+    /* ✅ Anti-débordement / responsive */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+    img { display:block; max-width:100%; height:auto; }
+
     .topbar{ display:none !important; }
 
     :root{
       --vc-bg0:#05060a;
       --vc-bg1:#090b13;
       --vc-bg2:#0b1226;
-      --vc-card-r:18px;
-      --vc-border:rgba(255,255,255,.10);
       --vc-text:rgba(255,255,255,.94);
       --vc-muted:rgba(255,255,255,.68);
     }
@@ -27,7 +36,6 @@
         linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
       min-height: 100vh;
       position: relative;
-      overflow-x: hidden;
       margin:0;
       color: var(--vc-text);
     }
@@ -53,7 +61,11 @@
       background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
     }
 
-    .page{ position:relative; z-index:1; padding-bottom:22px; }
+    .page{
+      position:relative;
+      z-index:1;
+      padding: 0 12px 22px;
+    }
 
     .vc-top-actions{
       position: relative;
@@ -91,48 +103,66 @@
       width:30px;
       height:30px;
       object-fit:contain;
-      display:block;
       pointer-events:none;
       user-select:none;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    .vc-title-wrap{ padding: 4px 12px 0; }
-    .vc-page-title{ margin: 8px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; }
-    .vc-page-sub{ margin: 6px 0 0; color: var(--vc-muted); font-size: 13px; line-height:1.35; }
+    /* ✅ Titre centré + i18n. Sous-titre supprimé. */
+    .vc-title-wrap{ padding: 4px 0 0; text-align:center; }
+    .vc-page-title{ margin: 10px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; text-align:center; }
+    .vc-page-sub{ display:none !important; }
 
     .vc-card{
-      margin: 14px 12px 0;
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-      box-shadow: 0 18px 50px rgba(0,0,0,.40);
-      overflow:hidden;
+      margin: 14px 0 0;
+      border: none;
+      background: transparent;
+      box-shadow: none;
+      overflow: visible;
     }
-    .vc-card-inner{ padding: 14px; }
+    .vc-card-inner{ padding: 0; }
 
-    .vc-balances{ display:flex; gap: 10px; flex-wrap:wrap; }
+    /* ✅ icône + nombre même ligne */
+    .vc-balances{
+      margin-top: 10px;
+      display:flex;
+      justify-content:center;
+      width:100%;
+    }
+    .vc-balances-row{
+      width: min(520px, 100%);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+    }
     .vc-pill{
       display:flex;
       align-items:center;
       gap:10px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      min-width: 160px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      min-width: 0;
     }
-    .vc-pill img{ width:28px; height:28px; object-fit:contain; filter: drop-shadow(0 2px 10px rgba(0,0,0,.5)); }
-    .vc-pill .k{ display:block; font-size:12px; color: var(--vc-muted); margin-bottom: 2px; }
-    .vc-pill .v{ display:block; font-weight: 950; font-size: 16px; letter-spacing:.2px; }
+    .vc-pill img{
+      width:30px; height:30px; object-fit:contain;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,.5));
+    }
+    .vc-pill .k{ display:none !important; }
+    .vc-pill .v{
+      display:block;
+      font-weight: 950;
+      font-size: 18px;
+      letter-spacing:.2px;
+      line-height:1;
+    }
 
-    /* --- PSEUDO DISPLAY + EDIT TOGGLE --- */
-    .vc-username-block{ margin-top: 12px; }
+    .vc-username-block{ margin-top: 16px; text-align:center; }
     .vc-row-head{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      justify-content:center;
       margin-bottom: 8px;
     }
     .vc-row-head .lbl{
@@ -140,35 +170,46 @@
       color: var(--vc-muted);
       font-weight: 900;
       letter-spacing: .2px;
-    }
-    .vc-mini-btn{
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:#fff;
-      padding: 8px 12px;
-      font-weight: 900;
-      cursor:pointer;
+      text-align:center;
     }
 
     .vc-username-display{
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      padding: 12px 12px;
-      font-weight: 950;
-      letter-spacing: .2px;
+      border: none;
+      background: transparent;
+      padding: 0;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
+      justify-content:center;
+      text-align:center;
     }
     .vc-username-display .name{
-      min-width: 0;
       overflow:hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      font-size: 18px;
+      font-weight: 950;
+      letter-spacing: .2px;
+      max-width: 100%;
     }
+
+    .vc-actions-under{
+      margin-top: 10px !important;
+      margin-bottom: var(--gapAfterBtn) !important; /* ✅ espace FORCÉ */
+      display:flex;
+      justify-content:center;
+    }
+
+    .vc-mini-btn{
+      border-radius: 999px;
+      border: none;
+      background: rgba(255,255,255,.07);
+      color:#fff;
+      padding: 10px 14px;
+      font-weight: 950;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-mini-btn:active{ transform: scale(.99); }
 
     .vc-edit-wrap{ display:none; margin-top: 10px; }
     .vc-edit-wrap.is-open{ display:block; }
@@ -178,6 +219,8 @@
       gap:10px;
       align-items:stretch;
       flex-wrap:wrap;
+      margin-top: 10px;
+      justify-content:center;
     }
     .vc-input{
       flex: 1 1 220px;
@@ -204,58 +247,121 @@
     }
     .vc-btn:active{ transform: scale(.99); }
 
-    .vc-hint{ margin-top: 10px; font-size: 12px; color: var(--vc-muted); line-height:1.35; }
-    .vc-msg{ margin-top: 10px; font-size: 12px; line-height:1.35; display:none; }
+    .vc-hint{ margin-top: 10px; font-size: 12px; color: var(--vc-muted); line-height:1.35; text-align:center; }
+    .vc-msg{ margin-top: 10px; font-size: 12px; line-height:1.35; display:none; text-align:center; }
     .vc-msg.ok{ color: rgba(220,255,230,.95); }
     .vc-msg.err{ color: rgba(255,220,220,.95); }
 
-    /* --- SCENARIOS GRID --- */
     .vc-section-head{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin: 16px 12px 0;
+      justify-content:center;
+      margin: 0;
     }
-    .vc-section-title{ margin:0; font-weight: 950; font-size: 14px; letter-spacing: .2px; }
+    .vc-section-title{
+      margin:0;
+      font-weight: 950;
+      font-size: 16px;
+      letter-spacing: .2px;
+      text-align:center;
+    }
 
     .vc-scen-grid{
-      margin: 10px 12px 0;
+      margin: 12px 0 0;
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 14px;
+      align-items:start;
+      width:100%;
+      max-width: 100%;
     }
 
     .vc-scen-card{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-      box-shadow: 0 18px 50px rgba(0,0,0,.28);
-      overflow:hidden;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      padding: 0 !important;
+      min-width: 0 !important;
+      text-align:center;
     }
-    .vc-scen-inner{ padding: 12px; }
-    .vc-scen-name{ margin:0; font-weight: 950; font-size: 13px; letter-spacing:.2px; }
-    .vc-scen-ends{ margin-top: 10px; display:flex; gap:10px; }
+    .vc-scen-inner{ padding: 0 !important; min-width:0; }
 
-    .vc-end{
-      position:relative;
-      width: 64px;
-      height: 64px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
+    .vc-scen-name{
+      margin:0;
+      font-weight: 950;
+      font-size: 13px;
+      letter-spacing:.2px;
       overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-align:center;
     }
-    .vc-end img{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+
+    .vc-scen-ends{
+      margin-top: 10px;
+      display:flex;
+      gap: 16px;
+      align-items:center;
+      justify-content:center;
+      min-width:0;
+    }
+
+    /* ✅ BADGES : taille FORCÉE (si ça bouge pas, c’est que ce fichier n’est pas celui chargé) */
+    .vc-end{
+      width: var(--badgeSize) !important;
+      height: var(--badgeSize) !important;
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+      position: relative;
+      padding: 0 !important;
+      margin: 0 !important;
+      filter: none !important;
+    }
+
+    .vc-end img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      background: transparent !important;
+      border: 0 !important;
+      outline: 0 !important;
+      box-shadow: none !important;
+      filter: none !important;
+    }
+
     .vc-end .full{ opacity:0; transition: opacity .18s ease; }
     .vc-end.unlocked .full{ opacity:1; }
 
-    .vc-scen-card.is-locked{ opacity:.55; }
-    .vc-scen-card.is-locked .vc-end{ filter: blur(2px); opacity:.55; }
+    .vc-scen-card.is-locked{ opacity:.40; }
+    .vc-scen-card.is-locked .vc-end{ opacity:.28; filter: grayscale(1) blur(.2px) !important; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
-    @media (max-width: 820px){
-      .vc-scen-grid{ grid-template-columns: 1fr; }
+    @media (max-width: 360px){
+      .vc-scen-grid{ grid-template-columns: 1fr !important; }
+    }
+
+    /* ✅ DEBUG (tu peux enlever ensuite) : si tu vois une petite barre en bas, c’est ce CSS */
+    .vc-debug-bar{
+      position: fixed;
+      left: 10px;
+      bottom: 10px;
+      z-index: 9999;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.45);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.9);
+      font-weight: 900;
+      font-size: 11px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
   </style>
 </head>
@@ -291,32 +397,36 @@
       <div class="vc-card-inner">
 
         <div class="vc-balances">
-          <div class="vc-pill">
-            <img src="assets/img/ui/jeton.webp" alt="" />
-            <div>
-              <span class="k" data-i18n="ui.profile_jetons"></span>
-              <span class="v" id="pf_jetons">0</span>
+          <div class="vc-balances-row">
+            <div class="vc-pill vc-pill--left">
+              <img src="assets/img/ui/vcoin.webp" alt="" />
+              <div>
+                <span class="k" data-i18n="ui.profile_vcoins"></span>
+                <span class="v" id="pf_vcoins">0</span>
+              </div>
             </div>
-          </div>
 
-          <div class="vc-pill">
-            <img src="assets/img/ui/vcoin.webp" alt="" />
-            <div>
-              <span class="k" data-i18n="ui.profile_vcoins"></span>
-              <span class="v" id="pf_vcoins">0</span>
+            <div class="vc-pill vc-pill--right">
+              <div>
+                <span class="k" data-i18n="ui.profile_jetons"></span>
+                <span class="v" id="pf_jetons">0</span>
+              </div>
+              <img src="assets/img/ui/jeton.webp" alt="" />
             </div>
           </div>
         </div>
 
-        <!-- PSEUDO : affichage + bouton modifier -->
         <div class="vc-username-block">
           <div class="vc-row-head">
             <div class="lbl" data-i18n="ui.profile_username_label"></div>
-            <button class="vc-mini-btn" id="pf_edit_toggle" type="button" data-i18n="ui.profile_username_edit"></button>
           </div>
 
           <div class="vc-username-display">
-            <div class="name" id="pf_username_text" data-i18n="ui.profile_username_missing"></div>
+            <div class="name" id="pf_username_text">—</div>
+          </div>
+
+          <div class="vc-actions-under">
+            <button class="vc-mini-btn" id="pf_edit_toggle" type="button" data-i18n="ui.profile_username_edit"></button>
           </div>
 
           <div class="vc-edit-wrap" id="pf_edit_wrap">
@@ -348,6 +458,9 @@
 
     <section class="vc-scen-grid" id="pf_scenarios"></section>
   </main>
+
+  <!-- DEBUG -->
+  <div class="vc-debug-bar">PROFILE CSS OK</div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabaseBootstrap.js"></script>

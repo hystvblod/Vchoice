@@ -64,10 +64,10 @@
     "s49": { "file": "assets/scenarios/chateau_absents/img/s49.webp", "alt": "Portrait accroché à l’envers, gravure floue au dos, poussière" },
     "s50": { "file": "assets/scenarios/chateau_absents/img/s50.webp", "alt": "Cadre fendu, fil noir non humain coincé, détail inquiétant" },
     "s51": { "file": "assets/scenarios/chateau_absents/img/s51.webp", "alt": "Salle de bal, porte nouvelle vers un couloir jamais vu, raccourci douteux" },
-    "s52": { "file": "assets/scenarios/chateau_absents/img/s52.webp", "alt": "Miroir qui ment : reflet incohérent, poussière différente dans le reflet" },
+    "s52": { "file": "assets/scenarios/chateau_absents/img/s52.webp", "alt": "Miroir qui ment, reflet incohérent, poussière différente dans le reflet" },
     "s53": { "file": "assets/scenarios/chateau_absents/img/s53.webp", "alt": "Couloir étonnamment stable, symétrie trop parfaite, calme suspect" },
     "s54": { "file": "assets/scenarios/chateau_absents/img/s54.webp", "alt": "Angle architectural impossible, traces de doigts fraîches dans la poussière" },
-    "s55": { "file": "assets/scenarios/chateau_absents/img/s55.webp", "alt": "Palier de cave humide, marque simple (trois traits + cercle)" },
+    "s55": { "file": "assets/scenarios/chateau_absents/img/s55.webp", "alt": "Palier de cave humide, marque simple, trois traits et un cercle" },
     "s56": { "file": "assets/scenarios/chateau_absents/img/s56.webp", "alt": "Mur de cave, panneau de pierre aux jointures nettes, cavité à peine visible" },
     "s57": { "file": "assets/scenarios/chateau_absents/img/s57.webp", "alt": "Passage secret révélé, pierre déplacée, traces de passages répétés" },
     "s58": { "file": "assets/scenarios/chateau_absents/img/s58.webp", "alt": "Passage étroit, escalier descend puis remonte, claustrophobie, odeur de crypte" },
@@ -81,7 +81,7 @@
     "s66": { "file": "assets/scenarios/chateau_absents/img/s66.webp", "alt": "Couloir presque vivant, murs qui semblent respirer, oppression" },
     "s67": { "file": "assets/scenarios/chateau_absents/img/s67.webp", "alt": "Portrait aux yeux rayés, avertissement, inscription illisible" },
     "s68": { "file": "assets/scenarios/chateau_absents/img/s68.webp", "alt": "Salle aux miroirs, reflets comme un appel, couloir reflété qui n’existe pas" },
-    "s69": { "file": "assets/scenarios/chateau_absents/img/s69.webp", "alt": "Autel vide, empreinte de poussière, livre fermé, sensation de “trop tard”" },
+    "s69": { "file": "assets/scenarios/chateau_absents/img/s69.webp", "alt": "Autel vide, empreinte de poussière, livre fermé, sensation de trop tard" },
     "s70": { "file": "assets/scenarios/chateau_absents/img/s70.webp", "alt": "Table de tour, preuves alignées, symbole net au centre, compréhension" },
     "s71": { "file": "assets/scenarios/chateau_absents/img/s71.webp", "alt": "Grenier, malle ouverte, objet sombre posé sur un signet, poids symbolique" },
     "s72": { "file": "assets/scenarios/chateau_absents/img/s72.webp", "alt": "Crypte, symbole avec détails mécaniques, anneaux et encoches, prêt à activer" },
@@ -89,7 +89,7 @@
     "s74": { "file": "assets/scenarios/chateau_absents/img/s74.webp", "alt": "Cercle au sol entrouvert comme une couture, fine fente lumineuse" },
     "s75": { "file": "assets/scenarios/chateau_absents/img/s75.webp", "alt": "Couloir final presque banal, symétrie trop parfaite, dernière ruse" },
     "s76": { "file": "assets/scenarios/chateau_absents/img/s76.webp", "alt": "Salle de bal en cercle, miroirs alignés, présence diffuse comme une assemblée" },
-    "s77": { "file": "assets/scenarios/chateau_absents/img/s77.webp", "alt": "Au seuil de la grille, hésitation, contraste dehors/dedans, choix final" },
+    "s77": { "file": "assets/scenarios/chateau_absents/img/s77.webp", "alt": "Au seuil de la grille, hésitation, contraste dehors dedans, choix final" },
 
     "end_good": { "file": "assets/scenarios/chateau_absents/img/end_good.webp", "alt": "Aube froide dehors, grille franchie, libération" },
     "end_bad": { "file": "assets/scenarios/chateau_absents/img/end_bad.webp", "alt": "Salle de bal, cercle fermé, oppression" },
@@ -216,7 +216,7 @@
       "body_key": "ca.s11.body",
       "choices": [
         { "choice_key": "ca.s11.c1", "next": "s12" },
-        { "choice_key": "ca.s11.c2", "next": "s13" },
+        { "choice_key": "ca.s11.c2", "next": "s12" },
         { "choice_key": "ca.s11.c3", "next": "s09" }
       ]
     },
@@ -285,8 +285,8 @@
       "title_key": "ca.s18.title",
       "body_key": "ca.s18.body",
       "choices": [
-        { "choice_key": "ca.s18.c1", "next": "s19" },
-        { "choice_key": "ca.s18.c2", "next": "s20" },
+        { "choice_key": "ca.s18.c1", "next": "s20" },
+        { "choice_key": "ca.s18.c2", "next": "s19" },
         { "choice_key": "ca.s18.c3", "next": "s16" }
       ]
     },
@@ -367,7 +367,7 @@
       "choices": [
         { "choice_key": "ca.s26.c1", "next": "s27", "set_flags": ["has_chapel_key"] },
         { "choice_key": "ca.s26.c2", "next": "s25" },
-        { "choice_key": "ca.s26.c3", "next": "s69"}
+        { "choice_key": "ca.s26.c3", "next": "s69" }
       ]
     },
     "s27": {
@@ -566,7 +566,7 @@
       "body_key": "ca.s46.body",
       "choices": [
         { "choice_key": "ca.s46.c1", "next": "s47" },
-        { "choice_key": "ca.s46.c2", "next": "s14" },
+        { "choice_key": "ca.s46.c2", "next": "s15" },
         { "choice_key": "ca.s46.c3", "next": "s49" }
       ]
     },

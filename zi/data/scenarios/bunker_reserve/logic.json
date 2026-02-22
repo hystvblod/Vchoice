@@ -277,7 +277,7 @@
       "body_key": "br.s20.body",
       "choices": [
         { "choice_key": "br.s20.c1", "next": "s25" },
-        { "choice_key": "br.s20.c2", "next": "s21" },
+        { "choice_key": "br.s20.c2", "next": "s25" },
         { "choice_key": "br.s20.c3", "next": "s19" }
       ]
     },
@@ -287,7 +287,7 @@
       "body_key": "br.s21.body",
       "choices": [
         { "choice_key": "br.s21.c1", "next": "s22" },
-        { "choice_key": "br.s21.c2", "next": "s20" },
+        { "choice_key": "br.s21.c2", "next": "s19" },
         { "choice_key": "br.s21.c3", "next": "s16" }
       ]
     },
@@ -327,7 +327,7 @@
       "body_key": "br.s25.body",
       "choices": [
         { "choice_key": "br.s25.c1", "next": "s26" },
-        { "choice_key": "br.s25.c2", "next": "s20" },
+        { "choice_key": "br.s25.c2", "next": "s19" },
         { "choice_key": "br.s25.c3", "next": "s31" }
       ]
     },
@@ -617,7 +617,7 @@
       "body_key": "br.s54.body",
       "choices": [
         { "choice_key": "br.s54.c1", "next": "s56" },
-        { "choice_key": "br.s54.c2", "next": "s31" },
+        { "choice_key": "br.s54.c2", "next": "end_bad" },
         { "choice_key": "br.s54.c3", "next": "s55" }
       ]
     },
