@@ -1,4 +1,4 @@
-/* engine.js — VERSION COMPLETE À JOUR (avec popup Jetons modifiée) */
+/* engine.js — VERSION COMPLETE À JOUR (lang auto + settings only + persist Supabase) */
 
 /* =========================
    CONFIG
@@ -6,7 +6,8 @@
 const SAVE_KEY = "creepy_engine_save_v1";
 const DEFAULT_LANG = "fr";
 
-const SUPPORTED_LANGS = ["fr", "en"];
+// Langues prévues (même si certains ui_<lang>.json ne sont pas encore présents)
+const SUPPORTED_LANGS = ["fr","en","es","pt","ptbr","it","ko","ja","id"];
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -108,7 +109,27 @@ function sanitizeJetonLabel(s){
 function normalizeLang(raw){
   if(!raw) return null;
   const s = String(raw).trim().toLowerCase();
-  const base = s.split("-")[0];
+
+  // normalisations courantes (appareils / navigateurs)
+  const map = {
+    "pt-br": "ptbr",
+    "pt_br": "ptbr",
+    "pt-pt": "pt",
+    "pt_pt": "pt",
+    "jp": "ja",
+    "ja-jp": "ja",
+    "kr": "ko",
+    "ko-kr": "ko",
+    "id-id": "id",
+    "in": "id" // anciens codes parfois rencontrés
+  };
+  if(map[s]) return map[s];
+
+  const base = s.split(/[-_]/)[0];
+  if(base === "pt" && (s.includes("br") || s.includes("ptbr"))) return "ptbr";
+  if(base === "ja") return "ja";
+  if(base === "ko") return "ko";
+  if(base === "id") return "id";
   return base || null;
 }
 
@@ -142,8 +163,9 @@ async function setLang(newLang, opts = {}){
 
   if(persistLocal) save();
 
-  if(persistRemote && window.VUserData && typeof window.VUserData.getLang === "function"){
-    // optionnel
+  // ✅ Supabase profiles.lang
+  if(persistRemote && window.VUserData && typeof window.VUserData.setLang === "function"){
+    try{ await window.VUserData.setLang(LANG); }catch(e){}
   }
 
   if(hasGamePage() && currentScenarioId){
@@ -308,6 +330,13 @@ function load(){
       scenarioStates = data.scenarioStates || {};
       const savedLang = normalizeLang(data.lang);
       if(savedLang && SUPPORTED_LANGS.includes(savedLang)) LANG = savedLang;
+      // compat: langue globale (index/settings)
+      if(!savedLang){
+        try{
+          const gl = normalizeLang(localStorage.getItem("VREALMS_LANG"));
+          if(gl && SUPPORTED_LANGS.includes(gl)) LANG = gl;
+        }catch(e){}
+      }
     }
   }catch(e){
     console.warn("load failed", e);
@@ -320,6 +349,8 @@ function save(){
       lang: LANG,
       scenarioStates
     }));
+    // compat: langue globale (index/settings)
+    try{ localStorage.setItem("VREALMS_LANG", LANG); }catch(e){}
   }catch(e){
     console.warn("save failed", e);
   }
@@ -354,7 +385,13 @@ function hasMenuPage(){ return !!$("menuGrid"); }
 function hasGamePage(){ return !!$("sceneTitle"); }
 
 async function reloadUI(){
-  UI = await fetchJSON(PATHS.ui(LANG));
+  try{ UI = await fetchJSON(PATHS.ui(LANG)); }
+  catch(e){
+    // fallback si fichier de langue pas encore présent
+    LANG = DEFAULT_LANG;
+    UI = await fetchJSON(PATHS.ui(LANG));
+  }
+
   const sel = $("langSelect");
   if(sel) sel.value = LANG;
 
@@ -585,21 +622,27 @@ async function boot(){
 
   let initialLang = LANG;
 
+  // priorité: profil Supabase > langue globale (settings/index) > device
   if(window.VUserData && typeof window.VUserData.getLang === "function"){
     try{
       const l = normalizeLang(window.VUserData.getLang());
       if(l && SUPPORTED_LANGS.includes(l)) initialLang = l;
     }catch(e){}
-  }else{
-    initialLang = detectDeviceLang();
   }
+
+  try{
+    const gl = normalizeLang(localStorage.getItem("VREALMS_LANG"));
+    if(gl && SUPPORTED_LANGS.includes(gl)) initialLang = gl;
+  }catch(e){}
+
+  if(!initialLang) initialLang = detectDeviceLang();
 
   LANG = initialLang;
 
   await reloadUI();
   await loadCatalog();
 
-  bindTopbar();
+  bindTopbar();      // (le select est caché, pas de changement direct)
   bindJetonHud();
 
   if(hasMenuPage()){
@@ -619,7 +662,8 @@ function bindTopbar(){
   const sel = $("langSelect");
   if(sel){
     sel.addEventListener("change", async (e) => {
-      await setLang(e.target.value, { persistLocal:true, persistRemote:false, rerender:true });
+      // on laisse ce hook (utile debug), mais le select est caché dans game.html
+      await setLang(e.target.value, { persistLocal:true, persistRemote:true, rerender:true });
     });
   }
 }
@@ -1205,6 +1249,22 @@ function renderScene(){
     }
   }
 }
+
+/* =========================
+   PUBLIC API (settings.html)
+========================= */
+window.VLang = {
+  get: () => LANG,
+  supported: () => SUPPORTED_LANGS.slice(),
+  normalize: normalizeLang,
+  set: async (lang, opts={}) => {
+    return await setLang(lang, {
+      persistLocal: opts.persistLocal !== false,
+      persistRemote: opts.persistRemote !== false,
+      rerender: opts.rerender !== false
+    });
+  }
+};
 
 /* =========================
    RUN
