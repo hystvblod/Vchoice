@@ -950,19 +950,19 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   transform: translateY(-50%);
 }
 
-/* ✅ Header compact : jeton + solde CENTRÉS */
+/*/* ✅ Header compact : jeton + solde CENTRÉS (plus serré, moins de vide) */
 .jeton_top{
   display:flex;
   align-items:center;
-  justify-content:center;   /* ✅ center */
-  gap:12px;
-  margin: 0 0 8px;          /* ✅ moins de vide */
-  padding: 6px 0 4px;       /* ✅ moins de vide */
+  justify-content:center;
+  gap:10px;
+  margin: 0 0 4px;     /* ✅ moins d’espace en dessous */
+  padding: 0;          /* ✅ supprime l’espace haut/bas */
 }
 
 .jeton_top__coin{
-  width: 58px;              /* ✅ un peu plus compact */
-  height: 58px;
+  width: 52px;         /* ✅ un peu plus petit */
+  height: 52px;
   object-fit: contain;
   filter: drop-shadow(0 10px 20px rgba(0,0,0,.30));
   flex: 0 0 auto;
@@ -970,8 +970,8 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 
 .jeton_top__info_inline{
   display:flex;
-  align-items: center;      /* ✅ au lieu de baseline */
-  gap:8px;                  /* ✅ un peu plus serré */
+  align-items: center;
+  gap:8px;
   flex: 0 0 auto;
   min-width: 0;
 }
