@@ -62,7 +62,6 @@
         </div>
         <div class="modal__body" id="resumeBody"></div>
 
-        <!-- boutons (pas de texte en dur) -->
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
           <button id="btnResumeRestart" class="btn btn--ghost" type="button"></button>
           <button id="btnResumeContinue" class="btn" type="button"></button>
@@ -80,7 +79,6 @@
         </div>
         <div class="modal__body" id="endBody"></div>
 
-        <!-- boutons (pas de texte en dur) -->
         <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
           <button id="btnEndBack" class="btn btn--ghost" type="button"></button>
           <button id="btnEndReplay" class="btn" type="button"></button>
@@ -99,10 +97,14 @@
 
         <div class="modal__body">
 
-          <!-- ✅ Jeton à gauche / Solde à droite (sans coffre) -->
+          <!-- ✅ HEADER COMPACT : jeton + coffre gros à gauche / solde à droite -->
           <div class="jeton_top">
-            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
-            <div class="jeton_top__info">
+            <div class="jeton_top__left">
+              <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
+              <img src="assets/img/ui/chest.webp" alt="" class="jeton_top__chest" />
+            </div>
+
+            <div class="jeton_top__right">
               <div class="jeton_top__label">
                 <span id="jetonBalanceLabel"></span>
               </div>
@@ -115,13 +117,16 @@
           <div class="jeton_actions">
             <button id="btnJetonBackModal" class="btn btn--ghost" type="button"></button>
 
-            <!-- ✅ texte bien centré -->
-            <button id="btnJetonGuide" class="btn jeton_guide_btn" type="button"></button>
+            <!-- ✅ “Guide vers une fin…” = TEXTE SIMPLE (pas un bouton) -->
+            <div id="jetonGuideLabel" class="jeton_guide_label"></div>
 
-            <div id="jetonGuideTargets" class="hidden jeton_targets">
+            <!-- ✅ fins visibles DIRECTEMENT -->
+            <div id="jetonGuideTargets" class="jeton_targets">
               <button id="btnJetonGuideGood" data-target="good" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideBad" data-target="bad" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideSecret" data-target="secret" class="btn btn--ghost" type="button"></button>
+
+              <!-- ✅ visible uniquement si guide actif (géré par JS) -->
               <button id="btnJetonGuideStop" class="btn btn--ghost" type="button"></button>
             </div>
 
