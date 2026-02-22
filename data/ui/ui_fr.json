@@ -77,8 +77,8 @@
     "locked_missing": "Il te manque :",
     "locked_missing_any": "Il te faut au moins un élément parmi :",
     "locked_tip": "Astuce : explore plus, certains objets servent de preuve.",
-    "locked_back_jeton": "Retour en arrière — 1 jeton",
-    "locked_restart_jeton": "Revenir au début — 1 jeton",
+    "locked_back_jeton": "Revenir en arrière (1 jeton)",
+    "locked_restart_jeton": "Revenir au début (1 jeton)",
     "locked_close": "Fermer",
     "locked_no_back": "Aucun retour possible ici.",
     "jeton_not_enough": "Pas assez de jetons.",
@@ -86,8 +86,7 @@
     "jeton_title": "Jetons",
     "jeton_balance_label": "Solde :",
     "jeton_back_btn": "Retour en arrière — 1 jeton",
-
-    "jeton_guide_label": "Guide vers une fin — 3 jetons",
+    "jeton_guide_btn": "Guide vers une fin — 3 jetons",
     "jeton_guide_good": "Fin bonne",
     "jeton_guide_bad": "Fin mauvaise",
     "jeton_guide_secret": "Fin secrète",
@@ -115,12 +114,6 @@
     "end_double_wait": "Validation en cours…",
     "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale."
   },
-  "settings_subtitle": "Personnalise ton expérience.",
-"settings_lang_title": "Langue",
-"settings_lang_desc": "La langue est détectée automatiquement au départ. Tu peux la changer ici.",
-"settings_save": "Enregistrer",
-"settings_saved": "Langue enregistrée.",
-"settings_save_error": "Impossible d’enregistrer la langue.",
 
   "common": {
     "cancel": "Annuler"
