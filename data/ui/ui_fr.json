@@ -115,6 +115,12 @@
     "end_double_wait": "Validation en cours…",
     "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale."
   },
+  "settings_subtitle": "Personnalise ton expérience.",
+"settings_lang_title": "Langue",
+"settings_lang_desc": "La langue est détectée automatiquement au départ. Tu peux la changer ici.",
+"settings_save": "Enregistrer",
+"settings_saved": "Langue enregistrée.",
+"settings_save_error": "Impossible d’enregistrer la langue.",
 
   "common": {
     "cancel": "Annuler"

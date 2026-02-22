@@ -7,10 +7,11 @@
   <link rel="stylesheet" href="css/app.css" />
 
   <style>
-    /* ====== TUNING (change ici, garanti) ====== */
+    /* ====== TUNING (change ici) ====== */
     :root{
       --gapAfterBtn: 42px;   /* espace sous “Modifier pseudo” */
-      --badgeSize: 86px;     /* taille badges (carré) */
+      --badgeSize: 110px;    /* ✅ taille badges (cadre) */
+      --badgeZoom: 1.0;      /* ✅ si tu veux “zoom” le visuel: 1.2 / 1.4 / 1.6 ... */
     }
 
     /* ✅ Anti-débordement / responsive */
@@ -307,28 +308,36 @@
       min-width:0;
     }
 
-    /* ✅ BADGES : taille FORCÉE (si ça bouge pas, c’est que ce fichier n’est pas celui chargé) */
+    /* ✅ BADGES : taille + anti-rétrécissement + zoom optionnel */
     .vc-end{
       width: var(--badgeSize) !important;
       height: var(--badgeSize) !important;
+      min-width: var(--badgeSize) !important;
+      min-height: var(--badgeSize) !important;
+      flex: 0 0 auto !important;
+      display: inline-block !important;
+
       border: none !important;
       outline: none !important;
       background: transparent !important;
       box-shadow: none !important;
       border-radius: 0 !important;
       overflow: visible !important;
-      position: relative;
+      position: relative !important;
       padding: 0 !important;
       margin: 0 !important;
       filter: none !important;
     }
 
     .vc-end img{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:contain;
+      position:absolute !important;
+      inset:0 !important;
+      width:100% !important;
+      height:100% !important;
+      object-fit:contain !important;
+      transform: scale(var(--badgeZoom)) !important;
+      transform-origin: center !important;
+
       background: transparent !important;
       border: 0 !important;
       outline: 0 !important;
@@ -347,7 +356,7 @@
       .vc-scen-grid{ grid-template-columns: 1fr !important; }
     }
 
-    /* ✅ DEBUG (tu peux enlever ensuite) : si tu vois une petite barre en bas, c’est ce CSS */
+    /* ✅ DEBUG (tu peux enlever ensuite) */
     .vc-debug-bar{
       position: fixed;
       left: 10px;
@@ -362,6 +371,7 @@
       font-size: 11px;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
+      display:none; /* ✅ caché par défaut */
     }
   </style>
 </head>
@@ -458,7 +468,6 @@
 
     <section class="vc-scen-grid" id="pf_scenarios"></section>
   </main>
-
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabaseBootstrap.js"></script>
