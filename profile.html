@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="css/app.css" />
 
   <style>
+    /* ✅ Anti-débordement / responsive */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+    img { display:block; max-width:100%; height:auto; }
+
     .topbar{ display:none !important; }
 
     :root{
@@ -25,7 +30,6 @@
         linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
       min-height: 100vh;
       position: relative;
-      overflow-x: hidden;
       margin:0;
       color: var(--vc-text);
     }
@@ -51,7 +55,12 @@
       background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
     }
 
-    .page{ position:relative; z-index:1; padding-bottom:22px; }
+    /* ✅ padding global pour éviter que ça coupe sur les côtés */
+    .page{
+      position:relative;
+      z-index:1;
+      padding: 0 12px 22px;
+    }
 
     .vc-top-actions{
       position: relative;
@@ -89,19 +98,18 @@
       width:30px;
       height:30px;
       object-fit:contain;
-      display:block;
       pointer-events:none;
       user-select:none;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    .vc-title-wrap{ padding: 4px 12px 0; }
+    .vc-title-wrap{ padding: 4px 0 0; } /* ✅ plus de margin latérale ici (déjà gérée par .page) */
     .vc-page-title{ margin: 8px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; }
     .vc-page-sub{ margin: 6px 0 0; color: var(--vc-muted); font-size: 13px; line-height:1.35; }
 
-    /* ===== PROFIL : zéro encadré partout ===== */
+    /* ===== PROFIL : zéro encadré ===== */
     .vc-card{
-      margin: 14px 12px 0;
+      margin: 14px 0 0;
       border: none;
       background: transparent;
       box-shadow: none;
@@ -109,7 +117,7 @@
     }
     .vc-card-inner{ padding: 0; }
 
-    /* Coins : VCoins à gauche, Jetons à droite, le tout centré */
+    /* ✅ VCoins à gauche / Jetons à droite, pas coupé */
     .vc-balances{
       margin-top: 10px;
       display:flex;
@@ -126,13 +134,11 @@
     .vc-pill{
       display:flex;
       align-items:center;
-      justify-content:center;
       gap:10px;
       padding: 0;
       border: none;
       background: transparent;
       min-width: 0;
-      text-align:center;
     }
     .vc-pill--left{ justify-content:flex-start; }
     .vc-pill--right{ justify-content:flex-end; }
@@ -161,28 +167,27 @@
 
     .vc-username-display{
       border: none;
-      background: transparent; /* plus de barre encadrée */
+      background: transparent;
       padding: 0;
-      font-weight: 950;
-      letter-spacing: .2px;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap:10px;
       text-align:center;
     }
     .vc-username-display .name{
-      min-width: 0;
       overflow:hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       font-size: 16px;
+      font-weight: 950;
+      letter-spacing: .2px;
+      max-width: 100%;
     }
 
     .vc-actions-under{
       margin-top: 10px;
       display:flex;
-      justify-content:center; /* ✅ centré */
+      justify-content:center;
     }
     .vc-mini-btn{
       border-radius: 999px;
@@ -196,7 +201,7 @@
     }
     .vc-mini-btn:active{ transform: scale(.99); }
 
-    /* Edition pseudo (tu peux laisser comme ça) */
+    /* Edition pseudo */
     .vc-edit-wrap{ display:none; margin-top: 10px; }
     .vc-edit-wrap.is-open{ display:block; }
 
@@ -238,12 +243,12 @@
     .vc-msg.ok{ color: rgba(220,255,230,.95); }
     .vc-msg.err{ color: rgba(255,220,220,.95); }
 
-    /* ===== SCÉNARIOS : 2 colonnes, sans encadrés ===== */
+    /* ===== SCÉNARIOS : 2 colonnes, responsive ===== */
     .vc-section-head{
       display:flex;
       align-items:center;
       justify-content:center;
-      margin: 18px 12px 0;
+      margin: 18px 0 0;
     }
     .vc-section-title{
       margin:0;
@@ -254,75 +259,85 @@
     }
 
     .vc-scen-grid{
-      margin: 10px 12px 0;
+      margin: 10px 0 0;
       display:grid;
-      grid-template-columns: 1fr 1fr; /* ✅ 2 colonnes */
+      grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ évite le débordement */
       gap: 16px 14px;
       align-items:start;
+      width:100%;
+      max-width: 100%;
     }
 
     /* ✅ plus de cartes/encadrés */
     .vc-scen-card{
-      border: none;
-      background: transparent;
-      box-shadow: none;
-      overflow: visible;
-      padding: 0;
+      border: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      overflow: visible !important;
+      padding: 0 !important;
+      min-width: 0 !important; /* ✅ évite clipping grid */
     }
-    .vc-scen-inner{ padding: 0; }
+    .vc-scen-inner{ padding: 0 !important; min-width:0; }
 
     .vc-scen-name{
       margin:0;
       font-weight: 950;
       font-size: 13px;
       letter-spacing:.2px;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    /* Badges : 3 icônes sans encadrés, juste alignés */
-/* ✅ BADGES : aucun encadré + plus grands */
-.vc-scen-ends{
-  margin-top: 10px;
-  display:flex;
-  gap: 14px;
-  align-items:center;
-}
+    /* ✅ BADGES : AUCUN encadré (si tu vois encore un carré, il est dans l'image webp) */
+    .vc-scen-ends{
+      margin-top: 10px;
+      display:flex;
+      gap: 14px;
+      align-items:center;
+      min-width:0;
+    }
 
-.vc-end{
-  width: 56px;          /* ↑ plus grand */
-  height: 56px;         /* ↑ plus grand */
-  border: none !important;     /* ✅ supprime l'encadré */
-  outline: none !important;
-  background: transparent !important; /* ✅ supprime le fond */
-  box-shadow: none !important;        /* ✅ supprime toute ombre de boîte */
-  border-radius: 0 !important;
-  overflow: visible !important;
-  position: relative;
-}
+    .vc-end{
+      width: clamp(44px, 12vw, 56px);   /* ✅ grand + s’adapte */
+      height: clamp(44px, 12vw, 56px);
+      border: none !important;
+      outline: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border-radius: 0 !important;
+      overflow: visible !important;
+      position: relative;
+      padding: 0 !important;
+      margin: 0 !important;
+      filter: none !important;
+    }
 
-.vc-end img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  filter: drop-shadow(0 2px 12px rgba(0,0,0,.65));
-}
+    /* ✅ si un style global met un fond/contour sur IMG, on neutralise */
+    .vc-end img{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      background: transparent !important;
+      border: 0 !important;
+      outline: 0 !important;
+      box-shadow: none !important;
+      filter: none !important; /* ✅ pas d’effet qui “dessine” un carré */
+    }
 
-.vc-end .full{ opacity:0; transition: opacity .18s ease; }
-.vc-end.unlocked .full{ opacity:1; }
+    .vc-end .full{ opacity:0; transition: opacity .18s ease; }
+    .vc-end.unlocked .full{ opacity:1; }
 
-    /* Locked : on garde juste un effet léger, sans “boîte” */
     .vc-scen-card.is-locked{ opacity:.40; }
-    .vc-scen-card.is-locked .vc-end{ opacity:.35; filter: grayscale(1) blur(.2px); }
+    .vc-scen-card.is-locked .vc-end{ opacity:.28; filter: grayscale(1) blur(.2px) !important; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
-   /* ✅ MOBILE : on garde 2 colonnes */
-@media (max-width: 520px){
-  .vc-scen-grid{
-    grid-template-columns: 1fr 1fr !important;
-    gap: 16px 14px;
-  }
-}
+    /* ✅ si l’écran est trop étroit, on passe en 1 colonne (sinon ça coupe) */
+    @media (max-width: 360px){
+      .vc-scen-grid{ grid-template-columns: 1fr !important; }
+    }
   </style>
 </head>
 
@@ -356,7 +371,6 @@
     <section class="vc-card">
       <div class="vc-card-inner">
 
-        <!-- ✅ VCoins gauche / Jetons droite -->
         <div class="vc-balances">
           <div class="vc-balances-row">
             <div class="vc-pill vc-pill--left">
@@ -377,7 +391,6 @@
           </div>
         </div>
 
-        <!-- PSEUDO -->
         <div class="vc-username-block">
           <div class="vc-row-head">
             <div class="lbl" data-i18n="ui.profile_username_label"></div>
@@ -387,7 +400,6 @@
             <div class="name" id="pf_username_text">—</div>
           </div>
 
-          <!-- ✅ bouton centré sous le pseudo -->
           <div class="vc-actions-under">
             <button class="vc-mini-btn" id="pf_edit_toggle" type="button" data-i18n="ui.profile_username_edit"></button>
           </div>
