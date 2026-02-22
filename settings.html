@@ -1,4 +1,4 @@
-<!-- settings.html — VERSION COMPLETE À JOUR (sans settings.js, sélecteur + grille SVG) -->
+<!-- settings.html — VERSION COMPLETE À JOUR (sans dropdown, grille seule + toggle pubs + topbar home/profil) -->
 <!doctype html>
 <html lang="fr">
 <head>
@@ -8,6 +8,87 @@
   <link rel="stylesheet" href="css/app.css" />
 
   <style>
+    /* ===== TOPBAR (comme index, mais flèche + profil) ===== */
+    .topbar{ display:none !important; }
+
+    .vc-top-actions{
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
+    }
+    .vc-top-slot{
+      flex: 1 1 0;
+      display:flex;
+      align-items:center;
+    }
+    .vc-top-left{ justify-content:flex-start; }
+    .vc-top-center{ justify-content:center; }
+    .vc-top-right{ justify-content:flex-end; }
+
+    .vc-icon-button{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.26);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-icon-button:active{ transform: scale(.98); }
+
+    .vc-icon-button img{
+      width:30px;
+      height:30px;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
+    }
+
+    .vc-back-ico{
+      width:24px;
+      height:24px;
+      display:block;
+      opacity:.98;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65));
+    }
+
+    /* ====== PANEL HEAD centré ====== */
+    .panel__headCentered{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap:6px;
+      padding-top:2px;
+    }
+    .panel__headCentered .title{
+      margin:0;
+      text-align:center;
+      width:100%;
+    }
+    .panel__headCentered .muted{
+      margin:0;
+      text-align:center;
+      max-width: 520px;
+    }
+
+    /* ====== Grille langues ====== */
     .langGrid{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -40,15 +121,16 @@
       box-shadow: 0 10px 26px rgba(0,0,0,.22);
     }
 
+    /* ✅ flags SANS encadré (plus de border/box) */
     .flag{
       width:34px;
       height:24px;
       border-radius:6px;
       overflow:hidden;
       flex: 0 0 auto;
-      border: 1px solid rgba(255,255,255,.10);
-      box-shadow: 0 8px 18px rgba(0,0,0,.22);
-      background: rgba(0,0,0,.18);
+      border: 0 !important;
+      box-shadow: none !important;
+      background: transparent !important;
     }
     .flag svg{ width:100%; height:100%; display:block; }
 
@@ -56,36 +138,169 @@
     .langCode{ font-weight:950; letter-spacing:.3px; line-height:1.05; }
     .langName{ opacity:.80; font-size:12px; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-    .field__select select,
-    select.field__select,
-    select{
-      appearance:auto;
+    /* ====== Bloc réglage pub (toggle) ====== */
+    .settingsSection{
+      margin-top:14px;
+      padding-top:12px;
+      border-top: 1px solid rgba(255,255,255,.10);
     }
+    .settingsSectionTitle{
+      font-weight: 950;
+      font-size: 13px;
+      letter-spacing: .2px;
+      opacity: .92;
+      margin: 0 0 10px 0;
+    }
+
+    .toggleRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+    }
+    .toggleText{ min-width:0; }
+    .toggleLabel{
+      font-weight: 950;
+      line-height: 1.2;
+      margin:0;
+    }
+    .toggleDesc{
+      margin:6px 0 0 0;
+      opacity: .78;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .switch{
+      position: relative;
+      width: 54px;
+      height: 32px;
+      flex: 0 0 auto;
+    }
+    .switch input{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      width:100%;
+      height:100%;
+      margin:0;
+      cursor:pointer;
+    }
+    .switchUi{
+      position:absolute;
+      inset:0;
+      border-radius: 999px;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+      transition: .18s ease;
+    }
+    .switchUi::after{
+      content:"";
+      position:absolute;
+      top: 4px;
+      left: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
+      transition: .18s ease;
+    }
+    .switch input:checked + .switchUi{
+      background: rgba(255,255,255,.14);
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,59,59,.12) inset;
+    }
+    .switch input:checked + .switchUi::after{
+      transform: translateX(22px);
+    }
+
+    /* ====== Aide / email ====== */
+    .helpLine{
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:8px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      margin-top:10px;
+      overflow:hidden;
+    }
+    .helpLabel{ font-weight: 950; opacity:.92; }
+    .helpMail{
+      opacity:.86;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
   </style>
 </head>
 
 <body class="page-settings">
+  <!-- ✅ Topbar : flèche home + bouton profil -->
+  <div class="vc-top-actions">
+    <div class="vc-top-slot vc-top-left">
+      <a id="btnBackHome" class="vc-icon-button" href="index.html" aria-label="">
+        <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="white" d="M15.5 5.5a1 1 0 0 1 0 1.4L10.4 12l5.1 5.1a1 1 0 1 1-1.4 1.4l-5.8-5.8a1.2 1.2 0 0 1 0-1.4l5.8-5.8a1 1 0 0 1 1.4 0z"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="vc-top-slot vc-top-center"></div>
+
+    <div class="vc-top-slot vc-top-right">
+      <a id="btnGoProfile" class="vc-icon-button" href="profile.html" aria-label="">
+        <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
+      </a>
+    </div>
+  </div>
+
   <div class="app">
     <main class="main">
       <section class="panel">
-        <div class="panel__head" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-          <div>
-            <h1 id="settingsTitle" class="title"></h1>
-            <p id="settingsLangDesc" class="muted" style="margin-top:6px;"></p>
-          </div>
-
-          <a id="btnBackSettings" class="btn btn--ghost" href="index.html" aria-label="">
-            <span id="settingsBackLabel"></span>
-          </a>
+        <!-- ✅ Head centré (titre + desc) -->
+        <div class="panel__head panel__headCentered">
+          <h1 id="settingsTitle" class="title"></h1>
+          <p id="settingsLangDesc" class="muted"></p>
         </div>
 
         <div class="panel__body" style="padding-top:14px;">
-          <label class="field" style="display:block;">
-            <div id="settingsLangLabel" class="field__label" style="margin-bottom:8px;"></div>
-            <select id="settingsLangSelect" class="field__select" style="width:100%;"></select>
-          </label>
-
+          <!-- ✅ plus de dropdown -->
           <div id="settingsLangGrid" class="langGrid" aria-label=""></div>
+
+          <div class="settingsSection">
+            <div id="settingsAdsTitle" class="settingsSectionTitle"></div>
+
+            <div class="toggleRow">
+              <div class="toggleText">
+                <p id="adsLabel" class="toggleLabel"></p>
+                <p id="adsDesc" class="toggleDesc"></p>
+              </div>
+
+              <label class="switch" aria-label="">
+                <input id="adsPersonalized" type="checkbox" />
+                <span class="switchUi"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settingsSection">
+            <div id="settingsHelpTitle" class="settingsSectionTitle"></div>
+
+            <div class="helpLine">
+              <span id="helpEmailLabel" class="helpLabel"></span>
+              <span id="helpEmailValue" class="helpMail"></span>
+            </div>
+          </div>
 
           <div id="settingsMsg" class="muted" style="margin-top:10px;"></div>
         </div>
@@ -96,11 +311,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabaseBootstrap.js"></script>
   <script src="js/userData.js"></script>
+  <script src="js/ads.js"></script>
   <script src="js/i18n.js"></script>
 
   <script>
   (async () => {
     const LangStorageKey = "vchoice_lang";
+    const AdsPrefKey = "vchoice_ads_personalized"; // "1" / "0"
 
     const LANGS = [
       { code:"en",  ui:"EN",  nameKey:"ui.lang_name.en"  },
@@ -115,7 +332,6 @@
     ];
 
     function $(id){ return document.getElementById(id); }
-
     function safeLower(x){ return String(x||"").trim().toLowerCase(); }
 
     function normalizeLang(raw){
@@ -169,7 +385,7 @@
       return fallback || "";
     }
 
-    // ====== SVG flags (simples, sans dépendances) ======
+    // ====== SVG flags ======
     const FLAGS = {
       fr: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" x="0" y="0" fill="#1f4fbf"/><rect width="10" height="20" x="10" y="0" fill="#ffffff"/><rect width="10" height="20" x="20" y="0" fill="#d11f2e"/></svg>`,
       en: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#0a3a87"/><path d="M0 0 L30 20 M30 0 L0 20" stroke="#fff" stroke-width="4"/><path d="M0 0 L30 20 M30 0 L0 20" stroke="#c8102e" stroke-width="2"/><rect x="13" y="0" width="4" height="20" fill="#fff"/><rect x="0" y="8" width="30" height="4" fill="#fff"/><rect x="14" y="0" width="2" height="20" fill="#c8102e"/><rect x="0" y="9" width="30" height="2" fill="#c8102e"/></svg>`,
@@ -183,53 +399,43 @@
     };
 
     function renderTexts(){
-      const cur = getStoredLang() || detectDeviceLang();
-
       document.title = t("ui.settings_title", "Settings");
       $("settingsTitle").textContent = t("ui.settings_title", "Settings");
-
       $("settingsLangDesc").textContent = t("ui.settings_lang_desc",
         "Choisis la langue. Elle est sauvegardée sur l’appareil et sur ton profil."
       );
 
-      $("settingsLangLabel").textContent = t("ui.settings_lang_label", "Langue");
+      // topbar aria
+      $("btnBackHome").setAttribute("aria-label", t("ui.settings_back_home_aria", "Back to home"));
+      $("btnGoProfile").setAttribute("aria-label", t("ui.settings_open_profile_aria", "Open profile"));
 
-      const backText = t("ui.btn_back", "Back");
-      $("settingsBackLabel").textContent = backText;
-      $("btnBackSettings").setAttribute("aria-label", backText);
-
-      // label grille (aria)
+      // grid aria
       $("settingsLangGrid").setAttribute("aria-label", t("ui.language", "Language"));
 
-      // message
-      const msg = $("settingsMsg");
-      if(msg && !msg.textContent) msg.textContent = t("ui.settings_msg_hint", "");
+      // pubs
+      $("settingsAdsTitle").textContent = t("ui.settings_ads_title", "Ads");
+      $("adsLabel").textContent = t("ui.settings_ads_personalized_label", "Personalized ads");
+      $("adsDesc").textContent = t("ui.settings_ads_personalized_desc", "");
+      $(".switch").setAttribute("aria-label", t("ui.settings_ads_personalized_label", "Personalized ads"));
+
+      // help
+      $("settingsHelpTitle").textContent = t("ui.settings_help_title", "Help");
+      $("helpEmailLabel").textContent = t("ui.settings_help_email_label", "Contact:");
+      $("helpEmailValue").textContent = t("ui.settings_help_email", "help.vboldstudio@gmail.com");
     }
 
-    function buildSelectAndGrid(){
-      const sel = $("settingsLangSelect");
+    function buildGrid(){
       const grid = $("settingsLangGrid");
-      if(!sel || !grid) return;
+      if(!grid) return;
 
-      sel.innerHTML = "";
       grid.innerHTML = "";
-
       const cur = getStoredLang() || detectDeviceLang();
-      const frag = document.createDocumentFragment();
-
-      for(const L of LANGS){
-        const opt = document.createElement("option");
-        opt.value = L.code;
-        opt.textContent = `${L.ui} — ${t(L.nameKey, L.ui)}`;
-        frag.appendChild(opt);
-      }
-      sel.appendChild(frag);
-      sel.value = supported(cur) ? cur : "en";
+      const active = supported(cur) ? cur : "en";
 
       for(const L of LANGS){
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "langBtn" + ((sel.value === L.code) ? " isActive" : "");
+        btn.className = "langBtn" + ((active === L.code) ? " isActive" : "");
         btn.setAttribute("data-lang", L.code);
 
         const flag = document.createElement("div");
@@ -253,21 +459,16 @@
         btn.appendChild(flag);
         btn.appendChild(txt);
 
-        const aria = t("ui.settings_choose_lang_aria", "Choose language: {code}")
+        const aria = t("ui.settings_choose_lang_aria", "Choisir la langue : {code}")
           .replace("{code}", L.ui);
         btn.setAttribute("aria-label", aria);
 
         btn.addEventListener("click", () => setLanguage(L.code, { showMsg:true }));
         grid.appendChild(btn);
       }
-
-      sel.addEventListener("change", () => setLanguage(sel.value, { showMsg:true }));
     }
 
     function markActive(code){
-      const sel = $("settingsLangSelect");
-      if(sel) sel.value = code;
-
       document.querySelectorAll(".langBtn[data-lang]").forEach((b) => {
         b.classList.toggle("isActive", b.getAttribute("data-lang") === code);
       });
@@ -277,11 +478,11 @@
       const code = normalizeLang(raw) || "en";
       const safe = supported(code) ? code : "en";
 
-      // local first (ultra important)
+      // local first
       try{ localStorage.setItem("vchoice_lang", safe); }catch(_){}
       try{ localStorage.setItem("VREALMS_LANG", safe); }catch(_){}
 
-      // update cache local VUserData (sans écraser le reste)
+      // update cache local VUserData
       try{
         if(window.VUserData && typeof window.VUserData.save === "function"){
           window.VUserData.save({ lang: safe }, { silent:true });
@@ -306,7 +507,7 @@
       }catch(_){}
 
       renderTexts();
-      buildSelectAndGrid();
+      buildGrid();
       markActive(safe);
 
       const msg = $("settingsMsg");
@@ -317,12 +518,40 @@
       }
     }
 
+    // ====== PUBS PERSONNALISÉES (stock + envoi aux régies via ads.js) ======
+    function getAdsPref(){
+      try{
+        const v = localStorage.getItem(AdsPrefKey);
+        if(v === "1") return true;
+        if(v === "0") return false;
+      }catch(_){}
+      // ✅ par défaut: OFF (plus safe GDPR). Tu peux changer à true si tu veux.
+      return false;
+    }
+
+    async function setAdsPref(value, { showMsg } = {}){
+      const on = !!value;
+      try{ localStorage.setItem(AdsPrefKey, on ? "1" : "0"); }catch(_){}
+
+      // expose côté ads.js (si présent)
+      try{ window.VAds?.setPersonalized?.(on); }catch(_){}
+
+      // UI
+      try{ $("adsPersonalized").checked = on; }catch(_){}
+
+      // msg
+      const msg = $("settingsMsg");
+      if(msg && showMsg){
+        msg.textContent = t("ui.settings_ads_saved", "Préférence publicitaire enregistrée.");
+      }
+    }
+
     // ==== BOOT ====
     try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
     try { await window.VUserData?.init?.(); } catch(e) {}
     try { await window.VRI18n?.initI18n?.(); } catch(e) {}
 
-    // ensure local lang exists (device -> EN fallback)
+    // ensure local lang exists
     try{
       const cur = getStoredLang();
       if(!cur){
@@ -333,10 +562,20 @@
     }catch(_){}
 
     renderTexts();
-    buildSelectAndGrid();
+    buildGrid();
 
-    // align UI + (optionnel) push remote si remote n’a rien: géré par userData.js (init)
+    // set initial lang (no msg)
     await setLanguage(getStoredLang() || detectDeviceLang(), { showMsg:false });
+
+    // init ads pref UI
+    const adsBox = $("adsPersonalized");
+    if(adsBox){
+      adsBox.checked = getAdsPref();
+      adsBox.addEventListener("change", () => setAdsPref(adsBox.checked, { showMsg:true }));
+    }
+    // push pref to ads.js now
+    try{ window.VAds?.setPersonalized?.(getAdsPref()); }catch(_){}
+
   })();
   </script>
 </body>
