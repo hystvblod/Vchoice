@@ -88,16 +88,26 @@
       max-width: 520px;
     }
 
+    /* ✅ marge globale : évite les textes collés au bord */
+    body.page-settings .panel__body{
+      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-right: calc(16px + env(safe-area-inset-right));
+    }
+    body.page-settings .panel__head{
+      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-right: calc(16px + env(safe-area-inset-right));
+    }
+
     /* ====== Grille langues ======
        ✅ au moins 3 drapeaux par ligne
-       - mobile: 3 colonnes
-       - plus large: 4 colonnes
+       ✅ plus d’espace sous le titre + plus d’espace avant les sections textes
     */
     .langGrid{
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap:10px;
-      margin-top:12px;
+      margin-top: 22px;     /* ✅ plus d’espace titre -> 1ère ligne */
+      margin-bottom: 22px;  /* ✅ plus d’espace dernière ligne -> textes */
     }
     @media (min-width: 520px){
       .langGrid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -147,10 +157,10 @@
     /* ✅ on masque les textes (tu veux juste les drapeaux) */
     .langText{ display:none !important; }
 
-    /* ====== Bloc réglage pub (toggle) ====== */
+    /* ====== Sections ====== */
     .settingsSection{
-      margin-top:14px;
-      padding-top:12px;
+      margin-top: 18px;   /* un peu plus aéré */
+      padding-top: 14px;
       border-top: 1px solid rgba(255,255,255,.10);
     }
     .settingsSectionTitle{
@@ -230,12 +240,16 @@
       transform: translateX(22px);
     }
 
-    /* ====== Aide / email ====== */
-    /* ✅ enlever les “carrés” autour du mail */
+    /* ====== Aide / email ======
+       ✅ centré
+       ✅ pas de carré
+    */
+    #settingsHelpTitle{ text-align:center; width:100%; }
+
     .helpLine{
       display:flex;
       align-items:center;
-      justify-content:flex-start;
+      justify-content:center;  /* ✅ centré */
       gap:8px;
       padding: 8px 0;
       border-radius: 0;
@@ -243,6 +257,7 @@
       background: transparent;
       margin-top:10px;
       overflow:hidden;
+      text-align:center;
     }
     .helpLabel{ font-weight: 950; opacity:.92; }
     .helpMail{
@@ -250,7 +265,12 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      max-width: 100%;
     }
+
+    /* ✅ petit confort : centre le titre "Publicité" si tu veux */
+    /* (si tu préfères left, supprime ces 2 lignes) */
+    #settingsAdsTitle{ text-align:left; }
   </style>
 </head>
 
@@ -354,7 +374,7 @@
         "pt-pt":"pt","pt_pt":"pt",
         "jp":"ja","ja-jp":"ja",
         "kr":"ko","ko-kr":"ko",
-        "in":"id","id-id":"id" // ✅ Indonésien (anciens codes)
+        "in":"id","id-id":"id"
       };
       if(map[s]) return map[s];
       const base = s.split(/[-_]/)[0];
