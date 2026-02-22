@@ -1,4 +1,4 @@
-// js/userData.js
+// js/userData.js — VERSION COMPLETE À JOUR (lang device early + sync Supabase + setLang exposé)
 // VChoice — Local cache + Supabase RPCs (source of truth)
 // - Profil via RPC secure_get_me
 // - Solde via RPC: secure_add_vcoins / secure_add_jetons / secure_spend_jetons / secure_reduce_vcoins_to
@@ -12,6 +12,9 @@
 
   const VUserDataKey = "vchoice_user_data";
   const LangStorageKey = "vchoice_lang";
+
+  // ✅ Langs supportées côté app (device -> local -> supabase)
+  const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
 
   let _uiPaused = true;
   let _pendingEmit = false;
@@ -41,15 +44,76 @@
     return _remoteQueue;
   }
 
+  function _safeLower(x){ return String(x ?? "").trim().toLowerCase(); }
+
+  function _normalizeLang(raw){
+    if(!raw) return null;
+    const s = _safeLower(raw);
+
+    const map = {
+      "pt-br":"ptbr","pt_br":"ptbr",
+      "pt-pt":"pt","pt_pt":"pt",
+      "jp":"ja","ja-jp":"ja",
+      "kr":"ko","ko-kr":"ko"
+    };
+    if(map[s]) return map[s];
+
+    const base = s.split(/[-_]/)[0];
+    if(base === "pt" && (s.includes("br") || s.includes("ptbr"))) return "ptbr";
+    if(base === "ja") return "ja";
+    if(base === "ko") return "ko";
+    return base || null;
+  }
+
+  function _safeLang(raw){
+    const n = _normalizeLang(raw);
+    if(n && SUPPORTED_LANGS.includes(n)) return n;
+    return "en";
+  }
+
+  function _detectDeviceLang(){
+    const list = Array.isArray(navigator.languages) && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language];
+    for(const cand of list){
+      const n = _normalizeLang(cand);
+      if(n && SUPPORTED_LANGS.includes(n)) return n;
+    }
+    return "en";
+  }
+
+  // ✅ init local ultra tôt (device -> EN fallback)
+  (function _initLangEarly(){
+    try{
+      const cur = _safeLower(localStorage.getItem(LangStorageKey));
+      const n = _normalizeLang(cur);
+      if(n && SUPPORTED_LANGS.includes(n)) return;
+      const d = _detectDeviceLang();
+      localStorage.setItem(LangStorageKey, d);
+      // compat (si d’autres pages l’utilisent)
+      localStorage.setItem("VREALMS_LANG", d);
+    }catch(_){}
+  })();
+
   const _memState = {
     user_id: "",
     username: "",
     vcoins: 0,
     jetons: 0,
-    lang: "fr",
+    lang: (function(){
+      try{
+        const l = _safeLang(localStorage.getItem(LangStorageKey));
+        return l;
+      }catch(_){
+        return "en";
+      }
+    })(),
     unlocked_scenarios: [], // Supabase only
     updated_at: Date.now(),
-    last_sync_at: 0
+    last_sync_at: 0,
+
+    // ✅ interne: utilisé pour push device->remote si remote vide
+    _remote_lang_missing: false
   };
 
   function _clampInt(n){ return Math.max(0, Math.floor(Number(n || 0))); }
@@ -89,13 +153,17 @@
         username: String(_memState.username || ""),
         vcoins: _clampInt(_memState.vcoins),
         jetons: _clampInt(_memState.jetons),
-        lang: String(_memState.lang || "fr"),
+        lang: String(_memState.lang || "en"),
         unlocked_scenarios: _normScenarioList(_memState.unlocked_scenarios),
         updated_at: Date.now(),
         last_sync_at: Number(_memState.last_sync_at || 0)
       });
     }catch(_){}
-    try{ localStorage.setItem(LangStorageKey, String(_memState.lang || "fr")); }catch(_){}
+    try{
+      const l = String(_memState.lang || "en");
+      localStorage.setItem(LangStorageKey, l);
+      localStorage.setItem("VREALMS_LANG", l); // compat
+    }catch(_){}
   }
 
   function _emitProfile(){
@@ -120,7 +188,7 @@
       username: "",
       vcoins: 0,
       jetons: 0,
-      lang: "fr",
+      lang: _safeLang(localStorage.getItem(LangStorageKey)),
       unlocked_scenarios: [],
       updated_at: Date.now(),
       last_sync_at: 0
@@ -142,7 +210,18 @@
     _memState.username = String(me.username || "");
     _memState.vcoins = _clampInt(me.vcoins ?? 0);
     _memState.jetons = _clampInt(me.jetons ?? 0);
-    _memState.lang = String(me.lang || "fr");
+
+    const remoteLangRaw = (me.lang == null) ? "" : String(me.lang).trim();
+    const hasRemoteLang = !!remoteLangRaw;
+
+    if (hasRemoteLang){
+      _memState.lang = _safeLang(remoteLangRaw);
+      _memState._remote_lang_missing = false;
+    } else {
+      // ✅ si remote vide, on garde la langue locale/device et on marquera pour push
+      _memState.lang = _safeLang(_memState.lang || localStorage.getItem(LangStorageKey) || _detectDeviceLang());
+      _memState._remote_lang_missing = true;
+    }
 
     if (Array.isArray(me.unlocked_scenarios)){
       _memState.unlocked_scenarios = _normScenarioList(me.unlocked_scenarios);
@@ -183,7 +262,7 @@
   window.VCRemoteStore = window.VCRemoteStore || {
     enabled(){ return sbReady(); },
 
-    // ✅ FIX: ensureAuth ne doit plus appeler bootstrapAuthAndProfile (qui pouvait rappeler refresh)
+    // ✅ ensureAuth ne doit plus appeler bootstrapAuthAndProfile (qui pouvait rappeler refresh)
     // On fait simple: getUser -> sinon signInAnonymously -> getUser
     async ensureAuth(){
       const sb = window.sb;
@@ -251,11 +330,22 @@
       const uid = await this.ensureAuth();
       if (!uid) return false;
 
-      const l = String(lang || "fr").trim().toLowerCase() || "fr";
+      const l = _safeLang(lang);
       try{
         const r = await sb.rpc("secure_set_lang", { p_lang: l });
-        if (r?.error) _reportRemoteError("rpc.secure_set_lang", r.error);
-        return !r?.error && !!r?.data;
+        if (r?.error){
+          _reportRemoteError("rpc.secure_set_lang", r.error);
+          return false;
+        }
+
+        // ✅ MAJ local + events si RPC OK
+        _memState.lang = l;
+        _memState._remote_lang_missing = false;
+        _persistLocal();
+        _emitProfile();
+
+        try{ window.VRI18n?.setLang?.(_memState.lang); }catch(_){}
+        return true;
       }catch(e){
         _reportRemoteError("rpc.secure_set_lang.exception", e);
         return false;
@@ -349,7 +439,7 @@
       if (!uid) return { ok:false, reason:"no_auth" };
 
       const s = _normScenarioId(scenarioId);
-      const e = String(ending || "").trim().toLowerCase();
+      const e = _safeLower(ending);
       if (!s) return { ok:false, reason:"invalid_scenario" };
       if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
 
@@ -375,6 +465,13 @@
 
       if (window.VCRemoteStore?.enabled?.()){
         await this.refresh().catch((e) => { _reportRemoteError("VUserData.init.refresh", e); return false; });
+
+        // ✅ si remote n'a pas de lang, push la locale/device (EN fallback)
+        try{
+          if (_memState._remote_lang_missing){
+            await this.setLang(_memState.lang);
+          }
+        }catch(_){}
       }
 
       _uiPaused = false;
@@ -402,7 +499,7 @@
           username: String(_memState.username || ""),
           vcoins: _clampInt(_memState.vcoins || 0),
           jetons: _clampInt(_memState.jetons || 0),
-          lang: String(_memState.lang || "fr"),
+          lang: String(_memState.lang || "en"),
           unlocked_scenarios: _normScenarioList(_memState.unlocked_scenarios),
           updated_at: Number(_memState.updated_at || Date.now()),
           last_sync_at: Number(_memState.last_sync_at || 0)
@@ -428,7 +525,7 @@
 
         if (typeof data.vcoins !== "undefined") _memState.vcoins = _clampInt(data.vcoins);
         if (typeof data.jetons !== "undefined") _memState.jetons = _clampInt(data.jetons);
-        if (typeof data.lang !== "undefined") _memState.lang = String(data.lang || "fr");
+        if (typeof data.lang !== "undefined") _memState.lang = _safeLang(data.lang);
 
         if (Object.prototype.hasOwnProperty.call(data, "unlocked_scenarios")){
           _memState.unlocked_scenarios = _normScenarioList(data.unlocked_scenarios);
@@ -440,9 +537,20 @@
       }catch(_){}
     },
 
-    getLang(){ return String(this.load().lang || "fr"); },
+    getLang(){ return String(this.load().lang || "en"); },
     getVcoins(){ return Number(this.load().vcoins || 0); },
     getJetons(){ return Number(this.load().jetons || 0); },
+
+    // ✅ expose setLang propre (local + remote + emit)
+    async setLang(lang){
+      const l = _safeLang(lang);
+      // local immédiat
+      this.save({ lang: l }, { silent:false });
+
+      // remote si possible
+      if (!window.VCRemoteStore?.enabled?.()) return true;
+      return await window.VCRemoteStore.setLang(l);
+    },
 
     getUnlockedScenarios(){
       const u = this.load();
@@ -473,7 +581,7 @@
           username: String(me.username || cur.username || ""),
           vcoins: (typeof me.vcoins !== "undefined") ? me.vcoins : cur.vcoins,
           jetons: (typeof me.jetons !== "undefined") ? me.jetons : cur.jetons,
-          lang: String(me.lang || cur.lang || "fr"),
+          lang: _safeLang(me.lang || cur.lang || "en"),
           unlocked_scenarios: Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios : cur.unlocked_scenarios
         });
       }else{

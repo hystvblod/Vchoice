@@ -1,13 +1,13 @@
-/* engine.js — VERSION COMPLETE À JOUR (lang auto + settings only + persist Supabase) */
+/* engine.js — VERSION COMPLETE À JOUR (lang auto device->EN + vchoice_lang + persist Supabase) */
 
 /* =========================
    CONFIG
 ========================= */
 const SAVE_KEY = "creepy_engine_save_v1";
-const DEFAULT_LANG = "fr";
+const DEFAULT_LANG = "en";
 
 // Langues prévues (même si certains ui_<lang>.json ne sont pas encore présents)
-const SUPPORTED_LANGS = ["fr","en","es","pt","ptbr","it","ko","ja","id"];
+const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -119,9 +119,7 @@ function normalizeLang(raw){
     "jp": "ja",
     "ja-jp": "ja",
     "kr": "ko",
-    "ko-kr": "ko",
-    "id-id": "id",
-    "in": "id" // anciens codes parfois rencontrés
+    "ko-kr": "ko"
   };
   if(map[s]) return map[s];
 
@@ -129,7 +127,6 @@ function normalizeLang(raw){
   if(base === "pt" && (s.includes("br") || s.includes("ptbr"))) return "ptbr";
   if(base === "ja") return "ja";
   if(base === "ko") return "ko";
-  if(base === "id") return "id";
   return base || null;
 }
 
@@ -143,6 +140,18 @@ function detectDeviceLang(){
     if(base && SUPPORTED_LANGS.includes(base)) return base;
   }
   return DEFAULT_LANG;
+}
+
+function getStoredLang(){
+  try{
+    const vc = normalizeLang(localStorage.getItem("vchoice_lang"));
+    if(vc && SUPPORTED_LANGS.includes(vc)) return vc;
+  }catch(_){}
+  try{
+    const gl = normalizeLang(localStorage.getItem("VREALMS_LANG"));
+    if(gl && SUPPORTED_LANGS.includes(gl)) return gl;
+  }catch(_){}
+  return null;
 }
 
 async function setLang(newLang, opts = {}){
@@ -163,7 +172,7 @@ async function setLang(newLang, opts = {}){
 
   if(persistLocal) save();
 
-  // ✅ Supabase profiles.lang
+  // ✅ Supabase profiles.lang (via VUserData)
   if(persistRemote && window.VUserData && typeof window.VUserData.setLang === "function"){
     try{ await window.VUserData.setLang(LANG); }catch(e){}
   }
@@ -322,6 +331,10 @@ function computeGuidePlan(fromSceneId, targetType){
 ========================= */
 function load(){
   try{
+    // ✅ priorité: langue globale vchoice_lang
+    const stored = getStoredLang();
+    if(stored) LANG = stored;
+
     const raw = localStorage.getItem(SAVE_KEY);
     if(!raw) return;
     const data = JSON.parse(raw);
@@ -330,13 +343,6 @@ function load(){
       scenarioStates = data.scenarioStates || {};
       const savedLang = normalizeLang(data.lang);
       if(savedLang && SUPPORTED_LANGS.includes(savedLang)) LANG = savedLang;
-      // compat: langue globale (index/settings)
-      if(!savedLang){
-        try{
-          const gl = normalizeLang(localStorage.getItem("VREALMS_LANG"));
-          if(gl && SUPPORTED_LANGS.includes(gl)) LANG = gl;
-        }catch(e){}
-      }
     }
   }catch(e){
     console.warn("load failed", e);
@@ -349,7 +355,9 @@ function save(){
       lang: LANG,
       scenarioStates
     }));
-    // compat: langue globale (index/settings)
+
+    // ✅ langue globale (settings/index/game)
+    try{ localStorage.setItem("vchoice_lang", LANG); }catch(e){}
     try{ localStorage.setItem("VREALMS_LANG", LANG); }catch(e){}
   }catch(e){
     console.warn("save failed", e);
@@ -622,7 +630,11 @@ async function boot(){
 
   let initialLang = LANG;
 
-  // priorité: profil Supabase > langue globale (settings/index) > device
+  // 1) vchoice_lang (global)
+  const stored = getStoredLang();
+  if(stored) initialLang = stored;
+
+  // 2) profil Supabase (si présent)
   if(window.VUserData && typeof window.VUserData.getLang === "function"){
     try{
       const l = normalizeLang(window.VUserData.getLang());
@@ -630,11 +642,7 @@ async function boot(){
     }catch(e){}
   }
 
-  try{
-    const gl = normalizeLang(localStorage.getItem("VREALMS_LANG"));
-    if(gl && SUPPORTED_LANGS.includes(gl)) initialLang = gl;
-  }catch(e){}
-
+  // 3) device
   if(!initialLang) initialLang = detectDeviceLang();
 
   LANG = initialLang;

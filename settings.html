@@ -1,3 +1,4 @@
+<!-- settings.html — VERSION COMPLETE À JOUR (sans settings.js, sélecteur + grille SVG) -->
 <!doctype html>
 <html lang="fr">
 <head>
@@ -5,6 +6,62 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title></title>
   <link rel="stylesheet" href="css/app.css" />
+
+  <style>
+    .langGrid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+    @media (min-width: 520px){
+      .langGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    .langBtn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
+      padding:12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: inherit;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      text-align:left;
+    }
+    .langBtn:active{ transform: scale(.99); }
+    .langBtn.isActive{
+      border-color: rgba(255,255,255,.26);
+      background: rgba(255,255,255,.10);
+      box-shadow: 0 10px 26px rgba(0,0,0,.22);
+    }
+
+    .flag{
+      width:34px;
+      height:24px;
+      border-radius:6px;
+      overflow:hidden;
+      flex: 0 0 auto;
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 8px 18px rgba(0,0,0,.22);
+      background: rgba(0,0,0,.18);
+    }
+    .flag svg{ width:100%; height:100%; display:block; }
+
+    .langText{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .langCode{ font-weight:950; letter-spacing:.3px; line-height:1.05; }
+    .langName{ opacity:.80; font-size:12px; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .field__select select,
+    select.field__select,
+    select{
+      appearance:auto;
+    }
+  </style>
 </head>
 
 <body class="page-settings">
@@ -28,6 +85,8 @@
             <select id="settingsLangSelect" class="field__select" style="width:100%;"></select>
           </label>
 
+          <div id="settingsLangGrid" class="langGrid" aria-label=""></div>
+
           <div id="settingsMsg" class="muted" style="margin-top:10px;"></div>
         </div>
       </section>
@@ -37,15 +96,247 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script src="js/supabaseBootstrap.js"></script>
   <script src="js/userData.js"></script>
-
   <script src="js/i18n.js"></script>
-  <script src="js/settings.js"></script>
 
   <script>
   (async () => {
+    const LangStorageKey = "vchoice_lang";
+
+    const LANGS = [
+      { code:"en",  ui:"EN",  nameKey:"ui.lang_name.en"  },
+      { code:"fr",  ui:"FR",  nameKey:"ui.lang_name.fr"  },
+      { code:"de",  ui:"DE",  nameKey:"ui.lang_name.de"  },
+      { code:"es",  ui:"ES",  nameKey:"ui.lang_name.es"  },
+      { code:"pt",  ui:"PT",  nameKey:"ui.lang_name.pt"  },
+      { code:"ptbr",ui:"PTBR",nameKey:"ui.lang_name.ptbr"},
+      { code:"it",  ui:"IT",  nameKey:"ui.lang_name.it"  },
+      { code:"ko",  ui:"KO",  nameKey:"ui.lang_name.ko"  },
+      { code:"ja",  ui:"JP",  nameKey:"ui.lang_name.ja"  }
+    ];
+
+    function $(id){ return document.getElementById(id); }
+
+    function safeLower(x){ return String(x||"").trim().toLowerCase(); }
+
+    function normalizeLang(raw){
+      if(!raw) return null;
+      const s = safeLower(raw);
+      const map = {
+        "pt-br":"ptbr","pt_br":"ptbr",
+        "pt-pt":"pt","pt_pt":"pt",
+        "jp":"ja","ja-jp":"ja",
+        "kr":"ko","ko-kr":"ko"
+      };
+      if(map[s]) return map[s];
+      const base = s.split(/[-_]/)[0];
+      if(base === "pt" && (s.includes("br") || s.includes("ptbr"))) return "ptbr";
+      if(base === "ja") return "ja";
+      if(base === "ko") return "ko";
+      return base || null;
+    }
+
+    function supported(code){
+      const c = normalizeLang(code);
+      return LANGS.some(x => x.code === c);
+    }
+
+    function getStoredLang(){
+      try{
+        const v = normalizeLang(localStorage.getItem(LangStorageKey));
+        if(v && supported(v)) return v;
+      }catch(_){}
+      return null;
+    }
+
+    function detectDeviceLang(){
+      const list = Array.isArray(navigator.languages) && navigator.languages.length
+        ? navigator.languages
+        : [navigator.language];
+      for(const cand of list){
+        const base = normalizeLang(cand);
+        if(base && supported(base)) return base;
+      }
+      return "en";
+    }
+
+    function t(key, fallback){
+      try{
+        if(window.VRI18n && typeof window.VRI18n.t === "function"){
+          const v = window.VRI18n.t(key);
+          if(v) return v;
+        }
+      }catch(_){}
+      return fallback || "";
+    }
+
+    // ====== SVG flags (simples, sans dépendances) ======
+    const FLAGS = {
+      fr: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" x="0" y="0" fill="#1f4fbf"/><rect width="10" height="20" x="10" y="0" fill="#ffffff"/><rect width="10" height="20" x="20" y="0" fill="#d11f2e"/></svg>`,
+      en: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#0a3a87"/><path d="M0 0 L30 20 M30 0 L0 20" stroke="#fff" stroke-width="4"/><path d="M0 0 L30 20 M30 0 L0 20" stroke="#c8102e" stroke-width="2"/><rect x="13" y="0" width="4" height="20" fill="#fff"/><rect x="0" y="8" width="30" height="4" fill="#fff"/><rect x="14" y="0" width="2" height="20" fill="#c8102e"/><rect x="0" y="9" width="30" height="2" fill="#c8102e"/></svg>`,
+      de: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="6.67" y="0" fill="#111"/><rect width="30" height="6.67" y="6.67" fill="#d11f2e"/><rect width="30" height="6.66" y="13.34" fill="#f4c300"/></svg>`,
+      es: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="5" y="0" fill="#c8102e"/><rect width="30" height="10" y="5" fill="#f4c300"/><rect width="30" height="5" y="15" fill="#c8102e"/></svg>`,
+      pt: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="12" height="20" x="0" y="0" fill="#1a7f3b"/><rect width="18" height="20" x="12" y="0" fill="#c8102e"/><circle cx="12" cy="10" r="4.5" fill="#f4c300" opacity="0.95"/></svg>`,
+      ptbr:`<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#1a7f3b"/><path d="M15 3 L26 10 L15 17 L4 10 Z" fill="#f4c300"/><circle cx="15" cy="10" r="4" fill="#1f4fbf"/></svg>`,
+      it: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" x="0" y="0" fill="#1a7f3b"/><rect width="10" height="20" x="10" y="0" fill="#ffffff"/><rect width="10" height="20" x="20" y="0" fill="#c8102e"/></svg>`,
+      ko: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#ffffff"/><circle cx="15" cy="10" r="5" fill="#c8102e"/><path d="M15 5a5 5 0 0 0 0 10a2.5 2.5 0 0 1 0-5a2.5 2.5 0 0 0 0-5Z" fill="#0a3a87" opacity="0.95"/></svg>`,
+      ja: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#ffffff"/><circle cx="15" cy="10" r="5" fill="#d11f2e"/></svg>`
+    };
+
+    function renderTexts(){
+      const cur = getStoredLang() || detectDeviceLang();
+
+      document.title = t("ui.settings_title", "Settings");
+      $("settingsTitle").textContent = t("ui.settings_title", "Settings");
+
+      $("settingsLangDesc").textContent = t("ui.settings_lang_desc",
+        "Choisis la langue. Elle est sauvegardée sur l’appareil et sur ton profil."
+      );
+
+      $("settingsLangLabel").textContent = t("ui.settings_lang_label", "Langue");
+
+      const backText = t("ui.btn_back", "Back");
+      $("settingsBackLabel").textContent = backText;
+      $("btnBackSettings").setAttribute("aria-label", backText);
+
+      // label grille (aria)
+      $("settingsLangGrid").setAttribute("aria-label", t("ui.language", "Language"));
+
+      // message
+      const msg = $("settingsMsg");
+      if(msg && !msg.textContent) msg.textContent = t("ui.settings_msg_hint", "");
+    }
+
+    function buildSelectAndGrid(){
+      const sel = $("settingsLangSelect");
+      const grid = $("settingsLangGrid");
+      if(!sel || !grid) return;
+
+      sel.innerHTML = "";
+      grid.innerHTML = "";
+
+      const cur = getStoredLang() || detectDeviceLang();
+      const frag = document.createDocumentFragment();
+
+      for(const L of LANGS){
+        const opt = document.createElement("option");
+        opt.value = L.code;
+        opt.textContent = `${L.ui} — ${t(L.nameKey, L.ui)}`;
+        frag.appendChild(opt);
+      }
+      sel.appendChild(frag);
+      sel.value = supported(cur) ? cur : "en";
+
+      for(const L of LANGS){
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "langBtn" + ((sel.value === L.code) ? " isActive" : "");
+        btn.setAttribute("data-lang", L.code);
+
+        const flag = document.createElement("div");
+        flag.className = "flag";
+        flag.innerHTML = FLAGS[L.code] || FLAGS.en;
+
+        const txt = document.createElement("div");
+        txt.className = "langText";
+
+        const code = document.createElement("div");
+        code.className = "langCode";
+        code.textContent = L.ui;
+
+        const name = document.createElement("div");
+        name.className = "langName";
+        name.textContent = t(L.nameKey, L.ui);
+
+        txt.appendChild(code);
+        txt.appendChild(name);
+
+        btn.appendChild(flag);
+        btn.appendChild(txt);
+
+        const aria = t("ui.settings_choose_lang_aria", "Choose language: {code}")
+          .replace("{code}", L.ui);
+        btn.setAttribute("aria-label", aria);
+
+        btn.addEventListener("click", () => setLanguage(L.code, { showMsg:true }));
+        grid.appendChild(btn);
+      }
+
+      sel.addEventListener("change", () => setLanguage(sel.value, { showMsg:true }));
+    }
+
+    function markActive(code){
+      const sel = $("settingsLangSelect");
+      if(sel) sel.value = code;
+
+      document.querySelectorAll(".langBtn[data-lang]").forEach((b) => {
+        b.classList.toggle("isActive", b.getAttribute("data-lang") === code);
+      });
+    }
+
+    async function setLanguage(raw, opts = {}){
+      const code = normalizeLang(raw) || "en";
+      const safe = supported(code) ? code : "en";
+
+      // local first (ultra important)
+      try{ localStorage.setItem("vchoice_lang", safe); }catch(_){}
+      try{ localStorage.setItem("VREALMS_LANG", safe); }catch(_){}
+
+      // update cache local VUserData (sans écraser le reste)
+      try{
+        if(window.VUserData && typeof window.VUserData.save === "function"){
+          window.VUserData.save({ lang: safe }, { silent:true });
+        }
+      }catch(_){}
+
+      // remote
+      let remoteOk = true;
+      try{
+        if(window.VUserData && typeof window.VUserData.setLang === "function"){
+          remoteOk = !!(await window.VUserData.setLang(safe));
+        } else if(window.VCRemoteStore && typeof window.VCRemoteStore.setLang === "function"){
+          remoteOk = !!(await window.VCRemoteStore.setLang(safe));
+        }
+      }catch(_){ remoteOk = false; }
+
+      // i18n reload
+      try{
+        if(window.VRI18n && typeof window.VRI18n.initI18n === "function"){
+          await window.VRI18n.initI18n(safe);
+        }
+      }catch(_){}
+
+      renderTexts();
+      buildSelectAndGrid();
+      markActive(safe);
+
+      const msg = $("settingsMsg");
+      if(msg && opts.showMsg){
+        msg.textContent = remoteOk
+          ? t("ui.settings_msg_saved", "Langue enregistrée.")
+          : t("ui.settings_msg_saved_local", "Langue enregistrée sur l’appareil. Synchronisation serveur plus tard.");
+      }
+    }
+
+    // ==== BOOT ====
     try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
     try { await window.VUserData?.init?.(); } catch(e) {}
     try { await window.VRI18n?.initI18n?.(); } catch(e) {}
+
+    // ensure local lang exists (device -> EN fallback)
+    try{
+      const cur = getStoredLang();
+      if(!cur){
+        const d = detectDeviceLang();
+        localStorage.setItem(LangStorageKey, d);
+        localStorage.setItem("VREALMS_LANG", d);
+      }
+    }catch(_){}
+
+    renderTexts();
+    buildSelectAndGrid();
+
+    // align UI + (optionnel) push remote si remote n’a rien: géré par userData.js (init)
+    await setLanguage(getStoredLang() || detectDeviceLang(), { showMsg:false });
   })();
   </script>
 </body>
