@@ -327,7 +327,7 @@
       "body_key": "br.s25.body",
       "choices": [
         { "choice_key": "br.s25.c1", "next": "s26" },
-        { "choice_key": "br.s25.c2", "next": "s20" },
+        { "choice_key": "br.s25.c2", "next": "s19" },
         { "choice_key": "br.s25.c3", "next": "s31" }
       ]
     },

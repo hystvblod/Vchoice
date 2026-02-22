@@ -216,7 +216,7 @@
       "body_key": "ca.s11.body",
       "choices": [
         { "choice_key": "ca.s11.c1", "next": "s12" },
-        { "choice_key": "ca.s11.c2", "next": "s13" },
+        { "choice_key": "ca.s11.c2", "next": "s12" },
         { "choice_key": "ca.s11.c3", "next": "s09" }
       ]
     },
@@ -285,8 +285,8 @@
       "title_key": "ca.s18.title",
       "body_key": "ca.s18.body",
       "choices": [
-        { "choice_key": "ca.s18.c1", "next": "s19" },
-        { "choice_key": "ca.s18.c2", "next": "s20" },
+        { "choice_key": "ca.s18.c1", "next": "s20" },
+        { "choice_key": "ca.s18.c2", "next": "s19" },
         { "choice_key": "ca.s18.c3", "next": "s16" }
       ]
     },
@@ -566,7 +566,7 @@
       "body_key": "ca.s46.body",
       "choices": [
         { "choice_key": "ca.s46.c1", "next": "s47" },
-        { "choice_key": "ca.s46.c2", "next": "s14" },
+        { "choice_key": "ca.s46.c2", "next": "s15" },
         { "choice_key": "ca.s46.c3", "next": "s49" }
       ]
     },
