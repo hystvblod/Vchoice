@@ -276,8 +276,8 @@
       "title_key": "br.s20.title",
       "body_key": "br.s20.body",
       "choices": [
-        { "choice_key": "br.s20.c1", "next": "s21" },
-        { "choice_key": "br.s20.c2", "next": "s26" },
+        { "choice_key": "br.s20.c1", "next": "s25" },
+        { "choice_key": "br.s20.c2", "next": "s25" },
         { "choice_key": "br.s20.c3", "next": "s19" }
       ]
     },
