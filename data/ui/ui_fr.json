@@ -121,6 +121,18 @@
     "settings_msg_hint": "",
     "settings_choose_lang_aria": "Choisir la langue : {code}",
 
+    "settings_back_home_aria": "Retour à l’accueil",
+    "settings_open_profile_aria": "Ouvrir le profil",
+
+    "settings_ads_title": "Publicité",
+    "settings_ads_personalized_label": "Publicité personnalisée",
+    "settings_ads_personalized_desc": "Autoriser l’utilisation de données pour des pubs plus pertinentes.",
+    "settings_ads_saved": "Préférence publicitaire enregistrée.",
+
+    "settings_help_title": "Aide",
+    "settings_help_email_label": "Contact :",
+    "settings_help_email": "help.vboldstudio@gmail.com",
+
     "lang_name": {
       "en": "English",
       "fr": "Français",
