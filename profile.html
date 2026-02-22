@@ -15,6 +15,10 @@
       --badgeGap: 10px;
       --badgeMin: 70px;
       --badgeMax: 112px;
+
+      /* ✅ IMPORTANT: marge interne identique pour EMPTY + FULL
+         => empêche le "full" d'avoir l'air plus gros que "empty" */
+      --badgePad: 7%;
     }
 
     /* ✅ Anti-débordement / responsive */
@@ -286,13 +290,13 @@
       background: transparent !important;
       box-shadow: none !important;
       overflow: visible !important;
-      padding: 0 4px !important;         /* ✅ évite de toucher les bords */
+      padding: 0 4px !important;
       min-width: 0 !important;
       text-align:center;
-      opacity: 1 !important;             /* ✅ pas de blanchiment */
-      filter: none !important;           /* ✅ pas de gris */
+      opacity: 1 !important;
+      filter: none !important;
 
-      /* ✅ taille badge calculée par colonne (évite le débordement) */
+      /* ✅ taille badge calculée par colonne */
       --badgeSize: clamp(
         var(--badgeMin),
         calc((100% - (2 * var(--badgeGap))) / 3),
@@ -314,20 +318,20 @@
       opacity: 1 !important;
     }
 
-    /* ✅ 3 badges sur UNE ligne, jamais de débordement */
+    /* ✅ 3 badges sur UNE ligne */
     .vc-scen-ends{
       margin-top: 10px;
       display:flex;
       gap: var(--badgeGap);
       align-items:center;
-      justify-content:space-between;   /* ✅ mieux que center pour remplir la colonne */
+      justify-content:space-between;
       width: 100%;
       min-width: 0;
       flex-wrap: nowrap !important;
-      overflow: hidden;               /* ✅ sécurité anti-débordement */
+      overflow: hidden;
     }
 
-    /* ✅ BADGES responsifs (grands si possible, réduits sinon) */
+    /* ✅ 1 slot badge = une box fixe */
     .vc-end{
       display:block !important;
       flex: 0 0 var(--badgeSize) !important;
@@ -341,7 +345,7 @@
       background: transparent !important;
       box-shadow: none !important;
       border-radius: 0 !important;
-      overflow: visible !important;
+      overflow: hidden !important; /* ✅ IMPORTANT: coupe proprement si images bizarre */
       position: relative;
       padding: 0 !important;
       margin: 0 !important;
@@ -350,30 +354,28 @@
       opacity: 1 !important;
     }
 
+    /* ✅ EMPTY et FULL = EXACTEMENT la même géométrie (padding identique) */
     .vc-end img{
       position:absolute;
       inset:0;
       width:100% !important;
       height:100% !important;
-      object-fit:contain;
+      object-fit: contain;
       background: transparent !important;
       border: 0 !important;
       outline: 0 !important;
       box-shadow: none !important;
       filter: none !important;
       opacity: 1 !important;
+      padding: var(--badgePad) !important;      /* ✅ clé anti "full plus gros" */
+      box-sizing: border-box !important;
     }
 
     .vc-end .full{ opacity:0; transition: opacity .18s ease; }
     .vc-end.unlocked .full{ opacity:1; }
 
-    /* ✅ IMPORTANT: ne PAS griser/blanchir les scénarios lockés.
-       On garde juste l'effet “full caché” (badges non obtenus). */
     .vc-scen-card.is-locked{ opacity: 1 !important; filter: none !important; }
-    .vc-scen-card.is-locked .vc-end{
-      opacity: 1 !important;
-      filter: none !important;
-    }
+    .vc-scen-card.is-locked .vc-end{ opacity: 1 !important; filter: none !important; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
     /* ✅ Filet de sécurité si profile.js injecte des <img> directement */
@@ -385,29 +387,13 @@
       flex-shrink: 0 !important;
       filter: none !important;
       opacity: 1 !important;
+      padding: var(--badgePad) !important;
+      box-sizing: border-box !important;
     }
 
-    /* ✅ Sur très petits écrans, on garde 2 colonnes ET on réduit un peu les bornes */
     @media (max-width: 360px){
-      :root{ --badgeMin: 64px; --badgeMax: 104px; }
+      :root{ --badgeMin: 64px; --badgeMax: 104px; --badgePad: 8%; }
       .vc-scen-ends{ gap: 8px; }
-    }
-
-    /* ✅ DEBUG (tu peux enlever ensuite) */
-    .vc-debug-bar{
-      position: fixed;
-      left: 10px;
-      bottom: 10px;
-      z-index: 9999;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.14);
-      color: rgba(255,255,255,.9);
-      font-weight: 900;
-      font-size: 11px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
     }
   </style>
 </head>
