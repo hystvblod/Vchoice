@@ -22,6 +22,9 @@
   let _uiPaused = true;
   let _pendingEmit = false;
 
+  // ✅ init guard (évite double init sur certaines pages)
+  let _initPromise = null;
+
   function _isDebug(){ try { return !!window.__VC_DEBUG; } catch { return false; } }
 
   const _errState = { last: null, ts: 0 };
@@ -178,6 +181,13 @@
     }
 
     _writeEndingsCache(uid, map);
+
+    // ✅ utile si profile.js écoute (sinon aucun impact)
+    try{
+      window.dispatchEvent(new CustomEvent("vc:endings_updated", {
+        detail: { user_id: uid, scenario_id: sid, ending: e }
+      }));
+    }catch(_){}
   }
 
   function _readLocal(){
@@ -502,24 +512,30 @@
 
   const VUserData = {
     async init(){
-      const cached = _readLocal();
-      if (cached) this.save(cached, { silent:true });
-      else this.save(this.load(), { silent:true });
+      if (_initPromise) return _initPromise;
 
-      if (window.VCRemoteStore?.enabled?.()){
-        await this.refresh().catch((e) => { _reportRemoteError("VUserData.init.refresh", e); return false; });
+      _initPromise = (async () => {
+        const cached = _readLocal();
+        if (cached) this.save(cached, { silent:true });
+        else this.save(this.load(), { silent:true });
 
-        // ✅ si remote n'a pas de lang, push la locale/device (EN fallback)
-        try{
-          if (_memState._remote_lang_missing){
-            await this.setLang(_memState.lang);
-          }
-        }catch(_){}
-      }
+        if (window.VCRemoteStore?.enabled?.()){
+          await this.refresh().catch((e) => { _reportRemoteError("VUserData.init.refresh", e); return false; });
 
-      _uiPaused = false;
-      if (_pendingEmit){ _pendingEmit = false; _emitProfile(); }
-      return true;
+          // ✅ si remote n'a pas de lang, push la locale/device (EN fallback)
+          try{
+            if (_memState._remote_lang_missing){
+              await this.setLang(_memState.lang);
+            }
+          }catch(_){}
+        }
+
+        _uiPaused = false;
+        if (_pendingEmit){ _pendingEmit = false; _emitProfile(); }
+        return true;
+      })();
+
+      return _initPromise;
     },
 
     async refresh(){
@@ -650,6 +666,9 @@
     },
 
     async completeScenario(scenarioId, ending){
+      // ✅ sécurité: si init pas fait, on le fait ici
+      try{ await this.init(); }catch(_){}
+
       if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
 
       const res = await window.VCRemoteStore.completeScenario(scenarioId, ending);
@@ -675,5 +694,17 @@
   };
 
   window.VUserData = VUserData;
+
+  // ✅ AUTO INIT : toutes les pages sont safe (index/game/profile/settings/shop…)
+  (function autoInit(){
+    const run = async () => {
+      try{ await window.VUserData.init(); }catch(_){}
+    };
+    if (document.readyState === "loading"){
+      document.addEventListener("DOMContentLoaded", run, { once:true });
+    } else {
+      run();
+    }
+  })();
 
 })();

@@ -628,6 +628,13 @@ function bindJetonHud(){
 async function boot(){
   load();
 
+  // ✅ CRITIQUE: init user data AVANT tout usage (badges/jetons/lang RPC)
+  try{
+    if(window.VUserData && typeof window.VUserData.init === "function"){
+      await window.VUserData.init();
+    }
+  }catch(_){}
+
   let initialLang = LANG;
 
   // 1) vchoice_lang (global)

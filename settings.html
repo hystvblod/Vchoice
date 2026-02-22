@@ -88,55 +88,64 @@
       max-width: 520px;
     }
 
-    /* ====== Grille langues ====== */
+    /* ====== Grille langues ======
+       ✅ au moins 3 drapeaux par ligne
+       - mobile: 3 colonnes
+       - plus large: 4 colonnes
+    */
     .langGrid{
       display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap:10px;
       margin-top:12px;
     }
     @media (min-width: 520px){
-      .langGrid{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .langGrid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
 
+    /* ✅ BOUTONS LANGUES SANS “CARRÉ” (pas de cartouche/border/bg) */
     .langBtn{
       width:100%;
       display:flex;
       align-items:center;
-      justify-content:flex-start;
-      gap:10px;
-      padding:12px 12px;
+      justify-content:center;
+      gap:0;
+      padding: 10px 6px;
       border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
+      border: 0 !important;
+      background: transparent !important;
       color: inherit;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
-      text-align:left;
+      text-align:center;
+      box-shadow: none !important;
     }
-    .langBtn:active{ transform: scale(.99); }
+    .langBtn:active{ transform: scale(.98); }
+
+    /* ✅ état actif : pas de carré, juste un glow discret */
     .langBtn.isActive{
-      border-color: rgba(255,255,255,.26);
-      background: rgba(255,255,255,.10);
-      box-shadow: 0 10px 26px rgba(0,0,0,.22);
+      outline: 0;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.22), 0 14px 34px rgba(0,0,0,.26) !important;
+      background: transparent !important;
+      border: 0 !important;
     }
 
-    /* ✅ flags SANS encadré (plus de border/box) */
+    /* ✅ FLAGS : SANS encadré (aucun border/box) */
     .flag{
-      width:34px;
-      height:24px;
-      border-radius:6px;
+      width: 46px;
+      height: 32px;
+      border-radius: 8px;
       overflow:hidden;
       flex: 0 0 auto;
       border: 0 !important;
+      outline: 0 !important;
       box-shadow: none !important;
       background: transparent !important;
     }
     .flag svg{ width:100%; height:100%; display:block; }
 
-    .langText{ display:flex; flex-direction:column; gap:2px; min-width:0; }
-    .langCode{ font-weight:950; letter-spacing:.3px; line-height:1.05; }
-    .langName{ opacity:.80; font-size:12px; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    /* ✅ on masque les textes (tu veux juste les drapeaux) */
+    .langText{ display:none !important; }
 
     /* ====== Bloc réglage pub (toggle) ====== */
     .settingsSection{
@@ -152,15 +161,16 @@
       margin: 0 0 10px 0;
     }
 
+    /* ✅ enlever les “carrés” autour du bloc pubs */
     .toggleRow{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
+      padding: 8px 0;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
     }
     .toggleText{ min-width:0; }
     .toggleLabel{
@@ -221,15 +231,16 @@
     }
 
     /* ====== Aide / email ====== */
+    /* ✅ enlever les “carrés” autour du mail */
     .helpLine{
       display:flex;
       align-items:center;
       justify-content:flex-start;
       gap:8px;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
+      padding: 8px 0;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
       margin-top:10px;
       overflow:hidden;
     }
@@ -328,7 +339,8 @@
       { code:"ptbr",ui:"PTBR",nameKey:"ui.lang_name.ptbr"},
       { code:"it",  ui:"IT",  nameKey:"ui.lang_name.it"  },
       { code:"ko",  ui:"KO",  nameKey:"ui.lang_name.ko"  },
-      { code:"ja",  ui:"JP",  nameKey:"ui.lang_name.ja"  }
+      { code:"ja",  ui:"JP",  nameKey:"ui.lang_name.ja"  },
+      { code:"id",  ui:"ID",  nameKey:"ui.lang_name.id"  }  // ✅ Indonésien
     ];
 
     function $(id){ return document.getElementById(id); }
@@ -341,13 +353,15 @@
         "pt-br":"ptbr","pt_br":"ptbr",
         "pt-pt":"pt","pt_pt":"pt",
         "jp":"ja","ja-jp":"ja",
-        "kr":"ko","ko-kr":"ko"
+        "kr":"ko","ko-kr":"ko",
+        "in":"id","id-id":"id" // ✅ Indonésien (anciens codes)
       };
       if(map[s]) return map[s];
       const base = s.split(/[-_]/)[0];
       if(base === "pt" && (s.includes("br") || s.includes("ptbr"))) return "ptbr";
       if(base === "ja") return "ja";
       if(base === "ko") return "ko";
+      if(base === "in") return "id";
       return base || null;
     }
 
@@ -395,7 +409,8 @@
       ptbr:`<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#1a7f3b"/><path d="M15 3 L26 10 L15 17 L4 10 Z" fill="#f4c300"/><circle cx="15" cy="10" r="4" fill="#1f4fbf"/></svg>`,
       it: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" x="0" y="0" fill="#1a7f3b"/><rect width="10" height="20" x="10" y="0" fill="#ffffff"/><rect width="10" height="20" x="20" y="0" fill="#c8102e"/></svg>`,
       ko: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#ffffff"/><circle cx="15" cy="10" r="5" fill="#c8102e"/><path d="M15 5a5 5 0 0 0 0 10a2.5 2.5 0 0 1 0-5a2.5 2.5 0 0 0 0-5Z" fill="#0a3a87" opacity="0.95"/></svg>`,
-      ja: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#ffffff"/><circle cx="15" cy="10" r="5" fill="#d11f2e"/></svg>`
+      ja: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#ffffff"/><circle cx="15" cy="10" r="5" fill="#d11f2e"/></svg>`,
+      id: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="10" y="0" fill="#d11f2e"/><rect width="30" height="10" y="10" fill="#ffffff"/></svg>`
     };
 
     function renderTexts(){
@@ -455,6 +470,7 @@
         flag.className = "flag";
         flag.innerHTML = FLAGS[L.code] || FLAGS.en;
 
+        // (texts hidden by CSS, but kept for a11y)
         const txt = document.createElement("div");
         txt.className = "langText";
 
