@@ -10,7 +10,11 @@
     /* ====== TUNING (change ici, garanti) ====== */
     :root{
       --gapAfterBtn: 42px;   /* espace sous “Modifier pseudo” */
-      --badgeSize: 120px;    /* ✅ gros MAIS reste en ligne (3 badges) */
+
+      /* ✅ badges responsifs (s’adaptent à la largeur de la colonne) */
+      --badgeGap: 10px;
+      --badgeMin: 70px;
+      --badgeMax: 112px;
     }
 
     /* ✅ Anti-débordement / responsive */
@@ -282,11 +286,18 @@
       background: transparent !important;
       box-shadow: none !important;
       overflow: visible !important;
-      padding: 0 !important;
+      padding: 0 4px !important;         /* ✅ évite de toucher les bords */
       min-width: 0 !important;
       text-align:center;
-      opacity: 1 !important;            /* ✅ plus de “blanchiment” */
-      filter: none !important;          /* ✅ plus de gris */
+      opacity: 1 !important;             /* ✅ pas de blanchiment */
+      filter: none !important;           /* ✅ pas de gris */
+
+      /* ✅ taille badge calculée par colonne (évite le débordement) */
+      --badgeSize: clamp(
+        var(--badgeMin),
+        calc((100% - (2 * var(--badgeGap))) / 3),
+        var(--badgeMax)
+      );
     }
     .vc-scen-inner{ padding: 0 !important; min-width:0; }
 
@@ -299,30 +310,32 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align:center;
-      color: var(--vc-text) !important; /* ✅ couleur identique locked/unlocked */
+      color: var(--vc-text) !important;
       opacity: 1 !important;
     }
 
-    /* ✅ 3 badges sur UNE ligne (pas de wrap) */
+    /* ✅ 3 badges sur UNE ligne, jamais de débordement */
     .vc-scen-ends{
       margin-top: 10px;
       display:flex;
-      gap: 10px;                 /* ✅ resserre pour que ça rentre */
+      gap: var(--badgeGap);
       align-items:center;
-      justify-content:center;
-      min-width:0;
-      flex-wrap: nowrap !important;      /* ✅ interdit le retour à la ligne */
+      justify-content:space-between;   /* ✅ mieux que center pour remplir la colonne */
+      width: 100%;
+      min-width: 0;
+      flex-wrap: nowrap !important;
+      overflow: hidden;               /* ✅ sécurité anti-débordement */
     }
 
-    /* ✅ BADGES gros + pas shrink */
+    /* ✅ BADGES responsifs (grands si possible, réduits sinon) */
     .vc-end{
-      display: inline-block !important;
+      display:block !important;
       flex: 0 0 var(--badgeSize) !important;
       width: var(--badgeSize) !important;
       height: var(--badgeSize) !important;
       min-width: var(--badgeSize) !important;
       min-height: var(--badgeSize) !important;
-      flex-shrink: 0 !important;         /* ✅ clé */
+      flex-shrink: 0 !important;
       border: none !important;
       outline: none !important;
       background: transparent !important;
@@ -333,8 +346,8 @@
       padding: 0 !important;
       margin: 0 !important;
       line-height: 0 !important;
-      filter: none !important;           /* ✅ pas de gris */
-      opacity: 1 !important;             /* ✅ pas de blanc */
+      filter: none !important;
+      opacity: 1 !important;
     }
 
     .vc-end img{
@@ -347,7 +360,8 @@
       border: 0 !important;
       outline: 0 !important;
       box-shadow: none !important;
-      filter: none !important;           /* ✅ pas de gris */
+      filter: none !important;
+      opacity: 1 !important;
     }
 
     .vc-end .full{ opacity:0; transition: opacity .18s ease; }
@@ -373,9 +387,9 @@
       opacity: 1 !important;
     }
 
-    /* ✅ Sur très petits écrans, on garde 2 colonnes ET on réduit juste les badges automatiquement */
+    /* ✅ Sur très petits écrans, on garde 2 colonnes ET on réduit un peu les bornes */
     @media (max-width: 360px){
-      :root{ --badgeSize: 104px; }
+      :root{ --badgeMin: 64px; --badgeMax: 104px; }
       .vc-scen-ends{ gap: 8px; }
     }
 
