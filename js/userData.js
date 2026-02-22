@@ -13,6 +13,9 @@
   const VUserDataKey = "vchoice_user_data";
   const LangStorageKey = "vchoice_lang";
 
+  // ✅ Cache endings (même clé/format que profile.js)
+  const ENDINGS_CACHE_KEY = "vchoice_endings_cache_v1";
+
   // ✅ Langs supportées côté app (device -> local -> supabase)
   const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
 
@@ -132,6 +135,49 @@
       if (n) out.push(n);
     }
     return Array.from(new Set(out));
+  }
+
+  /* =========================
+     ENDINGS CACHE (LOCAL)
+     - même format que profile.js
+     ========================= */
+  function _readEndingsCache(){
+    try{
+      const raw = localStorage.getItem(ENDINGS_CACHE_KEY);
+      if(!raw) return null;
+      const o = JSON.parse(raw);
+      if(!o || typeof o !== "object") return null;
+      if(!o.user_id || !o.map || typeof o.map !== "object") return null;
+      return o;
+    }catch{ return null; }
+  }
+
+  function _writeEndingsCache(userId, map){
+    try{
+      localStorage.setItem(ENDINGS_CACHE_KEY, JSON.stringify({
+        user_id: String(userId || ""),
+        ts: Date.now(),
+        map: map || {}
+      }));
+    }catch(_){}
+  }
+
+  function _markEndingLocal(userId, scenarioId, ending){
+    const uid = String(userId || "");
+    const sid = _normScenarioId(scenarioId);
+    const e = _safeLower(ending);
+    if(!uid || !sid) return;
+
+    const cache = _readEndingsCache();
+    const map = (cache && cache.user_id === uid && cache.map) ? cache.map : {};
+
+    if(!map[sid]) map[sid] = { good:false, bad:false, secret:false };
+
+    if(e === "good" || e === "bad" || e === "secret"){
+      map[sid][e] = true;
+    }
+
+    _writeEndingsCache(uid, map);
   }
 
   function _readLocal(){
@@ -262,8 +308,6 @@
   window.VCRemoteStore = window.VCRemoteStore || {
     enabled(){ return sbReady(); },
 
-    // ✅ ensureAuth ne doit plus appeler bootstrapAuthAndProfile (qui pouvait rappeler refresh)
-    // On fait simple: getUser -> sinon signInAnonymously -> getUser
     async ensureAuth(){
       const sb = window.sb;
       if (!sb || !sb.auth) return null;
@@ -338,7 +382,6 @@
           return false;
         }
 
-        // ✅ MAJ local + events si RPC OK
         _memState.lang = l;
         _memState._remote_lang_missing = false;
         _persistLocal();
@@ -541,13 +584,10 @@
     getVcoins(){ return Number(this.load().vcoins || 0); },
     getJetons(){ return Number(this.load().jetons || 0); },
 
-    // ✅ expose setLang propre (local + remote + emit)
     async setLang(lang){
       const l = _safeLang(lang);
-      // local immédiat
       this.save({ lang: l }, { silent:false });
 
-      // remote si possible
       if (!window.VCRemoteStore?.enabled?.()) return true;
       return await window.VCRemoteStore.setLang(l);
     },
@@ -614,6 +654,11 @@
 
       const res = await window.VCRemoteStore.completeScenario(scenarioId, ending);
       if (!res?.ok) return res || { ok:false, reason:"error" };
+
+      // ✅ Backup local endings (badge full uniquement si fin atteinte OK)
+      try{
+        _markEndingLocal(_memState.user_id, scenarioId, ending);
+      }catch(_){}
 
       const payload = res.data || null;
       const v = payload && typeof payload.vcoins === "number" ? payload.vcoins : null;

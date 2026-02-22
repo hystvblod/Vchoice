@@ -316,27 +316,23 @@
     }
 
     /* =========================
-       ✅ FIX ULTIME BADGES
-       - plus de flex : GRID 3 colonnes
-       - jamais de débordement
-       - 3 slots toujours visibles
+       ✅ FIX BADGES
        ========================= */
     .vc-scen-ends{
       margin-top: 10px;
       width: 100%;
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--badgeGap);
+      gap: clamp(6px, 1.8vw, var(--badgeGap));
       align-items:center;
       justify-items:center;
-      overflow: hidden; /* sécurité */
+     overflow: visible;
     }
 
-    /* Chaque slot prend 100% de sa cellule, carré, puis clamp via max-width */
     .vc-end{
       width: 100% !important;
-      aspect-ratio: 1 / 1 !important;     /* ✅ carré parfait */
-      max-width: var(--badgeSize) !important; /* ✅ taille auto dans la colonne */
+      aspect-ratio: 1 / 1 !important;
+      max-width: var(--badgeSize) !important;
       border: none !important;
       background: transparent !important;
       box-shadow: none !important;
@@ -356,24 +352,26 @@
       width:100% !important;
       height:100% !important;
       object-fit: contain !important;
-      padding: var(--badgePad) !important;   /* ✅ clé anti “full plus gros” */
+      padding: var(--badgePad) !important;
       box-sizing: border-box !important;
       border:0 !important;
       outline:0 !important;
       background: transparent !important;
       box-shadow:none !important;
       filter:none !important;
-      opacity:1 !important;
+
+      /* ✅ IMPORTANT: PAS de opacity:1 !important ici (sinon ça casse le système) */
+      opacity: 1;
     }
 
-    .vc-end .full{ opacity:0; transition: opacity .18s ease; }
-    .vc-end.unlocked .full{ opacity:1; }
+    /* ✅ Full visible uniquement quand la fin est validée */
+    .vc-end .full{ opacity:0 !important; transition: opacity .18s ease; }
+    .vc-end.unlocked .full{ opacity:1 !important; }
 
     .vc-scen-card.is-locked{ opacity: 1 !important; filter: none !important; }
     .vc-scen-card.is-locked .vc-end{ opacity: 1 !important; filter: none !important; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
-    /* Filet de sécurité si des <img> sont injectés directement (moins recommandé) */
     .vc-scen-ends > img{
       width: 100% !important;
       aspect-ratio: 1 / 1 !important;

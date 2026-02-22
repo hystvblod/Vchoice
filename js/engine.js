@@ -1112,6 +1112,14 @@ async function handleEnding(type){
   updateJetonGuideUI();
 
   const endingType = String(type || "").toLowerCase();
+
+  // ✅ ENREGISTREMENT FIN (badge full uniquement si fin réellement atteinte)
+  try{
+    if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+      await window.VUserData.completeScenario(currentScenarioId, endingType);
+    }
+  }catch(e){}
+
   let title = tUI("end_title");
   if(endingType === "good") title = tUI("end_title_good");
   if(endingType === "bad") title = tUI("end_title_bad");
