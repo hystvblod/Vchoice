@@ -1,163 +1,150 @@
-// js/i18n.js
-// - Charge data/ui/ui_<lang>.json
-// - Détecte la langue appareil si aucune préférence
-// - Fallback automatique sur FR si le fichier n'existe pas encore
-// - Stocke la langue en localStorage (VREALMS_LANG)
+// js/i18n.js — loader i18n + compat VRI18n + i18nGet + auto-apply [data-i18n]
+// ✅ Supporte JSON imbriqué (ui: { page_title: ... }) ET JSON à clés plates ("ui.page_title": "...").
+// ✅ Compatible avec ton index.html actuel (helper _t() qui cherche VRI18n._t / VRI18n.t / i18nGet)
 
-(function(){
+(function () {
   "use strict";
 
-  const STORAGE_KEY = "VREALMS_LANG";
   const UI_PATH = "data/ui";
-
-  // Langues prévues dans l'app (même si certains fichiers ui_<lang>.json ne sont pas encore créés)
-  const SUPPORTED_LANGS = ["fr","en","es","pt","ptbr","it","ko","ja","id"];
-
+  let _dict = {};
   let _lang = "fr";
-  let _ui = null;
 
-  function normalizeLang(raw){
-    if(!raw) return null;
-    const s = String(raw).trim().toLowerCase();
-
-    const map = {
-      "pt-br":"ptbr",
-      "pt_br":"ptbr",
-      "pt-pt":"pt",
-      "pt_pt":"pt",
-      "jp":"ja",
-      "ja-jp":"ja",
-      "kr":"ko",
-      "ko-kr":"ko",
-      "id-id":"id",
-      "in":"id"
-    };
-    if(map[s]) return map[s];
-
-    const base = s.split(/[-_]/)[0];
-    if(base === "pt" && (s.includes("br") || s.includes("ptbr"))) return "ptbr";
-    if(base === "ja") return "ja";
-    if(base === "ko") return "ko";
-    if(base === "id") return "id";
-    return base || null;
+  function _safeLang(lang) {
+    return String(lang || "").toLowerCase() === "en" ? "en" : "fr";
   }
 
-  function _safeLang(raw){
-    const base = normalizeLang(raw);
-    return (base && SUPPORTED_LANGS.includes(base)) ? base : "fr";
-  }
-
-  function _detectDeviceLang(){
-    const list = Array.isArray(navigator.languages) && navigator.languages.length
-      ? navigator.languages
-      : [navigator.language];
-
-    for(const candidate of list){
-      const base = _safeLang(candidate);
-      if(base && SUPPORTED_LANGS.includes(base)) return base;
+  // Récupération style "a.b.c" dans un objet imbriqué
+  function _getPath(obj, path) {
+    const parts = (path || "").split(".");
+    let cur = obj;
+    for (const p of parts) {
+      if (!cur || typeof cur !== "object" || !(p in cur)) return undefined;
+      cur = cur[p];
     }
-    return "fr";
+    return cur;
   }
 
-  async function _fetchJSON(url){
-    const r = await fetch(url, { cache:"no-store" });
-    if(!r.ok) throw new Error(`fetch ${url} => ${r.status}`);
-    return await r.json();
+  function _interpolate(str, vars) {
+    if (!vars || !str) return str || "";
+    let out = String(str);
+    try {
+      Object.keys(vars).forEach((k) => {
+        out = out.split("{" + k + "}").join(String(vars[k]));
+      });
+    } catch (_) {}
+    return out;
   }
 
-  async function _loadUIFor(lang){
-    const wanted = _safeLang(lang);
-    try{
-      return await _fetchJSON(`${UI_PATH}/ui_${wanted}.json`);
-    }catch(e){
-      // fallback FR si le fichier n'existe pas encore
-      _lang = "fr";
-      return await _fetchJSON(`${UI_PATH}/ui_fr.json`);
+  function t(key, fallback, vars) {
+    const k = String(key || "");
+    if (!k) return fallback || "";
+
+    // 1) Tentative objet imbriqué
+    let v = _getPath(_dict, k);
+
+    // 2) Fallback clés plates : { "ui.page_title": "...", "scenarios.xxx.desc": "..." }
+    if (v === undefined && _dict && typeof _dict === "object") {
+      v = _dict[k];
     }
+
+    const out = typeof v === "string" ? v : fallback || "";
+    return _interpolate(out, vars) || "";
   }
 
-  function _applyText(id, value){
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.textContent = String(value ?? "");
+  function apply(root) {
+    const r = root || document;
+
+    // Texte
+    r.querySelectorAll("[data-i18n]").forEach((el) => {
+      const key = el.getAttribute("data-i18n");
+      if (!key) return;
+      const val = t(key, "");
+      if (val) el.textContent = val;
+    });
+
+    // Aria-label
+    r.querySelectorAll("[data-i18n-aria]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria");
+      if (!key) return;
+      const val = t(key, "");
+      if (val) el.setAttribute("aria-label", val);
+    });
+
+    // Title attribute (optionnel)
+    r.querySelectorAll("[data-i18n-title]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-title");
+      if (!key) return;
+      const val = t(key, "");
+      if (val) el.setAttribute("title", val);
+    });
+
+    // Placeholder (si tu l’utilises)
+    r.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (!key) return;
+      const val = t(key, "");
+      if (val) el.setAttribute("placeholder", val);
+    });
   }
 
-  function _applyAttr(id, attr, value){
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.setAttribute(attr, String(value ?? ""));
-  }
-
-  function _applyAll(){
-    if(!_ui || typeof _ui !== "object") return;
-    const u = _ui.ui || {};
-
-    // index.html
-    _applyText("ui_app_title", u.app_title);
-    _applyText("ui_app_subtitle", u.app_subtitle);
-
-    _applyText("ui_index_title", u.index_title);
-    _applyText("ui_index_subtitle", u.index_subtitle);
-
-    // boutons / labels s'ils existent sur la page
-    _applyText("btnProfileLabel", u.btn_profile);
-    _applyText("btnSettingsLabel", u.btn_settings);
-    _applyText("btnShopLabel", u.btn_shop);
-
-    // settings.html
-    _applyText("settingsTitle", u.settings_title);
-    _applyText("settingsLangLabel", u.settings_language_label);
-    _applyText("settingsLangDesc", u.settings_language_desc);
-    _applyText("settingsBackLabel", u.btn_back);
-
-    // accessibilité
-    _applyAttr("btnBackSettings", "aria-label", u.btn_back);
-  }
-
-  function getLang(){
-    return _lang;
-  }
-
-  function setLang(lang){
+  async function load(lang) {
     _lang = _safeLang(lang);
-    try{ localStorage.setItem(STORAGE_KEY, _lang); }catch(e){}
-    return _lang;
+
+    const url = `${UI_PATH}/ui_${_lang}.json`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`i18n not found: ${url} (HTTP ${res.status})`);
+    _dict = await res.json();
+
+    // html lang + <title> si la clé existe
+    document.documentElement.lang = _lang;
+    const pageTitle = t("ui.page_title", "");
+    if (pageTitle) document.title = pageTitle;
+
+    // Applique tout de suite
+    apply(document);
+    return true;
   }
 
-  async function initI18n(preferred){
-    // priorité: param explicite > localStorage > html lang > device
-    let lang = preferred;
-
-    if(!lang){
-      try{ lang = localStorage.getItem(STORAGE_KEY); }catch(e){}
-    }
-    if(!lang){
-      const htmlLang = document.documentElement?.getAttribute("lang");
-      lang = htmlLang || null;
-    }
-    if(!lang){
-      lang = _detectDeviceLang();
-    }
-
-    _lang = _safeLang(lang);
-    _ui = await _loadUIFor(_lang);
-    _applyAll();
-    return _lang;
+  async function initI18n(lang) {
+    // alias pratique (ton index appelle VRI18n.initI18n)
+    return load(lang);
   }
 
-  function t(key, fallback=""){
-    if(!_ui || !_ui.ui) return fallback || `[ui.${key}]`;
-    const v = _ui.ui[key];
-    if(v == null) return fallback || `[ui.${key}]`;
-    return String(v);
-  }
+  // =========================
+  // Expose globals COMPAT
+  // =========================
 
+  // ✅ Compat maximale : certains endroits appellent VRI18n._t, d'autres VRI18n.t
   window.VRI18n = {
     initI18n,
-    t,
-    getLang,
-    setLang,
-    supported: () => SUPPORTED_LANGS.slice(),
-    normalize: normalizeLang
+    load,
+
+    // API “officielle”
+    t: (key, fallback, vars) => t(key, fallback, vars),
+
+    // ✅ alias legacy (c’est ça qui te cassait le modal "?")
+    _t: (key, fallback, vars) => t(key, fallback, vars),
+
+    // apply
+    applyI18n: apply,
+
+    // lang storage
+    getLang: () => localStorage.getItem("vchoice_lang") || "fr",
+    setLang: (lang) => localStorage.setItem("vchoice_lang", _safeLang(lang)),
+  };
+
+  // ✅ ton helper _t() accepte aussi i18nGet()
+  window.i18nGet = function (key) {
+    return t(key, "");
+  };
+
+  // (Optionnel) garder un ancien namespace si tu l’utilises ailleurs
+  window.VCI18N = {
+    load,
+    t: (key, fallback, vars) => t(key, fallback, vars),
+    _t: (key, fallback, vars) => t(key, fallback, vars),
+    apply,
+    getLang: () => window.VRI18n.getLang(),
+    setLang: (lang) => window.VRI18n.setLang(lang),
   };
 })();
