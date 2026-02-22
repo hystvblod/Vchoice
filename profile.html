@@ -103,9 +103,10 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    .vc-title-wrap{ padding: 4px 0 0; } /* ✅ plus de margin latérale ici (déjà gérée par .page) */
-    .vc-page-title{ margin: 8px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; }
-    .vc-page-sub{ margin: 6px 0 0; color: var(--vc-muted); font-size: 13px; line-height:1.35; }
+    /* ✅ Titre centré + i18n. Sous-titre supprimé. */
+    .vc-title-wrap{ padding: 4px 0 0; text-align:center; }
+    .vc-page-title{ margin: 10px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; text-align:center; }
+    .vc-page-sub{ display:none !important; }
 
     /* ===== PROFIL : zéro encadré ===== */
     .vc-card{
@@ -117,7 +118,7 @@
     }
     .vc-card-inner{ padding: 0; }
 
-    /* ✅ VCoins à gauche / Jetons à droite, pas coupé */
+    /* ✅ Ligne unique : icône + nombre (sans texte) */
     .vc-balances{
       margin-top: 10px;
       display:flex;
@@ -126,9 +127,9 @@
     }
     .vc-balances-row{
       width: min(520px, 100%);
-      display:grid;
-      grid-template-columns: 1fr 1fr;
+      display:flex;
       align-items:center;
+      justify-content:space-between; /* ✅ même ligne */
       gap: 14px;
     }
     .vc-pill{
@@ -143,14 +144,20 @@
     .vc-pill--left{ justify-content:flex-start; }
     .vc-pill--right{ justify-content:flex-end; }
     .vc-pill img{
-      width:28px; height:28px; object-fit:contain;
+      width:30px; height:30px; object-fit:contain;
       filter: drop-shadow(0 2px 10px rgba(0,0,0,.5));
     }
-    .vc-pill .k{ display:block; font-size:12px; color: var(--vc-muted); margin-bottom: 2px; }
-    .vc-pill .v{ display:block; font-weight: 950; font-size: 16px; letter-spacing:.2px; }
+    .vc-pill .k{ display:none !important; } /* ✅ supprime texte VCoins / Jetons */
+    .vc-pill .v{
+      display:block;
+      font-weight: 950;
+      font-size: 18px;
+      letter-spacing:.2px;
+      line-height:1;
+    }
 
     /* Pseudo : centré + bouton centré dessous */
-    .vc-username-block{ margin-top: 16px; }
+    .vc-username-block{ margin-top: 16px; text-align:center; }
     .vc-row-head{
       display:flex;
       align-items:center;
@@ -178,7 +185,7 @@
       overflow:hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 950;
       letter-spacing: .2px;
       max-width: 100%;
@@ -243,39 +250,42 @@
     .vc-msg.ok{ color: rgba(220,255,230,.95); }
     .vc-msg.err{ color: rgba(255,220,220,.95); }
 
+    /* ✅ espace entre "Modifier pseudo" et "Scénarios" */
+    .vc-spacer{ height: 14px; }
+
     /* ===== SCÉNARIOS : 2 colonnes, responsive ===== */
     .vc-section-head{
       display:flex;
       align-items:center;
       justify-content:center;
-      margin: 18px 0 0;
+      margin: 10px 0 0;
     }
     .vc-section-title{
       margin:0;
       font-weight: 950;
-      font-size: 14px;
+      font-size: 16px;
       letter-spacing: .2px;
       text-align:center;
     }
 
     .vc-scen-grid{
-      margin: 10px 0 0;
+      margin: 12px 0 0;
       display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr)); /* ✅ évite le débordement */
-      gap: 16px 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 14px;
       align-items:start;
       width:100%;
       max-width: 100%;
     }
 
-    /* ✅ plus de cartes/encadrés */
     .vc-scen-card{
       border: none !important;
       background: transparent !important;
       box-shadow: none !important;
       overflow: visible !important;
       padding: 0 !important;
-      min-width: 0 !important; /* ✅ évite clipping grid */
+      min-width: 0 !important;
+      text-align:center; /* ✅ centre dans la colonne */
     }
     .vc-scen-inner{ padding: 0 !important; min-width:0; }
 
@@ -287,20 +297,22 @@
       overflow:hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      text-align:center; /* ✅ centre titre scénario */
     }
 
-    /* ✅ BADGES : AUCUN encadré (si tu vois encore un carré, il est dans l'image webp) */
     .vc-scen-ends{
       margin-top: 10px;
       display:flex;
-      gap: 14px;
+      gap: 16px;
       align-items:center;
+      justify-content:center; /* ✅ centre badges sous le titre */
       min-width:0;
     }
 
+    /* ✅ BADGES plus grands */
     .vc-end{
-      width: clamp(44px, 12vw, 56px);   /* ✅ grand + s’adapte */
-      height: clamp(44px, 12vw, 56px);
+      width: clamp(52px, 14vw, 68px);
+      height: clamp(52px, 14vw, 68px);
       border: none !important;
       outline: none !important;
       background: transparent !important;
@@ -313,7 +325,6 @@
       filter: none !important;
     }
 
-    /* ✅ si un style global met un fond/contour sur IMG, on neutralise */
     .vc-end img{
       position:absolute;
       inset:0;
@@ -324,7 +335,7 @@
       border: 0 !important;
       outline: 0 !important;
       box-shadow: none !important;
-      filter: none !important; /* ✅ pas d’effet qui “dessine” un carré */
+      filter: none !important;
     }
 
     .vc-end .full{ opacity:0; transition: opacity .18s ease; }
@@ -334,7 +345,6 @@
     .vc-scen-card.is-locked .vc-end{ opacity:.28; filter: grayscale(1) blur(.2px) !important; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
-    /* ✅ si l’écran est trop étroit, on passe en 1 colonne (sinon ça coupe) */
     @media (max-width: 360px){
       .vc-scen-grid{ grid-template-columns: 1fr !important; }
     }
@@ -364,13 +374,16 @@
 
   <main class="page">
     <div class="vc-title-wrap">
+      <!-- ✅ Profil centré + i18n -->
       <h1 class="vc-page-title" data-i18n="ui.profile_title"></h1>
+      <!-- ✅ sous-titre supprimé -->
       <p class="vc-page-sub" data-i18n="ui.profile_subtitle"></p>
     </div>
 
     <section class="vc-card">
       <div class="vc-card-inner">
 
+        <!-- ✅ icônes + nombres, même ligne, sans texte -->
         <div class="vc-balances">
           <div class="vc-balances-row">
             <div class="vc-pill vc-pill--left">
@@ -423,6 +436,9 @@
             <div class="vc-msg" id="pf_msg"></div>
           </div>
         </div>
+
+        <!-- ✅ espace demandé -->
+        <div class="vc-spacer"></div>
 
       </div>
     </section>
