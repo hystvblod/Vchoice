@@ -1057,3 +1057,10 @@ body.page-game .scene__hud .choice_btn:disabled{ opacity: .42 !important; }
 
 .choice_btn.is_locked{ color:#fff !important; }
 body.page-game .scene__hud .choice_btn.is_locked{ color:#fff !important; }
+
+
+/* HOTFIX: choix lisibles même si disabled */
+body.page-game .scene__hud .choice_btn:disabled{
+  opacity: 1 !important;
+  color: #fff !important;
+}

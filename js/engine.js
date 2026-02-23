@@ -1208,9 +1208,9 @@ function ensureIntroTutoStyle(){
       .vc-tuto-note{ opacity:.92; }
       .vc-tuto-msg{ margin-top:12px; opacity:.95; text-align:center; }
       .vc-tuto-btn{ display:inline-flex; align-items:center; gap:12px; justify-content:center; }
-      .vc-tuto-btn img{ width:32px; height:32px; }
+      .vc-tuto-btn img{ width:34px; height:34px; }
       .vc-jeton-cta{ animation: vcJetonBlink 0.9s infinite ease-in-out; transform-origin:center; }
-      .vc-jeton-cta-big{ width:34px !important; height:34px !important; }
+      .vc-jeton-cta-big{ width:36px !important; height:36px !important; }
       @keyframes vcJetonBlink{
         0%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
         50%{ transform:scale(1.08); filter:drop-shadow(0 12px 30px rgba(0,0,0,.45)); opacity:.92; }
