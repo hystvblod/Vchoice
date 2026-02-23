@@ -1208,7 +1208,7 @@ function ensureIntroTutoStyle(){
       .vc-tuto-note{ opacity:.92; }
       .vc-tuto-msg{ margin-top:12px; opacity:.95; text-align:center; }
       .vc-tuto-btn{ display:inline-flex; align-items:center; gap:12px; justify-content:center; }
-      .vc-tuto-btn img{ width:26px; height:26px; }
+      .vc-tuto-btn img{ width:32px; height:32px; }
       .vc-jeton-cta{ animation: vcJetonBlink 0.9s infinite ease-in-out; transform-origin:center; }
       .vc-jeton-cta-big{ width:34px !important; height:34px !important; }
       @keyframes vcJetonBlink{
