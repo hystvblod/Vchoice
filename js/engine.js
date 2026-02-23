@@ -1,9 +1,9 @@
 /* engine.js — VERSION COMPLETE À JOUR
    Base: ton fichier (lang device + menu + jetons + guide + end modal)
-   + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP non clignotant à gauche, bouton centré avec gros jeton clignotant)
+   + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP non clignotant à gauche, bouton centré qui CLIGNOTE EN ZOOM)
    + ✅ Bypass “pas assez” : on seed 1 jeton tuto (1 seule fois) puis on le dépense
    + ✅ Pas de fermeture possible tant que le tuto jeton n’est pas fait
-   + ✅ FIN INTRO: pas de “Recommencer”, bouton “Fermer” -> index, et rewards avec icônes WEBP (pas de texte “VCoins/Jetons”)
+   + ✅ FIN INTRO: pas de “Recommencer”, bouton “Fermer” -> index, rewards avec icônes WEBP + texte i18n
 */
 
 (function(){
@@ -30,7 +30,7 @@ const INTRO_FORCED_JETON_SEEDED_KEY = "vchoice_intro_forced_jeton_seeded_v1";
 // ✅ Jeton image (WEBP) affichée dans la popup tuto
 const TUTO_JETON_ICON_WEBP = "assets/img/ui/jeton.webp";
 
-// ✅ Icônes rewards fin (UI)
+// ✅ Icônes rewards fin (UI) fallback (les vrais chemins viennent de UI i18n)
 const UI_VCOINS_ICON_WEBP = "assets/img/ui/vcoins.webp";
 const UI_JETON_ICON_WEBP  = "assets/img/ui/jeton.webp";
 
@@ -987,7 +987,7 @@ function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
   wrap.style.paddingTop = "14px";
   wrap.style.display = "flex";
   wrap.style.gap = "10px";
-  wrap.style.justifyContent = "center"; // ✅ bouton centré
+  wrap.style.justifyContent = "center";
   wrap.style.flexWrap = "wrap";
 
   try{ buildActionsFn?.(wrap); }catch(_){}
@@ -1205,19 +1205,26 @@ function ensureIntroTutoStyle(){
       .vc-tuto-body{ opacity:.98; }
       .vc-tuto-note{ opacity:.92; }
       .vc-tuto-msg{ margin-top:12px; opacity:.95; text-align:center; }
+
       .vc-tuto-btn{ display:inline-flex; align-items:center; gap:12px; justify-content:center; }
       .vc-tuto-btn img{ width:26px; height:26px; }
-      .vc-jeton-cta{ animation: vcJetonBlink 0.9s infinite ease-in-out; transform-origin:center; }
-      .vc-jeton-cta-big{ width:34px !important; height:34px !important; }
-      @keyframes vcJetonBlink{
-        0%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
-        50%{ transform:scale(1.10); filter:drop-shadow(0 12px 30px rgba(0,0,0,.45)); opacity:.92; }
-        100%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
+
+      /* ✅ LE BOUTON CLIGNOTE EN ZOOM (pas juste l’icône) */
+      .vc-cta-blink{
+        animation: vcCtaBlink 0.95s infinite ease-in-out;
+        transform-origin:center;
+        will-change: transform, filter;
       }
+      @keyframes vcCtaBlink{
+        0%{ transform:scale(1); filter: drop-shadow(0 10px 26px rgba(0,0,0,.22)); }
+        50%{ transform:scale(1.06); filter: drop-shadow(0 14px 34px rgba(0,0,0,.28)); }
+        100%{ transform:scale(1); filter: drop-shadow(0 10px 26px rgba(0,0,0,.22)); }
+      }
+
       .vc-end-reward{ display:flex; align-items:center; justify-content:center; gap:16px; padding-top:10px; flex-wrap:wrap; }
       .vc-end-pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border:1px solid rgba(255,255,255,.12); border-radius:999px; background: rgba(0,0,0,.25); }
       .vc-end-pill img{ width:20px; height:20px; }
-      .vc-end-pill b{ font-weight:850; letter-spacing:.2px; }
+      .vc-end-pill span{ font-weight:850; letter-spacing:.2px; }
     `;
     const st = document.createElement("style");
     st.id = "vc_intro_tuto_style";
@@ -1262,7 +1269,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
   const first = missing.length ? missing[0] : null;
   const itemTitle = first ? prettyFlagTitle(first) : "";
 
-  // ✅ Textes 100% via UI i18n (intro_*), pas de “tu as raté…”
   const title   = tUI("intro_forced_jeton_title");
   const body    = tUI("intro_forced_jeton_body", { item: itemTitle });
   const note    = tUI("intro_forced_jeton_note");
@@ -1277,10 +1283,10 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       row.className = "vc-tuto-row";
 
       const img = document.createElement("img");
-      img.src = TUTO_JETON_ICON_WEBP;
+      img.src = (tUI("icon_jeton_webp") || TUTO_JETON_ICON_WEBP);
       img.alt = "";
       img.draggable = false;
-      img.className = "vc-tuto-side"; // ✅ pas de clignotement
+      img.className = "vc-tuto-side";
       row.appendChild(img);
 
       const col = document.createElement("div");
@@ -1308,7 +1314,7 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
     (actionsWrap) => {
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "btn";
+      btn.className = "btn vc-cta-blink"; // ✅ blink/zoom sur le bouton entier
 
       const inner = document.createElement("span");
       inner.className = "vc-tuto-btn";
@@ -1318,10 +1324,9 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       inner.appendChild(tx);
 
       const ic = document.createElement("img");
-      ic.src = TUTO_JETON_ICON_WEBP;
+      ic.src = (tUI("icon_jeton_webp") || TUTO_JETON_ICON_WEBP);
       ic.alt = "";
       ic.draggable = false;
-      ic.className = "vc-jeton-cta vc-jeton-cta-big"; // ✅ gros + clignote sur le bouton
       inner.appendChild(ic);
 
       btn.appendChild(inner);
@@ -1487,12 +1492,9 @@ function showLockedChoiceModal(choice){
     onClick: () => hideHintModal()
   });
 
-  // NOTE: ici on garde le modal simple texte (ton UI existant)
   const modalTitle = tUI("locked_title");
   const modalBody = Array.isArray(lines) ? lines.join("\n") : String(lines || "");
-  showHintModal(modalTitle, modalBody);
 
-  // actions -> on reconstruit proprement avec Rich (sans casser ton UX)
   showHintModalWithActionsRich(
     modalTitle,
     (root) => {
@@ -1550,9 +1552,6 @@ async function handleEnding(type, endScene){
     }
   }catch(e){}
 
-  // ✅ Reward spécifique Intro (1 seule fois, GOOD/BAD/SECRET)
-  // -> on s’en sert aussi pour afficher les icônes à la fin
-  let introRewardedNow = false;
   let introRewardJetons = 0;
   let introRewardVCoins = 0;
 
@@ -1576,7 +1575,6 @@ async function handleEnding(type, endScene){
         }catch(_){}
 
         try{ localStorage.setItem(INTRO_REWARD_KEY, "1"); }catch(_){}
-        introRewardedNow = true;
 
         updateHudJetons();
         updateJetonModalCount();
@@ -1589,7 +1587,6 @@ async function handleEnding(type, endScene){
   if(endingType === "bad") title = tUI("end_title_bad");
   if(endingType === "secret") title = tUI("end_title_secret");
 
-  // body default
   let body = tUI("ending_desc");
 
   try{
@@ -1597,13 +1594,18 @@ async function handleEnding(type, endScene){
     if(endScene && endScene.body_key) body  = tS(endScene.body_key);
   }catch(_){}
 
-  // ✅ INTRO: body riche (silence + icônes rewards) sans “VCoins / Jetons” en texte
+  // ✅ INTRO: body riche (silence + icônes + texte i18n)
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     const silence = tUI("intro_end_silence");
 
-    // même si déjà rewardé, on affiche les valeurs “standard”
     const vcoins = introRewardVCoins || 100;
     const jetons = introRewardJetons || 2;
+
+    const vcoinsIcon = (tUI("icon_vcoins_webp") || UI_VCOINS_ICON_WEBP);
+    const jetonIcon  = (tUI("icon_jeton_webp")  || UI_JETON_ICON_WEBP);
+
+    const lineVcoins = tUI("intro_end_reward_vcoins", { amount: vcoins });
+    const lineJetons = tUI("intro_end_reward_jetons", { amount: jetons });
 
     showEndModal(
       title,
@@ -1619,24 +1621,24 @@ async function handleEnding(type, endScene){
         const pill1 = document.createElement("div");
         pill1.className = "vc-end-pill";
         const i1 = document.createElement("img");
-        i1.src = (tUI("icon_vcoins_webp") || UI_VCOINS_ICON_WEBP);
+        i1.src = vcoinsIcon;
         i1.alt = "";
         i1.draggable = false;
-        const b1 = document.createElement("b");
-        b1.textContent = `+${vcoins}`;
+        const s1 = document.createElement("span");
+        s1.textContent = lineVcoins;
         pill1.appendChild(i1);
-        pill1.appendChild(b1);
+        pill1.appendChild(s1);
 
         const pill2 = document.createElement("div");
         pill2.className = "vc-end-pill";
         const i2 = document.createElement("img");
-        i2.src = (tUI("icon_jeton_webp") || UI_JETON_ICON_WEBP);
+        i2.src = jetonIcon;
         i2.alt = "";
         i2.draggable = false;
-        const b2 = document.createElement("b");
-        b2.textContent = `+${jetons}`;
+        const s2 = document.createElement("span");
+        s2.textContent = lineJetons;
         pill2.appendChild(i2);
-        pill2.appendChild(b2);
+        pill2.appendChild(s2);
 
         row.appendChild(pill1);
         row.appendChild(pill2);
@@ -1649,7 +1651,6 @@ async function handleEnding(type, endScene){
     return;
   }
 
-  // autres scénarios (normal)
   showEndModal(
     title,
     body,

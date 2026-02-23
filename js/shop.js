@@ -1,5 +1,5 @@
 // js/shop.js
-// ✅ Page boutique (guard: index.html charge aussi shop.js, donc on ne fait rien hors shop.html)
+// ✅ Boutique — 100% i18n keys (aucun texte en dur)
 
 (function(){
   "use strict";
@@ -9,6 +9,36 @@
     catch { return false; }
   }
   if (!isShopPage()) return;
+
+  // =========================
+  // i18n helper
+  // =========================
+  function getI18n(){
+    // adapte automatiquement selon ton app (VCI18n / VRI18n)
+    return window.VCI18n || window.VRI18n || window.VCI18N || window.VRI18N || null;
+  }
+
+  function t(key, vars){
+    try{
+      const i18n = getI18n();
+      if (!i18n) return String(key || "");
+      if (typeof i18n.t === "function") return i18n.t(String(key || ""), vars || {});
+      if (typeof i18n.get === "function") return i18n.get(String(key || ""), vars || {});
+      if (typeof i18n.translate === "function") return i18n.translate(String(key || ""), vars || {});
+      return String(key || "");
+    }catch(_){
+      return String(key || "");
+    }
+  }
+
+  function applyI18nNow(){
+    // Si ton i18n.js gère déjà ça, ça ne gêne pas : on laisse ton système faire.
+    try{
+      const i18n = getI18n();
+      if (i18n && typeof i18n.apply === "function") i18n.apply(document);
+      if (i18n && typeof i18n.update === "function") i18n.update(document);
+    }catch(_){}
+  }
 
   // =========================
   // CONFIG
@@ -23,12 +53,20 @@
   ];
 
   const PRODUCT_META = {
-    vchoice_jetons_12:   { kind:"jetons", amount:12,   title:"12",   desc:"Pack de jetons à utiliser pour débloquer des scénarios ou certaines actions." },
-    vchoice_jetons_30:   { kind:"jetons", amount:30,   title:"30",   desc:"Pack de jetons plus avantageux, pour avancer plus vite." },
-    vchoice_vcoins_500:  { kind:"vcoins", amount:500,  title:"500",  desc:"VCoins utilisables pour les achats en jeu et déblocages." },
-    vchoice_vcoins_3000: { kind:"vcoins", amount:3000, title:"3000", desc:"Gros pack de VCoins pour le meilleur ratio." },
-    vchoice_no_ads:      { kind:"no_ads", amount:0,    title:"No Ads",  desc:"Désactive les publicités interstitielles. Les pubs récompensées restent disponibles (volontaires)." },
-    vchoice_ultra:       { kind:"ultra",  amount:0,    title:"Diamond", desc:"Accès Diamond : tous les scénarios actuels et à venir + No Ads. Bonus inclus selon ton pack." }
+    vchoice_jetons_12:   { kind:"jetons", amount:12,   titleKey:"ui.shop_p_jetons12_title",   descKey:"ui.shop_p_jetons12_desc" },
+    vchoice_jetons_30:   { kind:"jetons", amount:30,   titleKey:"ui.shop_p_jetons30_title",   descKey:"ui.shop_p_jetons30_desc" },
+    vchoice_vcoins_500:  { kind:"vcoins", amount:500,  titleKey:"ui.shop_p_vcoins500_title",  descKey:"ui.shop_p_vcoins500_desc" },
+    vchoice_vcoins_3000: { kind:"vcoins", amount:3000, titleKey:"ui.shop_p_vcoins3000_title", descKey:"ui.shop_p_vcoins3000_desc" },
+    vchoice_no_ads:      { kind:"no_ads", amount:0,    titleKey:"ui.shop_p_noads_title",      descKey:"ui.shop_p_noads_desc" },
+    vchoice_ultra:       { kind:"ultra",  amount:0,    titleKey:"ui.shop_p_diamond_title",    descKey:"ui.shop_p_diamond_desc" }
+  };
+
+  const I18N = {
+    loading: "ui.loading",
+    unavailable: "ui.shop_unavailable",
+    buy: "ui.shop_buy",
+    enabled: "ui.shop_enabled",
+    included: "ui.shop_included"
   };
 
   // =========================
@@ -57,13 +95,13 @@
 
   function setPrice(pid, price){
     $all(`[data-price-for="${pid}"]`).forEach(el => {
-      el.textContent = price || "…";
+      el.textContent = price || t(I18N.loading);
     });
   }
 
   function refreshAllPrices(){
     PRODUCT_IDS.forEach(pid => {
-      setPrice(pid, getPrice(pid) || "…");
+      setPrice(pid, getPrice(pid) || t(I18N.loading));
     });
   }
 
@@ -78,7 +116,6 @@
   // Modal (popup)
   // =========================
   const modal = $("#shopModal");
-  const modalCard = modal ? $(".shop-modal-card", modal) : null;
 
   const modalIcon = $("#shopModalIcon");
   const modalTitle = $("#shopModalTitle");
@@ -110,7 +147,7 @@
 
     _openPid = String(pid);
 
-    const meta = PRODUCT_META[_openPid] || { title:"", desc:"" };
+    const meta = PRODUCT_META[_openPid] || { titleKey:"", descKey:"" };
 
     // Icon: on reprend l’icône de la carte cliquée si possible
     try{
@@ -121,13 +158,14 @@
       }
     }catch(_){}
 
-    if (modalTitle) modalTitle.textContent = meta.title || "";
-    if (modalDesc) modalDesc.textContent = meta.desc || "";
-    if (modalPrice) modalPrice.textContent = getPrice(_openPid) || "…";
+    if (modalTitle) modalTitle.textContent = meta.titleKey ? t(meta.titleKey) : "";
+    if (modalDesc) modalDesc.textContent = meta.descKey ? t(meta.descKey) : "";
+
+    const p = getPrice(_openPid);
+    if (modalPrice) modalPrice.textContent = p ? p : t(I18N.loading);
 
     if (modalBuy){
       modalBuy.setAttribute("data-buy", _openPid);
-      // état bouton (non-consumables)
       refreshEntitlementsUI();
     }
 
@@ -136,12 +174,11 @@
     _lockScroll(true);
   }
 
-  // Click outside to close
   if (modal){
     modal.addEventListener("click", (e) => {
-      const t = e.target;
-      if (!t) return;
-      if (t === modal) closeModal();
+      const tEl = e.target;
+      if (!tEl) return;
+      if (tEl === modal) closeModal();
     });
   }
   if (modalCancel){
@@ -166,16 +203,16 @@
 
       if (btn){
         btn.disabled = true;
-        btn.textContent = "…";
+        btn.textContent = t(I18N.loading);
       }
 
       await api.order(pid);
-      // l’UI se mettra à jour sur vc:iap_credited (ou restore)
     }catch(_){ }
     finally{
       setTimeout(() => {
         refreshEntitlementsUI();
         refreshAllPrices();
+        applyI18nNow();
       }, 450);
 
       setTimeout(() => {
@@ -184,7 +221,7 @@
           const isPermanent = (pid === "vchoice_no_ads" || pid === "vchoice_ultra");
           if (!isPermanent){
             b.disabled = false;
-            b.textContent = "Acheter";
+            b.textContent = t(I18N.buy);
           }
         });
       }, 900);
@@ -200,18 +237,18 @@
       const pid = String(modalBuy.getAttribute("data-buy") || "");
       if (pid === "vchoice_ultra"){
         modalBuy.disabled = ultra;
-        modalBuy.textContent = ultra ? "Activé" : "Acheter";
+        modalBuy.textContent = ultra ? t(I18N.enabled) : t(I18N.buy);
       } else if (pid === "vchoice_no_ads"){
         if (ultra){
           modalBuy.disabled = true;
-          modalBuy.textContent = "Inclus";
+          modalBuy.textContent = t(I18N.included);
         } else {
           modalBuy.disabled = noAds;
-          modalBuy.textContent = noAds ? "Activé" : "Acheter";
+          modalBuy.textContent = noAds ? t(I18N.enabled) : t(I18N.buy);
         }
       } else {
         modalBuy.disabled = false;
-        modalBuy.textContent = "Acheter";
+        modalBuy.textContent = t(I18N.buy);
       }
     }
 
@@ -223,23 +260,25 @@
       card.classList.toggle("is-noads-owned", (pid === "vchoice_no_ads" && (noAds || ultra)));
     });
 
-    // Buy buttons inside cards (si présents)
+    // Si jamais tu ajoutes des boutons d’achat dans la grille plus tard
     $all("[data-buy]").forEach(btn => {
       const pid = String(btn.getAttribute("data-buy") || "");
+      if (!pid) return;
+
       if (pid === "vchoice_ultra"){
         btn.disabled = ultra;
-        btn.textContent = ultra ? "Activé" : "Acheter";
+        btn.textContent = ultra ? t(I18N.enabled) : t(I18N.buy);
       } else if (pid === "vchoice_no_ads"){
         if (ultra){
           btn.disabled = true;
-          btn.textContent = "Inclus";
+          btn.textContent = t(I18N.included);
         } else {
           btn.disabled = noAds;
-          btn.textContent = noAds ? "Activé" : "Acheter";
+          btn.textContent = noAds ? t(I18N.enabled) : t(I18N.buy);
         }
       } else {
         btn.disabled = false;
-        btn.textContent = "Acheter";
+        btn.textContent = t(I18N.buy);
       }
     });
   }
@@ -247,11 +286,8 @@
   function disableAllBuyButtonsIfNoIAP(){
     const ok = iapAvailable();
     if (!ok){
-      $all("[data-buy]").forEach(btn => {
-        btn.disabled = true;
-        btn.textContent = "—";
-      });
-      $all("[data-price-for]").forEach(el => { el.textContent = "—"; });
+      $all("[data-price-for]").forEach(el => { el.textContent = t(I18N.unavailable); });
+      if (modalPrice) modalPrice.textContent = t(I18N.unavailable);
     }
   }
 
@@ -263,6 +299,12 @@
     if (!btn) return;
     btn.disabled = !!on;
     btn.classList.toggle("is-busy", !!on);
+    if (on){
+      btn.textContent = t(I18N.loading);
+    } else {
+      // remet le texte via i18n
+      btn.textContent = t("ui.shop_watch_ad");
+    }
   }
 
   async function rewardJeton(){
@@ -271,7 +313,6 @@
       const r = await window.VAds?.showRewarded?.();
       if (!r || !r.ok) return;
 
-      // crédit
       if (window.VUserData?.addJetons){
         await window.VUserData.addJetons(1);
       }
@@ -300,10 +341,10 @@
   // Events
   // =========================
   document.addEventListener("click", (e) => {
-    const t = e.target;
+    const tEl = e.target;
 
     // Rewarded buttons
-    const adBtn = t && t.closest ? t.closest("[data-ad]") : null;
+    const adBtn = tEl && tEl.closest ? tEl.closest("[data-ad]") : null;
     if (adBtn){
       const which = String(adBtn.getAttribute("data-ad") || "");
       if (which === "jeton") rewardJeton();
@@ -312,7 +353,7 @@
     }
 
     // Open product modal
-    const card = t && t.closest ? t.closest("[data-product]") : null;
+    const card = tEl && tEl.closest ? tEl.closest("[data-product]") : null;
     if (card){
       const pid = card.getAttribute("data-product");
       if (pid) openModalFor(pid);
@@ -320,7 +361,7 @@
     }
 
     // Modal buy
-    const buyBtn = t && t.closest ? t.closest("#shopModalBuy,[data-modal-buy]") : null;
+    const buyBtn = tEl && tEl.closest ? tEl.closest("#shopModalBuy,[data-modal-buy]") : null;
     if (buyBtn){
       const pid = buyBtn.getAttribute("data-buy") || buyBtn.getAttribute("data-modal-buy");
       if (pid) buy(pid, buyBtn);
@@ -334,11 +375,11 @@
     const pid = String(d.productId || "");
     const price = String(d.price || "");
     if (!pid) return;
-    setPrice(pid, price || "…");
 
-    // si le modal est ouvert sur ce pid, update direct
+    setPrice(pid, price || t(I18N.loading));
+
     if (_openPid && pid === _openPid && modalPrice){
-      modalPrice.textContent = price || "…";
+      modalPrice.textContent = price || t(I18N.loading);
     }
   });
 
@@ -346,9 +387,11 @@
   window.addEventListener("vc:iap_credited", () => {
     refreshEntitlementsUI();
     refreshAllPrices();
+    applyI18nNow();
   });
 
   // init
+  applyI18nNow();
   refreshAllPrices();
   refreshEntitlementsUI();
   disableAllBuyButtonsIfNoIAP();

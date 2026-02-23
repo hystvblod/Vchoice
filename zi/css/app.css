@@ -559,7 +559,7 @@ body{
 /* Choix verrouillés (requires_*_flags) */
 .choice_btn.is_locked,
 .choice_btn:disabled{
-  opacity: .45;
+  opacity: 1;
   cursor: not-allowed;
   filter:none;
 }
@@ -784,15 +784,19 @@ body.page-game .scene__hud{
   box-shadow:
     0 18px 50px rgba(0,0,0,.55),
     0 2px 0 rgba(255,255,255,.04) inset;
+
+  text-align:center;
 }
 
 body.page-game .scene__hud .title{
+  text-align:center;
   font-size:20px;
   margin:0 0 6px;
   text-shadow:none;
 }
 
 body.page-game .scene__hud .body{
+  text-align:center;
   margin:0;
   max-width:none;
   font-size:15px;
@@ -801,11 +805,13 @@ body.page-game .scene__hud .body{
 }
 
 body.page-game .scene__hud .choices{
+  justify-items:center;
   max-width:none;
   margin-top:12px;
 }
 
 body.page-game .scene__hud .choice_btn{
+  text-align:center;
   border:0;
   border-radius:18px;
   background:transparent;
@@ -839,7 +845,7 @@ body.page-game .scene__hud .choice_btn::before{
 }
 
 body.page-game .scene__hud .choice_btn{
-  color: rgba(255,255,255,.96);
+  color: #ffffff;
 }
 
 body.page-game .scene__hud .choice_btn:hover{
@@ -849,7 +855,7 @@ body.page-game .scene__hud .choice_btn:hover{
 
 body.page-game .scene__hud .choice_btn.is_locked,
 body.page-game .scene__hud .choice_btn:disabled{
-  opacity:.42;
+  opacity: 1;
   filter:none;
   transform:none;
   box-shadow:
@@ -1041,3 +1047,10 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   #jetonModal .jeton_top__count{ font-size: 18px; }
   #jetonModal .btn{ font-size: 14.8px; }
 }
+
+/* disabled only */
+.choice_btn:disabled{ opacity: .45 !important; }
+body.page-game .scene__hud .choice_btn:disabled{ opacity: .42 !important; }
+
+.choice_btn.is_locked{ color:#fff !important; }
+body.page-game .scene__hud .choice_btn.is_locked{ color:#fff !important; }

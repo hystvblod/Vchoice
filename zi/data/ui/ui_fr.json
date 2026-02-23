@@ -150,7 +150,36 @@
     "intro_forced_jeton_ok": "Objet débloqué : {item}",
     "intro_forced_jeton_error": "Impossible de débloquer maintenant.",
 
-    "intro_end_silence": "Le silence retombe."
+    "intro_end_silence": "Le silence retombe.",
+
+    "shop_watch_ad": "Regarder",
+    "shop_buy": "Acheter",
+    "shop_cancel": "Annuler",
+    "shop_enabled": "Activé",
+    "shop_included": "Inclus",
+    "shop_unavailable": "Indisponible",
+    "shop_owned_badge": "OK",
+
+    "shop_reward_jeton_x1": "x1",
+    "shop_reward_vcoins_x100": "x100",
+
+    "shop_p_jetons12_title": "12",
+    "shop_p_jetons12_desc": "Pack de jetons à utiliser pour débloquer des scénarios ou certaines actions.",
+
+    "shop_p_jetons30_title": "30",
+    "shop_p_jetons30_desc": "Pack de jetons plus avantageux, pour avancer plus vite.",
+
+    "shop_p_vcoins500_title": "500",
+    "shop_p_vcoins500_desc": "VCoins utilisables pour les achats en jeu et déblocages.",
+
+    "shop_p_vcoins3000_title": "3000",
+    "shop_p_vcoins3000_desc": "Gros pack de VCoins pour le meilleur ratio.",
+
+    "shop_p_noads_title": "No Ads",
+    "shop_p_noads_desc": "Désactive les publicités interstitielles. Les pubs récompensées restent disponibles.",
+
+    "shop_p_diamond_title": "Diamond",
+    "shop_p_diamond_desc": "Accès Diamond : tous les scénarios actuels et à venir + No Ads. Bonus inclus selon ton pack."
   },
 
   "common": {
