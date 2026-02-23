@@ -393,7 +393,8 @@
       return (typeof v === "number" && !Number.isNaN(v)) ? v : null;
     },
 
-    completeScenario(scenarioId, ending){
+    // ✅ FIX SYNTAX : il manquait "async" ici
+    async completeScenario(scenarioId, ending){
       const sb = window.sb;
       if (!sbReady()) return { ok:false, reason:"no_client" };
       const uid = await this.ensureAuth();
