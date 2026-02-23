@@ -141,7 +141,7 @@
       "ja": "日本語"
     },
 
-    "icon_vcoins_webp": "assets/img/ui/vcoins.webp",
+    "icon_vcoins_webp": "assets/img/ui/vcoin.webp",
     "icon_jeton_webp": "assets/img/ui/jeton.webp",
 
     "intro_forced_jeton_title": "Objet manquant",
@@ -156,7 +156,7 @@
     "intro_end_title": "Bravo — tu t’en es sorti",
     "intro_end_line1": "Le silence retombe.",
     "intro_end_line2": "Tu respires.",
-    "intro_end_reward_label": "Récompense du tuto :",
+    "intro_end_reward_label": "Récompense :",
     "intro_end_prefix_les": "Les",
     "intro_end_use_vcoins": "servent à débloquer de nouveaux scénarios.",
     "intro_end_use_jetons": "servent à :",
