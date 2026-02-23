@@ -1330,8 +1330,10 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
         const msg = $("vcTutoMsg");
 
         try{
+          // ✅ 1) seed 1 jeton tuto (1 seule fois)
           await seedIntroTutoJetonIfNeeded();
 
+          // ✅ 2) dépenser 1 jeton
           let ok = true;
           if(window.VUserData && typeof window.VUserData.spendJetons === "function"){
             const r = await spendJetons(1);
@@ -1345,6 +1347,7 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
             return;
           }
 
+          // ✅ 3) débloquer l’objet manquant puis exécuter
           grantMissingFlags(choice, missingAll, missingAny);
           save();
 
@@ -1353,6 +1356,7 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
           updateHudJetons();
           updateJetonModalCount();
 
+          // ✅ libère la fermeture
           const m = $("hintModal");
           if(m){
             try{ delete m.dataset.forceLock; }catch(_){}
@@ -1375,6 +1379,7 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
     }
   );
 
+  // seed immédiat (le jeton existe réellement au moment du clic)
   seedIntroTutoJetonIfNeeded();
 }
 
@@ -1382,6 +1387,7 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
 function showLockedChoiceModal(choice){
   const { missingAll, missingAny } = getMissingFlagsForChoice(choice);
 
+  // ✅ Intro tuto : 1ère fois uniquement -> popup forcée
   try{
     if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
       let used = false;
@@ -1487,12 +1493,9 @@ function showLockedChoiceModal(choice){
     onClick: () => hideHintModal()
   });
 
-  // NOTE: ici on garde le modal simple texte (ton UI existant)
   const modalTitle = tUI("locked_title");
   const modalBody = Array.isArray(lines) ? lines.join("\n") : String(lines || "");
-  showHintModal(modalTitle, modalBody);
 
-  // actions -> on reconstruit proprement avec Rich (sans casser ton UX)
   showHintModalWithActionsRich(
     modalTitle,
     (root) => {
@@ -1500,6 +1503,7 @@ function showLockedChoiceModal(choice){
       p.style.whiteSpace = "pre-wrap";
       p.textContent = modalBody;
       root.appendChild(p);
+
       const msg = document.createElement("div");
       msg.id = "vcLockedMsg";
       msg.style.marginTop = "10px";
@@ -1550,9 +1554,7 @@ async function handleEnding(type, endScene){
     }
   }catch(e){}
 
-  // ✅ Reward spécifique Intro (1 seule fois, GOOD/BAD/SECRET)
-  // -> on s’en sert aussi pour afficher les icônes à la fin
-  let introRewardedNow = false;
+  // ✅ Reward spécifique Intro (1 seule fois)
   let introRewardJetons = 0;
   let introRewardVCoins = 0;
 
@@ -1576,7 +1578,6 @@ async function handleEnding(type, endScene){
         }catch(_){}
 
         try{ localStorage.setItem(INTRO_REWARD_KEY, "1"); }catch(_){}
-        introRewardedNow = true;
 
         updateHudJetons();
         updateJetonModalCount();
@@ -1597,11 +1598,11 @@ async function handleEnding(type, endScene){
     if(endScene && endScene.body_key) body  = tS(endScene.body_key);
   }catch(_){}
 
-  // ✅ INTRO: body riche (silence + icônes rewards) sans “VCoins / Jetons” en texte
+  // ✅ INTRO: body riche (silence + icônes rewards)
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     const silence = tUI("intro_end_silence");
 
-    // même si déjà rewardé, on affiche les valeurs “standard”
+    // même si déjà rewardé, on affiche les valeurs standard demandées
     const vcoins = introRewardVCoins || 100;
     const jetons = introRewardJetons || 2;
 
@@ -1640,7 +1641,6 @@ async function handleEnding(type, endScene){
 
         row.appendChild(pill1);
         row.appendChild(pill2);
-
         root.appendChild(row);
       },
       () => { history.back(); },
@@ -1676,6 +1676,7 @@ function renderScene(){
     return renderScene();
   }
 
+  // auto end_xxx
   try{
     const m = /^end_(good|bad|secret)$/i.exec(String(scene.id || ""));
     if(m && !scene.ending) scene.ending = String(m[1]).toLowerCase();

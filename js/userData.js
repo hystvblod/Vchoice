@@ -586,7 +586,7 @@
       if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
 
       try{
-        const r = await sb.rpc("secure_complete_scenario", { p_scenario: s, p_ending: e });
+        const r = await sb.rpc("secure_complete_scenario_v2", { p_scenario: s, p_ending: e });
         if (r?.error){
           _reportRemoteError("rpc.secure_complete_scenario", r.error);
           return { ok:false, reason: r.error.message || "rpc_error", error:r.error };
