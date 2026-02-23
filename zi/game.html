@@ -5,9 +5,54 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title></title>
   <link rel="stylesheet" href="css/app.css" />
+
+  <!-- ✅ Back button identique à Paramètres -->
+  <style>
+    .game-back{
+      position: fixed;
+      top: calc(10px + env(safe-area-inset-top));
+      left: 12px;
+      z-index: 9999;
+    }
+
+    .vc-icon-button{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.26);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-icon-button:active{ transform: scale(.98); }
+
+    .vc-back-ico{
+      width:24px;
+      height:24px;
+      display:block;
+      opacity:.98;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65));
+    }
+  </style>
 </head>
 
 <body class="page-game">
+
+  <!-- ✅ flèche retour vers index (même rendu que Paramètres) -->
+  <a id="btnBackIndex" class="vc-icon-button game-back" href="index.html" data-i18n-aria="ui.aria_back" aria-label="">
+    <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path fill="white" d="M15.5 5.5a1 1 0 0 1 0 1.4L10.4 12l5.1 5.1a1 1 0 1 1-1.4 1.4l-5.8-5.8a1.2 1.2 0 0 1 0-1.4l5.8-5.8a1 1 0 0 1 1.4 0z"/>
+    </svg>
+  </a>
+
   <div class="app">
     <main class="main main--game" id="screen_game">
       <section class="panel panel--game">

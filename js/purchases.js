@@ -12,6 +12,9 @@
 // - 500 vcoins, 3000 vcoins
 // - No Ads
 // - ULTRA (No Ads + tous scénarios actuels & à venir + 12 jetons)
+//
+// ✅ PATCH 2026-02-23:
+// - ULTRA = DIAMOND (local flag + sync DB via userData.grantEntitlement + resync auto refresh)
 
 (function () {
   "use strict";
@@ -21,24 +24,30 @@
   const warn = (...a) => { if (DEBUG) console.warn("[VC-IAP]", ...a); };
 
   // ---- Entitlements (local + cache userData)
-  const ENT_NO_ADS_KEY = "vchoice_ent_no_ads_v1";   // "1"/"0"
-  const ENT_ULTRA_KEY  = "vchoice_ent_ultra_v1";    // "1"/"0"
+  const ENT_NO_ADS_KEY    = "vchoice_ent_no_ads_v1";    // "1"/"0"
+  const ENT_DIAMOND_KEY   = "vchoice_ent_diamond_v1";   // "1"/"0"
+  const ENT_ULTRA_KEY     = "vchoice_ent_ultra_v1";     // legacy compat "1"/"0"
 
   function _lsGet(k){ try { return localStorage.getItem(k); } catch { return null; } }
   function _lsSet(k,v){ try { localStorage.setItem(k, v); } catch(_){} }
 
-  function hasUltra(){ return _lsGet(ENT_ULTRA_KEY) === "1"; }
-  function hasNoAds(){ return hasUltra() || _lsGet(ENT_NO_ADS_KEY) === "1"; }
+  function hasUltra(){
+    try{ if (window.VUserData && typeof window.VUserData.hasDiamond === "function" && window.VUserData.hasDiamond()) return true; }catch(_){ }
+    return (_lsGet(ENT_DIAMOND_KEY) === "1") || (_lsGet(ENT_ULTRA_KEY) === "1");
+  }
+  function hasNoAds(){
+    try{ if (window.VUserData && typeof window.VUserData.hasNoAds === "function" && window.VUserData.hasNoAds()) return true; }catch(_){ }
+    return hasUltra() || (_lsGet(ENT_NO_ADS_KEY) === "1");
+  }
 
   function persistEntToUserData(patch){
     try{
       const ud = window.VUserData;
       if (!ud || typeof ud.load !== "function" || typeof ud.save !== "function") return;
-      const u = ud.load() || {};
-      const prev = (u.entitlements && typeof u.entitlements === "object") ? u.entitlements : {};
-      u.entitlements = Object.assign({}, prev, patch);
-      ud.save(u, { silent:true });
-    }catch(_){}
+      const cur = ud.load() || {};
+      const next = Object.assign({}, cur, patch || {});
+      ud.save(next, { silent:true });
+    }catch(_){ }
   }
 
   function setNoAdsEntitled(on){
@@ -48,8 +57,10 @@
   }
 
   function setUltraEntitled(on){
-    _lsSet(ENT_ULTRA_KEY, on ? "1" : "0");
-    persistEntToUserData({ ultra: !!on, no_ads: !!on ? true : (hasNoAds()) });
+    // ULTRA = DIAMOND
+    _lsSet(ENT_DIAMOND_KEY, on ? "1" : "0");
+    _lsSet(ENT_ULTRA_KEY, on ? "1" : "0"); // legacy
+    persistEntToUserData({ diamond: !!on, no_ads: !!on ? true : (hasNoAds()) });
     if (on) setNoAdsEntitled(true);
   }
 
@@ -231,32 +242,22 @@
     return null;
   }
 
-  async function grantUltra(){
+  async function grantUltra(txId){
     // déjà acquis -> rien
     if (hasUltra()) return true;
 
+    // ✅ Local-first (UX) : active tout de suite
     setUltraEntitled(true);
     applyUltraUnlockOverride();
 
-    // +12 jetons (base Supabase)
+    // ✅ Sync base (si RPC dispo) : diamond=true + no_ads=true + +12 jetons (idempotent côté SQL)
     try{
-      const rj = await window.VUserData?.addJetons?.(12);
-      if (rj === null || rj === undefined) throw new Error("addJetons_failed");
-    }catch(e){
-      warn("ULTRA: jetons credit failed", e?.message || e);
-      // on laisse ultra ON (restaurable) ; le replay tx retentera selon besoin
-      throw e;
-    }
-
-    // unlock tous scénarios actuels (base Supabase)
-    try{
-      const ids = await getScenarioIdsForUltra();
-      for (const id of ids){
-        try{ await window.VUserData?.unlockScenario?.(id); }catch(_){}
+      if (window.VUserData && typeof window.VUserData.grantEntitlement === "function"){
+        await window.VUserData.grantEntitlement("diamond", { source:"iap", txId: String(txId||""), productId:"vchoice_ultra" });
       }
     }catch(e){
-      warn("ULTRA: unlock scenarios failed", e?.message || e);
-      // non bloquant
+      // non bloquant : le refresh (userData.js) tentera de resync plus tard
+      warn("ULTRA: remote grant failed", e?.message || e);
     }
 
     return true;
@@ -269,14 +270,14 @@
     const uid = await ensureAuthStrict();
     if (!uid) throw new Error("no_session");
 
-    // ✅ non-consumables: si déjà acquis, on marque credited et on sort (pas de double crédit)
-    if (cfg.kind === "no_ads" && hasNoAds()){
+    // ✅ non-consumables: si déjà acquis ET tx déjà traité -> on sort
+    if (cfg.kind === "no_ads" && hasNoAds() && (!txId || isCredited(txId))){
       if (txId) markCredited(txId);
       emit("vc:iap_credited", { productId:String(productId||""), kind:"no_ads", amount:0, txId:String(txId||"") });
       emit("vr:iap_credited", { productId:String(productId||""), kind:"no_ads", amount:0, txId:String(txId||"") });
       return true;
     }
-    if (cfg.kind === "ultra" && hasUltra()){
+    if (cfg.kind === "ultra" && hasUltra() && (!txId || isCredited(txId))){
       if (txId) markCredited(txId);
       emit("vc:iap_credited", { productId:String(productId||""), kind:"ultra", amount:0, txId:String(txId||"") });
       emit("vr:iap_credited", { productId:String(productId||""), kind:"ultra", amount:0, txId:String(txId||"") });
@@ -292,11 +293,14 @@
       if (r === null || r === undefined) throw new Error("credit_jetons_failed");
     }
     else if (cfg.kind === "no_ads"){
+      // local-first
       setNoAdsEntitled(true);
       applyUltraUnlockOverride();
+      // best-effort remote sync
+      try{ await window.VUserData?.grantEntitlement?.("no_ads", { source:"iap", txId:String(txId||""), productId:String(productId||"") }); }catch(_){ }
     }
     else if (cfg.kind === "ultra"){
-      await grantUltra();
+      await grantUltra(txId);
     }
     else {
       throw new Error("unknown_kind");

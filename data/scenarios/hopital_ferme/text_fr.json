@@ -26,7 +26,7 @@
     "hf.s03.body": "Sous le vieux « FERMÉ », un papier neuf : « PATIENT ATTENDU — ADMISSION AUTOMATIQUE ». Ton nom est tapé en bas. Sans prénom.",
     "hf.s03.c1": "Prendre une photo du papier",
     "hf.s03.c2": "Chercher une autre entrée",
-    "hf.s03.c3": "Reculer… puis revenir (tu n’y arrives pas)",
+    "hf.s03.c3": "Reculer… puis revenir",
 
     "hf.s04.title": "Pas de réseau",
     "hf.s04.body": "Ton téléphone affiche zéro barre. Puis l’écran s’allume seul : « Service de garde : présent ». Tu lèves les yeux. Une fenêtre vient de s’éteindre au deuxième.",
@@ -242,7 +242,7 @@
     "hf.s39.body": "Une porte « SORTIE » avec une barre anti-panique. De l’autre côté : l’air froid. Mais aussi… un très léger bruit de clavier.",
     "hf.s39.c1": "Pousser la barre et sortir",
     "hf.s39.c2": "Revenir aux brancards",
-    "hf.s39.c3": "Écouter collé à la porte",
+    "hf.s39.c3": "Écouter collé à la porte et sortir si silencieux",
 
     "hf.s40.title": "La cour intérieure",
     "hf.s40.body": "Tu es dehors, dans la cour. Les murs sont trop hauts. La sortie grillagée vers la rue est là… mais la serrure semble neuve, brillante.",

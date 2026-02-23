@@ -1,3 +1,4 @@
+// js/userData.js
 // js/userData.js — VERSION COMPLETE À JOUR (lang device early + sync Supabase + local unlock cache "pour toujours")
 // VChoice — Local cache + Supabase RPCs (source of truth)
 // - Profil via RPC secure_get_me
@@ -19,6 +20,11 @@
 //
 // ✅ PATCH 2026-02-23 (entitlements fallback):
 // - hasPremium/hasDiamond/hasNoAds lisent aussi le localStorage si init pas fini (évite cadenas si premium en local)
+//
+// ✅ PATCH 2026-02-23 (entitlements DB):
+// - Ajout VCRemoteStore.grantEntitlement() -> RPC secure_grant_entitlement
+// - Ajout VUserData.grantEntitlement() local-first + remote best-effort
+// - Refresh: resync auto DB si entitlement présent en local mais absent en remote (cooldown anti-boucle)
 
 (function () {
   "use strict";
@@ -463,6 +469,25 @@
       return (v !== null && v !== undefined && v !== "") ? String(v).toLowerCase() : null;
     },
 
+    // ✅ Entitlements (no_ads / diamond) — write-through DB
+    async grantEntitlement(entitlement){
+      const sb = window.sb;
+      if (!sbReady()) return null;
+
+      const uid = await this.ensureAuth();
+      if (!uid) return null;
+
+      const e = String(entitlement || "").trim().toLowerCase();
+      if (!e) return null;
+
+      // ✅ Allow list (on reste strict)
+      if (!["no_ads","diamond","premium"].includes(e)) return null;
+
+      const r = await _tryRpc("secure_grant_entitlement", { p_entitlement: e }, "rpc.secure_grant_entitlement");
+      if (r?.error) return null;
+      return _normalizeRow(_unwrapRpcData(r?.data)) || null;
+    },
+
     async unlockScenario(scenarioId){
       const sb = window.sb;
       if (!sbReady()) return { ok:false, reason:"no_client" };
@@ -663,6 +688,35 @@
           _memState.no_ads  = !!(localNo || remoteNo || _memState.premium || _memState.diamond);
         }catch(_){}
 
+        // ✅ SYNC entitlements vers la DB si on les a en local mais pas en remote
+        // - utile après un achat IAP quand l'app est offline au moment du refresh
+        // - l'RPC doit être idempotent (si déjà true => ne pas re-créditer)
+        try{
+          const remotePrem = !!me.premium;
+          const remoteDia  = !!me.diamond;
+          const remoteNo   = !!me.no_ads;
+
+          // Cooldown anti-boucle (30s)
+          const SYNC_TS_KEY = "vchoice_ent_sync_ts_v1";
+          const lastTs = Number(localStorage.getItem(SYNC_TS_KEY) || 0) || 0;
+          const canTry = (_now() - lastTs) > 30_000;
+
+          if (canTry && window.VCRemoteStore?.enabled?.() && typeof window.VCRemoteStore.grantEntitlement === "function"){
+            // diamond => implique no_ads + unlock future (côté app)
+            if (_memState.diamond && !remoteDia){
+              localStorage.setItem(SYNC_TS_KEY, String(_now()));
+              const row = await window.VCRemoteStore.grantEntitlement("diamond");
+              if (row) this.save(row, { silent:true });
+            }
+            // no_ads seul (si pas diamond)
+            else if (_memState.no_ads && !_memState.diamond && !remoteNo){
+              localStorage.setItem(SYNC_TS_KEY, String(_now()));
+              const row = await window.VCRemoteStore.grantEntitlement("no_ads");
+              if (row) this.save(row, { silent:true });
+            }
+          }
+        }catch(_){ }
+
         // ✅ MERGE unlocked_scenarios (local "pour toujours" + cache user + remote)
         const remoteList = Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios.slice() : [];
         const cacheList = nextUid ? _getUnlockedCacheFor(nextUid) : [];
@@ -809,6 +863,44 @@
       if (_memState.no_ads || _memState.premium || _memState.diamond) return true;
       const ent = _readEntitlementsLocal();
       return !!ent.no_ads;
+    },
+
+    // ✅ Entitlements: local-first, remote best-effort (sync au refresh)
+    async grantEntitlement(entitlement, opts){
+      const e = String(entitlement || "").trim().toLowerCase();
+      const requireRemote = !!(opts && opts.requireRemote);
+
+      if (!["no_ads","diamond","premium"].includes(e)){
+        return { ok:false, reason:"invalid_entitlement", local_ok:false, remote_ok:false, data:null };
+      }
+
+      // ✅ local
+      const cur = this.load();
+      if (e === "no_ads"){
+        this.save({ ...cur, no_ads:true });
+      } else if (e === "diamond"){
+        this.save({ ...cur, diamond:true, no_ads:true });
+      } else if (e === "premium"){
+        this.save({ ...cur, premium:true, no_ads:true });
+      }
+
+      // ✅ remote (best effort)
+      if (window.VCRemoteStore?.enabled?.() && typeof window.VCRemoteStore.grantEntitlement === "function"){
+        try{
+          const row = await window.VCRemoteStore.grantEntitlement(e);
+          if (row){
+            // merge (jamais shrink)
+            this.save(row, { silent:true });
+            return { ok:true, reason:"ok", local_ok:true, remote_ok:true, data: row };
+          }
+        }catch(_){ }
+      }
+
+      if (requireRemote){
+        return { ok:false, reason:"remote_failed", local_ok:true, remote_ok:false, data:null };
+      }
+
+      return { ok:true, reason:"local_only", local_ok:true, remote_ok:false, data:null };
     },
 
     getUnlockedScenarios(){

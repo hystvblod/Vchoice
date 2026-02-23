@@ -1,3 +1,4 @@
+// js/ads.js
 // ===============================================
 // VChronicles - js/ads.js
 // - API minimal pour Rewarded
@@ -100,11 +101,20 @@
     return { ok:false, reason:"no_rewarded_provider" };
   }
 
+  function isInterstitialAllowed(){
+    try{
+      // no_ads coupe uniquement les interstitials. Rewarded reste volontaire.
+      if (window.VUserData && typeof window.VUserData.hasNoAds === "function" && window.VUserData.hasNoAds()) return false;
+    }catch(_){ }
+    return true;
+  }
+
   // expose
   window.VAds = {
     showRewarded,
     getPersonalized,
     setPersonalized,
+    isInterstitialAllowed,
   };
 
   // push la pref au bridge au boot (si présent)
