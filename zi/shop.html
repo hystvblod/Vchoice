@@ -1,0 +1,369 @@
+<!-- shop.html -->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>VChoice</title>
+  <link rel="stylesheet" href="css/app.css" />
+
+  <style>
+    /* ===== TOPBAR (même style que settings) ===== */
+    .topbar{ display:none !important; }
+
+    :root{
+      --vc-bg0:#05060a;
+      --vc-bg1:#090b13;
+      --vc-bg2:#0b1226;
+      --vc-accent:#ff3b3b;
+      --vc-accent2:#b71b1b;
+      --vc-card-r:18px;
+      --vc-border:rgba(255,255,255,.10);
+      --vc-text:rgba(255,255,255,.94);
+      --vc-muted:rgba(255,255,255,.68);
+    }
+
+    body{
+      background:
+        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
+        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
+        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      margin:0;
+    }
+
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      pointer-events:none;
+      z-index: 0;
+      opacity: .08;
+      background-image: url("assets/img/ui/noise.png");
+      background-size: 260px 260px;
+      mix-blend-mode: overlay;
+    }
+
+    body::after{
+      content:"";
+      position: fixed;
+      inset: -60px;
+      pointer-events:none;
+      z-index: 0;
+      background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
+    }
+
+    .page{ position:relative; z-index:1; padding: 14px 14px 22px; }
+
+    .vc-top-actions{
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
+    }
+    .vc-top-slot{ flex: 1 1 0; display:flex; align-items:center; }
+    .vc-top-left{ justify-content:flex-start; }
+    .vc-top-center{ justify-content:center; }
+    .vc-top-right{ justify-content:flex-end; }
+
+    .vc-icon-button{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.26);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-icon-button:active{ transform: scale(.98); }
+
+    .vc-icon-button img{
+      width:30px;
+      height:30px;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
+    }
+
+    .vc-back-ico{
+      width:24px;
+      height:24px;
+      display:block;
+      opacity:.98;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65));
+    }
+
+    .shop-head{
+      padding: 6px 2px 12px;
+      text-align:center;
+    }
+    .shop-title{
+      margin: 4px 0 0;
+      font-size: 18px;
+      font-weight: 950;
+      letter-spacing: .2px;
+      color: var(--vc-text);
+    }
+    .shop-sub{
+      margin: 6px 0 0;
+      font-size: 13px;
+      opacity: .72;
+      color: var(--vc-muted);
+    }
+
+    .shop-section{
+      margin-top: 14px;
+    }
+    .shop-section h2{
+      margin: 10px 4px 10px;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      opacity: .70;
+    }
+
+    .shop-grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 520px){
+      .shop-grid{ grid-template-columns: 1fr; }
+    }
+
+    .shop-card{
+      padding: 14px 14px 12px;
+      cursor: default;
+    }
+
+    .shop-row{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .shop-ico{
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.35));
+    }
+
+    .shop-name{
+      font-weight: 950;
+      font-size: 15px;
+      line-height: 1.15;
+      margin: 0;
+    }
+    .shop-meta{
+      margin-top: 4px;
+      font-size: 12px;
+      opacity: .72;
+    }
+
+    .shop-foot{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .shop-price{
+      font-weight: 950;
+      font-size: 16px;
+      letter-spacing: .2px;
+      white-space: nowrap;
+    }
+    .shop-buy{
+      padding: 9px 12px;
+      border-radius: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .shop-buy[disabled]{ opacity:.55; cursor:not-allowed; }
+
+    .shop-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.22);
+      font-size: 12px;
+      opacity: .82;
+      margin: 6px 0 2px;
+    }
+    .shop-pill strong{ font-weight: 950; }
+  </style>
+</head>
+
+<body data-page="shop">
+  <div class="vc-top-actions">
+    <div class="vc-top-slot vc-top-left">
+      <a class="vc-icon-button" href="index.html" aria-label="Retour">
+        <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="white" d="M14.7 6.3a1 1 0 0 1 0 1.4L11.4 11H20a1 1 0 1 1 0 2h-8.6l3.3 3.3a1 1 0 1 1-1.4 1.4l-5-5a1 1 0 0 1 0-1.4l5-5a1 1 0 0 1 1.4 0Z"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="vc-top-slot vc-top-center"></div>
+
+    <div class="vc-top-slot vc-top-right">
+      <span class="vc-icon-button" aria-label="Boutique" aria-current="page">
+        <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
+      </span>
+    </div>
+  </div>
+
+  <main class="page">
+    <header class="shop-head">
+      <h1 class="shop-title">Boutique</h1>
+      <p class="shop-sub">Prix chargés depuis le store</p>
+    </header>
+
+    <div class="shop-pill">
+      <span>VCoins</span><strong>500 / 3000</strong>
+      <span style="opacity:.55">•</span>
+      <span>Jetons</span><strong>12 / 30</strong>
+      <span style="opacity:.55">•</span>
+      <span>No Ads</span><strong>+</strong>
+      <span>ULTRA</span>
+    </div>
+
+    <section class="shop-section" aria-label="Jetons">
+      <h2>Jetons</h2>
+      <div class="shop-grid">
+        <article class="card shop-card">
+          <div class="shop-row">
+            <img class="shop-ico" src="assets/img/ui/jeton.webp" alt="" draggable="false" />
+            <div>
+              <p class="shop-name">12 Jetons</p>
+              <div class="shop-meta">Consommable</div>
+            </div>
+          </div>
+          <div class="shop-foot">
+            <div class="shop-price" data-price-for="vchoice_jetons_12">…</div>
+            <button class="btn shop-buy" data-buy="vchoice_jetons_12">Acheter</button>
+          </div>
+        </article>
+
+        <article class="card shop-card">
+          <div class="shop-row">
+            <img class="shop-ico" src="assets/img/ui/jeton.webp" alt="" draggable="false" />
+            <div>
+              <p class="shop-name">30 Jetons</p>
+              <div class="shop-meta">Consommable</div>
+            </div>
+          </div>
+          <div class="shop-foot">
+            <div class="shop-price" data-price-for="vchoice_jetons_30">…</div>
+            <button class="btn shop-buy" data-buy="vchoice_jetons_30">Acheter</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="shop-section" aria-label="VCoins">
+      <h2>VCoins</h2>
+      <div class="shop-grid">
+        <article class="card shop-card">
+          <div class="shop-row">
+            <img class="shop-ico" src="assets/img/ui/vcoin.webp" alt="" draggable="false" />
+            <div>
+              <p class="shop-name">500 VCoins</p>
+              <div class="shop-meta">Consommable</div>
+            </div>
+          </div>
+          <div class="shop-foot">
+            <div class="shop-price" data-price-for="vchoice_vcoins_500">…</div>
+            <button class="btn shop-buy" data-buy="vchoice_vcoins_500">Acheter</button>
+          </div>
+        </article>
+
+        <article class="card shop-card">
+          <div class="shop-row">
+            <img class="shop-ico" src="assets/img/ui/vcoin.webp" alt="" draggable="false" />
+            <div>
+              <p class="shop-name">3000 VCoins</p>
+              <div class="shop-meta">Consommable</div>
+            </div>
+          </div>
+          <div class="shop-foot">
+            <div class="shop-price" data-price-for="vchoice_vcoins_3000">…</div>
+            <button class="btn shop-buy" data-buy="vchoice_vcoins_3000">Acheter</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="shop-section" aria-label="Packs">
+      <h2>Packs</h2>
+      <div class="shop-grid">
+        <article class="card shop-card" id="card_no_ads">
+          <div class="shop-row">
+            <div style="width:46px;height:46px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.18);box-shadow:0 10px 20px rgba(0,0,0,.25);">
+              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" style="filter:drop-shadow(0 2px 8px rgba(0,0,0,.55))">
+                <path fill="white" d="M12 2a10 10 0 1 0 10 10A10.01 10.01 0 0 0 12 2Zm5 11H7a1 1 0 0 1 0-2h10a1 1 0 0 1 0 2Z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="shop-name">No Ads</p>
+              <div class="shop-meta">Permanent</div>
+            </div>
+          </div>
+          <div class="shop-foot">
+            <div class="shop-price" data-price-for="vchoice_no_ads">…</div>
+            <button class="btn shop-buy" data-buy="vchoice_no_ads" id="buy_no_ads">Acheter</button>
+          </div>
+        </article>
+
+        <article class="card shop-card" id="card_ultra">
+          <div class="shop-row">
+            <div style="width:46px;height:46px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;border-radius:14px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.18);box-shadow:0 10px 20px rgba(0,0,0,.25);">
+              <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" style="filter:drop-shadow(0 2px 8px rgba(0,0,0,.55))">
+                <path fill="white" d="M12 3l2.2 4.6 5.1.7-3.7 3.6.9 5.1L12 14.9 7.5 17l.9-5.1L4.7 8.3l5.1-.7L12 3Z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="shop-name">Pack ULTRA</p>
+              <div class="shop-meta">No Ads + tous scénarios (actuels & à venir) + 12 jetons</div>
+            </div>
+          </div>
+          <div class="shop-foot">
+            <div class="shop-price" data-price-for="vchoice_ultra">…</div>
+            <button class="btn shop-buy" data-buy="vchoice_ultra" id="buy_ultra">Acheter</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabaseBootstrap.js"></script>
+  <script src="js/userData.js"></script>
+  <script src="js/ads.js"></script>
+  <script src="js/purchases.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/shop.js"></script>
+</body>
+</html>

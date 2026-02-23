@@ -106,6 +106,8 @@
       text-decoration:none;
       -webkit-tap-highlight-color: transparent;
     }
+    .vc-icon-button:active{ transform: scale(.98); }
+
     .vc-icon-button img{
       width:30px;
       height:30px;
@@ -113,6 +115,14 @@
       pointer-events:none;
       user-select:none;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
+    }
+
+    .vc-back-ico{
+      width:24px;
+      height:24px;
+      display:block;
+      opacity:.98;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65));
     }
 
     .vc-title-wrap{ padding: 4px 0 0; text-align:center; }
@@ -326,7 +336,7 @@
       gap: clamp(6px, 1.8vw, var(--badgeGap));
       align-items:center;
       justify-items:center;
-     overflow: visible;
+      overflow: visible;
     }
 
     .vc-end{
@@ -400,7 +410,6 @@
         </svg>
       </a>
     </div>
-
 
     <div class="vc-top-slot vc-top-center">
       <a class="vc-icon-button" href="settings.html" data-i18n-aria="ui.aria_settings">

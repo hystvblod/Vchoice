@@ -86,8 +86,8 @@
       "title_key": "d14.s01.title",
       "body_key": "d14.s01.body",
       "choices": [
-        { "choice_key": "d14.s01.c1", "next": "s02" },
-        { "choice_key": "d14.s01.c2", "next": "s03" },
+        { "choice_key": "d14.s01.c1", "next": "s03" },
+        { "choice_key": "d14.s01.c2", "next": "s02" },
         { "choice_key": "d14.s01.c3", "next": "s08" }
       ]
     },
@@ -286,7 +286,7 @@
       "choices": [
         { "choice_key": "d14.s19.c1", "next": "s21", "set_flags": ["has_badge"] },
         { "choice_key": "d14.s19.c2", "next": "s13" },
-        { "choice_key": "d14.s19.c3", "next": "s24", "requires_any_flags": ["has_badge"] }
+        { "choice_key": "d14.s19.c3", "next": "s24", "set_flags": ["has_badge"] }
       ]
     },
 
@@ -330,7 +330,7 @@
       "choices": [
         { "choice_key": "d14.s23.c1", "next": "s30", "set_flags": ["has_key"] },
         { "choice_key": "d14.s23.c2", "next": "s35" },
-        { "choice_key": "d14.s23.c3", "next": "s22" }
+        { "choice_key": "d14.s23.c3", "next": "s16" }
       ]
     },
 
@@ -352,7 +352,7 @@
       "choices": [
         { "choice_key": "d14.s25.c1", "next": "s26" },
         { "choice_key": "d14.s25.c2", "next": "s15" },
-        { "choice_key": "d14.s25.c3", "next": "s28" }
+        { "choice_key": "d14.s25.c3", "next": "s41" }
       ]
     },
 
@@ -396,7 +396,7 @@
       "choices": [
         { "choice_key": "d14.s29.c1", "next": "s35" },
         { "choice_key": "d14.s29.c2", "next": "s28" },
-        { "choice_key": "d14.s29.c3", "next": "s23" }
+        { "choice_key": "d14.s29.c3", "next": "s35" }
       ]
     },
 
@@ -451,7 +451,7 @@
       "choices": [
         { "choice_key": "d14.s34.c1", "next": "s40" },
         { "choice_key": "d14.s34.c2", "next": "s33" },
-        { "choice_key": "d14.s34.c3", "next": "s32", "requires_any_flags": ["has_key"] }
+        { "choice_key": "d14.s34.c3", "next": "s28" }
       ]
     },
 
@@ -504,7 +504,7 @@
       "title_key": "d14.s39.title",
       "body_key": "d14.s39.body",
       "choices": [
-        { "choice_key": "d14.s39.c1", "next": "s41" },
+        { "choice_key": "d14.s39.c1", "next": "s29" },
         { "choice_key": "d14.s39.c2", "next": "s40" },
         { "choice_key": "d14.s39.c3", "next": "s33" }
       ]

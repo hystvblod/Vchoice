@@ -11,6 +11,11 @@
 // - Les scénarios débloqués sont "acquis pour toujours" côté local (cache dédié)
 // - Un refresh au lancement ne peut JAMAIS re-verrouiller un scénario déjà en local (merge/union uniquement)
 // - isScenarioUnlocked() fallback localStorage même si init pas encore fini (moins de flicker cadenas)
+//
+// ✅ PATCH 2026-02-23 (suite):
+// - Support RPC Supabase qui renvoie ARRAY (setof) OU objet (json/row) -> plus de cadenas fantôme
+// - Packs premium/diamond/no_ads = local OR remote (jamais shrink) pour éviter re-blocage offline/latence
+// - no_ads coupe uniquement les interstitials (rewarded reste volontaire)
 
 (function () {
   "use strict";
@@ -48,6 +53,16 @@
 
   function _safeLower(s){
     try{ return String(s||"").trim().toLowerCase(); }catch{ return ""; }
+  }
+
+  // ✅ Supabase RPC peut renvoyer un ARRAY (setof) ou un objet (row/json). On unifie ici.
+  function _unwrapRpcData(data){
+    try{
+      if (Array.isArray(data)) return (data.length ? data[0] : null);
+      return (data === undefined) ? null : data;
+    }catch(_){
+      return null;
+    }
   }
 
   function _normScenarioId(s){
@@ -249,6 +264,24 @@
     out.vcoins = (typeof out.vcoins === "number") ? out.vcoins : Number(out.vcoins || 0) || 0;
     out.jetons = (typeof out.jetons === "number") ? out.jetons : Number(out.jetons || 0) || 0;
 
+    // ✅ entitlements (colonnes OU jsonb "entitlements")
+    let prem = !!out.premium;
+    let dia = !!out.diamond;
+    let noads = !!out.no_ads;
+    try{
+      const ent = out.entitlements;
+      if (ent && typeof ent === "object"){
+        if (ent.premium === true) prem = true;
+        if (ent.diamond === true) dia = true;
+        if (ent.no_ads === true) noads = true;
+      }
+    }catch(_){}
+
+    out.premium = !!prem;
+    out.diamond = !!dia;
+    // no_ads peut être un flag dédié, mais premium/diamond impliquent aussi "no ads interstitial"
+    out.no_ads = !!(noads || prem || dia);
+
     if (!SUPPORTED_LANGS.includes(out.lang)) out.lang = "";
 
     // normalize scenario ids
@@ -265,6 +298,10 @@
     jetons: 0,
     lang: "",
     unlocked_scenarios: [],
+    // ✅ entitlements (premium/diamond/no_ads interstitial)
+    premium: false,
+    diamond: false,
+    no_ads: false,
     _remote_lang_missing: false
   };
 
@@ -276,7 +313,10 @@
         vcoins: Number(_memState.vcoins || 0) || 0,
         jetons: Number(_memState.jetons || 0) || 0,
         lang: String(_memState.lang || ""),
-        unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : []
+        unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : [],
+        premium: !!_memState.premium,
+        diamond: !!_memState.diamond,
+        no_ads: !!_memState.no_ads
       });
     }catch(_){}
     // ✅ en plus, on sync le cache "pour toujours" si on a un uid
@@ -350,7 +390,7 @@
       try{
         const r = await sb.rpc("secure_get_me");
         if (r?.error){ _reportRemoteError("rpc.secure_get_me", r.error); return null; }
-        return _normalizeRow(r?.data) || null;
+        return _normalizeRow(_unwrapRpcData(r?.data)) || null;
       }catch(e){
         _reportRemoteError("rpc.secure_get_me.exception", e);
         return null;
@@ -369,8 +409,9 @@
 
       const r = await _tryRpc("secure_set_username", { p_username: name });
       if (r?.error) return null;
-      const v = (r && r.data && (r.data.username || r.data)) ? (r.data.username || r.data) : null;
-      return v ? String(v) : null;
+      const d = _unwrapRpcData(r?.data);
+      const v = (d && typeof d === "object" && d.username) ? d.username : d;
+      return (v !== null && v !== undefined && v !== "") ? String(v) : null;
     },
 
     async setLang(lang){
@@ -385,8 +426,9 @@
 
       const r = await _tryRpc("secure_set_lang", { p_lang: l });
       if (r?.error) return null;
-      const v = (r && r.data && (r.data.lang || r.data)) ? (r.data.lang || r.data) : null;
-      return v ? String(v).toLowerCase() : null;
+      const d = _unwrapRpcData(r?.data);
+      const v = (d && typeof d === "object" && d.lang) ? d.lang : d;
+      return (v !== null && v !== undefined && v !== "") ? String(v).toLowerCase() : null;
     },
 
     async unlockScenario(scenarioId){
@@ -404,7 +446,7 @@
           _reportRemoteError("rpc.secure_unlock_scenario", r.error);
           return { ok:false, reason: r.error.message || "rpc_error", error:r.error };
         }
-        return { ok:true, data: r?.data || null };
+        return { ok:true, data: (_unwrapRpcData(r?.data) || null) };
       }catch(err){
         _reportRemoteError("rpc.secure_unlock_scenario.exception", err);
         return { ok:false, reason:"rpc_exception", error:err };
@@ -417,12 +459,13 @@
       const uid = await this.ensureAuth();
       if (!uid) return null;
 
-      const d = Number(delta || 0);
-      if (!Number.isFinite(d) || d === 0) return null;
+      const d0 = Number(delta || 0);
+      if (!Number.isFinite(d0) || d0 === 0) return null;
 
-      const r = await _tryRpc("secure_add_vcoins", { p_delta: d });
+      const r = await _tryRpc("secure_add_vcoins", { p_delta: d0 });
       if (r?.error) return null;
-      const v = (r && r.data && (typeof r.data.vcoins === "number" ? r.data.vcoins : r.data)) ?? null;
+      const d = _unwrapRpcData(r?.data);
+      const v = (d && typeof d === "object" && typeof d.vcoins === "number") ? d.vcoins : d;
       return (typeof v === "number" && !Number.isNaN(v)) ? v : null;
     },
 
@@ -432,12 +475,13 @@
       const uid = await this.ensureAuth();
       if (!uid) return null;
 
-      const d = Number(delta || 0);
-      if (!Number.isFinite(d) || d === 0) return null;
+      const d0 = Number(delta || 0);
+      if (!Number.isFinite(d0) || d0 === 0) return null;
 
-      const r = await _tryRpc("secure_add_jetons", { p_delta: d });
+      const r = await _tryRpc("secure_add_jetons", { p_delta: d0 });
       if (r?.error) return null;
-      const v = (r && r.data && (typeof r.data.jetons === "number" ? r.data.jetons : r.data)) ?? null;
+      const d = _unwrapRpcData(r?.data);
+      const v = (d && typeof d === "object" && typeof d.jetons === "number") ? d.jetons : d;
       return (typeof v === "number" && !Number.isNaN(v)) ? v : null;
     },
 
@@ -447,12 +491,13 @@
       const uid = await this.ensureAuth();
       if (!uid) return null;
 
-      const d = Number(delta || 0);
-      if (!Number.isFinite(d) || d <= 0) return null;
+      const d0 = Number(delta || 0);
+      if (!Number.isFinite(d0) || d0 <= 0) return null;
 
-      const r = await _tryRpc("secure_spend_jetons", { p_delta: d });
+      const r = await _tryRpc("secure_spend_jetons", { p_delta: d0 });
       if (r?.error) return null;
-      const v = (r && r.data && (typeof r.data.jetons === "number" ? r.data.jetons : r.data)) ?? null;
+      const d = _unwrapRpcData(r?.data);
+      const v = (d && typeof d === "object" && typeof d.jetons === "number") ? d.jetons : d;
       return (typeof v === "number" && !Number.isNaN(v)) ? v : null;
     },
 
@@ -467,7 +512,8 @@
 
       const r = await _tryRpc("secure_reduce_vcoins_to", { p_value: v0 });
       if (r?.error) return null;
-      const v = (r && r.data && (typeof r.data.vcoins === "number" ? r.data.vcoins : r.data)) ?? null;
+      const d = _unwrapRpcData(r?.data);
+      const v = (d && typeof d === "object" && typeof d.vcoins === "number") ? d.vcoins : d;
       return (typeof v === "number" && !Number.isNaN(v)) ? v : null;
     },
 
@@ -488,7 +534,7 @@
           _reportRemoteError("rpc.secure_complete_scenario", r.error);
           return { ok:false, reason: r.error.message || "rpc_error", error:r.error };
         }
-        return { ok:true, data: r?.data || null };
+        return { ok:true, data: (_unwrapRpcData(r?.data) || null) };
       }catch(err){
         _reportRemoteError("rpc.secure_complete_scenario.exception", err);
         return { ok:false, reason:"rpc_exception", error:err };
@@ -570,6 +616,21 @@
         _memState.vcoins = Number(me.vcoins || 0) || 0;
         _memState.jetons = Number(me.jetons || 0) || 0;
 
+        // ✅ MERGE entitlements (local OR remote, jamais shrink)
+        try{
+          const localPrem = uidChanged ? false : !!_memState.premium;
+          const localDia  = uidChanged ? false : !!_memState.diamond;
+          const localNo   = uidChanged ? false : !!_memState.no_ads;
+
+          const remotePrem = !!me.premium;
+          const remoteDia  = !!me.diamond;
+          const remoteNo   = !!me.no_ads;
+
+          _memState.premium = !!(localPrem || remotePrem);
+          _memState.diamond = !!(localDia || remoteDia);
+          _memState.no_ads  = !!(localNo || remoteNo || _memState.premium || _memState.diamond);
+        }catch(_){}
+
         // ✅ MERGE unlocked_scenarios (local "pour toujours" + cache user + remote)
         const remoteList = Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios.slice() : [];
         const cacheList = nextUid ? _getUnlockedCacheFor(nextUid) : [];
@@ -597,7 +658,10 @@
         vcoins: Number(_memState.vcoins || 0) || 0,
         jetons: Number(_memState.jetons || 0) || 0,
         lang: String(_memState.lang || ""),
-        unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : []
+        unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : [],
+        premium: !!_memState.premium,
+        diamond: !!_memState.diamond,
+        no_ads: !!_memState.no_ads
       };
     },
 
@@ -615,6 +679,9 @@
         const prevUid = String(_memState.user_id || "");
         if (prevUid && prevUid !== incomingUid){
           _memState.unlocked_scenarios = [];
+          _memState.premium = false;
+          _memState.diamond = false;
+          _memState.no_ads = false;
         }
         _memState.user_id = incomingUid;
       } else {
@@ -630,6 +697,22 @@
       else _memState.lang = desiredLang;
 
       _writeLangLocal(_memState.lang);
+
+      // ✅ IMPORTANT: entitlements ne doivent JAMAIS "shrink" (si tu as premium/diamond une fois, on ne le retire pas en local)
+      //    - source remote = vérité, mais côté UX on fait "local OR remote" pour éviter de re-bloquer en offline/latence
+      try{
+        const ent = (o && typeof o === "object") ? (o.entitlements || null) : null;
+
+        const premIn = (o && o.premium === true) || (ent && ent.premium === true);
+        const diaIn  = (o && o.diamond === true) || (ent && ent.diamond === true);
+        const noadsIn = (o && o.no_ads === true) || (ent && ent.no_ads === true);
+
+        _memState.premium = !!(_memState.premium || premIn);
+        _memState.diamond = !!(_memState.diamond || diaIn);
+
+        // no_ads interstitial: flag dédié OU implique premium/diamond
+        _memState.no_ads = !!(_memState.no_ads || noadsIn || _memState.premium || _memState.diamond);
+      }catch(_){}
 
       // ✅ IMPORTANT: unlocked_scenarios ne doit JAMAIS "shrink"
       // -> on merge toujours l'existant + l'incoming + le cache "pour toujours" du user
@@ -654,6 +737,18 @@
       return _readLangLocal() || _getDeviceLang() || "en";
     },
 
+    // ✅ entitlements helpers (utilisé par index + ads.js)
+    hasPremium(){
+      return !!_memState.premium;
+    },
+    hasDiamond(){
+      return !!_memState.diamond;
+    },
+    hasNoAds(){
+      // "no_ads" = on coupe uniquement les interstitials. Rewarded reste volontaire.
+      return !!(_memState.no_ads || _memState.premium || _memState.diamond);
+    },
+
     getUnlockedScenarios(){
       // ✅ fallback localStorage même si init pas fini
       const mem = Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : [];
@@ -668,9 +763,19 @@
       return [];
     },
 
-    isScenarioUnlocked(scenarioId){
+    isScenarioUnlocked(scenarioId, requiredPack){
       const s = _normScenarioId(scenarioId);
       if (!s) return false;
+
+      const pack = String(requiredPack || "").trim().toLowerCase();
+
+      // ✅ Premium/Diamond = accès automatique (débloque aussi les futurs scénarios)
+      // - Si un scénario est "diamond-only", premium ne suffit pas.
+      if (pack === "diamond"){
+        if (this.hasDiamond()) return true;
+      } else {
+        if (this.hasPremium() || this.hasDiamond()) return true;
+      }
 
       const arr = this.getUnlockedScenarios();
       if (arr.includes(s)) return true;

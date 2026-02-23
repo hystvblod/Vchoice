@@ -1,26 +1,120 @@
 // js/purchases.js
 /* global CdvPurchase */
-// VChoice — IAP minimal “clean” (même pattern events que l’autre app)
-// - Expose window.VCIAP (et alias VRIAP si tu veux compat)
+// VChoice — IAP minimal “clean”
+// - Expose window.VCIAP (et alias VRIAP)
 // - Emit:
 //    vc:iap_price  / vr:iap_price
 //    vc:iap_credited / vr:iap_credited
 // - Anti double-credit + replay local pending
+//
+// ✅ SKU UNIQUEMENT demandés :
+// - 12 jetons, 30 jetons
+// - 500 vcoins, 3000 vcoins
+// - No Ads
+// - ULTRA (No Ads + tous scénarios actuels & à venir + 12 jetons)
 
 (function () {
   "use strict";
 
   const DEBUG = false; // mets true si tu veux logs
-  const log = (...a) => { if (DEBUG) console.log("[VC-IAP]", ...a); };
+  const log  = (...a) => { if (DEBUG) console.log("[VC-IAP]", ...a); };
   const warn = (...a) => { if (DEBUG) console.warn("[VC-IAP]", ...a); };
 
-  // ---- SKU (reprend les mêmes IDs que l’autre app par défaut)
-  // Si VChoice a ses propres produits Play Console, change ici.
+  // ---- Entitlements (local + cache userData)
+  const ENT_NO_ADS_KEY = "vchoice_ent_no_ads_v1";   // "1"/"0"
+  const ENT_ULTRA_KEY  = "vchoice_ent_ultra_v1";    // "1"/"0"
+
+  function _lsGet(k){ try { return localStorage.getItem(k); } catch { return null; } }
+  function _lsSet(k,v){ try { localStorage.setItem(k, v); } catch(_){} }
+
+  function hasUltra(){ return _lsGet(ENT_ULTRA_KEY) === "1"; }
+  function hasNoAds(){ return hasUltra() || _lsGet(ENT_NO_ADS_KEY) === "1"; }
+
+  function persistEntToUserData(patch){
+    try{
+      const ud = window.VUserData;
+      if (!ud || typeof ud.load !== "function" || typeof ud.save !== "function") return;
+      const u = ud.load() || {};
+      const prev = (u.entitlements && typeof u.entitlements === "object") ? u.entitlements : {};
+      u.entitlements = Object.assign({}, prev, patch);
+      ud.save(u, { silent:true });
+    }catch(_){}
+  }
+
+  function setNoAdsEntitled(on){
+    _lsSet(ENT_NO_ADS_KEY, on ? "1" : "0");
+    persistEntToUserData({ no_ads: !!on });
+    try { window.__VC_NO_ADS = !!on; } catch(_) {}
+  }
+
+  function setUltraEntitled(on){
+    _lsSet(ENT_ULTRA_KEY, on ? "1" : "0");
+    persistEntToUserData({ ultra: !!on, no_ads: !!on ? true : (hasNoAds()) });
+    if (on) setNoAdsEntitled(true);
+  }
+
+  // Expose entitlements helper (pour shop.js)
+  window.VCEnt = window.VCEnt || {};
+  window.VCEnt.hasNoAds = hasNoAds;
+  window.VCEnt.hasUltra = hasUltra;
+
+  // ---- SKU (IDs store)
   const SKU = {
-    vrealms_coins_300:  { kind: "vcoins", amount: 300 },
-    vrealms_coins_500:  { kind: "vcoins", amount: 500 },
-    vrealms_coins_3000: { kind: "vcoins", amount: 3000 }
+    vchoice_jetons_12:   { kind: "jetons", amount: 12,   type: "consumable" },
+    vchoice_jetons_30:   { kind: "jetons", amount: 30,   type: "consumable" },
+    vchoice_vcoins_500:  { kind: "vcoins", amount: 500,  type: "consumable" },
+    vchoice_vcoins_3000: { kind: "vcoins", amount: 3000, type: "consumable" },
+    vchoice_no_ads:      { kind: "no_ads", amount: 0,    type: "non_consumable" },
+    vchoice_ultra:       { kind: "ultra",  amount: 0,    type: "non_consumable" }
   };
+
+  // ---- ULTRA: scénarios actuels (liste connue) + patch "à venir" via override isScenarioUnlocked()
+  const ULTRA_SCENARIOS_KNOWN = [
+    "dossier14_appartement",
+    "bunker_reserve",
+    "hopital_ferme",
+    "metro_station_zero",
+    "styx_gare",
+    "foret_relais",
+    "chateau_absents",
+    "temple_mictlan"
+  ];
+
+  async function getScenarioIdsForUltra(){
+    const set = new Set(ULTRA_SCENARIOS_KNOWN);
+    // tente d'ajouter ceux du catalog si présent
+    try{
+      const r = await fetch("data/scenarios/catalog.json", { cache:"no-store" });
+      if (r.ok){
+        const j = await r.json();
+        if (Array.isArray(j?.scenarios)){
+          j.scenarios.forEach(s => { if (s?.id) set.add(String(s.id)); });
+        }
+      }
+    }catch(_){}
+    return Array.from(set);
+  }
+
+  function applyUltraUnlockOverride(){
+    try{
+      const ud = window.VUserData;
+      if (!ud || ud.__vcUltraPatched) return;
+
+      if (typeof ud.isScenarioUnlocked === "function"){
+        const orig = ud.isScenarioUnlocked.bind(ud);
+        ud.isScenarioUnlocked = function(id){
+          if (hasUltra()) return true;
+          return orig(id);
+        };
+      }
+      ud.__vcUltraPatched = true;
+    }catch(_){}
+  }
+
+  // applique souvent (pages différentes)
+  try { window.addEventListener("vc:profile", applyUltraUnlockOverride); } catch(_) {}
+  try { document.addEventListener("DOMContentLoaded", applyUltraUnlockOverride, { once:true }); } catch(_) {}
+  applyUltraUnlockOverride();
 
   // ---- Anti double-credit
   const PRICES_BY_ID = Object.create(null);
@@ -126,7 +220,6 @@
   }
 
   async function ensureAuthStrict(){
-    // Si tu as supabaseBootstrap + anon auth:
     try { await window.bootstrapAuthAndProfile?.(); } catch(_) {}
     try {
       const sb = window.sb;
@@ -138,6 +231,37 @@
     return null;
   }
 
+  async function grantUltra(){
+    // déjà acquis -> rien
+    if (hasUltra()) return true;
+
+    setUltraEntitled(true);
+    applyUltraUnlockOverride();
+
+    // +12 jetons (base Supabase)
+    try{
+      const rj = await window.VUserData?.addJetons?.(12);
+      if (rj === null || rj === undefined) throw new Error("addJetons_failed");
+    }catch(e){
+      warn("ULTRA: jetons credit failed", e?.message || e);
+      // on laisse ultra ON (restaurable) ; le replay tx retentera selon besoin
+      throw e;
+    }
+
+    // unlock tous scénarios actuels (base Supabase)
+    try{
+      const ids = await getScenarioIdsForUltra();
+      for (const id of ids){
+        try{ await window.VUserData?.unlockScenario?.(id); }catch(_){}
+      }
+    }catch(e){
+      warn("ULTRA: unlock scenarios failed", e?.message || e);
+      // non bloquant
+    }
+
+    return true;
+  }
+
   async function creditByProductClientSide(productId, txId){
     const cfg = SKU[productId];
     if (!cfg) throw new Error("unknown_sku");
@@ -145,18 +269,53 @@
     const uid = await ensureAuthStrict();
     if (!uid) throw new Error("no_session");
 
+    // ✅ non-consumables: si déjà acquis, on marque credited et on sort (pas de double crédit)
+    if (cfg.kind === "no_ads" && hasNoAds()){
+      if (txId) markCredited(txId);
+      emit("vc:iap_credited", { productId:String(productId||""), kind:"no_ads", amount:0, txId:String(txId||"") });
+      emit("vr:iap_credited", { productId:String(productId||""), kind:"no_ads", amount:0, txId:String(txId||"") });
+      return true;
+    }
+    if (cfg.kind === "ultra" && hasUltra()){
+      if (txId) markCredited(txId);
+      emit("vc:iap_credited", { productId:String(productId||""), kind:"ultra", amount:0, txId:String(txId||"") });
+      emit("vr:iap_credited", { productId:String(productId||""), kind:"ultra", amount:0, txId:String(txId||"") });
+      return true;
+    }
+
     if (cfg.kind === "vcoins"){
-      const r = await window.VUserData?.addVcoins?.(cfg.amount);
+      const r = await window.VUserData?.addVCoins?.(cfg.amount);
       if (r === null || r === undefined) throw new Error("credit_vcoins_failed");
-    } else {
+    }
+    else if (cfg.kind === "jetons"){
+      const r = await window.VUserData?.addJetons?.(cfg.amount);
+      if (r === null || r === undefined) throw new Error("credit_jetons_failed");
+    }
+    else if (cfg.kind === "no_ads"){
+      setNoAdsEntitled(true);
+      applyUltraUnlockOverride();
+    }
+    else if (cfg.kind === "ultra"){
+      await grantUltra();
+    }
+    else {
       throw new Error("unknown_kind");
     }
 
     if (txId) markCredited(txId);
 
-    // events (vc + compat vr)
-    emit("vc:iap_credited", { productId: String(productId || ""), kind: String(cfg.kind || ""), amount: Number(cfg.amount || 0), txId: String(txId || "") });
-    emit("vr:iap_credited", { productId: String(productId || ""), kind: String(cfg.kind || ""), amount: Number(cfg.amount || 0), txId: String(txId || "") });
+    emit("vc:iap_credited", {
+      productId: String(productId || ""),
+      kind: String(cfg.kind || ""),
+      amount: Number(cfg.amount || 0),
+      txId: String(txId || "")
+    });
+    emit("vr:iap_credited", {
+      productId: String(productId || ""),
+      kind: String(cfg.kind || ""),
+      amount: Number(cfg.amount || 0),
+      txId: String(txId || "")
+    });
 
     return true;
   }
@@ -191,9 +350,11 @@
 
     try{
       const P = window.CdvPurchase?.ProductType;
-      // enregistre uniquement ceux listés dans SKU
+
       Object.keys(SKU).forEach((id) => {
-        S.register({ id, type: P.CONSUMABLE, platform: S.Platform.GOOGLE_PLAY });
+        const cfg = SKU[id];
+        const t = (cfg?.type === "non_consumable") ? P.NON_CONSUMABLE : P.CONSUMABLE;
+        S.register({ id, type: t, platform: S.Platform.GOOGLE_PLAY });
       });
     }catch(e){
       warn("register failed", e?.message || e);

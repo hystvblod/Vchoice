@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "lang": "fr",
+    "scenario_id": "intro_tuto",
+    "title": "2h00 — Le cri",
+    "tagline": "Un cri dans le noir. Réel… ou juste pour toi ?",
+    "hint_ns": "it.h",
+    "generated": "2026-02-23"
+  },
+  "strings": {
+    "it.intro.title": "2h00 — Le cri",
+    "it.intro.body": "Il est 2h du matin.\n\nUn cri traverse le silence, bref… puis étouffé, comme si quelqu’un avait eu le réflexe de l’avaler.\nTu restes immobile. Tu ne sais pas si c’est réel. Tu ne sais pas d’où ça vient.\n\nEt pourtant, tu as la certitude d’une chose : ça recommencera.",
+    "it.intro.c1": "Sortir de la chambre",
+    "it.intro.c2": "Regarder par le judas",
+    "it.intro.c3": "Rester au lit",
+
+    "it.s1.title": "Le couloir",
+    "it.s1.body": "Le parquet gémit sous ton poids.\nLa lumière du couloir vacille une seule fois… puis se stabilise, trop calme.\n\nL’air est froid. Pas comme une fenêtre ouverte.\nComme une pièce qui n’a pas servi depuis des années.\n\nAu fond, l’obscurité semble plus dense — comme si elle attendait.",
+    "it.s1.c1": "Avancer, sans faire de bruit",
+    "it.s1.c2": "Éteindre la lumière et écouter",
+    "it.s1.c3": "Murmurer : « Il y a quelqu’un ? »",
+
+    "it.s2.title": "Les marches",
+    "it.s2.body": "Tu descends lentement.\nÀ mi-palier, tu vois une porte entrouverte.\nDerrière, un courant d’air sent la pierre humide.\n\nTon téléphone affiche 02:00.\nTu n’as pas de réseau.\n\nEt là… un deuxième cri.\nPlus proche.\nPlus bas.\nComme s’il venait de l’intérieur de la maison.",
+    "it.s2.c1": "Suivre le couloir vers le cri",
+    "it.s2.c2": "Poser la main sur le mur pour te repérer",
+    "it.s2.c3": "Compter tes pas pour ne pas paniquer",
+
+    "it.s3.title": "La porte marquée",
+    "it.s3.body": "La porte porte un symbole gravé, à peine visible.\nLa poignée est glacée.\n\nDans la serrure, quelque chose brille : un fragment de métal… une clé rouillée, coincée, comme oubliée là depuis longtemps.\n\nTu veux l’attraper.\nMais tes doigts tremblent.\nEt le cri se transforme en souffle, juste derrière le bois.\n\n(Tu ne peux pas continuer sans débloquer l’objet manquant : c’est volontaire pour te montrer le système de jetons.)",
+    "it.s3.c1": "Insérer la clé rouillée",
+    "it.s3.c2": "Forcer la poignée",
+    "it.s3.c3": "Fuir sans te retourner",
+
+    "it.s4.title": "De l’autre côté",
+    "it.s4.body": "Le verrou cède avec un claquement sec.\nLe souffle s’arrête.\n\nLa pièce est vide.\nJuste une chaise.\nEt sur le sol, une trace humide, comme si quelqu’un avait rampé.\n\nTu comprends enfin : ce que tu as entendu n’était pas dehors.\nC’était une alarme.\n\nTu refermes. Tu ne cherches pas plus loin.",
+    "it.s4.c1": "Verrouiller et remonter",
+    "it.s4.c2": "Reculer doucement, sans bruit",
+
+    "it.end_good.title": "Bravo — tu t’en es sorti",
+    "it.end_good.body": "Le silence retombe.\nTu respires.\n\n✅ Récompense du tuto :\n• +2 Jetons\n• +100 VCoins\n\nLes **VCoins** servent à débloquer de nouveaux scénarios.\nLes **Jetons** servent à :\n• débloquer un objet oublié \n• revenir en arrière\n• activer le guide vers une fin (bonne / mauvaise / secrète)\n\nChaque scénario a plusieurs fins : une bonne, une mauvaise, et parfois une ou plusieurs secrètes.\n\nAstuce : si une option est verrouillée, tu peux souvent trouver l’objet… ou le débloquer avec 1 jeton.",
+    "it.end_bad.title": "Fin — tu as fui",
+    "it.end_bad.body": "Tu recules d’un coup et tu fuis.\n\nDerrière toi, le cri recommence… mais cette fois, il semble te suivre.\n\n✅ Récompense du tuto :\n• +2 Jetons\n• +100 VCoins\n\nLes **VCoins** servent à débloquer de nouveaux scénarios.\nLes **Jetons** servent à :\n• débloquer un objet oublié\n• revenir en arrière\n• activer le guide vers une fin (bonne / mauvaise / secrète)\n\nChaque scénario a plusieurs fins : une bonne, une mauvaise, et parfois une ou plusieurs secrètes.\n\nAstuce : si une option est verrouillée, tu peux souvent trouver l’objet… ou le débloquer avec 1 jeton.",
+
+    "it.h.clue.it_key.title": "Clé rouillée"
+  }
+}

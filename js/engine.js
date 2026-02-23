@@ -1,4 +1,4 @@
-/* engine.js — VERSION COMPLETE À JOUR (lang auto device->EN + vchoice_lang + persist Supabase) */
+/* engine.js — VERSION COMPLETE À JOUR (Intro tuto + fins end_* i18n + reward tuto) */
 
 /* =========================
    CONFIG
@@ -8,6 +8,11 @@ const DEFAULT_LANG = "en";
 
 // Langues prévues (même si certains ui_<lang>.json ne sont pas encore présents)
 const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
+
+// ✅ Onboarding / Intro tuto
+const ONBOARD_DONE_KEY   = "vchoice_onboarding_done_v1";
+const INTRO_REWARD_KEY   = "vchoice_intro_rewarded_v1";
+const INTRO_SCENARIO_ID  = "intro_tuto";
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -1106,7 +1111,7 @@ async function executeChoice(ch){
 
   if(ch.ending){
     save();
-    await handleEnding(ch.ending);
+    await handleEnding(ch.ending, null);
     return;
   }
 
@@ -1240,9 +1245,16 @@ function showLockedChoiceModal(choice){
 /* =========================
    ENDING (modal fin)
 ========================= */
-async function handleEnding(type){
+async function handleEnding(type, endScene){
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
+
+  // ✅ Onboarding: dès qu'on atteint une fin (good/bad/secret), on considère le tuto "vu"
+  try{
+    if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
+      try{ localStorage.setItem(ONBOARD_DONE_KEY, "1"); }catch(_){}
+    }
+  }catch(_){}
 
   GUIDE_STATE.active = false;
   GUIDE_STATE.targetType = null;
@@ -1261,12 +1273,40 @@ async function handleEnding(type){
     }
   }catch(e){}
 
+  // ✅ Reward spécifique Intro (1 seule fois, seulement si GOOD)
+  try{
+    if(String(currentScenarioId || "") === INTRO_SCENARIO_ID && endingType === "good"){
+      let rewarded = false;
+      try{ rewarded = (localStorage.getItem(INTRO_REWARD_KEY) === "1"); }catch(_){}
+      if(!rewarded){
+        try{
+          if(window.VUserData && typeof window.VUserData.addJetons === "function"){
+            await window.VUserData.addJetons(2);
+          }
+        }catch(_){}
+        try{
+          if(window.VUserData && typeof window.VUserData.addVCoins === "function"){
+            await window.VUserData.addVCoins(100);
+          }
+        }catch(_){}
+        try{ localStorage.setItem(INTRO_REWARD_KEY, "1"); }catch(_){}
+        updateHudJetons();
+      }
+    }
+  }catch(_){}
+
+  // ✅ Titre/body: si endScene a des keys, on les affiche (i18n scénario)
   let title = tUI("end_title");
   if(endingType === "good") title = tUI("end_title_good");
   if(endingType === "bad") title = tUI("end_title_bad");
   if(endingType === "secret") title = tUI("end_title_secret");
 
-  const body = tUI("ending_desc");
+  let body = tUI("ending_desc");
+
+  try{
+    if(endScene && endScene.title_key) title = tS(endScene.title_key);
+    if(endScene && endScene.body_key) body  = tS(endScene.body_key);
+  }catch(_){}
 
   showEndModal(
     title,
@@ -1294,8 +1334,14 @@ function renderScene(){
     return renderScene();
   }
 
+  // ✅ Détection auto des scènes end_good / end_bad / end_secret
+  try{
+    const m = /^end_(good|bad|secret)$/i.exec(String(scene.id || ""));
+    if(m && !scene.ending) scene.ending = String(m[1]).toLowerCase();
+  }catch(_){}
+
   if(scene.ending){
-    handleEnding(scene.ending);
+    handleEnding(scene.ending, scene);
     return;
   }
 
