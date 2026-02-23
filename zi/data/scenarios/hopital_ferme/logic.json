@@ -205,7 +205,7 @@
       "choices": [
         { "choice_key": "hf.s04.c1", "next": "s01" },
         { "choice_key": "hf.s04.c2", "next": "s05" },
-        { "choice_key": "hf.s04.c3", "next": "s03" }
+        { "choice_key": "hf.s04.c3", "next": "s19" }
       ]
     },
     "s05": {
@@ -294,7 +294,7 @@
       "body_key": "hf.s13.body",
       "choices": [
         { "choice_key": "hf.s13.c1", "next": "s19" },
-        { "choice_key": "hf.s13.c2", "next": "s20" },
+        { "choice_key": "hf.s13.c2", "next": "s21" },
         { "choice_key": "hf.s13.c3", "next": "s06" }
       ]
     },
@@ -315,7 +315,7 @@
       "choices": [
         { "choice_key": "hf.s15.c1", "next": "s14" },
         { "choice_key": "hf.s15.c2", "next": "s24" },
-        { "choice_key": "hf.s15.c3", "next": "s16" }
+        { "choice_key": "hf.s15.c3", "next": "s14" }
       ]
     },
     "s16": {
@@ -343,7 +343,7 @@
       "title_key": "hf.s18.title",
       "body_key": "hf.s18.body",
       "choices": [
-        { "choice_key": "hf.s18.c1", "next": "s26" },
+        { "choice_key": "hf.s18.c1", "next": "s20" },
         { "choice_key": "hf.s18.c2", "next": "s07", "set_flags": ["has_tape"] },
         { "choice_key": "hf.s18.c3", "next": "s23" }
       ]
@@ -404,7 +404,7 @@
       "body_key": "hf.s24.body",
       "choices": [
         { "choice_key": "hf.s24.c1", "next": "s25", "requires_any_flags": ["has_keycard"] },
-        { "choice_key": "hf.s24.c2", "next": "s26" },
+        { "choice_key": "hf.s24.c2", "next": "s23" },
         { "choice_key": "hf.s24.c3", "next": "s23" }
       ]
     },
@@ -503,7 +503,7 @@
       "title_key": "hf.s34.title",
       "body_key": "hf.s34.body",
       "choices": [
-        { "choice_key": "hf.s34.c1", "next": "s45"},
+        { "choice_key": "hf.s34.c1", "next": "s35", "set_flags": ["has_keycard"] },
         { "choice_key": "hf.s34.c2", "next": "s35" },
         { "choice_key": "hf.s34.c3", "next": "s33" }
       ]
@@ -525,7 +525,7 @@
       "choices": [
         { "choice_key": "hf.s36.c1", "next": "s37" },
         { "choice_key": "hf.s36.c2", "next": "s35" },
-        { "choice_key": "hf.s36.c3", "next": "s18" }
+        { "choice_key": "hf.s36.c3", "next": "s44" }
       ]
     },
     "s37": {
