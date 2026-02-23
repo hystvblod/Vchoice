@@ -16,6 +16,9 @@
 // - Support RPC Supabase qui renvoie ARRAY (setof) OU objet (json/row) -> plus de cadenas fantôme
 // - Packs premium/diamond/no_ads = local OR remote (jamais shrink) pour éviter re-blocage offline/latence
 // - no_ads coupe uniquement les interstitials (rewarded reste volontaire)
+//
+// ✅ PATCH 2026-02-23 (entitlements fallback):
+// - hasPremium/hasDiamond/hasNoAds lisent aussi le localStorage si init pas fini (évite cadenas si premium en local)
 
 (function () {
   "use strict";
@@ -222,6 +225,35 @@
   }
 
   function _writeLocal(obj){ try { localStorage.setItem(VUserDataKey, JSON.stringify(obj)); } catch{} }
+
+  // ✅ entitlements fallback local (utile si init pas fini)
+  function _readEntitlementsLocal(){
+    try{
+      const cached = _readLocal();
+      if (!cached || typeof cached !== "object") return { premium:false, diamond:false, no_ads:false };
+
+      let prem = !!cached.premium;
+      let dia  = !!cached.diamond;
+      let noad = !!cached.no_ads;
+
+      try{
+        const ent = cached.entitlements;
+        if (ent && typeof ent === "object"){
+          if (ent.premium === true) prem = true;
+          if (ent.diamond === true) dia = true;
+          if (ent.no_ads === true) noad = true;
+        }
+      }catch(_){}
+
+      return {
+        premium: !!prem,
+        diamond: !!dia,
+        no_ads: !!(noad || prem || dia)
+      };
+    }catch(_){
+      return { premium:false, diamond:false, no_ads:false };
+    }
+  }
 
   // ======= lang helpers =======
   function _getDeviceLang(){
@@ -698,8 +730,8 @@
 
       _writeLangLocal(_memState.lang);
 
-      // ✅ IMPORTANT: entitlements ne doivent JAMAIS "shrink" (si tu as premium/diamond une fois, on ne le retire pas en local)
-      //    - source remote = vérité, mais côté UX on fait "local OR remote" pour éviter de re-bloquer en offline/latence
+      // ✅ IMPORTANT: entitlements ne doivent JAMAIS "shrink"
+      //    - UX: local OR remote pour éviter re-bloquage en offline/latence
       try{
         const ent = (o && typeof o === "object") ? (o.entitlements || null) : null;
 
@@ -709,13 +741,10 @@
 
         _memState.premium = !!(_memState.premium || premIn);
         _memState.diamond = !!(_memState.diamond || diaIn);
-
-        // no_ads interstitial: flag dédié OU implique premium/diamond
         _memState.no_ads = !!(_memState.no_ads || noadsIn || _memState.premium || _memState.diamond);
       }catch(_){}
 
       // ✅ IMPORTANT: unlocked_scenarios ne doit JAMAIS "shrink"
-      // -> on merge toujours l'existant + l'incoming + le cache "pour toujours" du user
       const incomingList = Array.isArray(o.unlocked_scenarios) ? o.unlocked_scenarios.slice() : null;
       const uid = String(_memState.user_id || "");
       const cacheList = uid ? _getUnlockedCacheFor(uid) : [];
@@ -766,14 +795,20 @@
 
     // ✅ entitlements helpers (utilisé par index + ads.js)
     hasPremium(){
-      return !!_memState.premium;
+      if (_memState.premium) return true;
+      const ent = _readEntitlementsLocal();
+      return !!ent.premium;
     },
     hasDiamond(){
-      return !!_memState.diamond;
+      if (_memState.diamond) return true;
+      const ent = _readEntitlementsLocal();
+      return !!ent.diamond;
     },
     hasNoAds(){
       // "no_ads" = on coupe uniquement les interstitials. Rewarded reste volontaire.
-      return !!(_memState.no_ads || _memState.premium || _memState.diamond);
+      if (_memState.no_ads || _memState.premium || _memState.diamond) return true;
+      const ent = _readEntitlementsLocal();
+      return !!ent.no_ads;
     },
 
     getUnlockedScenarios(){
