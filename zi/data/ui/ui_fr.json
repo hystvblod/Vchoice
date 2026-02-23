@@ -2,17 +2,13 @@
   "ui": {
     "app_title": "VChronicles",
     "app_subtitle": "Histoire interactive",
-
     "index_title": "Choisis ton scénario",
     "index_subtitle": "Clique sur une carte pour commencer.",
     "language": "Langue",
-
     "symbol_close": "×",
-
     "hint_title": "Info",
     "hint_close": "Fermer",
     "hint_close_aria": "Fermer",
-
     "btn_ok": "OK",
     "btn_close": "Fermer",
     "btn_play": "Jouer",
@@ -21,29 +17,24 @@
     "btn_back": "Retour",
     "btn_exit": "Quitter",
     "btn_hint": "Indice",
-
     "loading": "Chargement…",
     "locked_choice": "Indisponible pour le moment",
     "no_next_scene": "Ce choix ne mène nulle part pour l’instant.",
-
     "resume_title": "Reprendre la partie ?",
     "resume_desc": "Une progression existe pour ce scénario.",
     "resume_body": "Une progression existe pour ce scénario.\n\nTu veux reprendre là où tu t’étais arrêté, ou recommencer depuis le début ?",
-
     "ending_title": "Fin atteinte",
     "ending_desc": "Tu as terminé ce scénario.",
     "reward_toast": "+{reward} VCoins",
-
     "end_title": "Fin du scénario",
-    "end_title_good": "Fin (bonne)",
-    "end_title_bad": "Fin (mauvaise)",
-    "end_title_secret": "Fin (secrète)",
+    "end_title_good": "Fin bonne",
+    "end_title_bad": "Fin mauvaise",
+    "end_title_secret": "Fin secrète",
 
     "profile_title": "Profil",
     "profile_subtitle": "Ton solde et tes fins débloquées.",
     "profile_jetons": "Jetons",
     "profile_vcoins": "VCoins",
-
     "profile_username_label": "Pseudo",
     "profile_username_missing": "—",
     "profile_username_edit": "Modifier pseudo",
@@ -51,9 +42,7 @@
     "profile_username_placeholder": "Nouveau pseudo",
     "profile_username_save": "Enregistrer",
     "profile_username_hint": "Tu peux modifier ton pseudo une fois gratuitement. Ensuite, chaque changement coûte 1 jeton.",
-
     "profile_scenarios_title": "Scénarios",
-
     "profile_err_not_ready": "Profil non prêt. Réessaie dans quelques secondes.",
     "profile_username_working": "Mise à jour…",
     "profile_username_ok_saved": "Pseudo mis à jour.",
@@ -77,12 +66,12 @@
     "locked_missing": "Il te manque :",
     "locked_missing_any": "Il te faut au moins un élément parmi :",
     "locked_tip": "Astuce : explore plus, certains objets servent de preuve.",
-    "locked_back_jeton": "Revenir en arrière (1 jeton)",
-    "locked_restart_jeton": "Revenir au début (1 jeton)",
+    "locked_back_jeton": "Revenir en arrière — 1 jeton",
+    "locked_restart_jeton": "Revenir au début — 1 jeton",
     "locked_close": "Fermer",
     "locked_no_back": "Aucun retour possible ici.",
-    "jeton_not_enough": "Pas assez de jetons.",
 
+    "jeton_not_enough": "Pas assez de jetons.",
     "jeton_title": "Jetons",
     "jeton_balance_label": "Solde :",
     "jeton_back_btn": "Retour en arrière — 1 jeton",
@@ -95,16 +84,23 @@
     "jeton_guide_error": "Erreur guide.",
     "jeton_guide_stopped": "Guide arrêté.",
 
+    "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans pub.",
+    "locked_unlock_jeton": "Dépenser 1 jeton",
+    "locked_unlock_ad": "Regarder une pub",
+    "locked_unlock_ad_fail": "Publicité indisponible pour le moment.",
+    "locked_unlock_no_jetons": "Pas assez de jetons.",
+    "locked_unlock_error": "Impossible de débloquer maintenant.",
+
     "scenario_buy": {
       "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
-      "pay": "Débloquer ({price} VCoins)",
+      "pay": "Débloquer — {price} VCoins",
       "iap": "Acheter 300 VCoins",
       "open_shop": "Ouvrir la boutique",
-      "err_unlock": "Impossible de débloquer (VCoins insuffisants ou erreur réseau).",
+      "err_unlock": "Impossible de débloquer. VCoins insuffisants ou erreur réseau.",
       "err_app_only": "Achat Play Store dispo uniquement dans l’app. Ouvre la boutique.",
       "err_not_ready": "Système d’achat non prêt.",
       "err_buy_failed": "Achat annulé ou impossible.",
-      "err_unlock_after_buy": "Achat ok, mais déblocage impossible (réessaye depuis la boutique)."
+      "err_unlock_after_buy": "Achat ok, mais déblocage impossible. Réessaye depuis la boutique."
     },
 
     "end_congrats": "Bravo, tu as terminé la fin : {ending}.",
@@ -120,7 +116,6 @@
     "settings_msg_saved_local": "Langue enregistrée sur l’appareil. Synchronisation serveur plus tard.",
     "settings_msg_hint": "",
     "settings_choose_lang_aria": "Choisir la langue : {code}",
-
     "settings_back_home_aria": "Retour à l’accueil",
     "settings_open_profile_aria": "Ouvrir le profil",
 
@@ -139,19 +134,19 @@
       "de": "Deutsch",
       "es": "Español",
       "pt": "Português",
-      "ptbr": "Português (Brasil)",
+      "ptbr": "Português Brasil",
       "it": "Italiano",
       "ko": "한국어",
       "ja": "日本語"
     },
 
-
-    "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans pub.",
-    "locked_unlock_jeton": "Dépenser 1 jeton",
-    "locked_unlock_ad": "Regarder une pub",
-    "locked_unlock_ad_fail": "Publicité indisponible pour le moment.",
-    "locked_unlock_no_jetons": "Pas assez de jetons.",
-    "locked_unlock_error": "Impossible de débloquer maintenant."
+    "intro_forced_jeton_title": "Objet manquant",
+    "intro_forced_jeton_body": "Pour avancer, tu dois débloquer un objet oublié.",
+    "intro_forced_jeton_missing": "Il manque : {item}",
+    "intro_forced_jeton_note": "Un jeton sert à débloquer un objet oublié, revenir en arrière, ou activer un guide vers une fin.",
+    "intro_forced_jeton_cta": "Débloquer avec 1 jeton",
+    "intro_forced_jeton_ok": "Objet débloqué : {item}",
+    "intro_forced_jeton_error": "Impossible de débloquer maintenant."
   },
 
   "common": {
@@ -185,7 +180,7 @@
     },
     "chateau_absents": {
       "title": "Château — Les Absents",
-      "desc": "Un château silencieux où chaque pièce semble habitée... par des ombres."
+      "desc": "Un château silencieux où chaque pièce semble habitée, par des ombres."
     },
     "temple_mictlan": {
       "title": "Temple — Mictlan",

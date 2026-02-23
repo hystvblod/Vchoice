@@ -140,13 +140,17 @@
       "ja": "日本語"
     },
 
+    "icon_vcoins_webp": "assets/img/ui/vcoins.webp",
+    "icon_jeton_webp": "assets/img/ui/jeton.webp",
+
     "intro_forced_jeton_title": "Objet manquant",
-    "intro_forced_jeton_body": "Pour avancer, tu dois débloquer un objet oublié.",
-    "intro_forced_jeton_missing": "Il manque : {item}",
+    "intro_forced_jeton_body": "Oups… il te manque {item}.",
     "intro_forced_jeton_note": "Un jeton sert à débloquer un objet oublié, revenir en arrière, ou activer un guide vers une fin.",
     "intro_forced_jeton_cta": "Débloquer avec 1 jeton",
     "intro_forced_jeton_ok": "Objet débloqué : {item}",
-    "intro_forced_jeton_error": "Impossible de débloquer maintenant."
+    "intro_forced_jeton_error": "Impossible de débloquer maintenant.",
+
+    "intro_end_silence": "Le silence retombe."
   },
 
   "common": {

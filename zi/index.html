@@ -520,8 +520,17 @@
   </script>
 
   <script>
-    const PRICE = 300;
-    const SKU_COINS_300 = "vrealms_coins_300";
+    /* =========================
+       ✅ PRIX / IAP (MAJ)
+       - Déblocage scénario : 500 VCoins
+       - Achat store : pack 500 VCoins avec prix réel (getPrice)
+    ========================= */
+    const PRICE = 500;
+
+    // Pack VCoins acheté sur le store (doit matcher purchases.js + Play/App Store)
+    const COINS_PACK = 500;
+    const SKU_COINS_PACK = "vchoice_vcoins_500";
+
     const KEY_PREFIX = "vchoice";
     const IAP_TARGET_KEY = KEY_PREFIX + "_iap_unlock_target";
 
@@ -650,8 +659,8 @@
       buyPopup.setAttribute("aria-hidden","true");
     }
 
-    function currentCoins300Price(){
-      const p = window.VRIAP?.getPrice?.(SKU_COINS_300) || "";
+    function currentCoinsPackPrice(){
+      const p = window.VRIAP?.getPrice?.(SKU_COINS_PACK) || "";
       return p ? (" " + p) : "";
     }
 
@@ -662,12 +671,12 @@
 
       buyDesc.textContent = _t(
         "ui.scenario_buy.desc",
-        "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
-        { price: PRICE }
+        "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter {coins} VCoins sur le store.",
+        { price: PRICE, coins: COINS_PACK }
       );
 
       buyPay.textContent = _t("ui.scenario_buy.pay", "Débloquer ({price} VCoins)", { price: PRICE });
-      buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
+      buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter {coins} VCoins", { coins: COINS_PACK }) + currentCoinsPackPrice();
       buyGet.textContent = _t("ui.scenario_buy.open_shop", "Ouvrir la boutique");
       buyCancel.textContent = _t("common.cancel", "Annuler");
 
@@ -689,7 +698,7 @@
       launchScenario(scenarioId);
     }
 
-    async function buyCoins300ThenUnlock(scenarioId){
+    async function buyCoinsPackThenUnlock(scenarioId){
       showBuyError("");
 
       if (!window.VRIAP?.isAvailable?.()){
@@ -697,11 +706,12 @@
         return;
       }
 
+      // On garde la cible d’unlock, et on achète le pack VCoins sur le store
       lsSet(IAP_TARGET_KEY, scenarioId);
 
       try {
-        if (typeof window.safeOrder === "function") await window.safeOrder(SKU_COINS_300);
-        else if (window.VRIAP?.order) await window.VRIAP.order(SKU_COINS_300);
+        if (typeof window.safeOrder === "function") await window.safeOrder(SKU_COINS_PACK);
+        else if (window.VRIAP?.order) await window.VRIAP.order(SKU_COINS_PACK);
         else {
           showBuyError(_t("ui.scenario_buy.err_not_ready", "Système d’achat non prêt."));
           return;
@@ -712,7 +722,7 @@
     }
 
     if (buyPay) buyPay.addEventListener("click", () => { if (pendingScenarioId) tryUnlockWithVcoins(pendingScenarioId); });
-    if (buyIap) buyIap.addEventListener("click", () => { if (pendingScenarioId) buyCoins300ThenUnlock(pendingScenarioId); });
+    if (buyIap) buyIap.addEventListener("click", () => { if (pendingScenarioId) buyCoinsPackThenUnlock(pendingScenarioId); });
     if (buyGet) buyGet.addEventListener("click", () => {
       if (!pendingScenarioId) return;
       setShopFocusScenario(pendingScenarioId);
@@ -721,18 +731,20 @@
     if (buyCancel) buyCancel.addEventListener("click", closeBuyPopup);
     if (buyPopup) buyPopup.addEventListener("click", (e) => { if (e.target === buyPopup) closeBuyPopup(); });
 
+    // Prix store mis à jour (quand purchases.js a récupéré les prix)
     window.addEventListener("vr:iap_price", () => {
       try {
         if (buyPopup && buyPopup.style.display === "flex"){
-          buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter 300 VCoins") + currentCoins300Price();
+          buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter {coins} VCoins", { coins: COINS_PACK }) + currentCoinsPackPrice();
         }
       } catch(_){}
     });
 
+    // Achat crédité => refresh profil => unlock via VCoins
     window.addEventListener("vr:iap_credited", async (ev) => {
       try {
         const d = ev?.detail || {};
-        if (String(d.productId || "") !== SKU_COINS_300) return;
+        if (String(d.productId || "") !== SKU_COINS_PACK) return;
 
         const target = lsGet(IAP_TARGET_KEY);
         if (!target) return;

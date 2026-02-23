@@ -113,9 +113,9 @@
 
       if (typeof ud.isScenarioUnlocked === "function"){
         const orig = ud.isScenarioUnlocked.bind(ud);
-        ud.isScenarioUnlocked = function(id){
-          if (hasUltra()) return true;
-          return orig(id);
+     ud.isScenarioUnlocked = function(id, requiredPack){
+  if (hasUltra()) return true;
+  return orig(id, requiredPack);
         };
       }
       ud.__vcUltraPatched = true;

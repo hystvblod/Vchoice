@@ -1,9 +1,13 @@
 /* engine.js — VERSION COMPLETE À JOUR
    Base: ton fichier (lang device + menu + jetons + guide + end modal)
-   + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP clignotant)
+   + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP non clignotant à gauche, bouton centré avec gros jeton clignotant)
    + ✅ Bypass “pas assez” : on seed 1 jeton tuto (1 seule fois) puis on le dépense
    + ✅ Pas de fermeture possible tant que le tuto jeton n’est pas fait
+   + ✅ FIN INTRO: pas de “Recommencer”, bouton “Fermer” -> index, et rewards avec icônes WEBP (pas de texte “VCoins/Jetons”)
 */
+
+(function(){
+"use strict";
 
 /* =========================
    CONFIG
@@ -25,6 +29,10 @@ const INTRO_FORCED_JETON_SEEDED_KEY = "vchoice_intro_forced_jeton_seeded_v1";
 
 // ✅ Jeton image (WEBP) affichée dans la popup tuto
 const TUTO_JETON_ICON_WEBP = "assets/img/ui/jeton.webp";
+
+// ✅ Icônes rewards fin (UI)
+const UI_VCOINS_ICON_WEBP = "assets/img/ui/vcoins.webp";
+const UI_JETON_ICON_WEBP  = "assets/img/ui/jeton.webp";
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -127,7 +135,6 @@ function normalizeLang(raw){
   if(!raw) return null;
   const s = String(raw).trim().toLowerCase();
 
-  // normalisations courantes (appareils / navigateurs)
   const map = {
     "pt-br": "ptbr",
     "pt_br": "ptbr",
@@ -189,7 +196,6 @@ async function setLang(newLang, opts = {}){
 
   if(persistLocal) save();
 
-  // ✅ Supabase profiles.lang (via VUserData)
   if(persistRemote && window.VUserData && typeof window.VUserData.setLang === "function"){
     try{ await window.VUserData.setLang(LANG); }catch(e){}
   }
@@ -278,7 +284,6 @@ function _findEndingTargets(logic, type){
     }
   }
 
-  // fallback: toute scène sans choix = ending
   if(!out.length){
     for(const k of keys){
       const sc = scenes[k];
@@ -295,10 +300,9 @@ function computeGuidePlan(fromSceneId, targetType){
   const targets = new Set(_findEndingTargets(LOGIC, targetType));
   if(!targets.size) return null;
 
-  // BFS: ignore flags
   const q = [String(fromSceneId)];
   const visited = new Set(q);
-  const prev = {}; // node -> prev node
+  const prev = {};
   let found = null;
 
   while(q.length){
@@ -310,9 +314,7 @@ function computeGuidePlan(fromSceneId, targetType){
 
     for(const ch of choices){
       if(!ch?.next) continue;
-
       const nxt = String(ch.next);
-
       if(visited.has(nxt)) continue;
       if(!LOGIC.scenes[nxt]) continue;
 
@@ -348,7 +350,6 @@ function computeGuidePlan(fromSceneId, targetType){
 ========================= */
 function load(){
   try{
-    // ✅ priorité: langue globale vchoice_lang
     const stored = getStoredLang();
     if(stored) LANG = stored;
 
@@ -373,7 +374,6 @@ function save(){
       scenarioStates
     }));
 
-    // ✅ langue globale (settings/index/game)
     try{ localStorage.setItem("vchoice_lang", LANG); }catch(e){}
     try{ localStorage.setItem("VREALMS_LANG", LANG); }catch(e){}
   }catch(e){
@@ -412,7 +412,6 @@ function hasGamePage(){ return !!$("sceneTitle"); }
 async function reloadUI(){
   try{ UI = await fetchJSON(PATHS.ui(LANG)); }
   catch(e){
-    // fallback si fichier de langue pas encore présent
     LANG = DEFAULT_LANG;
     UI = await fetchJSON(PATHS.ui(LANG));
   }
@@ -420,7 +419,6 @@ async function reloadUI(){
   const sel = $("langSelect");
   if(sel) sel.value = LANG;
 
-  // ✅ applique i18n sur les textes statiques HTML
   applyStaticI18n();
 }
 
@@ -444,7 +442,6 @@ function applyStaticI18n(){
   const bBack = $("btnJetonBackModal");
   if(bBack) bBack.textContent = sanitizeJetonLabel(tUI("jeton_back_btn"));
 
-  // ✅ “Guide vers une fin…” n’est plus un bouton : texte simple
   const guideLabel = $("jetonGuideLabel");
   if(guideLabel) guideLabel.textContent = sanitizeJetonLabel(tUI("jeton_guide_btn"));
 
@@ -557,7 +554,6 @@ function bindJetonHud(){
     });
   }
 
-  // ✅ plus de click “guide” : les cibles sont déjà visibles
   const targetsBox = $("jetonGuideTargets");
   if(targetsBox){
     targetsBox.addEventListener("click", async (ev) => {
@@ -579,7 +575,6 @@ function bindJetonHud(){
           return;
         }
 
-        // ✅ si guide déjà actif : on bascule la cible sans repayer
         if(GUIDE_STATE.active){
           GUIDE_STATE.active = true;
           GUIDE_STATE.targetType = targetType;
@@ -593,7 +588,6 @@ function bindJetonHud(){
           return;
         }
 
-        // ✅ sinon, paiement 3 jetons
         const res = await spendJetons(3);
         if(!res?.ok){
           if(msg) msg.textContent = tUI("jeton_not_enough");
@@ -646,7 +640,6 @@ function bindJetonHud(){
 async function boot(){
   load();
 
-  // ✅ CRITIQUE: init user data AVANT tout usage (badges/jetons/lang RPC)
   try{
     if(window.VUserData && typeof window.VUserData.init === "function"){
       await window.VUserData.init();
@@ -655,11 +648,9 @@ async function boot(){
 
   let initialLang = LANG;
 
-  // 1) vchoice_lang (global)
   const stored = getStoredLang();
   if(stored) initialLang = stored;
 
-  // 2) profil Supabase (si présent)
   if(window.VUserData && typeof window.VUserData.getLang === "function"){
     try{
       const l = normalizeLang(window.VUserData.getLang());
@@ -667,7 +658,6 @@ async function boot(){
     }catch(e){}
   }
 
-  // 3) device
   if(!initialLang) initialLang = detectDeviceLang();
 
   LANG = initialLang;
@@ -675,7 +665,7 @@ async function boot(){
   await reloadUI();
   await loadCatalog();
 
-  bindTopbar();      // (le select est caché, pas de changement direct)
+  bindTopbar();
   bindJetonHud();
 
   if(hasMenuPage()){
@@ -695,7 +685,6 @@ function bindTopbar(){
   const sel = $("langSelect");
   if(sel){
     sel.addEventListener("change", async (e) => {
-      // on laisse ce hook (utile debug), mais le select est caché dans game.html
       await setLang(e.target.value, { persistLocal:true, persistRemote:true, rerender:true });
     });
   }
@@ -856,24 +845,60 @@ function ensureEndModal(){
   }
 }
 
-function showEndModal(title, body, onBack, onReplay){
+function _setEndBodyText(text){
+  const b = $("endBody");
+  if(!b) return;
+  b.textContent = text || "";
+}
+
+function _setEndBodyRich(buildFn){
+  const b = $("endBody");
+  if(!b) return;
+
+  try{
+    while(b.firstChild) b.removeChild(b.firstChild);
+  }catch(_){
+    b.textContent = "";
+  }
+
+  try{ buildFn?.(b); }catch(_){}
+}
+
+/* ✅ showEndModal supporte body string OU body builder */
+function showEndModal(title, bodyOrBuilder, onBack, onReplay){
   ensureEndModal();
 
   const modal = $("endModal");
   const t = $("endTitle");
-  const b = $("endBody");
   const btnBack = $("btnEndBack");
   const btnReplay = $("btnEndReplay");
-  if(!modal || !t || !b || !btnBack || !btnReplay) return;
+  if(!modal || !t || !btnBack || !btnReplay) return;
 
   t.textContent = title || tUI("end_title");
-  b.textContent = body || "";
 
+  // default buttons (tous scénarios)
   btnBack.textContent = tUI("btn_back");
   btnReplay.textContent = tUI("btn_restart");
-
+  btnReplay.style.display = "";
   btnBack.onclick = () => { hideEndModal(); onBack && onBack(); };
   btnReplay.onclick = () => { hideEndModal(); onReplay && onReplay(); };
+
+  // body
+  if(typeof bodyOrBuilder === "function"){
+    _setEndBodyRich(bodyOrBuilder);
+  } else {
+    _setEndBodyText(bodyOrBuilder || "");
+  }
+
+  // ✅ EXCEPTION: INTRO TUTO UNIQUEMENT -> pas de Recommencer, “Fermer” -> index
+  if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
+    btnReplay.style.display = "none";
+    btnBack.textContent = tUI("btn_close");
+    btnBack.onclick = () => {
+      hideEndModal();
+      location.href = "index.html";
+    };
+  }
 
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden","false");
@@ -910,7 +935,6 @@ function showHintModal(title, body){
   const close = $("hintClose");
   if(!modal || !t || !b) return;
 
-  // ✅ reset lock
   try{ delete modal.dataset.forceLock; }catch(_){}
   if(close) close.style.display = "";
 
@@ -928,7 +952,6 @@ function hideHintModal(){
   const modal = $("hintModal");
   if(!modal) return;
 
-  // ✅ Intro tuto: impossible de fermer tant que la popup forcée est active
   try{
     if(String(modal.dataset.forceLock || "") === "1") return;
   }catch(_){}
@@ -940,53 +963,6 @@ function hideHintModal(){
   if(close) close.style.display = "";
 }
 
-function showHintModalWithActions(title, bodyLines, actions){
-  const modal = $("hintModal");
-  const t = $("hintTitle");
-  const b = $("hintBody");
-  const close = $("hintClose");
-  if(!modal || !t || !b) return;
-
-  // ✅ reset lock
-  try{ delete modal.dataset.forceLock; }catch(_){}
-  if(close) close.style.display = "";
-
-  t.textContent = title || tUI("hint_title");
-  b.textContent = "";
-
-  const text = Array.isArray(bodyLines) ? bodyLines.join("\n") : String(bodyLines || "");
-  b.textContent = text;
-
-  const old = $("hintActions");
-  if(old && old.parentNode) old.parentNode.removeChild(old);
-
-  const wrap = document.createElement("div");
-  wrap.id = "hintActions";
-  wrap.style.paddingTop = "12px";
-  wrap.style.display = "flex";
-  wrap.style.gap = "10px";
-  wrap.style.justifyContent = "flex-end";
-  wrap.style.flexWrap = "wrap";
-
-  for(const a of (actions || [])){
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = a.className || "btn";
-    btn.textContent = a.label || tUI("btn_ok");
-    btn.disabled = !!a.disabled;
-    btn.onclick = async () => {
-      try{ await a.onClick?.(); } finally {}
-    };
-    wrap.appendChild(btn);
-  }
-
-  b.parentNode.appendChild(wrap);
-
-  modal.classList.remove("hidden");
-  modal.setAttribute("aria-hidden","false");
-}
-
-/* ✅ Version “riche” pour la popup tuto (image + layout), sans texte en dur */
 function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
   const modal = $("hintModal");
   const t = $("hintTitle");
@@ -995,7 +971,6 @@ function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
 
   t.textContent = title || tUI("hint_title");
 
-  // clear body
   try{
     while(b.firstChild) b.removeChild(b.firstChild);
   }catch(_){
@@ -1009,10 +984,10 @@ function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
 
   const wrap = document.createElement("div");
   wrap.id = "hintActions";
-  wrap.style.paddingTop = "12px";
+  wrap.style.paddingTop = "14px";
   wrap.style.display = "flex";
   wrap.style.gap = "10px";
-  wrap.style.justifyContent = "flex-end";
+  wrap.style.justifyContent = "center"; // ✅ bouton centré
   wrap.style.flexWrap = "wrap";
 
   try{ buildActionsFn?.(wrap); }catch(_){}
@@ -1033,7 +1008,6 @@ async function openScenario(scenarioId, opts = {}){
 
   LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
 
-  // ✅ fallback texte si la langue n'existe pas encore
   try{
     TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
   }catch(_){
@@ -1117,15 +1091,12 @@ function getMissingFlagsForChoice(choice){
   return { missingAll, missingAny };
 }
 
-/* ✅ helper: donne les flags manquants suite à un déblocage */
 function grantMissingFlags(choice, missingAll, missingAny){
-  // requires_all_flags: on donne tout ce qui manque
   if(Array.isArray(missingAll) && missingAll.length){
     for(const f of missingAll) setFlag(f);
     return { granted: missingAll.slice() };
   }
 
-  // requires_any_flags: on donne UN seul objet (sinon tu flingues le “any”)
   if(Array.isArray(missingAny) && missingAny.length){
     const f = missingAny[0];
     setFlag(f);
@@ -1182,7 +1153,6 @@ function prettyFlagTitle(flag){
   return flag;
 }
 
-/* ✅ exécute le choix (réutilisé pour auto-lancer après déblocage) */
 async function executeChoice(ch){
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
@@ -1229,20 +1199,25 @@ function ensureIntroTutoStyle(){
 
   try{
     const css = `
-      .vc-tuto-row{ display:flex; align-items:center; gap:12px; padding:6px 0 2px; }
-      .vc-tuto-row img{ width:56px; height:56px; flex:0 0 auto; }
-      .vc-jeton-blink{ animation: vcJetonBlink .9s infinite ease-in-out; transform-origin:center; }
-      .vc-tuto-col{ display:flex; flex-direction:column; gap:8px; }
-      .vc-tuto-missing{ opacity:.98; }
+      .vc-tuto-row{ display:flex; align-items:flex-start; gap:14px; padding:6px 0 2px; }
+      .vc-tuto-row img.vc-tuto-side{ width:58px; height:58px; flex:0 0 auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,.30)); }
+      .vc-tuto-col{ display:flex; flex-direction:column; gap:10px; }
+      .vc-tuto-body{ opacity:.98; }
       .vc-tuto-note{ opacity:.92; }
-      .vc-tuto-msg{ margin-top:10px; opacity:.95; }
-      .vc-tuto-btn{ display:inline-flex; align-items:center; gap:10px; }
-      .vc-tuto-btn img{ width:18px; height:18px; }
+      .vc-tuto-msg{ margin-top:12px; opacity:.95; text-align:center; }
+      .vc-tuto-btn{ display:inline-flex; align-items:center; gap:12px; justify-content:center; }
+      .vc-tuto-btn img{ width:26px; height:26px; }
+      .vc-jeton-cta{ animation: vcJetonBlink 0.9s infinite ease-in-out; transform-origin:center; }
+      .vc-jeton-cta-big{ width:34px !important; height:34px !important; }
       @keyframes vcJetonBlink{
-        0%{ transform:scale(1); filter:drop-shadow(0 6px 18px rgba(0,0,0,.35)); opacity:1; }
-        50%{ transform:scale(1.08); filter:drop-shadow(0 10px 28px rgba(0,0,0,.45)); opacity:.92; }
-        100%{ transform:scale(1); filter:drop-shadow(0 6px 18px rgba(0,0,0,.35)); opacity:1; }
+        0%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
+        50%{ transform:scale(1.10); filter:drop-shadow(0 12px 30px rgba(0,0,0,.45)); opacity:.92; }
+        100%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
       }
+      .vc-end-reward{ display:flex; align-items:center; justify-content:center; gap:16px; padding-top:10px; flex-wrap:wrap; }
+      .vc-end-pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border:1px solid rgba(255,255,255,.12); border-radius:999px; background: rgba(0,0,0,.25); }
+      .vc-end-pill img{ width:20px; height:20px; }
+      .vc-end-pill b{ font-weight:850; letter-spacing:.2px; }
     `;
     const st = document.createElement("style");
     st.id = "vc_intro_tuto_style";
@@ -1270,13 +1245,6 @@ async function seedIntroTutoJetonIfNeeded(){
   }catch(_){}
 }
 
-function getIntroTutoText(key, fallbackUiKey, params){
-  // key = "it.tuto.locked.title" etc (dans text_<lang>.json du scénario intro)
-  const v = tS(key, params);
-  if(v && v !== `[${key}]`) return v;
-  return fallbackUiKey ? tUI(fallbackUiKey, params) : v;
-}
-
 function showIntroForcedJetonModal(choice, missingAll, missingAny){
   ensureIntroTutoStyle();
 
@@ -1294,13 +1262,13 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
   const first = missing.length ? missing[0] : null;
   const itemTitle = first ? prettyFlagTitle(first) : "";
 
-  const title = getIntroTutoText("it.tuto.locked.title", "locked_title");
-  const bodyMain = getIntroTutoText("it.tuto.locked.body", "locked_body");
-  const missingLine = getIntroTutoText("it.tuto.locked.missing", null, { item: itemTitle });
-  const note = getIntroTutoText("it.tuto.locked.note", "locked_note_foundable");
-  const ctaLabel = getIntroTutoText("it.tuto.locked.cta", "locked_unlock_jeton");
-  const errMsg = getIntroTutoText("it.tuto.locked.error", "locked_unlock_error");
-  const okMsg = getIntroTutoText("it.tuto.locked.ok", null, { item: itemTitle });
+  // ✅ Textes 100% via UI i18n (intro_*), pas de “tu as raté…”
+  const title   = tUI("intro_forced_jeton_title");
+  const body    = tUI("intro_forced_jeton_body", { item: itemTitle });
+  const note    = tUI("intro_forced_jeton_note");
+  const cta     = tUI("intro_forced_jeton_cta");
+  const errMsg  = tUI("intro_forced_jeton_error");
+  const okMsg   = tUI("intro_forced_jeton_ok", { item: itemTitle });
 
   showHintModalWithActionsRich(
     title,
@@ -1312,29 +1280,21 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       img.src = TUTO_JETON_ICON_WEBP;
       img.alt = "";
       img.draggable = false;
-      img.className = "vc-jeton-blink";
+      img.className = "vc-tuto-side"; // ✅ pas de clignotement
       row.appendChild(img);
 
       const col = document.createElement("div");
       col.className = "vc-tuto-col";
 
       const p1 = document.createElement("div");
-      p1.textContent = bodyMain;
+      p1.className = "vc-tuto-body";
+      p1.textContent = body;
       col.appendChild(p1);
 
-      if(itemTitle){
-        const p2 = document.createElement("div");
-        p2.className = "vc-tuto-missing";
-        p2.textContent = missingLine && missingLine !== `[it.tuto.locked.missing]`
-          ? missingLine
-          : `${tUI("locked_missing")} ${itemTitle}`;
-        col.appendChild(p2);
-      }
-
-      const p3 = document.createElement("div");
-      p3.className = "vc-tuto-note";
-      p3.textContent = note;
-      col.appendChild(p3);
+      const p2 = document.createElement("div");
+      p2.className = "vc-tuto-note";
+      p2.textContent = note;
+      col.appendChild(p2);
 
       row.appendChild(col);
       root.appendChild(row);
@@ -1354,14 +1314,14 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       inner.className = "vc-tuto-btn";
 
       const tx = document.createElement("span");
-      tx.textContent = ctaLabel;
+      tx.textContent = cta;
       inner.appendChild(tx);
 
       const ic = document.createElement("img");
       ic.src = TUTO_JETON_ICON_WEBP;
       ic.alt = "";
       ic.draggable = false;
-      ic.className = "vc-jeton-blink";
+      ic.className = "vc-jeton-cta vc-jeton-cta-big"; // ✅ gros + clignote sur le bouton
       inner.appendChild(ic);
 
       btn.appendChild(inner);
@@ -1370,10 +1330,8 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
         const msg = $("vcTutoMsg");
 
         try{
-          // ✅ 1) seed 1 jeton tuto (1 seule fois) -> pas de blocage “pas assez”
           await seedIntroTutoJetonIfNeeded();
 
-          // ✅ 2) dépenser 1 jeton (le joueur comprend le système)
           let ok = true;
           if(window.VUserData && typeof window.VUserData.spendJetons === "function"){
             const r = await spendJetons(1);
@@ -1387,7 +1345,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
             return;
           }
 
-          // ✅ 3) débloquer l’objet manquant puis exécuter
           grantMissingFlags(choice, missingAll, missingAny);
           save();
 
@@ -1396,7 +1353,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
           updateHudJetons();
           updateJetonModalCount();
 
-          // ✅ on libère la fermeture
           const m = $("hintModal");
           if(m){
             try{ delete m.dataset.forceLock; }catch(_){}
@@ -1404,7 +1360,7 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
           const c = $("hintClose");
           if(c) c.style.display = "";
 
-          if(msg && okMsg && okMsg !== `[it.tuto.locked.ok]`) msg.textContent = okMsg;
+          if(msg) msg.textContent = okMsg;
 
           hideHintModal();
           await executeChoice(choice);
@@ -1419,7 +1375,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
     }
   );
 
-  // seed immédiat pour que le joueur voie le jeton clignoter “utile”
   seedIntroTutoJetonIfNeeded();
 }
 
@@ -1427,7 +1382,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
 function showLockedChoiceModal(choice){
   const { missingAll, missingAny } = getMissingFlagsForChoice(choice);
 
-  // ✅ Intro tuto : 1ère fois uniquement -> popup forcée
   try{
     if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
       let used = false;
@@ -1464,13 +1418,11 @@ function showLockedChoiceModal(choice){
 
   const actions = [];
 
-  // ✅ Dépenser 1 jeton
   actions.push({
     label: tUI("locked_unlock_jeton"),
     className: "btn",
     onClick: async () => {
       try{
-        // check local solde si dispo (UX)
         let jetons = 0;
         if(window.VUserData && typeof window.VUserData.getJetons === "function"){
           try{ jetons = Number(window.VUserData.getJetons() || 0); }catch(_){}
@@ -1487,13 +1439,11 @@ function showLockedChoiceModal(choice){
           return;
         }
 
-        // grant flags + save
         grantMissingFlags(choice, missingAll, missingAny);
         save();
         updateHudJetons();
         updateJetonModalCount();
 
-        // ferme modal puis auto-exécute le choix
         hideHintModal();
         await executeChoice(choice);
       }catch(e){
@@ -1504,7 +1454,6 @@ function showLockedChoiceModal(choice){
     }
   });
 
-  // ✅ Regarder une pub
   actions.push({
     label: tUI("locked_unlock_ad"),
     className: "btn btn--ghost",
@@ -1521,11 +1470,9 @@ function showLockedChoiceModal(choice){
           return;
         }
 
-        // grant flags + save
         grantMissingFlags(choice, missingAll, missingAny);
         save();
 
-        // ferme modal puis auto-exécute le choix
         hideHintModal();
         await executeChoice(choice);
       }catch(e){
@@ -1534,17 +1481,43 @@ function showLockedChoiceModal(choice){
     }
   });
 
-  // fermer
   actions.push({
     label: tUI("locked_close"),
     className: "btn btn--ghost",
     onClick: () => hideHintModal()
   });
 
-  showHintModalWithActions(
-    tUI("locked_title"),
-    lines,
-    actions
+  // NOTE: ici on garde le modal simple texte (ton UI existant)
+  const modalTitle = tUI("locked_title");
+  const modalBody = Array.isArray(lines) ? lines.join("\n") : String(lines || "");
+  showHintModal(modalTitle, modalBody);
+
+  // actions -> on reconstruit proprement avec Rich (sans casser ton UX)
+  showHintModalWithActionsRich(
+    modalTitle,
+    (root) => {
+      const p = document.createElement("div");
+      p.style.whiteSpace = "pre-wrap";
+      p.textContent = modalBody;
+      root.appendChild(p);
+      const msg = document.createElement("div");
+      msg.id = "vcLockedMsg";
+      msg.style.marginTop = "10px";
+      msg.style.textAlign = "center";
+      msg.style.opacity = ".95";
+      msg.textContent = "";
+      root.appendChild(msg);
+    },
+    (actionsWrap) => {
+      for(const a of actions){
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = a.className || "btn";
+        btn.textContent = a.label || tUI("btn_ok");
+        btn.onclick = async () => { await a.onClick?.(); };
+        actionsWrap.appendChild(btn);
+      }
+    }
   );
 }
 
@@ -1555,7 +1528,6 @@ async function handleEnding(type, endScene){
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
 
-  // ✅ Onboarding: dès qu'on atteint une fin (good/bad/secret), on considère le tuto "vu"
   try{
     if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
       try{ localStorage.setItem(ONBOARD_DONE_KEY, "1"); }catch(_){}
@@ -1572,7 +1544,6 @@ async function handleEnding(type, endScene){
 
   const endingType = String(type || "").toLowerCase();
 
-  // ✅ ENREGISTREMENT FIN (badge full uniquement si fin réellement atteinte)
   try{
     if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
       await window.VUserData.completeScenario(currentScenarioId, endingType);
@@ -1580,34 +1551,45 @@ async function handleEnding(type, endScene){
   }catch(e){}
 
   // ✅ Reward spécifique Intro (1 seule fois, GOOD/BAD/SECRET)
+  // -> on s’en sert aussi pour afficher les icônes à la fin
+  let introRewardedNow = false;
+  let introRewardJetons = 0;
+  let introRewardVCoins = 0;
+
   try{
     if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
       let rewarded = false;
       try{ rewarded = (localStorage.getItem(INTRO_REWARD_KEY) === "1"); }catch(_){}
       if(!rewarded){
+        introRewardJetons = 2;
+        introRewardVCoins = 100;
+
         try{
           if(window.VUserData && typeof window.VUserData.addJetons === "function"){
-            await window.VUserData.addJetons(2);
+            await window.VUserData.addJetons(introRewardJetons);
           }
         }catch(_){}
         try{
           if(window.VUserData && typeof window.VUserData.addVCoins === "function"){
-            await window.VUserData.addVCoins(100);
+            await window.VUserData.addVCoins(introRewardVCoins);
           }
         }catch(_){}
+
         try{ localStorage.setItem(INTRO_REWARD_KEY, "1"); }catch(_){}
+        introRewardedNow = true;
+
         updateHudJetons();
         updateJetonModalCount();
       }
     }
   }catch(_){}
 
-  // ✅ Titre/body: si endScene a des keys, on les affiche (i18n scénario)
   let title = tUI("end_title");
   if(endingType === "good") title = tUI("end_title_good");
   if(endingType === "bad") title = tUI("end_title_bad");
   if(endingType === "secret") title = tUI("end_title_secret");
 
+  // body default
   let body = tUI("ending_desc");
 
   try{
@@ -1615,6 +1597,59 @@ async function handleEnding(type, endScene){
     if(endScene && endScene.body_key) body  = tS(endScene.body_key);
   }catch(_){}
 
+  // ✅ INTRO: body riche (silence + icônes rewards) sans “VCoins / Jetons” en texte
+  if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
+    const silence = tUI("intro_end_silence");
+
+    // même si déjà rewardé, on affiche les valeurs “standard”
+    const vcoins = introRewardVCoins || 100;
+    const jetons = introRewardJetons || 2;
+
+    showEndModal(
+      title,
+      (root) => {
+        const p = document.createElement("div");
+        p.style.whiteSpace = "pre-wrap";
+        p.textContent = silence || body || "";
+        root.appendChild(p);
+
+        const row = document.createElement("div");
+        row.className = "vc-end-reward";
+
+        const pill1 = document.createElement("div");
+        pill1.className = "vc-end-pill";
+        const i1 = document.createElement("img");
+        i1.src = (tUI("icon_vcoins_webp") || UI_VCOINS_ICON_WEBP);
+        i1.alt = "";
+        i1.draggable = false;
+        const b1 = document.createElement("b");
+        b1.textContent = `+${vcoins}`;
+        pill1.appendChild(i1);
+        pill1.appendChild(b1);
+
+        const pill2 = document.createElement("div");
+        pill2.className = "vc-end-pill";
+        const i2 = document.createElement("img");
+        i2.src = (tUI("icon_jeton_webp") || UI_JETON_ICON_WEBP);
+        i2.alt = "";
+        i2.draggable = false;
+        const b2 = document.createElement("b");
+        b2.textContent = `+${jetons}`;
+        pill2.appendChild(i2);
+        pill2.appendChild(b2);
+
+        row.appendChild(pill1);
+        row.appendChild(pill2);
+
+        root.appendChild(row);
+      },
+      () => { history.back(); },
+      () => { hardResetScenario(currentScenarioId); renderScene(); }
+    );
+    return;
+  }
+
+  // autres scénarios (normal)
   showEndModal(
     title,
     body,
@@ -1641,7 +1676,6 @@ function renderScene(){
     return renderScene();
   }
 
-  // ✅ Détection auto des scènes end_good / end_bad / end_secret
   try{
     const m = /^end_(good|bad|secret)$/i.exec(String(scene.id || ""));
     if(m && !scene.ending) scene.ending = String(m[1]).toLowerCase();
@@ -1751,3 +1785,5 @@ window.VLang = {
    RUN
 ========================= */
 document.addEventListener("DOMContentLoaded", boot);
+
+})();

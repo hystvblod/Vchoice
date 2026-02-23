@@ -14,7 +14,7 @@
     "hf.s01.body": "La grille est fermée, mais la chaîne pend, comme coupée récemment. Derrière, l’hôpital avale la nuit. Un néon clignote une seconde sur deux.",
     "hf.s01.c1": "Passer la grille quand même",
     "hf.s01.c2": "Lire le panneau d’interdiction",
-    "hf.s01.c3": "Appeler quelqu’un (aucun réseau)",
+    "hf.s01.c3": "Appeler quelqu’un",
 
     "hf.s02.title": "La chaîne coupée",
     "hf.s02.body": "La chaîne au sol est tiède. Pas de rouille fraîche, pas de poussière dessus. Comme si elle venait d’être posée là.",
@@ -38,10 +38,10 @@
     "hf.s05.body": "L’air sent le chlore chaud. Le carrelage est humide au centre, comme si quelqu’un venait de passer la serpillière. Tout est trop propre pour un lieu fermé.",
     "hf.s05.c1": "Aller au comptoir d’accueil",
     "hf.s05.c2": "Suivre le couloir principal",
-    "hf.s05.c3": "Ressortir (la nuit semble plus épaisse)",
+    "hf.s05.c3": "Ressortir",
 
     "hf.s06.title": "Comptoir d’accueil",
-    "hf.s06.body": "Une clochette, un registre ouvert, un badge papier imprimé… daté d’aujourd’hui. L’écran d’ordinateur affiche un curseur qui clignote : « DOSSIER : EN COURS ». ",
+    "hf.s06.body": "Une clochette, un registre ouvert, un badge papier imprimé… daté d’aujourd’hui. L’écran d’ordinateur affiche un curseur qui clignote : « DOSSIER : EN COURS ».",
     "hf.s06.c1": "Faire sonner la clochette",
     "hf.s06.c2": "Lire le registre d’admission",
     "hf.s06.c3": "Tenter l’ascenseur du fond",
@@ -66,7 +66,7 @@
 
     "hf.s10.title": "Badge « Patient »",
     "hf.s10.body": "Une imprimante crache un badge papier : « PATIENT — GARDE ». Il y a ta taille, ton poids… des chiffres justes. Trop justes.",
-    "hf.s10.c1": "Accrocher le badge (mauvaise idée)",
+    "hf.s10.c1": "Accrocher le badge",
     "hf.s10.c2": "Le plier et le garder",
     "hf.s10.c3": "Le déchirer",
 
@@ -80,7 +80,7 @@
     "hf.s12.body": "Le bracelet est à ton nom. Quand tu le touches, tu sens une impulsion, comme un pouls dans le plastique.",
     "hf.s12.c1": "Le mettre au poignet",
     "hf.s12.c2": "Le garder dans ta poche",
-    "hf.s12.c3": "Le laisser là (pour l’instant)",
+    "hf.s12.c3": "Le laisser là",
 
     "hf.s13.title": "L’ascenseur figé",
     "hf.s13.body": "Les portes d’ascenseur sont entrouvertes sur le noir. Le bouton « –1 » est griffé, comme quelqu’un a essayé de l’arracher. Une odeur métallique sort de la cabine.",
@@ -95,13 +95,13 @@
     "hf.s14.c3": "Retourner au couloir principal",
 
     "hf.s15.title": "Cliché impossible",
-    "hf.s15.body": "Le cliché montre un thorax… et, au centre, un rectangle sombre : l’emplacement exact d’un dossier cartonné. En bas, un tampon : « PATIENT 0 — ARCHIVES ». ",
+    "hf.s15.body": "Le cliché montre un thorax… et, au centre, un rectangle sombre : l’emplacement exact d’un dossier cartonné. En bas, un tampon : « PATIENT 0 — ARCHIVES ».",
     "hf.s15.c1": "Noter « Archives » et reculer",
     "hf.s15.c2": "Aller chercher les archives",
-    "hf.s15.c3": "Allumer la salle pour vérifier (lumière vacille)",
+    "hf.s15.c3": "Allumer la salle pour vérifier",
 
     "hf.s16.title": "La chapelle",
-    "hf.s16.body": "Dans une niche, trois bougies brûlent encore, cire fraîche. Un carnet de prières est ouvert à une page vide, sauf une phrase : « GARDE = TOI ». ",
+    "hf.s16.body": "Dans une niche, trois bougies brûlent encore, cire fraîche. Un carnet de prières est ouvert à une page vide, sauf une phrase : « GARDE = TOI ».",
     "hf.s16.c1": "Revenir à la radiologie",
     "hf.s16.c2": "Suivre le silence vers un bureau",
     "hf.s16.c3": "Retourner au couloir",
@@ -120,7 +120,7 @@
 
     "hf.s19.title": "Couloir qui glisse",
     "hf.s19.body": "À peine la porte franchie, le couloir n’est plus le même. Une intersection apparaît là où il n’y avait qu’un mur. Les néons se décalent, comme des dents.",
-    "hf.s19.c1": "Marquer le mur (pour te repérer)",
+    "hf.s19.c1": "Marquer le mur",
     "hf.s19.c2": "Suivre le bruit du chariot",
     "hf.s19.c3": "Chercher l’escalier",
 
@@ -145,7 +145,7 @@
     "hf.s23.title": "Plan d’évacuation",
     "hf.s23.body": "Le plan indique : « SORTIE COUR INTÉRIEURE ». Une annotation au marqueur : « Sans preuve, retour au bloc. » Tu sens que c’est écrit pour toi.",
     "hf.s23.c1": "Aller vers la cour intérieure",
-    "hf.s23.c2": "Aller aux archives (porte à badge)",
+    "hf.s23.c2": "Aller aux archives",
     "hf.s23.c3": "Retourner au poste de sécurité",
 
     "hf.s24.title": "Porte « Archives »",
@@ -192,7 +192,7 @@
 
     "hf.s31.title": "Plateau d’instruments",
     "hf.s31.body": "Les instruments sont alignés. Une paire de gants est posée sur le bord, encore brillante, comme fraîchement sortie de l’emballage.",
-    "hf.s31.c1": "Toucher le métal (ça colle)",
+    "hf.s31.c1": "Toucher le métal",
     "hf.s31.c2": "Prendre les gants et reculer",
     "hf.s31.c3": "Reculer sans rien toucher",
 
@@ -217,17 +217,17 @@
     "hf.s35.title": "Salle des déchets",
     "hf.s35.body": "Sacs noirs. Odeur d’eau de Javel. Une porte métallique : « MORGUE ». Une trappe au sol mène peut-être aux archives.",
     "hf.s35.c1": "Aller vers la morgue",
-    "hf.s35.c2": "Passer par la trappe (retour archives)",
+    "hf.s35.c2": "Passer par la trappe",
     "hf.s35.c3": "Revenir aux brancards",
 
     "hf.s36.title": "Morgue",
     "hf.s36.body": "La lumière est trop blanche. Les tiroirs métalliques sont fermés… sauf un, à peine entrouvert. Un souffle froid s’en échappe.",
     "hf.s36.c1": "Ouvrir le tiroir entrouvert",
     "hf.s36.c2": "Reculer et refermer la porte",
-    "hf.s36.c3": "Décrocher le téléphone mural (il sonne)",
+    "hf.s36.c3": "Décrocher le téléphone mural",
 
     "hf.s37.title": "Dossier Patient 0",
-    "hf.s37.body": "Dans le tiroir : un dossier cartonné. Pas de corps. Juste ton dossier, posé comme un paquet. Sur la première page : « ÉTAT : EN COURS ». ",
+    "hf.s37.body": "Dans le tiroir : un dossier cartonné. Pas de corps. Juste ton dossier, posé comme un paquet. Sur la première page : « ÉTAT : EN COURS ».",
     "hf.s37.c1": "Prendre le dossier avec toi",
     "hf.s37.c2": "Le laisser et reculer",
     "hf.s37.c3": "Chercher la salle « Validation »",
@@ -271,14 +271,14 @@
     "hf.s44.title": "Mise en place",
     "hf.s44.body": "Tu sens des sangles. Le bip devient plus fort. Une phrase s’inscrit quelque part : « Sans preuve, retour au bloc. » Tu cherches ta respiration.",
     "hf.s44.c1": "Fermer les yeux",
-    "hf.s44.c2": "Te débattre (inutile)",
-    "hf.s44.c3": "Montrer une preuve (si tu en as)",
+    "hf.s44.c2": "Te débattre",
+    "hf.s44.c3": "Montrer une preuve",
 
     "hf.s45.title": "Preuves",
     "hf.s45.body": "Tu tiens une preuve. Audio, vidéo ou dossier. Quelque chose qui dit : « Ce lieu ment. » Les écrans de sécurité grésillent comme s’ils n’aimaient pas ça.",
     "hf.s45.c1": "Partir tout de suite",
     "hf.s45.c2": "Chercher la salle « Validation »",
-    "hf.s45.c3": "Détruire la preuve (et oublier)",
+    "hf.s45.c3": "Détruire la preuve",
 
     "hf.s46.title": "Validation",
     "hf.s46.body": "Derrière une porte sans poignée, un bureau. Un ordinateur tape seul. À l’écran : « PATIENT 0 — STATUT : À ASSIGNER ». Un tampon « VALIDÉ » attend, encre fraîche.",
@@ -295,11 +295,11 @@
     "hf.s48.title": "Dernier couloir",
     "hf.s48.body": "Tu avances vers la grille. Le métal est froid. Tu sens, derrière toi, la porte de la cour se refermer lentement, sans bruit. L’air semble retenir sa phrase.",
     "hf.s48.c1": "Pousser la grille et ne pas regarder derrière",
-    "hf.s48.c2": "Te retourner (juste une seconde)",
+    "hf.s48.c2": "Te retourner",
     "hf.s48.c3": "Revenir chercher « quelque chose »",
 
-    "hf.end_good.title": "Fin — Sortie (avec preuve)",
-    "hf.end_good.body": "Tu passes la grille. L’aube te mord les poumons. Derrière, l’hôpital reste immobile… trop immobile. Dans ta main, ta preuve pèse comme un caillou chaud. Quand tu regardes ta photo/ton enregistrement, l’horodatage n’existe pas.",
+    "hf.end_good.title": "Fin — Sortie",
+    "hf.end_good.body": "Tu passes la grille. L’aube te mord les poumons. Derrière, l’hôpital reste immobile… trop immobile. Dans ta main, ta preuve pèse comme un caillou chaud. Quand tu regardes ta photo ou ton enregistrement, l’horodatage n’existe pas.",
 
     "hf.end_bad.title": "Fin — Retour au bloc",
     "hf.end_bad.body": "La lumière du plafond te mange les yeux. Le bip devient une seule note. Quelqu’un écrit quelque part : « Patient présenté. Garde validée. » Et tu comprends qu’ici, la sortie n’a jamais été une porte.",
@@ -323,7 +323,7 @@
     "hf.clue.has_dossier.desc": "Ton dossier. Il se complète à mesure que tu respires.",
 
     "hf.h.s12.soft": "Tu as quelque chose de « reconnu » par l’hôpital maintenant.",
-    "hf.h.s12.strong": "Le bracelet ouvre/altère des portes et rend possible la voie secrète.",
+    "hf.h.s12.strong": "Le bracelet ouvre ou altère des portes et rend possible la voie secrète.",
 
     "hf.h.s18.soft": "Le dictaphone n’est pas là par hasard.",
     "hf.h.s18.strong": "Prends la cassette : elle compte comme preuve et pour la fin secrète.",

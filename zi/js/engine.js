@@ -1,4 +1,9 @@
-/* engine.js — VERSION COMPLETE À JOUR (Intro tuto + fins end_* i18n + reward tuto) */
+/* engine.js — VERSION COMPLETE À JOUR
+   Base: ton fichier (lang device + menu + jetons + guide + end modal)
+   + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP clignotant)
+   + ✅ Bypass “pas assez” : on seed 1 jeton tuto (1 seule fois) puis on le dépense
+   + ✅ Pas de fermeture possible tant que le tuto jeton n’est pas fait
+*/
 
 /* =========================
    CONFIG
@@ -13,6 +18,13 @@ const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
 const ONBOARD_DONE_KEY   = "vchoice_onboarding_done_v1";
 const INTRO_REWARD_KEY   = "vchoice_intro_rewarded_v1";
 const INTRO_SCENARIO_ID  = "intro_tuto";
+
+// ✅ Intro tuto: popup jeton forcée
+const INTRO_FORCED_JETON_USED_KEY   = "vchoice_intro_forced_jeton_used_v1";
+const INTRO_FORCED_JETON_SEEDED_KEY = "vchoice_intro_forced_jeton_seeded_v1";
+
+// ✅ Jeton image (WEBP) affichée dans la popup tuto
+const TUTO_JETON_ICON_WEBP = "assets/img/ui/jeton.webp";
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -452,6 +464,7 @@ function applyStaticI18n(){
   if(hintClose){
     hintClose.setAttribute("aria-label", tUI("hint_close_aria"));
     hintClose.textContent = tUI("symbol_close");
+    hintClose.style.display = "";
   }
 
   const resumeClose = $("resumeClose");
@@ -692,8 +705,17 @@ function bindTopbar(){
    MENU (index.html)
 ========================= */
 async function loadScenarioMeta(scenarioId){
-  const txt = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
-  return (txt && typeof txt === "object" && txt.meta) ? txt.meta : {};
+  try{
+    const txt = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
+    return (txt && typeof txt === "object" && txt.meta) ? txt.meta : {};
+  }catch(_){
+    try{
+      const txt = await fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG));
+      return (txt && typeof txt === "object" && txt.meta) ? txt.meta : {};
+    }catch(__){
+      return {};
+    }
+  }
 }
 
 function goToScenario(scenarioId){
@@ -864,6 +886,9 @@ function hideEndModal(){
   modal.setAttribute("aria-hidden","true");
 }
 
+/* =========================
+   HINT MODAL
+========================= */
 function bindHintModal(){
   const modal = $("hintModal");
   const bd = $("hintBackdrop");
@@ -882,7 +907,12 @@ function showHintModal(title, body){
   const modal = $("hintModal");
   const t = $("hintTitle");
   const b = $("hintBody");
+  const close = $("hintClose");
   if(!modal || !t || !b) return;
+
+  // ✅ reset lock
+  try{ delete modal.dataset.forceLock; }catch(_){}
+  if(close) close.style.display = "";
 
   t.textContent = title || tUI("hint_title");
   b.textContent = body || "";
@@ -897,15 +927,29 @@ function showHintModal(title, body){
 function hideHintModal(){
   const modal = $("hintModal");
   if(!modal) return;
+
+  // ✅ Intro tuto: impossible de fermer tant que la popup forcée est active
+  try{
+    if(String(modal.dataset.forceLock || "") === "1") return;
+  }catch(_){}
+
   modal.classList.add("hidden");
   modal.setAttribute("aria-hidden","true");
+
+  const close = $("hintClose");
+  if(close) close.style.display = "";
 }
 
 function showHintModalWithActions(title, bodyLines, actions){
   const modal = $("hintModal");
   const t = $("hintTitle");
   const b = $("hintBody");
+  const close = $("hintClose");
   if(!modal || !t || !b) return;
+
+  // ✅ reset lock
+  try{ delete modal.dataset.forceLock; }catch(_){}
+  if(close) close.style.display = "";
 
   t.textContent = title || tUI("hint_title");
   b.textContent = "";
@@ -942,6 +986,43 @@ function showHintModalWithActions(title, bodyLines, actions){
   modal.setAttribute("aria-hidden","false");
 }
 
+/* ✅ Version “riche” pour la popup tuto (image + layout), sans texte en dur */
+function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
+  const modal = $("hintModal");
+  const t = $("hintTitle");
+  const b = $("hintBody");
+  if(!modal || !t || !b) return;
+
+  t.textContent = title || tUI("hint_title");
+
+  // clear body
+  try{
+    while(b.firstChild) b.removeChild(b.firstChild);
+  }catch(_){
+    b.textContent = "";
+  }
+
+  const old = $("hintActions");
+  if(old && old.parentNode) old.parentNode.removeChild(old);
+
+  try{ buildBodyFn?.(b); }catch(_){}
+
+  const wrap = document.createElement("div");
+  wrap.id = "hintActions";
+  wrap.style.paddingTop = "12px";
+  wrap.style.display = "flex";
+  wrap.style.gap = "10px";
+  wrap.style.justifyContent = "flex-end";
+  wrap.style.flexWrap = "wrap";
+
+  try{ buildActionsFn?.(wrap); }catch(_){}
+
+  b.parentNode.appendChild(wrap);
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden","false");
+}
+
 /* =========================
    SCENARIO OPEN
 ========================= */
@@ -951,7 +1032,13 @@ async function openScenario(scenarioId, opts = {}){
   currentScenarioId = scenarioId;
 
   LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
-  TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
+
+  // ✅ fallback texte si la langue n'existe pas encore
+  try{
+    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
+  }catch(_){
+    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG));
+  }
 
   TEXT_STRINGS = (TEXT && typeof TEXT === "object" && TEXT.strings && typeof TEXT.strings === "object")
     ? TEXT.strings
@@ -1131,9 +1218,226 @@ async function executeChoice(ch){
   );
 }
 
+/* =========================
+   INTRO TUTO — POPUP JETON FORCÉE
+========================= */
+let _introTutoStyleDone = false;
+
+function ensureIntroTutoStyle(){
+  if(_introTutoStyleDone) return;
+  _introTutoStyleDone = true;
+
+  try{
+    const css = `
+      .vc-tuto-row{ display:flex; align-items:center; gap:12px; padding:6px 0 2px; }
+      .vc-tuto-row img{ width:56px; height:56px; flex:0 0 auto; }
+      .vc-jeton-blink{ animation: vcJetonBlink .9s infinite ease-in-out; transform-origin:center; }
+      .vc-tuto-col{ display:flex; flex-direction:column; gap:8px; }
+      .vc-tuto-missing{ opacity:.98; }
+      .vc-tuto-note{ opacity:.92; }
+      .vc-tuto-msg{ margin-top:10px; opacity:.95; }
+      .vc-tuto-btn{ display:inline-flex; align-items:center; gap:10px; }
+      .vc-tuto-btn img{ width:18px; height:18px; }
+      @keyframes vcJetonBlink{
+        0%{ transform:scale(1); filter:drop-shadow(0 6px 18px rgba(0,0,0,.35)); opacity:1; }
+        50%{ transform:scale(1.08); filter:drop-shadow(0 10px 28px rgba(0,0,0,.45)); opacity:.92; }
+        100%{ transform:scale(1); filter:drop-shadow(0 6px 18px rgba(0,0,0,.35)); opacity:1; }
+      }
+    `;
+    const st = document.createElement("style");
+    st.id = "vc_intro_tuto_style";
+    st.textContent = css;
+    document.head.appendChild(st);
+  }catch(_){}
+}
+
+async function seedIntroTutoJetonIfNeeded(){
+  try{
+    if(String(currentScenarioId || "") !== INTRO_SCENARIO_ID) return;
+
+    let seeded = false;
+    try{ seeded = (localStorage.getItem(INTRO_FORCED_JETON_SEEDED_KEY) === "1"); }catch(_){}
+    if(seeded) return;
+
+    if(window.VUserData && typeof window.VUserData.addJetons === "function"){
+      try{ await window.VUserData.addJetons(1); }catch(_){}
+    }
+
+    try{ localStorage.setItem(INTRO_FORCED_JETON_SEEDED_KEY, "1"); }catch(_){}
+
+    updateHudJetons();
+    updateJetonModalCount();
+  }catch(_){}
+}
+
+function getIntroTutoText(key, fallbackUiKey, params){
+  // key = "it.tuto.locked.title" etc (dans text_<lang>.json du scénario intro)
+  const v = tS(key, params);
+  if(v && v !== `[${key}]`) return v;
+  return fallbackUiKey ? tUI(fallbackUiKey, params) : v;
+}
+
+function showIntroForcedJetonModal(choice, missingAll, missingAny){
+  ensureIntroTutoStyle();
+
+  const modal = $("hintModal");
+  const close = $("hintClose");
+  if(modal){
+    try{ modal.dataset.forceLock = "1"; }catch(_){}
+  }
+  if(close) close.style.display = "none";
+
+  const missing = (Array.isArray(missingAll) && missingAll.length) ? missingAll.slice()
+    : (Array.isArray(missingAny) && missingAny.length) ? missingAny.slice()
+    : [];
+
+  const first = missing.length ? missing[0] : null;
+  const itemTitle = first ? prettyFlagTitle(first) : "";
+
+  const title = getIntroTutoText("it.tuto.locked.title", "locked_title");
+  const bodyMain = getIntroTutoText("it.tuto.locked.body", "locked_body");
+  const missingLine = getIntroTutoText("it.tuto.locked.missing", null, { item: itemTitle });
+  const note = getIntroTutoText("it.tuto.locked.note", "locked_note_foundable");
+  const ctaLabel = getIntroTutoText("it.tuto.locked.cta", "locked_unlock_jeton");
+  const errMsg = getIntroTutoText("it.tuto.locked.error", "locked_unlock_error");
+  const okMsg = getIntroTutoText("it.tuto.locked.ok", null, { item: itemTitle });
+
+  showHintModalWithActionsRich(
+    title,
+    (root) => {
+      const row = document.createElement("div");
+      row.className = "vc-tuto-row";
+
+      const img = document.createElement("img");
+      img.src = TUTO_JETON_ICON_WEBP;
+      img.alt = "";
+      img.draggable = false;
+      img.className = "vc-jeton-blink";
+      row.appendChild(img);
+
+      const col = document.createElement("div");
+      col.className = "vc-tuto-col";
+
+      const p1 = document.createElement("div");
+      p1.textContent = bodyMain;
+      col.appendChild(p1);
+
+      if(itemTitle){
+        const p2 = document.createElement("div");
+        p2.className = "vc-tuto-missing";
+        p2.textContent = missingLine && missingLine !== `[it.tuto.locked.missing]`
+          ? missingLine
+          : `${tUI("locked_missing")} ${itemTitle}`;
+        col.appendChild(p2);
+      }
+
+      const p3 = document.createElement("div");
+      p3.className = "vc-tuto-note";
+      p3.textContent = note;
+      col.appendChild(p3);
+
+      row.appendChild(col);
+      root.appendChild(row);
+
+      const msg = document.createElement("div");
+      msg.id = "vcTutoMsg";
+      msg.className = "vc-tuto-msg";
+      msg.textContent = "";
+      root.appendChild(msg);
+    },
+    (actionsWrap) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "btn";
+
+      const inner = document.createElement("span");
+      inner.className = "vc-tuto-btn";
+
+      const tx = document.createElement("span");
+      tx.textContent = ctaLabel;
+      inner.appendChild(tx);
+
+      const ic = document.createElement("img");
+      ic.src = TUTO_JETON_ICON_WEBP;
+      ic.alt = "";
+      ic.draggable = false;
+      ic.className = "vc-jeton-blink";
+      inner.appendChild(ic);
+
+      btn.appendChild(inner);
+
+      btn.onclick = async () => {
+        const msg = $("vcTutoMsg");
+
+        try{
+          // ✅ 1) seed 1 jeton tuto (1 seule fois) -> pas de blocage “pas assez”
+          await seedIntroTutoJetonIfNeeded();
+
+          // ✅ 2) dépenser 1 jeton (le joueur comprend le système)
+          let ok = true;
+          if(window.VUserData && typeof window.VUserData.spendJetons === "function"){
+            const r = await spendJetons(1);
+            ok = !!r?.ok;
+          }
+
+          if(!ok){
+            updateHudJetons();
+            updateJetonModalCount();
+            if(msg) msg.textContent = errMsg;
+            return;
+          }
+
+          // ✅ 3) débloquer l’objet manquant puis exécuter
+          grantMissingFlags(choice, missingAll, missingAny);
+          save();
+
+          try{ localStorage.setItem(INTRO_FORCED_JETON_USED_KEY, "1"); }catch(_){}
+
+          updateHudJetons();
+          updateJetonModalCount();
+
+          // ✅ on libère la fermeture
+          const m = $("hintModal");
+          if(m){
+            try{ delete m.dataset.forceLock; }catch(_){}
+          }
+          const c = $("hintClose");
+          if(c) c.style.display = "";
+
+          if(msg && okMsg && okMsg !== `[it.tuto.locked.ok]`) msg.textContent = okMsg;
+
+          hideHintModal();
+          await executeChoice(choice);
+        }catch(_){
+          updateHudJetons();
+          updateJetonModalCount();
+          if(msg) msg.textContent = errMsg;
+        }
+      };
+
+      actionsWrap.appendChild(btn);
+    }
+  );
+
+  // seed immédiat pour que le joueur voie le jeton clignoter “utile”
+  seedIntroTutoJetonIfNeeded();
+}
+
 /* ✅ popup locked: propose Jeton OU Pub pour obtenir l’objet manquant */
 function showLockedChoiceModal(choice){
   const { missingAll, missingAny } = getMissingFlagsForChoice(choice);
+
+  // ✅ Intro tuto : 1ère fois uniquement -> popup forcée
+  try{
+    if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
+      let used = false;
+      try{ used = (localStorage.getItem(INTRO_FORCED_JETON_USED_KEY) === "1"); }catch(_){}
+      if(!used){
+        showIntroForcedJetonModal(choice, missingAll, missingAny);
+        return;
+      }
+    }
+  }catch(_){}
 
   const lines = [];
   lines.push(tUI("locked_body"));
@@ -1155,7 +1459,7 @@ function showLockedChoiceModal(choice){
   }
 
   lines.push("");
-  lines.push(tUI("locked_note_foundable")); // ✅ trouvable sans pub
+  lines.push(tUI("locked_note_foundable"));
   lines.push("");
 
   const actions = [];
@@ -1187,12 +1491,14 @@ function showLockedChoiceModal(choice){
         grantMissingFlags(choice, missingAll, missingAny);
         save();
         updateHudJetons();
+        updateJetonModalCount();
 
         // ferme modal puis auto-exécute le choix
         hideHintModal();
         await executeChoice(choice);
       }catch(e){
         updateHudJetons();
+        updateJetonModalCount();
         showHintModal(tUI("locked_title"), tUI("locked_unlock_error"));
       }
     }
@@ -1291,6 +1597,7 @@ async function handleEnding(type, endScene){
         }catch(_){}
         try{ localStorage.setItem(INTRO_REWARD_KEY, "1"); }catch(_){}
         updateHudJetons();
+        updateJetonModalCount();
       }
     }
   }catch(_){}
