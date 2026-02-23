@@ -4,6 +4,7 @@
    + ✅ Bypass “pas assez” : on seed 1 jeton tuto (1 seule fois) puis on le dépense
    + ✅ Pas de fermeture possible tant que le tuto jeton n’est pas fait
    + ✅ FIN INTRO: pas de “Recommencer”, bouton “Fermer” -> index, et rewards avec icônes WEBP (pas de texte “VCoins/Jetons”)
+   + ✅ FIN INTRO: remet le texte long (comme ta capture) MAIS sans mots “Jetons/VCoins” -> on affiche les WEBP
 */
 
 (function(){
@@ -1214,6 +1215,23 @@ function ensureIntroTutoStyle(){
         50%{ transform:scale(1.10); filter:drop-shadow(0 12px 30px rgba(0,0,0,.45)); opacity:.92; }
         100%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
       }
+
+      /* ✅ Intro end (texte long + icônes) */
+      .vc-intro-end{ display:flex; flex-direction:column; gap:14px; }
+      .vc-intro-head{ white-space:pre-wrap; opacity:.98; }
+      .vc-intro-reward-title{ display:flex; align-items:center; gap:10px; font-weight:850; }
+      .vc-intro-reward-title .vc-check{ display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; }
+      .vc-intro-ul{ margin:8px 0 0 22px; padding:0; }
+      .vc-intro-ul li{ margin:6px 0; }
+      .vc-intro-li{ display:flex; align-items:center; gap:10px; }
+      .vc-intro-li img{ width:18px; height:18px; flex:0 0 auto; filter: drop-shadow(0 8px 18px rgba(0,0,0,.25)); }
+      .vc-intro-line{ display:flex; align-items:flex-start; gap:10px; }
+      .vc-intro-line img{ width:18px; height:18px; flex:0 0 auto; margin-top:2px; filter: drop-shadow(0 8px 18px rgba(0,0,0,.25)); }
+      .vc-intro-tip{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; opacity:.98; }
+      .vc-intro-tip img{ width:18px; height:18px; }
+      .vc-intro-tip b{ font-weight:850; }
+
+      /* (garde l’ancien, utile ailleurs) */
       .vc-end-reward{ display:flex; align-items:center; justify-content:center; gap:16px; padding-top:10px; flex-wrap:wrap; }
       .vc-end-pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border:1px solid rgba(255,255,255,.12); border-radius:999px; background: rgba(0,0,0,.25); }
       .vc-end-pill img{ width:20px; height:20px; }
@@ -1323,6 +1341,11 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       ic.draggable = false;
       ic.className = "vc-jeton-cta vc-jeton-cta-big"; // ✅ gros + clignote sur le bouton
       inner.appendChild(ic);
+
+      // ✅ pas de mot “jeton” -> on ajoute x1 via i18n
+      const q = document.createElement("b");
+      q.textContent = tUI("shop_reward_jeton_x1");
+      inner.appendChild(q);
 
       btn.appendChild(inner);
 
@@ -1598,50 +1621,154 @@ async function handleEnding(type, endScene){
     if(endScene && endScene.body_key) body  = tS(endScene.body_key);
   }catch(_){}
 
-  // ✅ INTRO: body riche (silence + icônes rewards)
+  // ✅ INTRO: texte long (comme ta capture) + icônes (pas de mots “Jetons/VCoins”)
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
-    const silence = tUI("intro_end_silence");
+    ensureIntroTutoStyle();
+
+    // titre spécial (capture)
+    const introTitle = tUI("intro_end_title");
 
     // même si déjà rewardé, on affiche les valeurs standard demandées
     const vcoins = introRewardVCoins || 100;
     const jetons = introRewardJetons || 2;
 
+    const iconV = (tUI("icon_vcoins_webp") || UI_VCOINS_ICON_WEBP);
+    const iconJ = (tUI("icon_jeton_webp") || UI_JETON_ICON_WEBP);
+
+    const l1 = tUI("intro_end_line1") || tUI("intro_end_silence") || body || "";
+    const l2 = tUI("intro_end_line2") || "";
+
+    const check = tUI("symbol_check");
+    const rewardLabel = tUI("intro_end_reward_label");
+
+    const les = tUI("intro_end_prefix_les");
+    const useV = tUI("intro_end_use_vcoins");
+    const useJ = tUI("intro_end_use_jetons");
+
+    const jb1 = tUI("intro_end_jetons_b1");
+    const jb2 = tUI("intro_end_jetons_b2");
+    const jb3 = tUI("intro_end_jetons_b3");
+
+    const multi = tUI("intro_end_multi_endings");
+    const tipPrefix = tUI("intro_end_tip_prefix");
+    const x1 = tUI("shop_reward_jeton_x1");
+
     showEndModal(
-      title,
+      introTitle,
       (root) => {
-        const p = document.createElement("div");
-        p.style.whiteSpace = "pre-wrap";
-        p.textContent = silence || body || "";
-        root.appendChild(p);
+        const wrap = document.createElement("div");
+        wrap.className = "vc-intro-end";
 
-        const row = document.createElement("div");
-        row.className = "vc-end-reward";
+        const head = document.createElement("div");
+        head.className = "vc-intro-head";
+        head.textContent = [l1, l2].filter(Boolean).join("\n");
+        wrap.appendChild(head);
 
-        const pill1 = document.createElement("div");
-        pill1.className = "vc-end-pill";
-        const i1 = document.createElement("img");
-        i1.src = (tUI("icon_vcoins_webp") || UI_VCOINS_ICON_WEBP);
-        i1.alt = "";
-        i1.draggable = false;
-        const b1 = document.createElement("b");
-        b1.textContent = `+${vcoins}`;
-        pill1.appendChild(i1);
-        pill1.appendChild(b1);
+        const rewardTitle = document.createElement("div");
+        rewardTitle.className = "vc-intro-reward-title";
 
-        const pill2 = document.createElement("div");
-        pill2.className = "vc-end-pill";
-        const i2 = document.createElement("img");
-        i2.src = (tUI("icon_jeton_webp") || UI_JETON_ICON_WEBP);
-        i2.alt = "";
-        i2.draggable = false;
-        const b2 = document.createElement("b");
-        b2.textContent = `+${jetons}`;
-        pill2.appendChild(i2);
-        pill2.appendChild(b2);
+        const ck = document.createElement("span");
+        ck.className = "vc-check";
+        ck.textContent = check;
+        rewardTitle.appendChild(ck);
 
-        row.appendChild(pill1);
-        row.appendChild(pill2);
-        root.appendChild(row);
+        const rt = document.createElement("span");
+        rt.textContent = rewardLabel;
+        rewardTitle.appendChild(rt);
+
+        wrap.appendChild(rewardTitle);
+
+        const ulReward = document.createElement("ul");
+        ulReward.className = "vc-intro-ul";
+
+        const liJ = document.createElement("li");
+        const rowJ = document.createElement("div");
+        rowJ.className = "vc-intro-li";
+        const imgJ = document.createElement("img");
+        imgJ.src = iconJ;
+        imgJ.alt = "";
+        imgJ.draggable = false;
+        const txtJ = document.createElement("span");
+        txtJ.textContent = `+${jetons}`;
+        rowJ.appendChild(imgJ);
+        rowJ.appendChild(txtJ);
+        liJ.appendChild(rowJ);
+        ulReward.appendChild(liJ);
+
+        const liV = document.createElement("li");
+        const rowV = document.createElement("div");
+        rowV.className = "vc-intro-li";
+        const imgV = document.createElement("img");
+        imgV.src = iconV;
+        imgV.alt = "";
+        imgV.draggable = false;
+        const txtV = document.createElement("span");
+        txtV.textContent = `+${vcoins}`;
+        rowV.appendChild(imgV);
+        rowV.appendChild(txtV);
+        liV.appendChild(rowV);
+        ulReward.appendChild(liV);
+
+        wrap.appendChild(ulReward);
+
+        const lineV = document.createElement("div");
+        lineV.className = "vc-intro-line";
+        const sLesV = document.createElement("span");
+        sLesV.textContent = les;
+        const iV = document.createElement("img");
+        iV.src = iconV;
+        iV.alt = "";
+        iV.draggable = false;
+        const sUseV = document.createElement("span");
+        sUseV.textContent = useV;
+        lineV.appendChild(sLesV);
+        lineV.appendChild(iV);
+        lineV.appendChild(sUseV);
+        wrap.appendChild(lineV);
+
+        const lineJ2 = document.createElement("div");
+        lineJ2.className = "vc-intro-line";
+        const sLesJ = document.createElement("span");
+        sLesJ.textContent = les;
+        const iJ2 = document.createElement("img");
+        iJ2.src = iconJ;
+        iJ2.alt = "";
+        iJ2.draggable = false;
+        const sUseJ = document.createElement("span");
+        sUseJ.textContent = useJ;
+        lineJ2.appendChild(sLesJ);
+        lineJ2.appendChild(iJ2);
+        lineJ2.appendChild(sUseJ);
+        wrap.appendChild(lineJ2);
+
+        const ulJ = document.createElement("ul");
+        ulJ.className = "vc-intro-ul";
+        const li1 = document.createElement("li"); li1.textContent = jb1; ulJ.appendChild(li1);
+        const li2 = document.createElement("li"); li2.textContent = jb2; ulJ.appendChild(li2);
+        const li3 = document.createElement("li"); li3.textContent = jb3; ulJ.appendChild(li3);
+        wrap.appendChild(ulJ);
+
+        const pMulti = document.createElement("div");
+        pMulti.style.whiteSpace = "pre-wrap";
+        pMulti.textContent = multi;
+        wrap.appendChild(pMulti);
+
+        const tip = document.createElement("div");
+        tip.className = "vc-intro-tip";
+        const tp = document.createElement("span");
+        tp.textContent = tipPrefix;
+        const ti = document.createElement("img");
+        ti.src = iconJ;
+        ti.alt = "";
+        ti.draggable = false;
+        const tn = document.createElement("b");
+        tn.textContent = x1;
+        tip.appendChild(tp);
+        tip.appendChild(ti);
+        tip.appendChild(tn);
+        wrap.appendChild(tip);
+
+        root.appendChild(wrap);
       },
       () => { history.back(); },
       () => { hardResetScenario(currentScenarioId); renderScene(); }
