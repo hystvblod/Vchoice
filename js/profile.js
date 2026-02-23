@@ -1,6 +1,6 @@
 // js/profile.js
-// Profil VChoice (v3.1)
-// - Scénarios EN DUR (plus de catalog.json)
+// Profil VChoice (v3.2) — PROFILES-ONLY
+// - Scénarios EN DUR
 // - Fix pseudo (i18n ne réécrit plus le texte)
 // - Scénarios en 1 colonne
 // - UI sans encadrés sur bloc profil + pills
@@ -9,6 +9,10 @@
 // ✅ PATCH LOCAL-FIRST BADGES + BFCache:
 // - badges d'abord via cache local vchoice_endings_cache_v1
 // - rerender sur pageshow/visibilitychange/vc:profile/vc:endings_updated
+//
+// ✅ IMPORTANT:
+// - plus AUCUNE requête sur scenario_status / scenario_endings
+// - les badges viennent UNIQUEMENT de profiles.endings via VUserData.load() (secure_get_me)
 
 (function(){
   "use strict";
@@ -16,7 +20,6 @@
   const ENDINGS_CACHE_KEY = "vchoice_endings_cache_v1";
 
   // ✅ IDs EXACTS (d'après ton dossier assets/scenarios/)
-  // (On garde le même ordre que ta capture)
   const SCENARIO_IDS = [
     "bunker_reserve",
     "chateau_absents",
@@ -31,6 +34,7 @@
   function $(id){ return document.getElementById(id); }
   function _safeParse(raw){ try { return JSON.parse(raw); } catch { return null; } }
   function _now(){ return Date.now(); }
+  function _norm(x){ return String(x || "").trim().toLowerCase(); }
 
   function readEndingsCache(){
     const raw = localStorage.getItem(ENDINGS_CACHE_KEY);
@@ -40,6 +44,7 @@
     if (!o.map || typeof o.map !== "object") return null;
     return o;
   }
+
   function writeEndingsCache(userId, map){
     try{
       localStorage.setItem(ENDINGS_CACHE_KEY, JSON.stringify({
@@ -47,56 +52,53 @@
         ts: _now(),
         map: map || {}
       }));
-    }catch(_){ }
+    }catch(_){}
   }
 
-  function normalizeStatusRow(row){
-    const sid = String(row?.scenario_id || row?.scenario || "").trim().toLowerCase();
-    if (!sid) return null;
-    return {
-      scenario_id: sid,
-      good: !!row?.good_done,
-      bad: !!row?.bad_done,
-      secret: !!row?.secret_done
-    };
-  }
-
-  function buildStatusMap(rows){
+  // Convertit profiles.endings (jsonb) -> map attendu par le renderer
+  // endings JSON exemple:
+  // {
+  //   "bunker_reserve": { "good": true, "bad": false, "secret": false },
+  //   "styx_gare": { "good": false, "bad": true, "secret": true }
+  // }
+  function endingsJsonToMap(endings){
     const map = {};
-    for (const r of (rows || [])){
-      const n = normalizeStatusRow(r);
-      if (!n) continue;
-      map[n.scenario_id] = { good: n.good, bad: n.bad, secret: n.secret };
+    if (!endings || typeof endings !== "object") return map;
+
+    for (const key of Object.keys(endings)){
+      const sid = _norm(key);
+      if (!sid) continue;
+      const v = endings[key] || {};
+      map[sid] = {
+        good:   !!v.good,
+        bad:    !!v.bad,
+        secret: !!v.secret
+      };
     }
     return map;
   }
 
-  async function fetchEndingsFromSupabase(userId){
-    const sb = window.sb;
-    if (!sb) throw new Error("no_sb");
+  async function fetchEndingsFromProfiles(){
+    // 1) state local
+    const st0 = window.VUserData?.load?.() || {};
+    const uid0 = String(st0.user_id || "");
+    const map0 = endingsJsonToMap(st0.endings);
 
-    if (window.VCRemoteStore?.ensureAuth) {
-      await window.VCRemoteStore.ensureAuth();
+    // si déjà ok
+    if (uid0 && Object.keys(map0).length > 0){
+      return { uid: uid0, map: map0 };
     }
 
-    // 1) scenario_status
-    try{
-      const r = await sb
-        .from("scenario_status")
-        .select("scenario_id,good_done,bad_done,secret_done")
-        .eq("user_id", userId);
-      if (!r?.error && Array.isArray(r?.data)) {
-        return buildStatusMap(r.data);
-      }
-    }catch(_){}
+    // 2) tente refresh pour récupérer profiles.endings via secure_get_me
+    if (uid0 && window.VUserData?.refresh){
+      try{ await window.VUserData.refresh(); }catch(_){}
+      const st1 = window.VUserData?.load?.() || {};
+      const uid1 = String(st1.user_id || uid0);
+      const map1 = endingsJsonToMap(st1.endings);
+      return { uid: uid1, map: map1 };
+    }
 
-    // 2) scenario_endings
-    const r = await sb
-      .from("scenario_endings")
-      .select("scenario_id,good_done,bad_done,secret_done")
-      .eq("user_id", userId);
-    if (r?.error) throw r.error;
-    return buildStatusMap(r?.data || []);
+    return { uid: uid0, map: map0 };
   }
 
   function endingIconPaths(){
@@ -112,7 +114,7 @@
     if (!host) return;
     host.innerHTML = "";
 
-    const unlocked = new Set((unlockedList || []).map(x => String(x||"").trim().toLowerCase()).filter(Boolean));
+    const unlocked = new Set((unlockedList || []).map(_norm).filter(Boolean));
     const icons = endingIconPaths();
 
     for (const rawId of (ids || [])){
@@ -162,7 +164,7 @@
       host.appendChild(card);
     }
 
-    try { window.VRI18n?.applyI18n?.(host); } catch(_){ }
+    try { window.VRI18n?.applyI18n?.(host); } catch(_){}
   }
 
   function setMsg(type, key, vars){
@@ -181,7 +183,6 @@
     return /^[a-zA-Z0-9_]+$/.test(s);
   }
 
-  // ✅ pseudo auto (sera TENTÉ d’être écrit dans Supabase via VCRemoteStore.setUsername)
   function genRandomUsername(){
     const n = Math.floor(1000 + Math.random() * 9000);
     return `User_${n}`;
@@ -193,26 +194,20 @@
     const cur = String(st.username || "").trim();
     if (!uid) return;
 
-    // Déjà un pseudo => OK
     if (cur) return;
 
-    // Si VUserData a un fallback local, on l’affiche tout de suite, mais on tente quand même la base
     const textEl = $("pf_username_text");
     if (textEl) textEl.textContent = (window.VRI18n?.t?.("ui.profile_username_missing") || "—");
 
-    // Tentatives d’écriture en base (gère collisions via index unique lower(username))
     for (let i=0; i<8; i++){
       const candidate = genRandomUsername();
       const r = await window.VCRemoteStore?.setUsername?.(candidate);
 
-      // si setUsername n’existe pas, on ne peut rien faire côté base
       if (r === undefined) return;
-
       if (r && r.ok){
         try{ await window.VUserData?.refresh?.(); }catch(_){}
         return;
       }
-      // si "taken" => on retente
     }
   }
 
@@ -309,9 +304,9 @@
     const st = window.VUserData?.load?.() || {};
     const uid = String(st.user_id || "");
     const unlocked = window.VUserData?.getUnlockedScenarios?.() || [];
-
     const ids = SCENARIO_IDS.slice();
 
+    // cache local
     const cache = readEndingsCache();
     const cacheOk = !!(cache && cache.user_id === uid && cache.map);
 
@@ -321,7 +316,6 @@
     }
 
     if (!uid){
-      // ✅ local-first: si on a un cache (même sans uid prêt), on l'affiche
       if (cache && cache.map) {
         renderScenarios(ids, unlocked, cache.map || {});
         return;
@@ -331,17 +325,16 @@
     }
 
     try{
-      // ✅ backup uniquement si local introuvable
-      const endingsMap = await fetchEndingsFromSupabase(uid);
+      const r = await fetchEndingsFromProfiles();
+      const endingsMap = r?.map || {};
       writeEndingsCache(uid, endingsMap);
       renderScenarios(ids, unlocked, endingsMap);
     }catch(e){
-      console.error("[fetchEndings]", e);
+      console.error("[fetchEndingsFromProfiles]", e);
       renderScenarios(ids, unlocked, {});
     }
   }
 
-  // ✅ IMPORTANT: la page peut revenir via history.back() (BFCache) => on doit rerender les badges
   let _refreshEndingsRunning = false;
   async function refreshEndingsSafe(){
     if (_refreshEndingsRunning) return;
@@ -363,10 +356,8 @@
       if (p && typeof p.then === "function") await p;
     }catch(e){ console.error("[VUserData.init]", e); }
 
-    // ✅ Affiche immédiatement
     renderProfileFromState();
 
-    // ✅ Pseudo auto si manquant
     try{ await ensureDefaultUsernameIfMissing(); }catch(e){ console.error("[ensureDefaultUsernameIfMissing]", e); }
     renderProfileFromState();
 
@@ -397,22 +388,18 @@
 
     window.addEventListener("vc:profile", () => {
       renderProfileFromState();
-      // ✅ si user_id arrive un peu après, on refresh les badges
       refreshEndingsSafe();
     });
 
-    // ✅ maj badges si le cache local bouge (même page)
     window.addEventListener("vc:endings_updated", () => {
       refreshEndingsSafe();
     });
 
-    // ✅ retour via history.back() (souvent BFCache) : rerender sûr
     window.addEventListener("pageshow", () => {
       renderProfileFromState();
       refreshEndingsSafe();
     });
 
-    // ✅ quand on revient sur l'onglet/app
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible"){
         renderProfileFromState();
