@@ -85,17 +85,47 @@
     }catch(_){ return false; }
   }
 
+  // =========================
+  // PRICE SANITIZER (FIX [object Object])
+  // =========================
+  function sanitizePrice(v){
+    try{
+      if (!v) return "";
+      if (typeof v === "string") return v;
+      if (typeof v === "number") return String(v);
+
+      if (typeof v === "object"){
+        // cas possibles selon impl store / wrappers
+        if (v?.pricing?.price) return String(v.pricing.price);
+
+        if (typeof v.getOffer === "function"){
+          const offer = v.getOffer();
+          if (offer?.pricing?.price) return String(offer.pricing.price);
+        }
+
+        // parfois direct { price: "0,99 €" }
+        if (v?.price) return String(v.price);
+      }
+
+      return "";
+    }catch(_){
+      return "";
+    }
+  }
+
   function getPrice(pid){
     try{
       const api = getStoreApi();
       const v = api?.getPrice?.(pid);
-      return (v && String(v).trim()) ? String(v) : "";
+      const s = sanitizePrice(v);
+      return (s && String(s).trim()) ? String(s) : "";
     }catch(_){ return ""; }
   }
 
   function setPrice(pid, price){
+    const safe = sanitizePrice(price) || t(I18N.loading);
     $all(`[data-price-for="${pid}"]`).forEach(el => {
-      el.textContent = price || t(I18N.loading);
+      el.textContent = safe;
     });
   }
 
@@ -373,7 +403,7 @@
   window.addEventListener("vc:iap_price", (ev) => {
     const d = ev?.detail || {};
     const pid = String(d.productId || "");
-    const price = String(d.price || "");
+    const price = sanitizePrice(d.price); // ✅ FIX: évite String(object) => [object Object]
     if (!pid) return;
 
     setPrice(pid, price || t(I18N.loading));
