@@ -94,10 +94,18 @@
     "s79": { "file": "assets/scenarios/foret_relais/img/s79.webp" },
     "s80": { "file": "assets/scenarios/foret_relais/img/s80.webp" },
     "s81": { "file": "assets/scenarios/foret_relais/img/s81.webp" },
-
-    "final_good": { "file": "assets/scenarios/foret_relais/img/final_good.webp", "alt": "Sortie de forêt à l’aube, route vide, brume qui recule" },
-    "final_bad": { "file": "assets/scenarios/foret_relais/img/final_bad.webp", "alt": "Intérieur sombre sous lumière rouge, sensation d’être capté" },
-    "final_secret": { "file": "assets/scenarios/foret_relais/img/final_secret.webp", "alt": "Salle de commande active, voyant REC allumé, chaise tournée" }
+    "final_good": {
+      "file": "assets/scenarios/foret_relais/img/final_good.webp",
+      "alt": "Sortie de forêt à l’aube, route vide, brume qui recule"
+    },
+    "final_bad": {
+      "file": "assets/scenarios/foret_relais/img/final_bad.webp",
+      "alt": "Intérieur sombre sous lumière rouge, sensation d’être capté"
+    },
+    "final_secret": {
+      "file": "assets/scenarios/foret_relais/img/final_secret.webp",
+      "alt": "Salle de commande active, voyant REC allumé, chaise tournée"
+    }
   },
   "state_model": {
     "flags": [
@@ -108,7 +116,6 @@
       "heard_broadcast",
       "has_frequency",
       "found_cabin_note",
-      "saw_tower",
       "entered_facility",
       "has_bunker_key",
       "opened_bunker",
@@ -321,6 +328,7 @@
         { "choice_key": "frt.s20.c3", "next": "s30" }
       ]
     },
+
     "s21": {
       "image_id": "s21",
       "title_key": "frt.s21.title",
@@ -421,6 +429,7 @@
         { "choice_key": "frt.s30.c3", "next": "s05" }
       ]
     },
+
     "s31": {
       "image_id": "s31",
       "title_key": "frt.s31.title",
@@ -531,6 +540,7 @@
         { "choice_key": "frt.s41.c3", "next": "s58" }
       ]
     },
+
     "s42": {
       "image_id": "s42",
       "title_key": "frt.s42.title",
@@ -621,6 +631,7 @@
         { "choice_key": "frt.s50.c3", "next": "s69" }
       ]
     },
+
     "s51": {
       "image_id": "s51",
       "title_key": "frt.s51.title",
@@ -921,11 +932,7 @@
       "title_key": "frt.s80.title",
       "body_key": "frt.s80.body",
       "choices": [
-        {
-          "choice_key": "frt.s80.c1",
-          "next": "end_good",
-          "requires_any_flags": ["has_frequency", "has_map", "stabilized_path"]
-        },
+        { "choice_key": "frt.s80.c1", "next": "end_good" },
         { "choice_key": "frt.s80.c2", "next": "end_bad" },
         {
           "choice_key": "frt.s80.c3",

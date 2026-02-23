@@ -1,4 +1,4 @@
-// js/userData.js — VERSION COMPLETE À JOUR (lang device early + sync Supabase + setLang exposé)
+// js/userData.js — VERSION COMPLETE À JOUR (lang device early + sync Supabase + local unlock cache "pour toujours")
 // VChoice — Local cache + Supabase RPCs (source of truth)
 // - Profil via RPC secure_get_me
 // - Solde via RPC: secure_add_vcoins / secure_add_jetons / secure_spend_jetons / secure_reduce_vcoins_to
@@ -6,6 +6,11 @@
 // - Lang via secure_set_lang
 // - Déblocage scénario via secure_unlock_scenario
 // - Fin scénario: secure_complete_scenario (reward + log ending)
+//
+// ✅ PATCH 2026-02-23:
+// - Les scénarios débloqués sont "acquis pour toujours" côté local (cache dédié)
+// - Un refresh au lancement ne peut JAMAIS re-verrouiller un scénario déjà en local (merge/union uniquement)
+// - isScenarioUnlocked() fallback localStorage même si init pas encore fini (moins de flicker cadenas)
 
 (function () {
   "use strict";
@@ -15,6 +20,9 @@
 
   // ✅ Cache endings (même clé/format que profile.js)
   const ENDINGS_CACHE_KEY = "vchoice_endings_cache_v1";
+
+  // ✅ Cache scénarios débloqués "pour toujours" (scopé user_id)
+  const UNLOCKED_CACHE_KEY = "vchoice_unlocked_cache_v1";
 
   // ✅ Langs supportées côté app (device -> local -> supabase)
   const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
@@ -27,6 +35,9 @@
 
   // ✅ queue remote (évite RPC simultanés)
   let _remoteQueue = Promise.resolve();
+
+  // ✅ évite double prime local
+  let _primedLocal = false;
 
   // ======= utils =======
   function _now(){ return Date.now(); }
@@ -46,6 +57,23 @@
   }
 
   function _isDebug(){ try { return !!window.__VC_DEBUG; } catch { return false; } }
+
+  function _mergeScenarioLists(/* ...lists */){
+    const out = [];
+    const seen = new Set();
+    for (let i=0;i<arguments.length;i++){
+      const list = arguments[i];
+      if (!Array.isArray(list)) continue;
+      for (let j=0;j<list.length;j++){
+        const s = _normScenarioId(list[j]);
+        if (!s) continue;
+        if (seen.has(s)) continue;
+        seen.add(s);
+        out.push(s);
+      }
+    }
+    return out;
+  }
 
   const _errState = { last: null, ts: 0 };
   function _reportRemoteError(where, err){
@@ -114,11 +142,56 @@
 
     _writeEndingsCache(uid, map);
 
-    // ✅ utile si profile.js écoute (sinon aucun impact)
     try{
       window.dispatchEvent(new CustomEvent("vc:endings_updated", {
         detail: { user_id: uid, scenario_id: sid, ending: e }
       }));
+    }catch(_){}
+  }
+
+  // ======= local unlocked scenarios cache (pour toujours) =======
+  function _readUnlockedCache(){
+    try{
+      const raw = localStorage.getItem(UNLOCKED_CACHE_KEY);
+      const o = _safeParse(raw);
+      if (!o || typeof o !== "object") return null;
+      if (!o.user_id) return null;
+      if (!Array.isArray(o.list)) return null;
+      return {
+        user_id: String(o.user_id || ""),
+        ts: Number(o.ts || 0) || 0,
+        list: Array.isArray(o.list) ? o.list.slice() : []
+      };
+    }catch{ return null; }
+  }
+
+  function _writeUnlockedCache(userId, list){
+    try{
+      const uid = String(userId || "");
+      if (!uid) return;
+      const merged = _mergeScenarioLists(list || []);
+      localStorage.setItem(UNLOCKED_CACHE_KEY, JSON.stringify({
+        user_id: uid,
+        ts: _now(),
+        list: merged
+      }));
+    }catch(_){}
+  }
+
+  function _getUnlockedCacheFor(uid){
+    const u = String(uid || "");
+    if (!u) return [];
+    const cache = _readUnlockedCache();
+    if (!cache) return [];
+    if (String(cache.user_id || "") !== u) return [];
+    return Array.isArray(cache.list) ? cache.list.slice() : [];
+  }
+
+  function _syncUnlockedCacheFromMem(){
+    try{
+      const uid = String(_memState.user_id || "");
+      if (!uid) return;
+      _writeUnlockedCache(uid, _memState.unlocked_scenarios);
     }catch(_){}
   }
 
@@ -178,6 +251,9 @@
 
     if (!SUPPORTED_LANGS.includes(out.lang)) out.lang = "";
 
+    // normalize scenario ids
+    out.unlocked_scenarios = out.unlocked_scenarios.map(_normScenarioId).filter(Boolean);
+
     return out;
   }
 
@@ -203,6 +279,8 @@
         unlocked_scenarios: Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : []
       });
     }catch(_){}
+    // ✅ en plus, on sync le cache "pour toujours" si on a un uid
+    _syncUnlockedCacheFromMem();
   }
 
   function _emitProfile(){
@@ -393,7 +471,6 @@
       return (typeof v === "number" && !Number.isNaN(v)) ? v : null;
     },
 
-    // ✅ FIX SYNTAX : il manquait "async" ici
     async completeScenario(scenarioId, ending){
       const sb = window.sb;
       if (!sbReady()) return { ok:false, reason:"no_client" };
@@ -424,10 +501,27 @@
       if (_initPromise) return _initPromise;
 
       _initPromise = (async () => {
-        const cached = _readLocal();
-        if (cached) this.save(cached, { silent:true });
-        else this.save(this.load(), { silent:true });
+        // ✅ PRIME local immédiatement (avant tout refresh remote)
+        if (!_primedLocal){
+          _primedLocal = true;
+          const cached = _readLocal();
+          if (cached) this.save(cached, { silent:true });
+          else this.save(this.load(), { silent:true });
+        }
 
+        // ✅ Si on a un uid local, on merge le cache "pour toujours"
+        try{
+          const uid = String(_memState.user_id || "");
+          if (uid){
+            const cachedUnlock = _getUnlockedCacheFor(uid);
+            if (cachedUnlock.length){
+              _memState.unlocked_scenarios = _mergeScenarioLists(_memState.unlocked_scenarios, cachedUnlock);
+              _persistLocal();
+            }
+          }
+        }catch(_){}
+
+        // ✅ Refresh (background) : ajoute seulement, ne retire jamais
         if (window.VCRemoteStore?.enabled?.()){
           await this.refresh().catch((e) => { _reportRemoteError("VUserData.init.refresh", e); return false; });
 
@@ -454,6 +548,10 @@
         const me = await window.VCRemoteStore.getMe();
         if (!me) return false;
 
+        const prevUid = String(_memState.user_id || "");
+        const nextUid = String(me.user_id || "");
+        const uidChanged = !!(prevUid && nextUid && prevUid !== nextUid);
+
         const prevLang = String(_memState.lang || "");
         const nextLang = String(me.lang || "");
         _memState._remote_lang_missing = !nextLang;
@@ -467,11 +565,18 @@
           _writeLangLocal(nextLang);
         }
 
-        _memState.user_id = String(me.user_id || "");
+        _memState.user_id = nextUid;
         _memState.username = String(me.username || "");
         _memState.vcoins = Number(me.vcoins || 0) || 0;
         _memState.jetons = Number(me.jetons || 0) || 0;
-        _memState.unlocked_scenarios = Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios.slice() : [];
+
+        // ✅ MERGE unlocked_scenarios (local "pour toujours" + cache user + remote)
+        const remoteList = Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios.slice() : [];
+        const cacheList = nextUid ? _getUnlockedCacheFor(nextUid) : [];
+        const localList = uidChanged ? [] : (Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : []);
+
+        // ⚠️ si uid change, on évite de garder les unlocks de l'ancien user
+        _memState.unlocked_scenarios = _mergeScenarioLists(cacheList, localList, remoteList);
 
         _persistLocal();
 
@@ -504,10 +609,21 @@
       const localLang = _readLangLocal();
       const desiredLang = localLang || deviceLang || "en";
 
-      _memState.user_id = String(o.user_id || _memState.user_id || "");
+      const incomingUid = String(o.user_id || "").trim();
+      if (incomingUid){
+        // ⚠️ si uid change via save, on ne mélange pas les unlocks
+        const prevUid = String(_memState.user_id || "");
+        if (prevUid && prevUid !== incomingUid){
+          _memState.unlocked_scenarios = [];
+        }
+        _memState.user_id = incomingUid;
+      } else {
+        _memState.user_id = String(_memState.user_id || "");
+      }
+
       _memState.username = String(o.username || _memState.username || "");
-      _memState.vcoins = Number(o.vcoins ?? _memState.vcoins ?? 0) || 0;
-      _memState.jetons = Number(o.jetons ?? _memState.jetons ?? 0) || 0;
+      _memState.vcoins = Number((o.vcoins ?? _memState.vcoins ?? 0)) || 0;
+      _memState.jetons = Number((o.jetons ?? _memState.jetons ?? 0)) || 0;
 
       const langIn = String(o.lang || _memState.lang || "").toLowerCase();
       if (SUPPORTED_LANGS.includes(langIn)) _memState.lang = langIn;
@@ -515,22 +631,60 @@
 
       _writeLangLocal(_memState.lang);
 
-      _memState.unlocked_scenarios = Array.isArray(o.unlocked_scenarios) ? o.unlocked_scenarios.slice() : (_memState.unlocked_scenarios || []);
+      // ✅ IMPORTANT: unlocked_scenarios ne doit JAMAIS "shrink"
+      // -> on merge toujours l'existant + l'incoming + le cache "pour toujours" du user
+      const incomingList = Array.isArray(o.unlocked_scenarios) ? o.unlocked_scenarios.slice() : null;
+      const uid = String(_memState.user_id || "");
+      const cacheList = uid ? _getUnlockedCacheFor(uid) : [];
+      _memState.unlocked_scenarios = _mergeScenarioLists(
+        cacheList,
+        _memState.unlocked_scenarios,
+        incomingList || []
+      );
 
       _persistLocal();
 
       if (!silent) _emitProfileSoon();
     },
 
+    // ✅ helper utilisé par index.html chez toi
+    getLang(){
+      const l = String(_memState.lang || "").toLowerCase();
+      if (SUPPORTED_LANGS.includes(l)) return l;
+      return _readLangLocal() || _getDeviceLang() || "en";
+    },
+
     getUnlockedScenarios(){
-      return Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : [];
+      // ✅ fallback localStorage même si init pas fini
+      const mem = Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : [];
+      if (mem.length) return mem;
+
+      try{
+        const cached = _readLocal();
+        const arr = cached && Array.isArray(cached.unlocked_scenarios) ? cached.unlocked_scenarios : [];
+        if (arr && arr.length) return _mergeScenarioLists(arr);
+      }catch(_){}
+
+      return [];
     },
 
     isScenarioUnlocked(scenarioId){
       const s = _normScenarioId(scenarioId);
       if (!s) return false;
+
       const arr = this.getUnlockedScenarios();
-      return arr.includes(s);
+      if (arr.includes(s)) return true;
+
+      // ✅ si on a un uid, check aussi le cache "pour toujours"
+      try{
+        const uid = String(_memState.user_id || "") || String(_readLocal()?.user_id || "");
+        if (uid){
+          const cacheList = _getUnlockedCacheFor(uid);
+          if (cacheList.includes(s)) return true;
+        }
+      }catch(_){}
+
+      return false;
     },
 
     async unlockScenario(scenarioId){
@@ -540,12 +694,28 @@
       const s = _normScenarioId(scenarioId);
       if (!s) return { ok:false, reason:"invalid_scenario" };
 
-      // ✅ local (optimiste) : on l'ajoute tout de suite
+      // ✅ local (optimiste + permanent) : on l'ajoute tout de suite
       const cur = this.getUnlockedScenarios();
       if (!cur.includes(s)){
         cur.push(s);
         this.save({ ...this.load(), unlocked_scenarios: cur });
       }
+
+      // ✅ write-through "pour toujours" si uid connu
+      try{
+        let uid = String(_memState.user_id || "");
+        if (!uid && window.VCRemoteStore?.ensureAuth){
+          try{ uid = String(await window.VCRemoteStore.ensureAuth() || ""); }catch(_){}
+          if (uid){
+            _memState.user_id = uid;
+            _persistLocal();
+          }
+        }
+        if (uid){
+          const merged = _mergeScenarioLists(_getUnlockedCacheFor(uid), cur);
+          _writeUnlockedCache(uid, merged);
+        }
+      }catch(_){}
 
       if (!window.VCRemoteStore?.enabled?.()){
         return { ok:false, reason:"no_remote", local_ok:true, remote_ok:false, data:null };
@@ -556,12 +726,13 @@
         return { ok:false, reason: res?.reason || "rpc_error", local_ok:true, remote_ok:false, error: res?.error || null, data: res?.data || null };
       }
 
-      // ✅ remote peut renvoyer unlocked_scenarios
+      // ✅ remote peut renvoyer unlocked_scenarios -> on merge (jamais shrink)
       try{
         const payload = res.data || null;
         const list = payload && payload.unlocked_scenarios;
         if (Array.isArray(list)){
-          this.save({ ...this.load(), unlocked_scenarios: list });
+          const merged = _mergeScenarioLists(this.getUnlockedScenarios(), list);
+          this.save({ ...this.load(), unlocked_scenarios: merged });
         } else {
           await this.refresh().catch(() => false);
         }
@@ -571,7 +742,6 @@
     },
 
     async setUsername(username){
-      // ✅ local update immédiat
       const name = String(username || "").trim();
       if (!name) return { ok:false, reason:"invalid_username" };
 
@@ -610,7 +780,6 @@
     },
 
     async addVCoins(delta){
-      // ✅ local optimiste
       const d = Number(delta || 0);
       if (!Number.isFinite(d) || d === 0) return { ok:false, reason:"invalid_delta" };
 
@@ -634,7 +803,6 @@
       if (!Number.isFinite(v0)) return { ok:false, reason:"invalid_value" };
 
       if (!window.VCRemoteStore?.enabled?.()){
-        // ✅ fallback local
         const cur = this.load();
         this.save({ ...cur, vcoins: Math.max(0, v0) });
         return { ok:true, vcoins: Math.max(0, v0), local_only:true };
@@ -653,7 +821,6 @@
       if (!Number.isFinite(d) || d === 0) return { ok:false, reason:"invalid_delta" };
 
       if (!window.VCRemoteStore?.enabled?.()){
-        // ✅ fallback local
         const cur = this.load();
         this.save({ ...cur, jetons: Math.max(0, Number(cur.jetons||0) + d) });
         return { ok:true, jetons: this.load().jetons, local_only:true };
@@ -672,7 +839,6 @@
       if (!Number.isFinite(d) || d <= 0) return { ok:false, reason:"invalid_delta" };
 
       if (!window.VCRemoteStore?.enabled?.()){
-        // ✅ fallback local
         const cur = this.load();
         const left = Math.max(0, Number(cur.jetons||0) - d);
         this.save({ ...cur, jetons: left });
@@ -688,7 +854,6 @@
     },
 
     async completeScenario(scenarioId, ending){
-      // ✅ sécurité: si init pas fait, on le fait ici
       try{ await this.init(); }catch(_){}
 
       const s = _normScenarioId(scenarioId);
@@ -698,24 +863,19 @@
       if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
 
       // ✅ LOCAL-FIRST : on marque le badge en local immédiatement
-      // (le profil doit dépendre du cache local, pas de Supabase)
       let localOk = false;
       try{
-        // 1) si on n'a pas encore user_id en mémoire, on tente d'obtenir l'UID Auth (sans RPC)
         let uid = String(_memState.user_id || "");
         if (!uid && window.VCRemoteStore?.ensureAuth){
           try{ uid = String(await window.VCRemoteStore.ensureAuth() || ""); }catch(_){}
         }
 
-        // 2) si toujours rien, on tente un refresh (RPC) pour remplir le profil
         if (!uid){
           try{ await this.refresh(); }catch(_){}
           uid = String(_memState.user_id || "");
         }
 
-        // 3) si on a un uid => on marque le cache endings
         if (uid){
-          // ⚠️ important: on fixe aussi _memState.user_id pour que profile.js compare correctement cache.user_id === uid
           _memState.user_id = uid;
           _persistLocal();
           _markEndingLocal(uid, s, e);
@@ -723,14 +883,12 @@
         }
       }catch(_){}
 
-      // ✅ Remote optionnel (servira pour backup + analytics + récompenses serveur)
       if (!window.VCRemoteStore?.enabled?.()){
         return { ok:false, reason:"no_remote", local_ok: localOk, remote_ok:false, data:null };
       }
 
       const res = await window.VCRemoteStore.completeScenario(s, e);
       if (!res?.ok){
-        // Remote a échoué, mais le badge local a été marqué si possible
         return { ok:false, reason: res?.reason || "rpc_error", local_ok: localOk, remote_ok:false, error: res?.error || null, data: res?.data || null };
       }
 

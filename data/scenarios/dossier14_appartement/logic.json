@@ -143,7 +143,7 @@
       "choices": [
         { "choice_key": "d14.s06.c1", "next": "s03" },
         { "choice_key": "d14.s06.c2", "next": "s07" },
-        { "choice_key": "d14.s06.c3", "next": "s13" }
+        { "choice_key": "d14.s06.c3", "next": "s09" }
       ]
     },
 
@@ -165,7 +165,7 @@
       "choices": [
         { "choice_key": "d14.s08.c1", "next": "s03" },
         { "choice_key": "d14.s08.c2", "next": "s09" },
-        { "choice_key": "d14.s08.c3", "next": "s03" }
+        { "choice_key": "d14.s08.c3", "next": "s04" }
       ]
     },
 
@@ -253,7 +253,7 @@
       "choices": [
         { "choice_key": "d14.s16.c1", "next": "s17" },
         { "choice_key": "d14.s16.c2", "next": "s13" },
-        { "choice_key": "d14.s16.c3", "next": "s17" }
+        { "choice_key": "d14.s16.c3", "next": "s23" }
       ]
     },
 
@@ -627,7 +627,7 @@
       "choices": [
         { "choice_key": "d14.s50.c1", "next": "end_good" },
         { "choice_key": "d14.s50.c2", "next": "end_bad" },
-        { "choice_key": "d14.s50.c3", "next": "end_secret", "requires_all_flags": ["has_photo", "has_badge", "has_key", "has_dossier"] }
+        { "choice_key": "d14.s50.c3", "next": "end_secret", "requires_all_flags": ["has_badge", "has_key", "has_dossier"] }
       ]
     },
 
