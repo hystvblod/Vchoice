@@ -5,7 +5,6 @@
     "start_scene": "s01",
     "hint_ns": "d14.h"
   },
-
   "scenario_id": "dossier14_appartement",
   "version": 3,
   "start_scene": "s01",
@@ -120,9 +119,9 @@
       "title_key": "d14.s04.title",
       "body_key": "d14.s04.body",
       "choices": [
-        { "choice_key": "d14.s04.c1", "next": "s05" },
+        { "choice_key": "d14.s04.c1", "next": "s11" },
         { "choice_key": "d14.s04.c2", "next": "s03" },
-        { "choice_key": "d14.s04.c3", "next": "s05" }
+        { "choice_key": "d14.s04.c3", "next": "s06" }
       ]
     },
 
@@ -144,7 +143,7 @@
       "choices": [
         { "choice_key": "d14.s06.c1", "next": "s03" },
         { "choice_key": "d14.s06.c2", "next": "s07" },
-        { "choice_key": "d14.s06.c3", "next": "s09" }
+        { "choice_key": "d14.s06.c3", "next": "s13" }
       ]
     },
 
@@ -154,7 +153,7 @@
       "body_key": "d14.s07.body",
       "choices": [
         { "choice_key": "d14.s07.c1", "next": "s05" },
-        { "choice_key": "d14.s07.c2", "next": "s01" },
+        { "choice_key": "d14.s07.c2", "next": "s03" },
         { "choice_key": "d14.s07.c3", "next": "s09" }
       ]
     },
@@ -175,8 +174,8 @@
       "title_key": "d14.s09.title",
       "body_key": "d14.s09.body",
       "choices": [
-        { "choice_key": "d14.s09.c1", "next": "s13" },
-        { "choice_key": "d14.s09.c2", "next": "s10" },
+        { "choice_key": "d14.s09.c1", "next": "s10" },
+        { "choice_key": "d14.s09.c2", "next": "s15" },
         { "choice_key": "d14.s09.c3", "next": "s13" }
       ]
     },
@@ -197,9 +196,9 @@
       "title_key": "d14.s11.title",
       "body_key": "d14.s11.body",
       "choices": [
-        { "choice_key": "d14.s11.c1", "next": "s09" },
-        { "choice_key": "d14.s11.c2", "next": "s10" },
-        { "choice_key": "d14.s11.c3", "next": "s13" }
+        { "choice_key": "d14.s11.c1", "next": "s05" },
+        { "choice_key": "d14.s11.c2", "next": "s03" },
+        { "choice_key": "d14.s11.c3", "next": "s09" }
       ]
     },
 
@@ -231,7 +230,7 @@
       "body_key": "d14.s14.body",
       "choices": [
         { "choice_key": "d14.s14.c1", "next": "s13" },
-        { "choice_key": "d14.s14.c2", "next": "s20" },
+        { "choice_key": "d14.s14.c2", "next": "s26" },
         { "choice_key": "d14.s14.c3", "next": "s11" }
       ]
     },
@@ -241,9 +240,9 @@
       "title_key": "d14.s15.title",
       "body_key": "d14.s15.body",
       "choices": [
-        { "choice_key": "d14.s15.c1", "next": "s16" },
+        { "choice_key": "d14.s15.c1", "next": "s18" },
         { "choice_key": "d14.s15.c2", "next": "s13" },
-        { "choice_key": "d14.s15.c3", "next": "s18" }
+        { "choice_key": "d14.s15.c3", "next": "s16" }
       ]
     },
 
@@ -329,7 +328,7 @@
       "title_key": "d14.s23.title",
       "body_key": "d14.s23.body",
       "choices": [
-        { "choice_key": "d14.s23.c1", "next": "s30" },
+        { "choice_key": "d14.s23.c1", "next": "s30", "set_flags": ["has_key"] },
         { "choice_key": "d14.s23.c2", "next": "s35" },
         { "choice_key": "d14.s23.c3", "next": "s22" }
       ]
@@ -406,7 +405,7 @@
       "title_key": "d14.s30.title",
       "body_key": "d14.s30.body",
       "choices": [
-        { "choice_key": "d14.s30.c1", "next": "s31", "set_flags": ["has_key"] },
+        { "choice_key": "d14.s30.c1", "next": "s31" },
         { "choice_key": "d14.s30.c2", "next": "s23" },
         { "choice_key": "d14.s30.c3", "next": "s28" }
       ]
@@ -539,7 +538,7 @@
       "body_key": "d14.s42.body",
       "choices": [
         { "choice_key": "d14.s42.c1", "next": "s43", "set_flags": ["has_recording"] },
-        { "choice_key": "d14.s42.c2", "next": "s43" },
+        { "choice_key": "d14.s42.c2", "next": "s39" },
         { "choice_key": "d14.s42.c3", "next": "s41" }
       ]
     },

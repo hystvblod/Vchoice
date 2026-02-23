@@ -1,6 +1,6 @@
 {
   "ui": {
-    "app_title": "VChoice",
+    "app_title": "VChronicles",
     "app_subtitle": "Histoire interactive",
 
     "index_title": "Choisis ton scénario",
@@ -143,7 +143,15 @@
       "it": "Italiano",
       "ko": "한국어",
       "ja": "日本語"
-    }
+    },
+
+
+    "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans pub.",
+    "locked_unlock_jeton": "Dépenser 1 jeton",
+    "locked_unlock_ad": "Regarder une pub",
+    "locked_unlock_ad_fail": "Publicité indisponible pour le moment.",
+    "locked_unlock_no_jetons": "Pas assez de jetons.",
+    "locked_unlock_error": "Impossible de débloquer maintenant."
   },
 
   "common": {
