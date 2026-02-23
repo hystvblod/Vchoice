@@ -147,7 +147,6 @@
       margin: 10px 0 14px;
     }
 
-    /* force 2 par ligne même sur mobile */
     @media (max-width: 360px){
       .reward-grid{ gap: 10px; }
     }
@@ -162,7 +161,7 @@
     }
 
     .reward-card{
-      padding: 12px 12px 10px;
+      padding: 12px 12px 12px;
       cursor: default;
       -webkit-tap-highlight-color: transparent;
     }
@@ -186,20 +185,21 @@
       justify-content:space-between;
       gap: 10px;
       margin-bottom: 10px;
-      min-height: 58px;
+      min-height: 74px; /* ✅ plus haut car icône plus grosse */
     }
 
+    /* ✅ PLUS GROS */
     .reward-ico{
-      width: 56px;
-      height: 56px;
+      width: 72px;
+      height: 72px;
       object-fit: contain;
-      filter: drop-shadow(0 14px 26px rgba(0,0,0,.55));
+      filter: drop-shadow(0 16px 30px rgba(0,0,0,.55));
       flex: 0 0 auto;
     }
 
     .reward-x{
       font-weight: 950;
-      font-size: 18px;
+      font-size: 20px;
       letter-spacing: .2px;
       color: var(--vc-text);
       opacity: .98;
@@ -210,7 +210,7 @@
       position:relative;
       width:100%;
       border-radius: 14px;
-      padding: 10px 10px;
+      padding: 11px 10px;
       font-weight: 950;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.28);
@@ -233,7 +233,7 @@
     }
 
     .prod-card{
-      padding: 12px 12px 10px;
+      padding: 12px 12px 12px;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
       position:relative;
@@ -260,14 +260,15 @@
       align-items:center;
       justify-content:space-between;
       gap: 10px;
-      min-height: 148px;
+      min-height: 166px; /* ✅ laisse respirer icône + chiffre */
     }
 
+    /* ✅ PLUS GROS */
     .prod-ico{
-      width: 76px;
-      height: 76px;
+      width: 92px;
+      height: 92px;
       object-fit: contain;
-      filter: drop-shadow(0 16px 30px rgba(0,0,0,.55));
+      filter: drop-shadow(0 18px 34px rgba(0,0,0,.60));
       user-select:none;
       pointer-events:none;
     }
@@ -277,11 +278,11 @@
       align-items:center;
       gap: 8px;
       font-weight: 950;
-      font-size: 18px;
+      font-size: 20px;
       color: var(--vc-text);
       text-shadow: 0 10px 24px rgba(0,0,0,.5);
       line-height: 1;
-      margin-top: -2px;
+      margin-top: -4px;
     }
 
     .prod-price{
@@ -289,7 +290,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 10px 10px;
+      padding: 11px 10px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.22);
@@ -300,11 +301,11 @@
       color: var(--vc-text);
     }
 
-    /* owned visual */
     .prod-card.is-owned .prod-price{
       border-color: rgba(80,220,140,.25);
       background: rgba(15,50,28,.25);
     }
+
     .owned-badge{
       position:absolute;
       top: 10px;
@@ -330,10 +331,10 @@
       inset: 0;
       z-index: 999;
       display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      padding: 16px 14px calc(16px + env(safe-area-inset-bottom));
-      background: rgba(0,0,0,.55);
+      align-items:center;              /* ✅ CENTRÉ */
+      justify-content:center;          /* ✅ CENTRÉ */
+      padding: 18px 14px;              /* ✅ pas collé en bas */
+      background: rgba(0,0,0,.62);
       opacity: 0;
       pointer-events:none;
       transition: opacity .14s ease;
@@ -344,92 +345,104 @@
     }
 
     .shop-modal-card{
-      width: min(560px, 100%);
+      width: min(520px, 100%);
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,.14);
       background:
         radial-gradient(900px 420px at 20% 0%, rgba(255,59,59,.16), transparent 60%),
         radial-gradient(900px 420px at 90% 5%, rgba(110,40,190,.12), transparent 60%),
         rgba(8,10,16,.92);
-      box-shadow: 0 26px 70px rgba(0,0,0,.65);
+      box-shadow: 0 26px 70px rgba(0,0,0,.70);
       overflow:hidden;
-      transform: translateY(10px);
+      transform: scale(.98) translateY(6px);  /* ✅ petite anim “modal” */
       transition: transform .16s ease;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
-    .shop-modal.is-open .shop-modal-card{ transform: translateY(0); }
-
-    .shop-modal-top{
-      padding: 14px 14px 10px;
-      display:flex;
-      gap: 12px;
-      align-items:center;
+    .shop-modal.is-open .shop-modal-card{
+      transform: scale(1) translateY(0);
     }
 
+    /* ✅ Layout modal centré */
+    .shop-modal-top{
+      padding: 18px 16px 10px;
+      display:flex;
+      flex-direction:column;   /* ✅ colonne */
+      gap: 10px;
+      align-items:center;      /* ✅ center */
+      text-align:center;       /* ✅ center */
+    }
+
+    /* ✅ PLUS GROS dans le modal */
     .shop-modal-ico{
-      width: 62px;
-      height: 62px;
+      width: 86px;
+      height: 86px;
       object-fit: contain;
-      filter: drop-shadow(0 14px 26px rgba(0,0,0,.55));
+      filter: drop-shadow(0 18px 34px rgba(0,0,0,.60));
       flex: 0 0 auto;
     }
 
     .shop-modal-title{
       margin: 0;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 950;
       color: var(--vc-text);
       line-height: 1.1;
-    }
-    .shop-modal-desc{
-      margin: 8px 14px 0;
-      color: var(--vc-muted);
-      font-size: 13px;
-      line-height: 1.35;
-    }
-
-    .shop-modal-bottom{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      padding: 14px;
-      margin-top: 10px;
-      border-top: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
+      text-shadow: 0 10px 24px rgba(0,0,0,.55);
     }
 
     .shop-modal-price{
       font-weight: 950;
-      font-size: 18px;
+      font-size: 20px;
       letter-spacing: .2px;
       color: var(--vc-text);
       white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .shop-modal-desc{
+      margin: 8px 16px 0;
+      color: var(--vc-muted);
+      font-size: 13px;
+      line-height: 1.35;
+      text-align:center;      /* ✅ center */
+    }
+
+    .shop-modal-bottom{
+      display:flex;
+      flex-direction:column;          /* ✅ colonne */
+      align-items:center;             /* ✅ center */
+      justify-content:center;         /* ✅ center */
+      gap: 12px;
+      padding: 14px 16px 16px;
+      margin-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
     }
 
     .shop-modal-actions{
       display:flex;
       gap: 10px;
       align-items:center;
-      justify-content:flex-end;
+      justify-content:center;         /* ✅ center */
+      width:100%;
     }
 
     .shop-modal-btn{
       border-radius: 14px;
-      padding: 10px 12px;
+      padding: 11px 14px;
       font-weight: 950;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.22);
       color: var(--vc-text);
       cursor:pointer;
-      min-width: 108px;
+      min-width: 132px;              /* ✅ plus large, “studio” */
     }
     .shop-modal-btn:active{ transform: translateY(1px); }
 
     .shop-modal-btn.primary{
       border-color: rgba(255,59,59,.30);
-      background: linear-gradient(180deg, rgba(255,59,59,.18), rgba(0,0,0,.18));
+      background: linear-gradient(180deg, rgba(255,59,59,.20), rgba(0,0,0,.16));
       box-shadow: 0 14px 30px rgba(0,0,0,.30);
     }
     .shop-modal-btn[disabled]{ opacity:.6; cursor:not-allowed; }
@@ -482,7 +495,6 @@
     <!-- ✅ Produits (2 par ligne) -->
     <section class="shop-section" aria-label="Produits">
       <div class="shop-grid">
-        <!-- Jetons 12 -->
         <article class="shop-panel prod-card" data-product="vchoice_jetons_12">
           <span class="owned-badge">OK</span>
           <div class="prod-inner">
@@ -492,7 +504,6 @@
           </div>
         </article>
 
-        <!-- Jetons 30 -->
         <article class="shop-panel prod-card" data-product="vchoice_jetons_30">
           <span class="owned-badge">OK</span>
           <div class="prod-inner">
@@ -502,7 +513,6 @@
           </div>
         </article>
 
-        <!-- VCoins 500 -->
         <article class="shop-panel prod-card" data-product="vchoice_vcoins_500">
           <span class="owned-badge">OK</span>
           <div class="prod-inner">
@@ -512,7 +522,6 @@
           </div>
         </article>
 
-        <!-- VCoins 3000 -->
         <article class="shop-panel prod-card" data-product="vchoice_vcoins_3000">
           <span class="owned-badge">OK</span>
           <div class="prod-inner">
@@ -522,22 +531,18 @@
           </div>
         </article>
 
-        <!-- No Ads (image webp : tu peux renommer derrière) -->
         <article class="shop-panel prod-card" data-product="vchoice_no_ads">
           <span class="owned-badge">OK</span>
           <div class="prod-inner">
-            <!-- ✅ Remplace ce src par ton webp quand tu l’as -->
             <img class="prod-ico" data-product-icon src="assets/img/ui/no_ads.webp" alt="" draggable="false" />
             <div class="prod-amount" style="font-size:16px">No Ads</div>
             <div class="prod-price" data-price-for="vchoice_no_ads">…</div>
           </div>
         </article>
 
-        <!-- Diamond / ULTRA (image webp : tu peux renommer derrière) -->
         <article class="shop-panel prod-card" data-product="vchoice_ultra">
           <span class="owned-badge">OK</span>
           <div class="prod-inner">
-            <!-- ✅ Remplace ce src par ton webp quand tu l’as -->
             <img class="prod-ico" data-product-icon src="assets/img/ui/diamond.webp" alt="" draggable="false" />
             <div class="prod-amount" style="font-size:16px">Diamond</div>
             <div class="prod-price" data-price-for="vchoice_ultra">…</div>
@@ -549,19 +554,16 @@
 
   <!-- ✅ Modal achat -->
   <div class="shop-modal" id="shopModal" aria-hidden="true">
-    <div class="shop-modal-card shop-modal-card" role="dialog" aria-modal="true" aria-label="Achat">
+    <div class="shop-modal-card" role="dialog" aria-modal="true" aria-label="Achat">
       <div class="shop-modal-top">
         <img class="shop-modal-ico" id="shopModalIcon" src="assets/img/ui/jeton.webp" alt="" draggable="false" />
-        <div>
-          <h2 class="shop-modal-title" id="shopModalTitle"></h2>
-          <div class="shop-modal-price" id="shopModalPrice" style="margin-top:6px">…</div>
-        </div>
+        <h2 class="shop-modal-title" id="shopModalTitle"></h2>
+        <div class="shop-modal-price" id="shopModalPrice">…</div>
       </div>
 
       <p class="shop-modal-desc" id="shopModalDesc"></p>
 
       <div class="shop-modal-bottom">
-        <div style="opacity:.0">.</div>
         <div class="shop-modal-actions">
           <button class="shop-modal-btn" id="shopModalCancel" type="button">Annuler</button>
           <button class="shop-modal-btn primary" id="shopModalBuy" type="button" data-buy="">Acheter</button>
