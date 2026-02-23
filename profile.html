@@ -18,6 +18,11 @@
 
       /* ✅ padding interne identique EMPTY+FULL => full jamais "plus gros" */
       --badgePad: 7%;
+
+      /* ✅ modal badge */
+      --badgeModalMax: 78vmin; /* taille max de l'image en grand */
+      --badgeModalPad: 14px;
+      --badgeModalRadius: 20px;
     }
 
     /* ✅ Anti-débordement / responsive */
@@ -353,7 +358,10 @@
       line-height: 0 !important;
       filter: none !important;
       opacity: 1 !important;
+      cursor: pointer !important;
+      -webkit-tap-highlight-color: transparent;
     }
+    .vc-end:active{ transform: scale(.99); }
 
     /* Empty + Full superposés, EXACTEMENT même taille */
     .vc-end img{
@@ -372,6 +380,8 @@
 
       /* ✅ IMPORTANT: PAS de opacity:1 !important ici (sinon ça casse le système) */
       opacity: 1;
+      pointer-events:none;
+      user-select:none;
     }
 
     /* ✅ Full visible uniquement quand la fin est validée */
@@ -397,6 +407,84 @@
       :root{ --badgeMin: 52px; --badgeMax: 92px; --badgePad: 8%; }
       .vc-scen-ends{ gap: 8px; }
     }
+
+    /* =========================
+       ✅ MODAL BADGE (grand)
+       ========================= */
+    .vc-modal{
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: calc(14px + env(safe-area-inset-top)) 14px calc(14px + env(safe-area-inset-bottom));
+    }
+    .vc-modal.is-open{ display:flex; }
+
+    .vc-modal__backdrop{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .vc-modal__panel{
+      position: relative;
+      width: min(520px, 96vw);
+      border-radius: var(--badgeModalRadius);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,12,18,.72);
+      box-shadow: 0 24px 80px rgba(0,0,0,.55);
+      overflow: hidden;
+      transform: translateZ(0);
+    }
+
+    .vc-modal__top{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding: 10px 10px 0;
+    }
+
+    .vc-modal__close{
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-modal__close:active{ transform: scale(.99); }
+    .vc-modal__close svg{
+      width: 22px;
+      height: 22px;
+      filter: drop-shadow(0 2px 10px rgba(0,0,0,.55));
+    }
+
+    .vc-modal__content{
+      padding: var(--badgeModalPad);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .vc-modal__img{
+      width: min(var(--badgeModalMax), 460px);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      border-radius: 18px;
+      background: radial-gradient(60% 60% at 50% 40%, rgba(255,255,255,.06), transparent 70%);
+      filter: drop-shadow(0 18px 46px rgba(0,0,0,.55));
+      user-select:none;
+      pointer-events:none;
+    }
   </style>
 </head>
 
@@ -404,7 +492,7 @@
 
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
-      <a id="btnBackHome" class="vc-icon-button" href="index.html" aria-label="">
+      <a id="btnBackHome" class="vc-icon-button" href="index.html" data-i18n-aria="ui.aria_back">
         <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
           <path fill="white" d="M15.5 5.5a1 1 0 0 1 0 1.4L10.4 12l5.1 5.1a1 1 0 1 1-1.4 1.4l-5.8-5.8a1.2 1.2 0 0 1 0-1.4l5.8-5.8a1 1 0 0 1 1.4 0z"/>
         </svg>
@@ -496,10 +584,125 @@
     <section class="vc-scen-grid" id="pf_scenarios"></section>
   </main>
 
+  <!-- ✅ MODAL GRAND BADGE -->
+  <div class="vc-modal" id="badgeModal" aria-hidden="true">
+    <div class="vc-modal__backdrop" id="badgeModalBackdrop"></div>
+    <div class="vc-modal__panel" role="dialog" aria-modal="true" data-i18n-aria="ui.aria_badge_modal">
+      <div class="vc-modal__top">
+        <button class="vc-modal__close" id="badgeModalClose" type="button" data-i18n-aria="ui.aria_close">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="white" d="M18.3 5.7a1 1 0 0 1 0 1.4L13.4 12l4.9 4.9a1 1 0 1 1-1.4 1.4L12 13.4l-4.9 4.9a1 1 0 1 1-1.4-1.4l4.9-4.9-4.9-4.9a1 1 0 1 1 1.4-1.4L12 10.6l4.9-4.9a1 1 0 0 1 1.4 0z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="vc-modal__content">
+        <img class="vc-modal__img" id="badgeModalImg" alt="" draggable="false" />
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabaseBootstrap.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/userData.js"></script>
   <script src="js/profile.js"></script>
+
+  <script>
+  (function(){
+    "use strict";
+
+    const grid = document.getElementById("pf_scenarios");
+    const modal = document.getElementById("badgeModal");
+    const modalImg = document.getElementById("badgeModalImg");
+    const btnClose = document.getElementById("badgeModalClose");
+    const backdrop = document.getElementById("badgeModalBackdrop");
+
+    if (!grid || !modal || !modalImg || !btnClose || !backdrop) return;
+
+    let _lastFocus = null;
+
+    function openModalWithSrc(src){
+      if (!src) return;
+      _lastFocus = document.activeElement || null;
+
+      modalImg.src = src;
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+
+      // focus close for accessibility
+      try { btnClose.focus({ preventScroll:true }); } catch {}
+      // prevent background scroll (simple + safe)
+      try { document.documentElement.style.overflow = "hidden"; } catch {}
+      try { document.body.style.overflow = "hidden"; } catch {}
+    }
+
+    function closeModal(){
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      modalImg.removeAttribute("src");
+
+      try { document.documentElement.style.overflow = ""; } catch {}
+      try { document.body.style.overflow = ""; } catch {}
+
+      if (_lastFocus && typeof _lastFocus.focus === "function"){
+        try { _lastFocus.focus({ preventScroll:true }); } catch {}
+      }
+      _lastFocus = null;
+    }
+
+    function pickBadgeSrcFromEnd(endEl){
+      if (!endEl) return null;
+
+      // if unlocked prefer full
+      const full = endEl.querySelector("img.full");
+      const empty = endEl.querySelector("img.empty");
+      const anyImg = endEl.querySelector("img");
+
+      // if endEl has .unlocked and full exists => show full
+      if (endEl.classList.contains("unlocked") && full && full.getAttribute("src")) {
+        return full.getAttribute("src");
+      }
+
+      // else show whatever is present (full might be opacity 0 but still a valid src)
+      if (full && full.getAttribute("src")) return full.getAttribute("src");
+      if (empty && empty.getAttribute("src")) return empty.getAttribute("src");
+      if (anyImg && anyImg.getAttribute("src")) return anyImg.getAttribute("src");
+      return null;
+    }
+
+    // Delegation: click on any badge (.vc-end)
+    grid.addEventListener("click", function(e){
+      const endEl = e.target && e.target.closest ? e.target.closest(".vc-end") : null;
+      if (!endEl) return;
+
+      const src = pickBadgeSrcFromEnd(endEl);
+      if (!src) return;
+
+      // Stop only for this interaction, prevents weird double-handling if profile.js binds something
+      e.preventDefault();
+      e.stopPropagation();
+
+      openModalWithSrc(src);
+    }, true);
+
+    btnClose.addEventListener("click", function(e){
+      e.preventDefault();
+      closeModal();
+    });
+
+    backdrop.addEventListener("click", function(e){
+      e.preventDefault();
+      closeModal();
+    });
+
+    window.addEventListener("keydown", function(e){
+      if (!modal.classList.contains("is-open")) return;
+      if (e.key === "Escape" || e.key === "Esc") {
+        e.preventDefault();
+        closeModal();
+      }
+    });
+  })();
+  </script>
 </body>
 </html>
