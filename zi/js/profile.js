@@ -5,6 +5,10 @@
 // - Scénarios en 1 colonne
 // - UI sans encadrés sur bloc profil + pills
 // - Assigne un pseudo automatique si manquant (tentative en base, sinon fallback local)
+//
+// ✅ PATCH LOCAL-FIRST BADGES + BFCache:
+// - badges d'abord via cache local vchoice_endings_cache_v1
+// - rerender sur pageshow/visibilitychange/vc:profile/vc:endings_updated
 
 (function(){
   "use strict";
@@ -317,11 +321,17 @@
     }
 
     if (!uid){
+      // ✅ local-first: si on a un cache (même sans uid prêt), on l'affiche
+      if (cache && cache.map) {
+        renderScenarios(ids, unlocked, cache.map || {});
+        return;
+      }
       renderScenarios(ids, unlocked, {});
       return;
     }
 
     try{
+      // ✅ backup uniquement si local introuvable
       const endingsMap = await fetchEndingsFromSupabase(uid);
       writeEndingsCache(uid, endingsMap);
       renderScenarios(ids, unlocked, endingsMap);
@@ -329,6 +339,15 @@
       console.error("[fetchEndings]", e);
       renderScenarios(ids, unlocked, {});
     }
+  }
+
+  // ✅ IMPORTANT: la page peut revenir via history.back() (BFCache) => on doit rerender les badges
+  let _refreshEndingsRunning = false;
+  async function refreshEndingsSafe(){
+    if (_refreshEndingsRunning) return;
+    _refreshEndingsRunning = true;
+    try{ await refreshEndingsOnce(); }
+    finally{ _refreshEndingsRunning = false; }
   }
 
   async function boot(){
@@ -347,8 +366,7 @@
     // ✅ Affiche immédiatement
     renderProfileFromState();
 
-    // ✅ Pseudo auto si manquant : OUI, il sera attribué si possible
-    // -> on tente de l’écrire en base via setUsername (sinon fallback local "—")
+    // ✅ Pseudo auto si manquant
     try{ await ensureDefaultUsernameIfMissing(); }catch(e){ console.error("[ensureDefaultUsernameIfMissing]", e); }
     renderProfileFromState();
 
@@ -379,9 +397,30 @@
 
     window.addEventListener("vc:profile", () => {
       renderProfileFromState();
+      // ✅ si user_id arrive un peu après, on refresh les badges
+      refreshEndingsSafe();
     });
 
-    await refreshEndingsOnce();
+    // ✅ maj badges si le cache local bouge (même page)
+    window.addEventListener("vc:endings_updated", () => {
+      refreshEndingsSafe();
+    });
+
+    // ✅ retour via history.back() (souvent BFCache) : rerender sûr
+    window.addEventListener("pageshow", () => {
+      renderProfileFromState();
+      refreshEndingsSafe();
+    });
+
+    // ✅ quand on revient sur l'onglet/app
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible"){
+        renderProfileFromState();
+        refreshEndingsSafe();
+      }
+    });
+
+    await refreshEndingsSafe();
   }
 
   boot();

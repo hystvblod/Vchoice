@@ -451,7 +451,7 @@
       "choices": [
         { "choice_key": "d14.s34.c1", "next": "s40" },
         { "choice_key": "d14.s34.c2", "next": "s33" },
-        { "choice_key": "d14.s34.c3", "next": "s32" }
+        { "choice_key": "d14.s34.c3", "next": "s32", "requires_any_flags": ["has_key"] }
       ]
     },
 

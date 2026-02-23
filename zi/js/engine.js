@@ -1,13 +1,13 @@
-/* engine.js — VERSION COMPLETE À JOUR (lang auto + settings only + persist Supabase) */
+/* engine.js — VERSION COMPLETE À JOUR (lang auto device->EN + vchoice_lang + persist Supabase) */
 
 /* =========================
    CONFIG
 ========================= */
 const SAVE_KEY = "creepy_engine_save_v1";
-const DEFAULT_LANG = "fr";
+const DEFAULT_LANG = "en";
 
 // Langues prévues (même si certains ui_<lang>.json ne sont pas encore présents)
-const SUPPORTED_LANGS = ["fr","en","es","pt","ptbr","it","ko","ja","id"];
+const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -119,9 +119,7 @@ function normalizeLang(raw){
     "jp": "ja",
     "ja-jp": "ja",
     "kr": "ko",
-    "ko-kr": "ko",
-    "id-id": "id",
-    "in": "id" // anciens codes parfois rencontrés
+    "ko-kr": "ko"
   };
   if(map[s]) return map[s];
 
@@ -129,7 +127,6 @@ function normalizeLang(raw){
   if(base === "pt" && (s.includes("br") || s.includes("ptbr"))) return "ptbr";
   if(base === "ja") return "ja";
   if(base === "ko") return "ko";
-  if(base === "id") return "id";
   return base || null;
 }
 
@@ -143,6 +140,18 @@ function detectDeviceLang(){
     if(base && SUPPORTED_LANGS.includes(base)) return base;
   }
   return DEFAULT_LANG;
+}
+
+function getStoredLang(){
+  try{
+    const vc = normalizeLang(localStorage.getItem("vchoice_lang"));
+    if(vc && SUPPORTED_LANGS.includes(vc)) return vc;
+  }catch(_){}
+  try{
+    const gl = normalizeLang(localStorage.getItem("VREALMS_LANG"));
+    if(gl && SUPPORTED_LANGS.includes(gl)) return gl;
+  }catch(_){}
+  return null;
 }
 
 async function setLang(newLang, opts = {}){
@@ -163,7 +172,7 @@ async function setLang(newLang, opts = {}){
 
   if(persistLocal) save();
 
-  // ✅ Supabase profiles.lang
+  // ✅ Supabase profiles.lang (via VUserData)
   if(persistRemote && window.VUserData && typeof window.VUserData.setLang === "function"){
     try{ await window.VUserData.setLang(LANG); }catch(e){}
   }
@@ -322,6 +331,10 @@ function computeGuidePlan(fromSceneId, targetType){
 ========================= */
 function load(){
   try{
+    // ✅ priorité: langue globale vchoice_lang
+    const stored = getStoredLang();
+    if(stored) LANG = stored;
+
     const raw = localStorage.getItem(SAVE_KEY);
     if(!raw) return;
     const data = JSON.parse(raw);
@@ -330,13 +343,6 @@ function load(){
       scenarioStates = data.scenarioStates || {};
       const savedLang = normalizeLang(data.lang);
       if(savedLang && SUPPORTED_LANGS.includes(savedLang)) LANG = savedLang;
-      // compat: langue globale (index/settings)
-      if(!savedLang){
-        try{
-          const gl = normalizeLang(localStorage.getItem("VREALMS_LANG"));
-          if(gl && SUPPORTED_LANGS.includes(gl)) LANG = gl;
-        }catch(e){}
-      }
     }
   }catch(e){
     console.warn("load failed", e);
@@ -349,7 +355,9 @@ function save(){
       lang: LANG,
       scenarioStates
     }));
-    // compat: langue globale (index/settings)
+
+    // ✅ langue globale (settings/index/game)
+    try{ localStorage.setItem("vchoice_lang", LANG); }catch(e){}
     try{ localStorage.setItem("VREALMS_LANG", LANG); }catch(e){}
   }catch(e){
     console.warn("save failed", e);
@@ -620,9 +628,20 @@ function bindJetonHud(){
 async function boot(){
   load();
 
+  // ✅ CRITIQUE: init user data AVANT tout usage (badges/jetons/lang RPC)
+  try{
+    if(window.VUserData && typeof window.VUserData.init === "function"){
+      await window.VUserData.init();
+    }
+  }catch(_){}
+
   let initialLang = LANG;
 
-  // priorité: profil Supabase > langue globale (settings/index) > device
+  // 1) vchoice_lang (global)
+  const stored = getStoredLang();
+  if(stored) initialLang = stored;
+
+  // 2) profil Supabase (si présent)
   if(window.VUserData && typeof window.VUserData.getLang === "function"){
     try{
       const l = normalizeLang(window.VUserData.getLang());
@@ -630,11 +649,7 @@ async function boot(){
     }catch(e){}
   }
 
-  try{
-    const gl = normalizeLang(localStorage.getItem("VREALMS_LANG"));
-    if(gl && SUPPORTED_LANGS.includes(gl)) initialLang = gl;
-  }catch(e){}
-
+  // 3) device
   if(!initialLang) initialLang = detectDeviceLang();
 
   LANG = initialLang;
@@ -902,12 +917,14 @@ function showHintModalWithActions(title, bodyLines, actions){
   wrap.style.display = "flex";
   wrap.style.gap = "10px";
   wrap.style.justifyContent = "flex-end";
+  wrap.style.flexWrap = "wrap";
 
   for(const a of (actions || [])){
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = a.className || "btn";
     btn.textContent = a.label || tUI("btn_ok");
+    btn.disabled = !!a.disabled;
     btn.onclick = async () => {
       try{ await a.onClick?.(); } finally {}
     };
@@ -1008,6 +1025,24 @@ function getMissingFlagsForChoice(choice){
   return { missingAll, missingAny };
 }
 
+/* ✅ helper: donne les flags manquants suite à un déblocage */
+function grantMissingFlags(choice, missingAll, missingAny){
+  // requires_all_flags: on donne tout ce qui manque
+  if(Array.isArray(missingAll) && missingAll.length){
+    for(const f of missingAll) setFlag(f);
+    return { granted: missingAll.slice() };
+  }
+
+  // requires_any_flags: on donne UN seul objet (sinon tu flingues le “any”)
+  if(Array.isArray(missingAny) && missingAny.length){
+    const f = missingAny[0];
+    setFlag(f);
+    return { granted: [f] };
+  }
+
+  return { granted: [] };
+}
+
 async function spendJetons(cost){
   if(!window.VUserData || typeof window.VUserData.spendJetons !== "function"){
     return { ok:false, reason:"no_userData" };
@@ -1055,6 +1090,43 @@ function prettyFlagTitle(flag){
   return flag;
 }
 
+/* ✅ exécute le choix (réutilisé pour auto-lancer après déblocage) */
+async function executeChoice(ch){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return;
+
+  if(Array.isArray(ch.set_flags)){
+    for(const f of ch.set_flags) setFlag(f);
+  }
+  if(Array.isArray(ch.clear_flags)){
+    for(const f of ch.clear_flags) clearFlag(f);
+  }
+
+  if(ch.add_clue) addClue(ch.add_clue);
+
+  if(ch.ending){
+    save();
+    await handleEnding(ch.ending);
+    return;
+  }
+
+  if(ch.next){
+    st.history ??= [];
+    st.history.push(st.scene);
+
+    st.scene = ch.next;
+    save();
+    renderScene();
+    return;
+  }
+
+  showHintModal(
+    tUI("hint_title"),
+    tUI("no_next_scene")
+  );
+}
+
+/* ✅ popup locked: propose Jeton OU Pub pour obtenir l’objet manquant */
 function showLockedChoiceModal(choice){
   const { missingAll, missingAny } = getMissingFlagsForChoice(choice);
 
@@ -1078,13 +1150,90 @@ function showLockedChoiceModal(choice){
   }
 
   lines.push("");
+  lines.push(tUI("locked_note_foundable")); // ✅ trouvable sans pub
+  lines.push("");
+
+  const actions = [];
+
+  // ✅ Dépenser 1 jeton
+  actions.push({
+    label: tUI("locked_unlock_jeton"),
+    className: "btn",
+    onClick: async () => {
+      try{
+        // check local solde si dispo (UX)
+        let jetons = 0;
+        if(window.VUserData && typeof window.VUserData.getJetons === "function"){
+          try{ jetons = Number(window.VUserData.getJetons() || 0); }catch(_){}
+        }
+        if(jetons < 1){
+          showHintModal(tUI("locked_title"), tUI("locked_unlock_no_jetons"));
+          return;
+        }
+
+        const res = await spendJetons(1);
+        if(!res?.ok){
+          updateHudJetons();
+          showHintModal(tUI("locked_title"), tUI("locked_unlock_no_jetons"));
+          return;
+        }
+
+        // grant flags + save
+        grantMissingFlags(choice, missingAll, missingAny);
+        save();
+        updateHudJetons();
+
+        // ferme modal puis auto-exécute le choix
+        hideHintModal();
+        await executeChoice(choice);
+      }catch(e){
+        updateHudJetons();
+        showHintModal(tUI("locked_title"), tUI("locked_unlock_error"));
+      }
+    }
+  });
+
+  // ✅ Regarder une pub
+  actions.push({
+    label: tUI("locked_unlock_ad"),
+    className: "btn btn--ghost",
+    onClick: async () => {
+      try{
+        if(!window.VAds || typeof window.VAds.showRewarded !== "function"){
+          showHintModal(tUI("locked_title"), tUI("locked_unlock_ad_fail"));
+          return;
+        }
+
+        const r = await window.VAds.showRewarded();
+        if(!r?.ok){
+          showHintModal(tUI("locked_title"), tUI("locked_unlock_ad_fail"));
+          return;
+        }
+
+        // grant flags + save
+        grantMissingFlags(choice, missingAll, missingAny);
+        save();
+
+        // ferme modal puis auto-exécute le choix
+        hideHintModal();
+        await executeChoice(choice);
+      }catch(e){
+        showHintModal(tUI("locked_title"), tUI("locked_unlock_ad_fail"));
+      }
+    }
+  });
+
+  // fermer
+  actions.push({
+    label: tUI("locked_close"),
+    className: "btn btn--ghost",
+    onClick: () => hideHintModal()
+  });
 
   showHintModalWithActions(
     tUI("locked_title"),
     lines,
-    [
-      { label: tUI("locked_close"), className:"btn btn--ghost", onClick: () => hideHintModal() }
-    ]
+    actions
   );
 }
 
@@ -1104,6 +1253,14 @@ async function handleEnding(type){
   updateJetonGuideUI();
 
   const endingType = String(type || "").toLowerCase();
+
+  // ✅ ENREGISTREMENT FIN (badge full uniquement si fin réellement atteinte)
+  try{
+    if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+      await window.VUserData.completeScenario(currentScenarioId, endingType);
+    }
+  }catch(e){}
+
   let title = tUI("end_title");
   if(endingType === "good") title = tUI("end_title_good");
   if(endingType === "bad") title = tUI("end_title_bad");
@@ -1213,36 +1370,7 @@ function renderScene(){
           showLockedChoiceModal(ch);
           return;
         }
-
-        if(Array.isArray(ch.set_flags)){
-          for(const f of ch.set_flags) setFlag(f);
-        }
-        if(Array.isArray(ch.clear_flags)){
-          for(const f of ch.clear_flags) clearFlag(f);
-        }
-
-        if(ch.add_clue) addClue(ch.add_clue);
-
-        if(ch.ending){
-          save();
-          await handleEnding(ch.ending);
-          return;
-        }
-
-        if(ch.next){
-          st.history ??= [];
-          st.history.push(st.scene);
-
-          st.scene = ch.next;
-          save();
-          renderScene();
-          return;
-        }
-
-        showHintModal(
-          tUI("hint_title"),
-          tUI("no_next_scene")
-        );
+        await executeChoice(ch);
       };
 
       choicesEl.appendChild(btn);

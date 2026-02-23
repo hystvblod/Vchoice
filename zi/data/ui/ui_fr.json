@@ -1,6 +1,6 @@
 {
   "ui": {
-    "app_title": "VChoice",
+    "app_title": "VChronicles",
     "app_subtitle": "Histoire interactive",
 
     "index_title": "Choisis ton scénario",
@@ -112,7 +112,46 @@
     "end_btn_double": "Doubler",
     "end_btn_quit": "Quitter",
     "end_double_wait": "Validation en cours…",
-    "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale."
+    "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale.",
+
+    "settings_lang_desc": "Choisis la langue. Elle est sauvegardée sur l’appareil et sur ton profil.",
+    "settings_lang_label": "Langue",
+    "settings_msg_saved": "Langue enregistrée.",
+    "settings_msg_saved_local": "Langue enregistrée sur l’appareil. Synchronisation serveur plus tard.",
+    "settings_msg_hint": "",
+    "settings_choose_lang_aria": "Choisir la langue : {code}",
+
+    "settings_back_home_aria": "Retour à l’accueil",
+    "settings_open_profile_aria": "Ouvrir le profil",
+
+    "settings_ads_title": "Publicité",
+    "settings_ads_personalized_label": "Publicité personnalisée",
+    "settings_ads_personalized_desc": "Autoriser l’utilisation de données pour des pubs plus pertinentes.",
+    "settings_ads_saved": "Préférence publicitaire enregistrée.",
+
+    "settings_help_title": "Aide",
+    "settings_help_email_label": "Contact :",
+    "settings_help_email": "help.vboldstudio@gmail.com",
+
+    "lang_name": {
+      "en": "English",
+      "fr": "Français",
+      "de": "Deutsch",
+      "es": "Español",
+      "pt": "Português",
+      "ptbr": "Português (Brasil)",
+      "it": "Italiano",
+      "ko": "한국어",
+      "ja": "日本語"
+    },
+
+
+    "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans pub.",
+    "locked_unlock_jeton": "Dépenser 1 jeton",
+    "locked_unlock_ad": "Regarder une pub",
+    "locked_unlock_ad_fail": "Publicité indisponible pour le moment.",
+    "locked_unlock_no_jetons": "Pas assez de jetons.",
+    "locked_unlock_error": "Impossible de débloquer maintenant."
   },
 
   "common": {
@@ -122,7 +161,7 @@
   "scenarios": {
     "dossier14_appartement": {
       "title": "Appartement 14",
-      "desc": "Un dossier trouvé au mauvais endroit. Un immeuble trop silencieux. Et une porte qui ne devrait pas exister."
+      "desc": "Un immeuble trop silencieux. Et une porte qui ne devrait pas exister. Que te veut cet immeuble ?"
     },
     "bunker_reserve": {
       "title": "Bunker",
@@ -146,7 +185,7 @@
     },
     "chateau_absents": {
       "title": "Château — Les Absents",
-      "desc": "Un château silencieux où chaque pièce semble attendre quelqu’un… sauf toi."
+      "desc": "Un château silencieux où chaque pièce semble habitée... par des ombres."
     },
     "temple_mictlan": {
       "title": "Temple — Mictlan",

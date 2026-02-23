@@ -9,8 +9,15 @@
   <style>
     /* ====== TUNING (change ici, garanti) ====== */
     :root{
-      --gapAfterBtn: 42px;   /* espace sous “Modifier pseudo” */
-      --badgeSize: 130px;    /* ✅ taille badges (carré) — AUGMENTÉE */
+      --gapAfterBtn: 42px;
+
+      /* ✅ badges responsifs */
+      --badgeGap: 10px;
+      --badgeMin: 56px;      /* ✅ plus safe en portrait */
+      --badgeMax: 100px;
+
+      /* ✅ padding interne identique EMPTY+FULL => full jamais "plus gros" */
+      --badgePad: 7%;
     }
 
     /* ✅ Anti-débordement / responsive */
@@ -108,7 +115,6 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    /* ✅ Titre centré + i18n. Sous-titre supprimé. */
     .vc-title-wrap{ padding: 4px 0 0; text-align:center; }
     .vc-page-title{ margin: 10px 0 0; font-weight: 950; letter-spacing:.2px; font-size: 18px; text-align:center; }
     .vc-page-sub{ display:none !important; }
@@ -122,7 +128,6 @@
     }
     .vc-card-inner{ padding: 0; }
 
-    /* ✅ icône + nombre même ligne */
     .vc-balances{
       margin-top: 10px;
       display:flex;
@@ -194,7 +199,7 @@
 
     .vc-actions-under{
       margin-top: 10px !important;
-      margin-bottom: var(--gapAfterBtn) !important; /* ✅ espace FORCÉ */
+      margin-bottom: var(--gapAfterBtn) !important;
       display:flex;
       justify-content:center;
     }
@@ -266,11 +271,12 @@
       text-align:center;
     }
 
+    /* ✅ 2 scénarios par ligne, stable */
     .vc-scen-grid{
       margin: 12px 0 0;
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px 14px;
+      gap: 28px 14px;
       align-items:start;
       width:100%;
       max-width: 100%;
@@ -281,9 +287,18 @@
       background: transparent !important;
       box-shadow: none !important;
       overflow: visible !important;
-      padding: 0 !important;
+      padding: 0 4px !important;
       min-width: 0 !important;
       text-align:center;
+      opacity: 1 !important;
+      filter: none !important;
+
+      /* ✅ taille “cible” calculée dans la colonne */
+      --badgeSize: clamp(
+        var(--badgeMin),
+        calc((100% - (2 * var(--badgeGap))) / 3),
+        var(--badgeMax)
+      );
     }
     .vc-scen-inner{ padding: 0 !important; min-width:0; }
 
@@ -296,103 +311,96 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       text-align:center;
+      color: var(--vc-text) !important;
+      opacity: 1 !important;
     }
 
+    /* =========================
+       ✅ FIX BADGES
+       ========================= */
     .vc-scen-ends{
       margin-top: 10px;
-      display:flex;
-      gap: 18px;
+      width: 100%;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(6px, 1.8vw, var(--badgeGap));
       align-items:center;
-      justify-content:center;
-      min-width:0;
-
-      /* ✅ IMPORTANT : empêche le flex de “rétrécir” tes badges */
-      flex-wrap: wrap;
+      justify-items:center;
+     overflow: visible;
     }
 
-    /* ✅ BADGES : le vrai souci le + courant ici = FLEX-SHRINK + display inline (ou tag <a>) */
     .vc-end{
-      /* ✅ force un “bloc” dimensionnable + empêche shrink */
-      display: inline-block !important;
-      flex: 0 0 var(--badgeSize) !important;
-      width: var(--badgeSize) !important;
-      height: var(--badgeSize) !important;
-      min-width: var(--badgeSize) !important;
-      min-height: var(--badgeSize) !important;
-
+      width: 100% !important;
+      aspect-ratio: 1 / 1 !important;
+      max-width: var(--badgeSize) !important;
       border: none !important;
-      outline: none !important;
       background: transparent !important;
       box-shadow: none !important;
-      border-radius: 0 !important;
-      overflow: visible !important;
-      position: relative;
+      position: relative !important;
+      overflow: hidden !important;
       padding: 0 !important;
       margin: 0 !important;
+      line-height: 0 !important;
       filter: none !important;
-      line-height: 0 !important; /* ✅ évite un “mini espace” fantôme */
+      opacity: 1 !important;
     }
 
+    /* Empty + Full superposés, EXACTEMENT même taille */
     .vc-end img{
-      position:absolute;
-      inset:0;
+      position:absolute !important;
+      inset:0 !important;
       width:100% !important;
       height:100% !important;
-      object-fit:contain;
+      object-fit: contain !important;
+      padding: var(--badgePad) !important;
+      box-sizing: border-box !important;
+      border:0 !important;
+      outline:0 !important;
       background: transparent !important;
-      border: 0 !important;
-      outline: 0 !important;
-      box-shadow: none !important;
-      filter: none !important;
+      box-shadow:none !important;
+      filter:none !important;
+
+      /* ✅ IMPORTANT: PAS de opacity:1 !important ici (sinon ça casse le système) */
+      opacity: 1;
     }
 
-    .vc-end .full{ opacity:0; transition: opacity .18s ease; }
-    .vc-end.unlocked .full{ opacity:1; }
+    /* ✅ Full visible uniquement quand la fin est validée */
+    .vc-end .full{ opacity:0 !important; transition: opacity .18s ease; }
+    .vc-end.unlocked .full{ opacity:1 !important; }
 
-    .vc-scen-card.is-locked{ opacity:.40; }
-    .vc-scen-card.is-locked .vc-end{ opacity:.28; filter: grayscale(1) blur(.2px) !important; }
+    .vc-scen-card.is-locked{ opacity: 1 !important; filter: none !important; }
+    .vc-scen-card.is-locked .vc-end{ opacity: 1 !important; filter: none !important; }
     .vc-scen-card.is-locked .vc-end .full{ opacity:0 !important; }
 
-    /* ✅ Filet de sécurité si profile.js ne met PAS la classe .vc-end sur le wrapper
-       (ça arrive souvent : img direct dans .vc-scen-ends).
-       -> Dans ce cas, au moins les <img> grossissent quand tu changes --badgeSize. */
     .vc-scen-ends > img{
-      width: var(--badgeSize) !important;
-      height: var(--badgeSize) !important;
+      width: 100% !important;
+      aspect-ratio: 1 / 1 !important;
+      max-width: var(--badgeSize) !important;
       object-fit: contain !important;
-      flex: 0 0 var(--badgeSize) !important;
+      padding: var(--badgePad) !important;
+      box-sizing: border-box !important;
+      filter: none !important;
+      opacity: 1 !important;
     }
 
     @media (max-width: 360px){
-      .vc-scen-grid{ grid-template-columns: 1fr !important; }
-    }
-
-    /* ✅ DEBUG (tu peux enlever ensuite) : si tu vois une petite barre en bas, c’est ce CSS */
-    .vc-debug-bar{
-      position: fixed;
-      left: 10px;
-      bottom: 10px;
-      z-index: 9999;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(0,0,0,.45);
-      border: 1px solid rgba(255,255,255,.14);
-      color: rgba(255,255,255,.9);
-      font-weight: 900;
-      font-size: 11px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      :root{ --badgeMin: 52px; --badgeMax: 92px; --badgePad: 8%; }
+      .vc-scen-ends{ gap: 8px; }
     }
   </style>
 </head>
 
 <body>
+
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
-      <a class="vc-icon-button" href="index.html" data-i18n-aria="ui.aria_back">
-        <img src="assets/img/ui/back.webp" alt="" draggable="false" />
+      <a id="btnBackHome" class="vc-icon-button" href="index.html" aria-label="">
+        <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="white" d="M15.5 5.5a1 1 0 0 1 0 1.4L10.4 12l5.1 5.1a1 1 0 1 1-1.4 1.4l-5.8-5.8a1.2 1.2 0 0 1 0-1.4l5.8-5.8a1 1 0 0 1 1.4 0z"/>
+        </svg>
       </a>
     </div>
+
 
     <div class="vc-top-slot vc-top-center">
       <a class="vc-icon-button" href="settings.html" data-i18n-aria="ui.aria_settings">
