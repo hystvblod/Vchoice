@@ -6,6 +6,18 @@
   <title>VChoice</title>
   <link rel="stylesheet" href="css/app.css" />
 
+  <!-- ✅ REDIRECTION TUTO 1ère OUVERTURE -->
+  <script>
+  (function(){
+    try{
+      const INTRO_KEY = "vchoice_onboarding_done_v1";
+      if(localStorage.getItem(INTRO_KEY) !== "1"){
+        location.href = "game.html?scenario=intro_tuto";
+      }
+    }catch(_){}
+  })();
+  </script>
+
   <style>
     /* ====== TON CSS (inchangé) ====== */
 

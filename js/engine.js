@@ -1273,9 +1273,9 @@ async function handleEnding(type, endScene){
     }
   }catch(e){}
 
-  // ✅ Reward spécifique Intro (1 seule fois, seulement si GOOD)
+  // ✅ Reward spécifique Intro (1 seule fois, GOOD/BAD/SECRET)
   try{
-    if(String(currentScenarioId || "") === INTRO_SCENARIO_ID && endingType === "good"){
+    if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
       let rewarded = false;
       try{ rewarded = (localStorage.getItem(INTRO_REWARD_KEY) === "1"); }catch(_){}
       if(!rewarded){

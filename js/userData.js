@@ -730,6 +730,33 @@
       if (!silent) _emitProfileSoon();
     },
 
+    // ✅ getters jetons/vcoins (évite bugs popup jetons si init pas fini)
+    getJetons(){
+      try{
+        const v = Number(_memState.jetons || 0);
+        if (Number.isFinite(v)) return v;
+      }catch(_){}
+      try{
+        const cached = _readLocal();
+        const v = Number(cached?.jetons || 0);
+        return Number.isFinite(v) ? v : 0;
+      }catch(_){}
+      return 0;
+    },
+
+    getVCoins(){
+      try{
+        const v = Number(_memState.vcoins || 0);
+        if (Number.isFinite(v)) return v;
+      }catch(_){}
+      try{
+        const cached = _readLocal();
+        const v = Number(cached?.vcoins || 0);
+        return Number.isFinite(v) ? v : 0;
+      }catch(_){}
+      return 0;
+    },
+
     // ✅ helper utilisé par index.html chez toi
     getLang(){
       const l = String(_memState.lang || "").toLowerCase();
