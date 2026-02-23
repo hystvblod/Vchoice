@@ -669,18 +669,38 @@
       // ✅ sécurité: si init pas fait, on le fait ici
       try{ await this.init(); }catch(_){}
 
-      if (!window.VCRemoteStore?.enabled?.()) return { ok:false, reason:"no_remote" };
+      const s = _normScenarioId(scenarioId);
+      const e = _safeLower(ending);
 
-      const res = await window.VCRemoteStore.completeScenario(scenarioId, ending);
-      if (!res?.ok) return res || { ok:false, reason:"error" };
+      if (!s) return { ok:false, reason:"invalid_scenario" };
+      if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
 
-      // ✅ Backup local endings (badge full uniquement si fin atteinte OK)
+      // ✅ LOCAL-FIRST : on marque le badge en local immédiatement
+      // (le profil doit dépendre du cache local, pas de Supabase)
+      let localOk = false;
       try{
-        _markEndingLocal(_memState.user_id, scenarioId, ending);
+        if (!_memState.user_id){
+          try{ await this.refresh(); }catch(_){}
+        }
+        if (_memState.user_id){
+          _markEndingLocal(_memState.user_id, s, e);
+          localOk = true;
+        }
       }catch(_){}
 
+      // ✅ Remote optionnel (servira pour backup + analytics + récompenses serveur)
+      if (!window.VCRemoteStore?.enabled?.()){
+        return { ok:false, reason:"no_remote", local_ok: localOk, remote_ok:false, data:null };
+      }
+
+      const res = await window.VCRemoteStore.completeScenario(s, e);
+      if (!res?.ok){
+        // Remote a échoué, mais le badge local a été marqué si possible
+        return { ok:false, reason: res?.reason || "rpc_error", local_ok: localOk, remote_ok:false, error: res?.error || null, data: res?.data || null };
+      }
+
       const payload = res.data || null;
-      const v = payload && typeof payload.vcoins === "number" ? payload.vcoins : null;
+      const v = (payload && typeof payload.vcoins === "number") ? payload.vcoins : null;
 
       if (typeof v === "number" && !Number.isNaN(v)){
         const cur = this.load();
@@ -689,7 +709,7 @@
         await this.refresh().catch(() => false);
       }
 
-      return { ok:true, data: payload };
+      return { ok:true, reason:"ok", local_ok: localOk, remote_ok:true, data: payload };
     }
   };
 

@@ -326,6 +326,9 @@
     "d14.h.clue.has_key.desc": "Une clé lourde destinée au digicode.",
 
     "d14.h.clue.has_dossier.title": "Dossier",
-    "d14.h.clue.has_dossier.desc": "Le dossier principal “14” récupéré."
+    "d14.h.clue.has_dossier.desc": "Le dossier principal “14” récupéré.",
+
+    "d14.h.clue.has_recording.title": "Enregistrement",
+    "d14.h.clue.has_recording.desc": "Une vidéo ou un enregistrement qui prouve que tu n’as pas rêvé."
   }
 }
