@@ -35,7 +35,7 @@
     "d14.s05.body": "Au ras du sol, l’eau et la poussière dessinent des empreintes fraîches. Elles vont vers l’escalier. Comme une invitation.",
     "d14.s05.c1": "Suivre les traces vers l’escalier",
     "d14.s05.c2": "Remonter la trace jusqu’à une porte",
-    "d14.s05.c3": "Revenir au hall (boîtes aux lettres)",
+    "d14.s05.c3": "Revenir au hall",
 
     "d14.s06.title": "La serrure respire",
     "d14.s06.body": "Près du trou de clé, un souffle froid s’échappe. La serrure est glacée. Ce n’est pas un courant d’air… c’est comme si la porte vivait.",
@@ -58,8 +58,8 @@
     "d14.s09.title": "L’escalier",
     "d14.s09.body": "Le palier est humide. Les murs sont sales, la rampe colle. Plus tu descends, plus l’air devient lourd, comme si le bâtiment refermait son labyrinthe.",
     "d14.s09.c1": "Continuer vers le couloir du rez-de-chaussée",
-    "d14.s09.c2": "Suivre une porte latérale (vers les couloirs)",
-    "d14.s09.c3": "Aller au hall (interphone / boîtes)",
+    "d14.s09.c2": "Suivre une porte latérale",
+    "d14.s09.c3": "Aller au hall",
 
     "d14.s10.title": "Couloir répétitif",
     "d14.s10.body": "Couloir long. Portes alignées. Reflets au sol. Tout se ressemble trop, comme un décor qui se copie pour te perdre.",
@@ -81,7 +81,7 @@
 
     "d14.s13.title": "Hall",
     "d14.s13.body": "Interphone, boîtes oxydées, boutons usés. Le quotidien a pourri ici. Et au milieu, tu as l’impression que le bâtiment écoute chacun de tes pas.",
-    "d14.s13.c1": "Explorer le hall (plusieurs portes)",
+    "d14.s13.c1": "Explorer le hall",
     "d14.s13.c2": "Chercher une boîte / un casier ouvert",
     "d14.s13.c3": "Suivre l’indication SERVICE",
 
@@ -101,7 +101,7 @@
     "d14.s16.body": "Un seau de ménage. Une porte entrouverte. Une lumière forte derrière, trop propre pour être rassurante. Comme une salle préparée pour toi.",
     "d14.s16.c1": "Entrer",
     "d14.s16.c2": "Revenir au hall",
-    "d14.s16.c3": "Inspecter le sol (traces / humidité)",
+    "d14.s16.c3": "Inspecter le sol",
 
     "d14.s17.title": "La trappe",
     "d14.s17.body": "Sol humide, serpillière, et au centre : un anneau métallique. Une petite trappe, parfaitement placée. Le banal cache un mécanisme.",
@@ -123,7 +123,7 @@
 
     "d14.s20.title": "Espace béton",
     "d14.s20.body": "Un hall plus large, béton, carrelage, plusieurs portes. L’endroit est fonctionnel… mais tu sens une chasse. Comme si tu étais devenu un trajet.",
-    "d14.s20.c1": "Choisir une porte (zone basse)",
+    "d14.s20.c1": "Choisir une porte",
     "d14.s20.c2": "Revenir aux boîtes",
     "d14.s20.c3": "Retourner vers SERVICE",
 
@@ -136,7 +136,7 @@
     "d14.s22.title": "Couloir sombre",
     "d14.s22.body": "Sol mouillé. Au fond : une porte. Ici, tu es sous l’immeuble. Et tu comprends que le bâtiment n’a pas été construit… il a été organisé.",
     "d14.s22.c1": "Aller vers la porte au fond",
-    "d14.s22.c2": "Suivre les tuyaux (plus bas)",
+    "d14.s22.c2": "Suivre les tuyaux",
     "d14.s22.c3": "Revenir au hall béton",
 
     "d14.s23.title": "Clé posée",
@@ -147,7 +147,7 @@
 
     "d14.s24.title": "Avant le bip",
     "d14.s24.body": "Tu présentes le badge devant une porte. Une seconde suspendue. Comme si l’immeuble décidait si tu es autorisé à continuer.",
-    "d14.s24.c1": "Entrer (si ça s’ouvre)",
+    "d14.s24.c1": "Entrer",
     "d14.s24.c2": "Revenir au hall",
     "d14.s24.c3": "Descendre vers les zones basses",
 
@@ -155,7 +155,7 @@
     "d14.s25.body": "Vitres, miroirs, et au centre : une silhouette de dos. Tes pas se dupliquent dans les reflets. Une fraction de seconde trop tard… comme un second toi.",
     "d14.s25.c1": "Suivre le couloir de reflets",
     "d14.s25.c2": "Revenir vers SERVICE",
-    "d14.s25.c3": "Continuer vers la sécurité (digicode)",
+    "d14.s25.c3": "Continuer vers la sécurité",
 
     "d14.s26.title": "Accès restreint",
     "d14.s26.body": "Portes alignées, couloir strict. Tu avances comme dans un endroit où tu n’es pas censé exister. Le badge pèse dans ta main comme une faute.",
@@ -172,8 +172,8 @@
     "d14.s28.title": "Digicode",
     "d14.s28.body": "Clavier à code. LED rouge. Tu badges : bip… mais rien ne cède. Il manque une clé. Une vraie. Le bâtiment veut un rituel complet.",
     "d14.s28.c1": "Revenir chercher une clé",
-    "d14.s28.c2": "Suivre les tuyaux (autre descente)",
-    "d14.s28.c3": "Insérer la clé (si tu l’as)",
+    "d14.s28.c2": "Suivre les tuyaux",
+    "d14.s28.c3": "Insérer la clé",
 
     "d14.s29.title": "Tuyaux vivants",
     "d14.s29.body": "Escalier technique, conduites, vapeur. Le bâtiment respire autour de toi. Tu descends dans sa partie vivante.",
@@ -190,7 +190,7 @@
     "d14.s31.title": "Le trousseau",
     "d14.s31.body": "Badge et clé posés. Tu comprends : ce n’est pas de la chance. C’est un parcours préparé, comme un test qui exige des objets précis.",
     "d14.s31.c1": "Retourner au digicode",
-    "d14.s31.c2": "Descendre encore (tuyaux)",
+    "d14.s31.c2": "Descendre encore",
     "d14.s31.c3": "Revenir au hall béton",
 
     "d14.s32.title": "Ouverture",
@@ -203,7 +203,7 @@
     "d14.s33.body": "Plafond bas. Câbles. Lumière ponctuelle. Ici, pas de détour : tu avances ou tu recules. Et reculer ressemble déjà à une défaite.",
     "d14.s33.c1": "Continuer",
     "d14.s33.c2": "Suivre une porte entrouverte",
-    "d14.s33.c3": "Regarder les murs (traces / plans)",
+    "d14.s33.c3": "Regarder les murs",
 
     "d14.s34.title": "Porte entrouverte",
     "d14.s34.body": "Une fente de lumière verticale. La porte est entrouverte, mais aucun bruit ne sort. Comme si quelqu’un avait ouvert de l’intérieur… puis s’était figé.",
@@ -249,13 +249,13 @@
 
     "d14.s41.title": "Surveillance",
     "d14.s41.body": "Mur d’écrans. Couloirs vides partout. Et dans une des vues… ta porte, là-haut. Tu es observé. L’immeuble te suit en direct.",
-    "d14.s41.c1": "Chercher un poste de contrôle (caméra visible)",
+    "d14.s41.c1": "Chercher un poste de contrôle",
     "d14.s41.c2": "Aller vers les archives",
     "d14.s41.c3": "Revenir au couloir “propre”",
 
     "d14.s42.title": "Poste de contrôle",
     "d14.s42.body": "Caméra visible, reflets bleus. Ici, tu comprends : l’endroit voit tout. Tu peux fuir… ou prendre une preuve au risque d’être repéré.",
-    "d14.s42.c1": "Enregistrer une preuve (caméra / écrans)",
+    "d14.s42.c1": "Enregistrer une preuve",
     "d14.s42.c2": "Fuir vers les archives",
     "d14.s42.c3": "Revenir à la surveillance",
 
@@ -269,7 +269,7 @@
     "d14.s44.body": "Cartons, dossiers, poussière. Tu avances comme dans une tombe de documents. Chaque boîte ressemble à une vie rangée et oubliée.",
     "d14.s44.c1": "Fouiller pour trouver “14”",
     "d14.s44.c2": "Suivre un tiroir qui a bougé",
-    "d14.s44.c3": "Chercher une sortie (EXIT)",
+    "d14.s44.c3": "Chercher une sortie",
 
     "d14.s45.title": "Dossier arraché",
     "d14.s45.body": "Ta main tire une chemise épaisse. La poussière colle à ta peau. Tu as la sensation de toucher quelque chose qui ne voulait plus être lu.",
@@ -304,8 +304,8 @@
     "d14.s50.title": "Le retour du nom",
     "d14.s50.body": "Ta main se tend dans un couloir humide. Derrière toi, quelque chose marche au même rythme. Et dans la ventilation, ton nom revient… calmement.",
     "d14.s50.c1": "Partir. Ne jamais regarder derrière",
-    "d14.s50.c2": "Revenir vers la porte (affronter)",
-    "d14.s50.c3": "Comprendre le dossier (vérité complète)",
+    "d14.s50.c2": "Revenir vers la porte",
+    "d14.s50.c3": "Comprendre le dossier",
 
     "d14.end_good.title": "FIN — Tu t’en sors",
     "d14.end_good.body": "L’extérieur te frappe : air froid, aube grise, odeur de pluie et de poubelles. Tu sors. Tu continues de marcher. Tu ne regardes pas en arrière. Mais tu sais… que l’immeuble a appris ton nom.",
