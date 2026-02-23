@@ -306,7 +306,7 @@
       "title_key": "frt.s19.title",
       "body_key": "frt.s19.body",
       "choices": [
-        { "choice_key": "frt.s19.c1", "next": "s28", "set_flags": ["saw_tower"] },
+        { "choice_key": "frt.s19.c1", "next": "s28" },
         { "choice_key": "frt.s19.c2", "next": "s20" },
         { "choice_key": "frt.s19.c3", "next": "s12" }
       ]
@@ -446,7 +446,7 @@
       "title_key": "frt.s33.title",
       "body_key": "frt.s33.body",
       "choices": [
-        { "choice_key": "frt.s33.c1", "next": "s42", "requires_any_flags": ["saw_tower"] },
+        { "choice_key": "frt.s33.c1", "next": "s42" },
         { "choice_key": "frt.s33.c2", "next": "s36" },
         { "choice_key": "frt.s33.c3", "next": "s22" }
       ]
@@ -626,7 +626,7 @@
       "title_key": "frt.s51.title",
       "body_key": "frt.s51.body",
       "choices": [
-        { "choice_key": "frt.s51.c1", "next": "s28", "set_flags": ["saw_tower"] },
+        { "choice_key": "frt.s51.c1", "next": "s28" },
         { "choice_key": "frt.s51.c2", "next": "s36" },
         { "choice_key": "frt.s51.c3", "next": "s12" }
       ]
@@ -816,7 +816,7 @@
       "title_key": "frt.s70.title",
       "body_key": "frt.s70.body",
       "choices": [
-        { "choice_key": "frt.s70.c1", "next": "s42", "requires_any_flags": ["saw_tower"] },
+        { "choice_key": "frt.s70.c1", "next": "s42" },
         { "choice_key": "frt.s70.c2", "next": "s36" },
         { "choice_key": "frt.s70.c3", "next": "s12" }
       ]
