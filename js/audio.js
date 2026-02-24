@@ -1,9 +1,9 @@
-// js/audio.js — BGM manager (Capacitor/iOS safe) — VERSION PRO
-// - Musique par universeId (ou scenarioId si tu passes ça)
-// - Loop "sans couture" via crossfade (évite le "recommencement" audible)
-// - PAS de fallback "default" (si fichier manquant -> on stop, pas de requête parasite)
+// js/audio.js — BGM manager (Capacitor/iOS safe) — VERSION PRO (loop clean)
+// - Musique par universeId (ou scenarioId)
+// - Loop pro: preload + crossfade long + courbe equal-power + trim fin (masque “fin + restart”)
+// - PAS de fallback "default" (si fichier manquant -> stop)
 // - iOS: démarre seulement après 1ère interaction utilisateur (auto-handled)
-// - SFX de fin (good/bad/secret) qui se superpose (plus fort) à la BGM
+// - SFX fin (good/bad/secret) + ducking BGM pendant le SFX
 //
 // Prefs:
 // - localStorage vchoice_bgm_enabled ("1"/"0")
@@ -17,22 +17,33 @@
   const KEY_VOLUME     = "vchoice_bgm_volume";
   const KEY_SFX_VOLUME = "vchoice_sfx_volume";
 
-  // ⚠️ Si tu héberges sur GitHub Pages et que tu publies la racine du repo (avec /www/),
-  // alors tes assets sont peut-être sous "www/assets/...".
-  // Dans Capacitor, la racine est "www/", donc "assets/..." est correct.
   const BASE_BGM = "assets/audio/bgm/";
   const BASE_SFX = "assets/audio/sfx/";
 
-  // On essaie .m4a puis .aac (et pour SFX on peut aussi accepter mp3 si tu veux)
+  // On essaie .m4a puis .aac (SFX accepte aussi mp3)
   const BGM_EXTS = ["m4a", "aac"];
   const SFX_EXTS = ["m4a", "aac", "mp3"];
 
-  // Crossfade pour la boucle (ms). 140–220ms marche bien.
-  const CROSSFADE_MS = 160;
+  // ✅ PRO LOOP SETTINGS (pour des sons 16–30s)
+  // - Crossfade long = masque la fin + évite le “stop / restart”
+  const CROSSFADE_MS = 2000;
 
+  // - On prépare la piste suivante AVANT le fade (pour éviter le trou si buffering)
+  const PRELOAD_LEAD_MS = 1600;
+
+  // - On “ignore” la toute fin (souvent: queue de reverb / silence / clic)
+  const TRIM_END_MS = 250;
+
+  // - Tick léger
+  const TICK_MS = 80;
+
+  // Volumes par défaut (plus “pro”)
   let enabled = true;
-  let volume = 0.6;
-  let sfxVolume = 0.95;
+  let volume = 0.55;      // BGM
+  let sfxVolume = 0.80;   // SFX
+
+  // Ducking BGM pendant SFX
+  let duckMul = 1.0; // 1 = normal, 0.35 = BGM abaissée
 
   let unlocked = false;
   let wantPlay = false;
@@ -40,7 +51,17 @@
 
   let currentUniverse = null;
 
-  // loop state: { universeId, extIndex, src, a, b, tick, crossfadeMs }
+  // loop state:
+  // {
+  //   universeId, extIndex, src,
+  //   a: Audio,
+  //   b: Audio (préparée ou en fade),
+  //   tick,
+  //   crossfadeMs,
+  //   bPrepared: bool,
+  //   bStarted: bool,
+  //   fading: bool
+  // }
   let _loop = null;
 
   function _lsGet(k){
@@ -81,7 +102,6 @@
       await unlock();
     };
 
-    // pointerdown d’abord, + fallback
     window.addEventListener("pointerdown", handler, true);
     window.addEventListener("touchstart", handler, true);
     window.addEventListener("mousedown", handler, true);
@@ -89,26 +109,22 @@
 
   async function unlock(){
     _loadPrefs();
-
     if (unlocked) return true;
 
-    // Tentative d’unlock iOS : play/pause sous geste utilisateur.
-    // On unlock un petit "audio dummy", puis derrière les play() passent.
     try {
       const dummy = new Audio();
       dummy.preload = "auto";
       dummy.volume = 0;
-      // src minimal (même vide) : sur iOS, parfois play() sans src ne fait rien.
-      // On met un src BGM si on a un universe courant, sinon on tente sans.
+
       if (currentUniverse) {
         dummy.src = _pickSrcBgm(currentUniverse, BGM_EXTS[0]);
       }
+
       await dummy.play();
       dummy.pause();
-      dummy.currentTime = 0;
+      try { dummy.currentTime = 0; } catch(_) {}
 
       unlocked = true;
-
       if (enabled && wantPlay) _tryPlay();
       return true;
     } catch(_) {
@@ -119,17 +135,16 @@
   }
 
   function _clearLoopInterval(){
-    try {
-      if (_loop && _loop.tick) clearInterval(_loop.tick);
-    } catch(_) {}
+    try { if (_loop && _loop.tick) clearInterval(_loop.tick); } catch(_) {}
     if (_loop) _loop.tick = null;
   }
 
   function _stopLoopElements(){
     try {
-      if (_loop?.a) { _loop.a.pause(); }
-      if (_loop?.b) { _loop.b.pause(); }
+      if (_loop?.a) _loop.a.pause();
+      if (_loop?.b) _loop.b.pause();
     } catch(_) {}
+
     try {
       if (_loop?.a) _loop.a.currentTime = 0;
       if (_loop?.b) _loop.b.currentTime = 0;
@@ -143,7 +158,6 @@
   }
 
   function _handleBgmMissingOrError(){
-    // On essaie l’extension suivante si possible, sinon on stop sans fallback.
     if (!_loop) return;
 
     if (_loop.extIndex < BGM_EXTS.length - 1) {
@@ -152,7 +166,6 @@
       return;
     }
 
-    // Plus rien à tenter -> stop (pas de "default")
     _destroyLoop();
   }
 
@@ -160,10 +173,15 @@
     const el = new Audio(src);
     el.preload = "auto";
     el.loop = false; // IMPORTANT: pas loop natif
-    el.volume = volume;
+    el.volume = Math.max(0, Math.min(1, volume * duckMul));
+
     el.addEventListener("error", () => {
       _handleBgmMissingOrError();
     });
+
+    // Petit hint iOS
+    try { el.playsInline = true; } catch(_) {}
+
     return el;
   }
 
@@ -172,9 +190,118 @@
       await el.play();
       return true;
     } catch(_) {
-      // Bloqué (iOS) => on arme l’unlock
       _hookUnlockOnFirstGesture();
       return false;
+    }
+  }
+
+  function _applyVolumes(){
+    const base = Math.max(0, Math.min(1, volume * duckMul));
+    try {
+      if (_loop?.a) _loop.a.volume = base;
+
+      // si b existe mais pas en fade, on force aussi
+      if (_loop?.b && !_loop.fading) _loop.b.volume = base;
+    } catch(_) {}
+  }
+
+  function _setDuck(mult){
+    duckMul = Math.max(0, Math.min(1, Number(mult)));
+    _applyVolumes();
+  }
+
+  function _prepareNextIfNeeded(){
+    if (!_loop?.a) return;
+
+    const cur = _loop.a;
+    if (!isFinite(cur.duration) || cur.duration <= 0) return;
+
+    const fadeMs = (_loop.crossfadeMs || CROSSFADE_MS);
+    const fadeS  = fadeMs / 1000;
+    const preloadS = PRELOAD_LEAD_MS / 1000;
+    const trimS = TRIM_END_MS / 1000;
+
+    const remain = (cur.duration - cur.currentTime) - trimS;
+
+    // Préparer b (sans la lancer) assez tôt
+    if (!_loop.b && remain <= (fadeS + preloadS)) {
+      const b = _makeAudioEl(_loop.src);
+      b.volume = 0;
+      try { b.currentTime = 0; } catch(_) {}
+      try { b.load(); } catch(_) {}
+
+      _loop.b = b;
+      _loop.bPrepared = true;
+      _loop.bStarted = false;
+      _loop.fading = false;
+    }
+  }
+
+  function _startFadeIfReady(){
+    if (!_loop?.a) return;
+
+    const cur = _loop.a;
+    if (!isFinite(cur.duration) || cur.duration <= 0) return;
+
+    const fadeMs = (_loop.crossfadeMs || CROSSFADE_MS);
+    const fadeS  = fadeMs / 1000;
+    const trimS  = TRIM_END_MS / 1000;
+
+    const remain = (cur.duration - cur.currentTime) - trimS;
+
+    // Démarrer le fade
+    if (_loop.b && !_loop.fading && remain <= fadeS) {
+      const b = _loop.b;
+
+      // Lance b au début du fade (volume 0)
+      if (!_loop.bStarted) {
+        _loop.bStarted = true;
+        try { b.volume = 0; } catch(_) {}
+        _safePlay(b);
+      }
+
+      _loop.fading = true;
+
+      const start = performance.now();
+      const step = () => {
+        if (!_loop?.a || !_loop?.b) return;
+
+        const t = (performance.now() - start) / fadeMs;
+        const k = Math.max(0, Math.min(1, t));
+
+        // ✅ Equal-power crossfade (plus propre qu’un fade linéaire)
+        const fadeIn  = Math.sin(k * Math.PI / 2);
+        const fadeOut = Math.cos(k * Math.PI / 2);
+
+        const base = Math.max(0, Math.min(1, volume * duckMul));
+
+        try {
+          _loop.b.volume = base * fadeIn;
+          _loop.a.volume = base * fadeOut;
+        } catch(_) {}
+
+        if (k >= 1) {
+          try {
+            _loop.a.pause();
+            _loop.a.currentTime = 0;
+          } catch(_) {}
+
+          // Swap
+          _loop.a = _loop.b;
+          _loop.b = null;
+
+          _loop.bPrepared = false;
+          _loop.bStarted = false;
+          _loop.fading = false;
+
+          try { _loop.a.volume = base; } catch(_) {}
+          return;
+        }
+
+        requestAnimationFrame(step);
+      };
+
+      requestAnimationFrame(step);
     }
   }
 
@@ -187,7 +314,6 @@
     const id = String(universeId || "").trim();
     if (!id) return;
 
-    // (re)crée l’état loop
     if (!restart) {
       _destroyLoop();
       _loop = {
@@ -197,15 +323,20 @@
         a: null,
         b: null,
         tick: null,
-        crossfadeMs: CROSSFADE_MS
+        crossfadeMs: CROSSFADE_MS,
+        bPrepared: false,
+        bStarted: false,
+        fading: false
       };
     } else {
-      // restart en conservant extIndex/universeId
       _clearLoopInterval();
       _stopLoopElements();
       _loop.a = null;
       _loop.b = null;
       _loop.src = "";
+      _loop.bPrepared = false;
+      _loop.bStarted = false;
+      _loop.fading = false;
     }
 
     const ext = BGM_EXTS[_loop.extIndex] || BGM_EXTS[0];
@@ -214,71 +345,23 @@
     _loop.src = src;
 
     const a = _makeAudioEl(src);
-    a.volume = volume;
+    a.volume = Math.max(0, Math.min(1, volume * duckMul));
     _loop.a = a;
 
     wantPlay = true;
 
     _safePlay(a).then(() => {
-      // interval de contrôle (déclenche crossfade proche de la fin)
       _clearLoopInterval();
+
+      // Tick: prepare b puis fade
       _loop.tick = setInterval(() => {
         try {
           if (!_loop?.a) return;
 
-          const cur = _loop.a;
-
-          // Durée parfois NaN tant que metadata pas chargées
-          if (!isFinite(cur.duration) || cur.duration <= 0) return;
-
-          const fadeS = (_loop.crossfadeMs || CROSSFADE_MS) / 1000;
-          const remain = cur.duration - cur.currentTime;
-
-          // Déclenche une seule fois par boucle
-          if (!_loop.b && remain <= fadeS) {
-            const b = _makeAudioEl(_loop.src);
-            b.volume = 0;
-            b.currentTime = 0;
-            _loop.b = b;
-
-            _safePlay(b);
-
-            const start = performance.now();
-
-            const step = () => {
-              if (!_loop?.a || !_loop?.b) return;
-
-              const t = (performance.now() - start) / (_loop.crossfadeMs || CROSSFADE_MS);
-              const k = Math.max(0, Math.min(1, t));
-
-              // Utilise le volume global actuel (si tu changes le slider pendant le fade)
-              const base = volume;
-
-              _loop.b.volume = base * k;
-              _loop.a.volume = base * (1 - k);
-
-              if (k >= 1) {
-                try {
-                  _loop.a.pause();
-                  _loop.a.currentTime = 0;
-                } catch(_) {}
-
-                // Swap
-                _loop.a = _loop.b;
-                _loop.b = null;
-
-                // remet le volume propre
-                _loop.a.volume = base;
-                return;
-              }
-
-              requestAnimationFrame(step);
-            };
-
-            requestAnimationFrame(step);
-          }
+          _prepareNextIfNeeded();
+          _startFadeIfReady();
         } catch(_) {}
-      }, 60);
+      }, TICK_MS);
     });
   }
 
@@ -286,22 +369,19 @@
     _loadPrefs();
 
     if (!enabled) {
-      // stop net si disabled
       _destroyLoop();
       return;
     }
 
     wantPlay = true;
 
-    // si pas de loop active mais on a un universe -> on lance
     if (!_loop && currentUniverse) {
       _startLoop(currentUniverse, { restart:false });
       return;
     }
 
-    // sinon on tente de relancer l'élément courant
     if (_loop?.a) {
-      _loop.a.volume = volume;
+      _applyVolumes();
       const ok = await _safePlay(_loop.a);
       if (!ok) return;
     } else if (currentUniverse) {
@@ -319,7 +399,6 @@
       return;
     }
 
-    // si universe identique
     if (currentUniverse === id) {
       if (enabled && wantPlay) _tryPlay();
       return;
@@ -327,7 +406,6 @@
 
     currentUniverse = id;
 
-    // (re)start loop sur le nouvel universe
     if (enabled) {
       _destroyLoop();
       _loop = {
@@ -337,7 +415,10 @@
         a: null,
         b: null,
         tick: null,
-        crossfadeMs: CROSSFADE_MS
+        crossfadeMs: CROSSFADE_MS,
+        bPrepared: false,
+        bStarted: false,
+        fading: false
       };
       _startLoop(id, { restart:true });
     }
@@ -354,13 +435,7 @@
   function setVolume(v){
     volume = Math.max(0, Math.min(1, Number(v)));
     _lsSet(KEY_VOLUME, String(volume));
-
-    // applique au loop courant
-    try {
-      if (_loop?.a) _loop.a.volume = volume;
-      // b est contrôlé par le fade, mais si pas en fade on le limite
-      if (_loop?.b && _loop.b.volume > volume) _loop.b.volume = volume;
-    } catch(_) {}
+    _applyVolumes();
   }
 
   function setSfxVolume(v){
@@ -386,10 +461,6 @@
   }
 
   // SFX fin : "good" | "bad" | "secret"
-  // Fichiers attendus (ex):
-  // - assets/audio/sfx/ending_good.m4a
-  // - assets/audio/sfx/ending_bad.m4a
-  // - assets/audio/sfx/ending_secret.m4a
   function playEnding(type){
     _loadPrefs();
 
@@ -398,7 +469,6 @@
     if (t === "bad") name = "ending_bad";
     if (t === "secret") name = "ending_secret";
 
-    // Plus fort que la BGM : tu peux ajuster ici
     const vol = Math.max(0, Math.min(1, sfxVolume));
 
     return new Promise((resolve) => {
@@ -414,16 +484,26 @@
         fx.loop = false;
         fx.volume = vol;
 
-        fx.addEventListener("ended", () => resolve(true));
+        // ✅ Duck BGM pendant le SFX (pro)
+        const prevDuck = duckMul;
+        _setDuck(Math.min(prevDuck, 0.35));
+
+        const cleanup = () => {
+          try { fx.pause(); } catch(_) {}
+          _setDuck(prevDuck);
+        };
+
+        fx.addEventListener("ended", () => { cleanup(); resolve(true); }, { once:true });
         fx.addEventListener("error", () => {
+          cleanup();
           idx += 1;
           tryExt();
-        });
+        }, { once:true });
 
         fx.play().then(() => {
-          // ok, on laisse jouer
+          // ok
         }).catch(() => {
-          // iOS bloqué => on hook unlock et on abandonne (ça rejouera au prochain geste)
+          cleanup();
           _hookUnlockOnFirstGesture();
           resolve(false);
         });
@@ -437,7 +517,6 @@
   document.addEventListener("visibilitychange", () => {
     try {
       if (document.hidden) {
-        // on pause sans perdre l’intention de play
         _clearLoopInterval();
         if (_loop?.a) _loop.a.pause();
         if (_loop?.b) _loop.b.pause();
