@@ -534,6 +534,7 @@ body{
   text-align:left;
   padding: 14px 14px;
   border-radius: 16px;
+  border:1px solid rgba(255,255,255,.16);
   background: rgba(0,0,0,.30);
   color: rgba(255,255,255,.96);
   font-size: 15px;
@@ -547,6 +548,7 @@ body{
 .choice_btn:hover{
   transform: translateY(-1px);
   background: rgba(0,0,0,.40);
+  border-color: rgba(255,255,255,.22);
   filter:brightness(1.06);
 }
 
@@ -1065,21 +1067,9 @@ body.page-game .scene__hud .choice_btn.is_locked{ color:#fff !important; }
 body.page-game .scene__hud .choice_btn{
   opacity: 1 !important;
   color: #fff !important;
-  border: 1px solid rgba(255,255,255,.28) !important;
-  background: rgba(255,255,255,.12) !important;
+
   text-shadow: none !important;
 }
 
-body.page-game .scene__hud .choice_btn::after{
-  background: linear-gradient(90deg,
-    rgba(255,255,255,.14),
-    rgba(255,255,255,.06) 55%,
-    rgba(255,255,255,.12)
-  ) !important;
-  opacity: 1 !important;
-}
 
-body.page-game .scene__hud .choice_btn::before{
-  border: 1px solid rgba(255,255,255,.22) !important;
-}
 
