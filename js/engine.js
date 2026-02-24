@@ -1009,6 +1009,10 @@ async function openScenario(scenarioId, opts = {}){
   currentScenarioId = scenarioId;
 
   LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
+  try{
+  const uni = (LOGIC?.meta?.universe || scenarioId || "").trim();
+  if (uni && window.VCAudio?.setUniverse) window.VCAudio.setUniverse(uni);
+} catch(_){}
 
   try{
     TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
