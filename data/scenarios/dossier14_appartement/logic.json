@@ -8,6 +8,7 @@
   "scenario_id": "dossier14_appartement",
   "version": 3,
   "start_scene": "s01",
+  "universe": "dossier14",
 
   "images": {
     "cover": { "file": "assets/scenarios/dossier14_appartement/img/cover.webp" },
