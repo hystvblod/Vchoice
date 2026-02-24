@@ -1084,10 +1084,3 @@ body.page-game .scene__hud .choice_btn::after{
 body.page-game .scene__hud .choice_btn::before{
   border: 1px solid rgba(255,255,255,.22) !important;
 }
-
-/* Locked / disabled restent visiblement "off" */
-body.page-game .scene__hud .choice_btn.is_locked,
-body.page-game .scene__hud .choice_btn:disabled{
-
-  color: rgba(255,255,255,.72) !important;
-}
