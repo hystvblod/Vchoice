@@ -1,10 +1,11 @@
 /* engine.js — VERSION COMPLETE À JOUR
    Base: ton fichier (lang device + menu + jetons + guide + end modal)
-   + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP non clignotant à gauche, bouton centré avec gros jeton clignotant)
+   + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP non clignotant à gauche, bouton centré avec gros cartouche qui clignote)
    + ✅ Bypass “pas assez” : on seed 1 jeton tuto (1 seule fois) puis on le dépense
    + ✅ Pas de fermeture possible tant que le tuto jeton n’est pas fait
-   + ✅ FIN INTRO: pas de “Recommencer”, bouton “Fermer” -> index, et rewards avec icônes WEBP (pas de texte “VCoins/Jetons”)
-   + ✅ FIN INTRO: remet le texte long (comme ta capture) MAIS sans mots “Jetons/VCoins” -> on affiche les WEBP
+   + ✅ FIN INTRO: pas de “Recommencer”, bouton “Fermer” -> index, rewards avec icônes WEBP (pas de texte “VCoins/Jetons”)
+   + ✅ FIN INTRO: texte long (comme ta capture) MAIS sans mots “Jetons/VCoins” -> on affiche les WEBP
+   + ✅ FIN INTRO: icônes plus grandes + “Récompense” (pas “Récompense du tuto”) + en-tête centré + suppression du “x1” en bas
 */
 
 (function(){
@@ -32,7 +33,7 @@ const INTRO_FORCED_JETON_SEEDED_KEY = "vchoice_intro_forced_jeton_seeded_v1";
 const TUTO_JETON_ICON_WEBP = "assets/img/ui/jeton.webp";
 
 // ✅ Icônes rewards fin (UI)
-const UI_VCOINS_ICON_WEBP = "assets/img/ui/vcoins.webp";
+const UI_VCOINS_ICON_WEBP = "assets/img/ui/vcoin.webp"; // ✅ vcoin (pas vcoins)
 const UI_JETON_ICON_WEBP  = "assets/img/ui/jeton.webp";
 
 const PATHS = {
@@ -1207,28 +1208,47 @@ function ensureIntroTutoStyle(){
       .vc-tuto-note{ opacity:.92; }
       .vc-tuto-msg{ margin-top:12px; opacity:.95; text-align:center; }
       .vc-tuto-btn{ display:inline-flex; align-items:center; gap:12px; justify-content:center; }
-      .vc-tuto-btn img{ width:26px; height:26px; }
+      .vc-tuto-btn img{ width:34px; height:34px; }
       .vc-jeton-cta{ animation: vcJetonBlink 0.9s infinite ease-in-out; transform-origin:center; }
-      .vc-jeton-cta-big{ width:34px !important; height:34px !important; }
+      .vc-jeton-cta-big{ width:36px !important; height:36px !important; }
       @keyframes vcJetonBlink{
         0%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
-        50%{ transform:scale(1.10); filter:drop-shadow(0 12px 30px rgba(0,0,0,.45)); opacity:.92; }
+        50%{ transform:scale(1.08); filter:drop-shadow(0 12px 30px rgba(0,0,0,.45)); opacity:.92; }
         100%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
       }
 
       /* ✅ Intro end (texte long + icônes) */
       .vc-intro-end{ display:flex; flex-direction:column; gap:14px; }
-      .vc-intro-head{ white-space:pre-wrap; opacity:.98; }
+      .vc-intro-head{
+        white-space:pre-wrap;
+        opacity:.98;
+        text-align:center; /* ✅ centre “Le silence…” */
+      }
       .vc-intro-reward-title{ display:flex; align-items:center; gap:10px; font-weight:850; }
       .vc-intro-reward-title .vc-check{ display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; }
       .vc-intro-ul{ margin:8px 0 0 22px; padding:0; }
       .vc-intro-ul li{ margin:6px 0; }
-      .vc-intro-li{ display:flex; align-items:center; gap:10px; }
-      .vc-intro-li img{ width:18px; height:18px; flex:0 0 auto; filter: drop-shadow(0 8px 18px rgba(0,0,0,.25)); }
-      .vc-intro-line{ display:flex; align-items:flex-start; gap:10px; }
-      .vc-intro-line img{ width:18px; height:18px; flex:0 0 auto; margin-top:2px; filter: drop-shadow(0 8px 18px rgba(0,0,0,.25)); }
+
+      .vc-intro-li{ display:flex; align-items:center; gap:12px; }
+      .vc-intro-li img{
+        width:28px; height:28px; /* ✅ plus grand */
+        flex:0 0 auto;
+        filter: drop-shadow(0 10px 22px rgba(0,0,0,.28));
+      }
+      .vc-intro-li span{
+        font-size:1.05em; /* ✅ chiffres un peu plus visibles */
+        font-weight:800;
+      }
+
+      .vc-intro-line{ display:flex; align-items:flex-start; gap:12px; }
+      .vc-intro-line img{
+        width:26px; height:26px; /* ✅ plus grand */
+        flex:0 0 auto;
+        margin-top:1px;
+        filter: drop-shadow(0 10px 22px rgba(0,0,0,.28));
+      }
       .vc-intro-tip{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; opacity:.98; }
-      .vc-intro-tip img{ width:18px; height:18px; }
+      .vc-intro-tip img{ width:26px; height:26px; }
       .vc-intro-tip b{ font-weight:850; }
 
       /* (garde l’ancien, utile ailleurs) */
@@ -1328,8 +1348,9 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       btn.type = "button";
       btn.className = "btn";
 
+      // ✅ CLIGNOTE SUR LE CARTOUCHE ENTIER (pas juste l’icône)
       const inner = document.createElement("span");
-      inner.className = "vc-tuto-btn";
+      inner.className = "vc-tuto-btn vc-jeton-cta";
 
       const tx = document.createElement("span");
       tx.textContent = cta;
@@ -1339,10 +1360,10 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       ic.src = TUTO_JETON_ICON_WEBP;
       ic.alt = "";
       ic.draggable = false;
-      ic.className = "vc-jeton-cta vc-jeton-cta-big"; // ✅ gros + clignote sur le bouton
+      ic.className = "vc-jeton-cta-big"; // ✅ juste la taille, pas d’anim
       inner.appendChild(ic);
 
-      // ✅ pas de mot “jeton” -> on ajoute x1 via i18n
+      // ✅ pas de mot “jeton” -> x1 via i18n
       const q = document.createElement("b");
       q.textContent = tUI("shop_reward_jeton_x1");
       inner.appendChild(q);
@@ -1621,11 +1642,10 @@ async function handleEnding(type, endScene){
     if(endScene && endScene.body_key) body  = tS(endScene.body_key);
   }catch(_){}
 
-  // ✅ INTRO: texte long (comme ta capture) + icônes (pas de mots “Jetons/VCoins”)
+  // ✅ INTRO: texte long (comme ta capture) + icônes (pas de mots)
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     ensureIntroTutoStyle();
 
-    // titre spécial (capture)
     const introTitle = tUI("intro_end_title");
 
     // même si déjà rewardé, on affiche les valeurs standard demandées
@@ -1639,7 +1659,7 @@ async function handleEnding(type, endScene){
     const l2 = tUI("intro_end_line2") || "";
 
     const check = tUI("symbol_check");
-    const rewardLabel = tUI("intro_end_reward_label");
+    const rewardLabel = tUI("intro_end_reward_label"); // ✅ “Récompense :”
 
     const les = tUI("intro_end_prefix_les");
     const useV = tUI("intro_end_use_vcoins");
@@ -1650,8 +1670,6 @@ async function handleEnding(type, endScene){
     const jb3 = tUI("intro_end_jetons_b3");
 
     const multi = tUI("intro_end_multi_endings");
-    const tipPrefix = tUI("intro_end_tip_prefix");
-    const x1 = tUI("shop_reward_jeton_x1");
 
     showEndModal(
       introTitle,
@@ -1753,20 +1771,7 @@ async function handleEnding(type, endScene){
         pMulti.textContent = multi;
         wrap.appendChild(pMulti);
 
-        const tip = document.createElement("div");
-        tip.className = "vc-intro-tip";
-        const tp = document.createElement("span");
-        tp.textContent = tipPrefix;
-        const ti = document.createElement("img");
-        ti.src = iconJ;
-        ti.alt = "";
-        ti.draggable = false;
-        const tn = document.createElement("b");
-        tn.textContent = x1;
-        tip.appendChild(tp);
-        tip.appendChild(ti);
-        tip.appendChild(tn);
-        wrap.appendChild(tip);
+        // ✅ SUPPRIMÉ: le bloc “... avec x1” en bas
 
         root.appendChild(wrap);
       },

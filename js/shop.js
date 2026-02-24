@@ -18,25 +18,73 @@
     return window.VCI18n || window.VRI18n || window.VCI18N || window.VRI18N || null;
   }
 
+  function _asText(v, fallback){
+    if (typeof v === "string") return v;
+    if (typeof v === "number") return String(v);
+    if (typeof v === "boolean") return v ? "1" : "0";
+    return (typeof fallback === "string") ? fallback : "";
+  }
+
   function t(key, vars){
+    const k = String(key || "");
+    const v = (vars && typeof vars === "object") ? vars : null;
+
     try{
       const i18n = getI18n();
-      if (!i18n) return String(key || "");
-      if (typeof i18n.t === "function") return i18n.t(String(key || ""), vars || {});
-      if (typeof i18n.get === "function") return i18n.get(String(key || ""), vars || {});
-      if (typeof i18n.translate === "function") return i18n.translate(String(key || ""), vars || {});
-      return String(key || "");
+      if (!i18n) return k;
+
+      // ✅ IMPORTANT: ton i18n.js a la signature t(key, fallback, vars)
+      if (typeof i18n.t === "function"){
+        const out = i18n.t(k, k, v || undefined);
+        return _asText(out, k);
+      }
+
+      // fallback (au cas où tu changes d’i18n plus tard)
+      if (typeof i18n.get === "function"){
+        const out = i18n.get(k, k, v || undefined);
+        return _asText(out, k);
+      }
+      if (typeof i18n.translate === "function"){
+        const out = i18n.translate(k, k, v || undefined);
+        return _asText(out, k);
+      }
+
+      return k;
     }catch(_){
-      return String(key || "");
+      return k;
     }
   }
 
   function applyI18nNow(){
-    // Si ton i18n.js gère déjà ça, ça ne gêne pas : on laisse ton système faire.
+    // ton i18n.js expose applyI18n(root)
     try{
       const i18n = getI18n();
+      if (i18n && typeof i18n.applyI18n === "function") i18n.applyI18n(document);
       if (i18n && typeof i18n.apply === "function") i18n.apply(document);
       if (i18n && typeof i18n.update === "function") i18n.update(document);
+    }catch(_){}
+  }
+
+  async function ensureI18nReady(){
+    try{
+      const i18n = getI18n();
+      if (!i18n) return;
+
+      let lang = "";
+      try{ lang = String(localStorage.getItem("vchoice_lang") || ""); }catch(_){ lang = ""; }
+      if (!lang){
+        try{ lang = String(window.VUserData?.getLang?.() || ""); }catch(_){ lang = ""; }
+      }
+      if (!lang) lang = "fr";
+
+      if (typeof i18n.initI18n === "function"){
+        await i18n.initI18n(lang);
+        return;
+      }
+      if (typeof i18n.load === "function"){
+        await i18n.load(lang);
+        return;
+      }
     }catch(_){}
   }
 
@@ -113,19 +161,21 @@
     }
   }
 
+  // =========================
+  // Store helpers
+  // =========================
   function getPrice(pid){
     try{
       const api = getStoreApi();
       const v = api?.getPrice?.(pid);
-      const s = sanitizePrice(v);
-      return (s && String(s).trim()) ? String(s) : "";
+      return sanitizePrice(v);
     }catch(_){ return ""; }
   }
 
   function setPrice(pid, price){
-    const safe = sanitizePrice(price) || t(I18N.loading);
+    const p = sanitizePrice(price);
     $all(`[data-price-for="${pid}"]`).forEach(el => {
-      el.textContent = safe;
+      el.textContent = p || t(I18N.loading);
     });
   }
 
@@ -420,15 +470,19 @@
     applyI18nNow();
   });
 
-  // init
-  applyI18nNow();
-  refreshAllPrices();
-  refreshEntitlementsUI();
-  disableAllBuyButtonsIfNoIAP();
+  // init (⚠️ sur shop.html tu n’avais pas d’init i18n, donc tout tombait en fallback -> [object Object])
+  (async function boot(){
+    await ensureI18nReady();
 
-  // store parfois lent -> refresh
-  setTimeout(refreshAllPrices, 900);
-  setTimeout(refreshAllPrices, 2200);
-  setTimeout(refreshAllPrices, 4200);
+    applyI18nNow();
+    refreshEntitlementsUI();
+    refreshAllPrices();
+    disableAllBuyButtonsIfNoIAP();
+
+    // store parfois lent -> refresh
+    setTimeout(refreshAllPrices, 900);
+    setTimeout(refreshAllPrices, 2200);
+    setTimeout(refreshAllPrices, 4200);
+  })();
 
 })();

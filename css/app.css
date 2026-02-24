@@ -1059,3 +1059,37 @@ body.page-game .scene__hud .choice_btn:disabled{ opacity: .42 !important; }
 body.page-game .scene__hud .choice_btn.is_locked{ color:#fff !important; }
 
 
+/* =========================
+   FIX CHOIX "GRIS" (FORCE BLANC)
+   À COLLER TOUT EN BAS DE app.css
+========================= */
+
+body.page-game .scene__hud .choice_btn{
+  opacity: 1 !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,.28) !important;
+  background: rgba(255,255,255,.12) !important;
+  text-shadow: none !important;
+}
+
+body.page-game .scene__hud .choice_btn::after{
+  background: linear-gradient(90deg,
+    rgba(255,255,255,.14),
+    rgba(255,255,255,.06) 55%,
+    rgba(255,255,255,.12)
+  ) !important;
+  opacity: 1 !important;
+}
+
+body.page-game .scene__hud .choice_btn::before{
+  border: 1px solid rgba(255,255,255,.22) !important;
+}
+
+/* Locked / disabled restent visiblement "off" */
+body.page-game .scene__hud .choice_btn.is_locked,
+body.page-game .scene__hud .choice_btn:disabled{
+  opacity: .45 !important;
+  background: rgba(0,0,0,.28) !important;
+  border-color: rgba(255,255,255,.14) !important;
+  color: rgba(255,255,255,.72) !important;
+}
