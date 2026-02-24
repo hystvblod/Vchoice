@@ -1088,7 +1088,7 @@ body.page-game .scene__hud .choice_btn::before{
 /* Locked / disabled restent visiblement "off" */
 body.page-game .scene__hud .choice_btn.is_locked,
 body.page-game .scene__hud .choice_btn:disabled{
-  opacity: .45 !important;
+
   background: rgba(0,0,0,.28) !important;
   color: rgba(255,255,255,.72) !important;
 }
