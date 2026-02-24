@@ -1067,9 +1067,11 @@ body.page-game .scene__hud .choice_btn.is_locked{ color:#fff !important; }
 body.page-game .scene__hud .choice_btn{
   opacity: 1 !important;
   color: #fff !important;
-
   text-shadow: none !important;
+  opacity: 1 !important;
 }
 
-
+body.page-game .scene__hud .choice_btn::before{
+  border: 1px solid rgba(255,255,255,.22) !important;
+}
 
