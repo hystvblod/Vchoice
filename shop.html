@@ -257,15 +257,15 @@
       opacity: .92;
     }
 
-    .prod-inner{
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      align-items:stretch;
-      justify-content:space-between;
-      gap: 10px;
-      min-height: 166px;
-    }
+   .prod-inner{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  justify-content:space-between;
+  gap: 10px;
+  min-height: 0; /* ✅ ne force plus une hauteur plus grande que les cards du haut */
+}
 
     /* ✅ NOUVEAU : même layout que les cards du haut (image gauche, texte droite) */
     .prod-top{
