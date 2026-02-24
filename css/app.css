@@ -534,7 +534,6 @@ body{
   text-align:left;
   padding: 14px 14px;
   border-radius: 16px;
-  border:1px solid rgba(255,255,255,.16);
   background: rgba(0,0,0,.30);
   color: rgba(255,255,255,.96);
   font-size: 15px;
@@ -548,7 +547,6 @@ body{
 .choice_btn:hover{
   transform: translateY(-1px);
   background: rgba(0,0,0,.40);
-  border-color: rgba(255,255,255,.22);
   filter:brightness(1.06);
 }
 
@@ -1084,3 +1082,4 @@ body.page-game .scene__hud .choice_btn::after{
 body.page-game .scene__hud .choice_btn::before{
   border: 1px solid rgba(255,255,255,.22) !important;
 }
+
