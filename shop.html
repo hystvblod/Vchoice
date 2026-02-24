@@ -225,9 +225,36 @@
     .reward-btn:active{ transform: translateY(1px); }
     .reward-btn.is-busy{ opacity:.7; cursor:not-allowed; }
 
+    /* ===== Divider "Store" ===== */
+    .shop-divider{
+      margin: 18px 2px 14px; /* ✅ espace sous les 2 cards gratuites + avant le store */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      opacity: .95;
+    }
+
+    .shop-divider-line{
+      height: 1px;
+      flex: 1 1 auto;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+    }
+
+    .shop-divider-title{
+      margin: 0;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.78);
+      text-shadow: 0 10px 22px rgba(0,0,0,.55);
+      white-space: nowrap;
+    }
+
     /* ===== Product grid ===== */
     .shop-section{
-      margin-top: 10px;
+      margin-top: 0; /* ✅ on gère l’espace via le divider */
     }
 
     .shop-grid{
@@ -257,17 +284,17 @@
       opacity: .92;
     }
 
-   .prod-inner{
-  position:relative;
-  display:flex;
-  flex-direction:column;
-  align-items:stretch;
-  justify-content:space-between;
-  gap: 10px;
-  min-height: 0; /* ✅ ne force plus une hauteur plus grande que les cards du haut */
-}
+    .prod-inner{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      justify-content:space-between;
+      gap: 10px;
+      min-height: 0; /* ✅ ne force plus une hauteur plus grande que les cards du haut */
+    }
 
-    /* ✅ NOUVEAU : même layout que les cards du haut (image gauche, texte droite) */
+    /* ✅ même layout que les cards du haut (image gauche, texte droite) */
     .prod-top{
       display:flex;
       align-items:center;
@@ -521,6 +548,13 @@
         <button class="reward-btn" type="button" data-ad="vcoins" data-i18n="ui.shop_watch_ad"></button>
       </div>
     </section>
+
+    <!-- ✅ Séparateur + titre i18n "Store" -->
+    <div class="shop-divider">
+      <div class="shop-divider-line"></div>
+      <h2 class="shop-divider-title" data-i18n="ui.shop_store_title"></h2>
+      <div class="shop-divider-line"></div>
+    </div>
 
     <section class="shop-section" aria-label="">
       <div class="shop-grid">
