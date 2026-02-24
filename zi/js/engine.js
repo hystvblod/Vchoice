@@ -6,6 +6,7 @@
    + ✅ FIN INTRO: pas de “Recommencer”, bouton “Fermer” -> index, rewards avec icônes WEBP (pas de texte “VCoins/Jetons”)
    + ✅ FIN INTRO: texte long (comme ta capture) MAIS sans mots “Jetons/VCoins” -> on affiche les WEBP
    + ✅ FIN INTRO: icônes plus grandes + “Récompense” (pas “Récompense du tuto”) + en-tête centré + suppression du “x1” en bas
+   + ✅ iOS ONLY: mini popup “Entrer” au tout début du scénario -> autorise la musique, puis lance VCAudio.play()
 */
 
 (function(){
@@ -128,6 +129,145 @@ function resolveImageFile(logic, imageId){
 function sanitizeJetonLabel(s){
   if(s == null) return "";
   return String(s).replace(/\s*[—–-]\s*/g, " ").replace(/\s{2,}/g, " ").trim();
+}
+
+/* =========================
+   iOS AUDIO GATE (popup "Entrer")
+   - iOS bloque l'audio sans geste utilisateur
+   - on affiche une mini popup au début du scénario
+   - tap => unlock + play
+========================= */
+let _iosGateDone = false;
+let _iosGateStyleDone = false;
+
+function isIOS(){
+  try{
+    if (window.Capacitor && typeof window.Capacitor.getPlatform === "function"){
+      return window.Capacitor.getPlatform() === "ios";
+    }
+  }catch(_){}
+
+  const ua = String(navigator.userAgent || "");
+  const isAppleMobile = /iPad|iPhone|iPod/.test(ua);
+  const isIPadOS13Plus = ua.includes("Macintosh") && ("ontouchend" in document);
+  return isAppleMobile || isIPadOS13Plus;
+}
+
+function ensureIOSGateStyle(){
+  if(_iosGateStyleDone) return;
+  _iosGateStyleDone = true;
+
+  try{
+    const css = `
+      .vc-iosgate{
+        position:fixed; inset:0; z-index:99999;
+        display:flex; align-items:center; justify-content:center;
+        padding:24px;
+        background: rgba(0,0,0,.55);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+      .vc-iosgate-card{
+        width:min(520px, 92vw);
+        border:1px solid rgba(255,255,255,.14);
+        border-radius:18px;
+        background: rgba(16,24,39,.92);
+        box-shadow: 0 20px 60px rgba(0,0,0,.55);
+        padding:18px 16px 16px;
+        text-align:center;
+      }
+      .vc-iosgate-title{
+        font-weight:900;
+        letter-spacing:.2px;
+        font-size:1.15rem;
+        margin-bottom:10px;
+      }
+      .vc-iosgate-body{
+        opacity:.9;
+        white-space:pre-wrap;
+        margin:0 0 14px 0;
+      }
+      .vc-iosgate-btn{
+        width:100%;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        padding:12px 14px;
+        border-radius:14px;
+        border:1px solid rgba(255,255,255,.14);
+        background: rgba(255,255,255,.10);
+        color: inherit;
+        font-weight:900;
+      }
+      .vc-iosgate-btn:active{ transform: scale(.99); }
+    `;
+    const st = document.createElement("style");
+    st.id = "vc_ios_gate_style";
+    st.textContent = css;
+    document.head.appendChild(st);
+  }catch(_){}
+}
+
+function showIOSAudioGate(){
+  return new Promise((resolve) => {
+    ensureIOSGateStyle();
+
+    if(_iosGateDone) return resolve();
+
+    // si audio désactivé côté app, pas de gate
+    try{
+      if(window.VCAudio && typeof window.VCAudio.isEnabled === "function"){
+        if(!window.VCAudio.isEnabled()) return resolve();
+      }
+    }catch(_){}
+
+    const gate = document.createElement("div");
+    gate.className = "vc-iosgate";
+    gate.setAttribute("role","dialog");
+    gate.setAttribute("aria-modal","true");
+
+    const card = document.createElement("div");
+    card.className = "vc-iosgate-card";
+
+    const title = document.createElement("div");
+    title.className = "vc-iosgate-title";
+    title.textContent = tUI("ios_enter_title");
+
+    const body = document.createElement("div");
+    body.className = "vc-iosgate-body";
+    body.textContent = tUI("ios_enter_body");
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "vc-iosgate-btn";
+    btn.textContent = tUI("ios_enter_btn");
+
+    btn.onclick = async () => {
+      try{
+        // unlock si dispo, puis play
+        if(window.VCAudio && typeof window.VCAudio.unlock === "function"){
+          await window.VCAudio.unlock();
+        }
+        if(window.VCAudio && typeof window.VCAudio.play === "function"){
+          window.VCAudio.play();
+        }
+      }catch(_){}
+
+      _iosGateDone = true;
+
+      try{ gate.remove(); }catch(_){
+        try{ gate.parentNode && gate.parentNode.removeChild(gate); }catch(__){}
+      }
+      resolve();
+    };
+
+    card.appendChild(title);
+    card.appendChild(body);
+    card.appendChild(btn);
+    gate.appendChild(card);
+    document.body.appendChild(gate);
+  });
 }
 
 /* =========================
@@ -1009,6 +1149,10 @@ async function openScenario(scenarioId, opts = {}){
   currentScenarioId = scenarioId;
 
   LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
+  try{
+    const uni = (LOGIC?.meta?.universe || scenarioId || "").trim();
+    if (uni && window.VCAudio?.setUniverse) window.VCAudio.setUniverse(uni);
+  } catch(_){}
 
   try{
     TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
@@ -1039,6 +1183,11 @@ async function openScenario(scenarioId, opts = {}){
   scenarioStates[scenarioId].flags ??= {};
   scenarioStates[scenarioId].clues ??= [];
   scenarioStates[scenarioId].history ??= [];
+
+  // ✅ iOS ONLY: Gate "Entrer" AVANT resume modal / rendu (pour autoriser la musique)
+  if (isIOS() && !_iosGateDone && window.VCAudio) {
+    await showIOSAudioGate();
+  }
 
   if(!skipResumePrompt && hasLocalRun(scenarioId)){
     showResumeModal(
@@ -1770,8 +1919,6 @@ async function handleEnding(type, endScene){
         pMulti.style.whiteSpace = "pre-wrap";
         pMulti.textContent = multi;
         wrap.appendChild(pMulti);
-
-        // ✅ SUPPRIMÉ: le bloc “... avec x1” en bas
 
         root.appendChild(wrap);
       },

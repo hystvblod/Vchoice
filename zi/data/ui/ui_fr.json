@@ -141,6 +141,10 @@
       "ja": "日本語"
     },
 
+"ios_enter_title": "Entrer",
+"ios_enter_body": "Tape pour commencer.",
+"ios_enter_btn": "Entrer",
+
     "icon_vcoins_webp": "assets/img/ui/vcoin.webp",
     "icon_jeton_webp": "assets/img/ui/jeton.webp",
 
@@ -174,11 +178,12 @@
     "shop_unavailable": "Indisponible",
     "shop_owned_badge": "OK",
 
+    "shop_store_title": "Store",
     "shop_reward_jeton_x1": "x1",
     "shop_reward_vcoins_x100": "x100",
 
     "shop_p_jetons12_title": "12",
-    "shop_p_jetons12_desc": "Pack de jetons à utiliser pour débloquer des scénarios ou certaines actions.",
+    "shop_p_jetons12_desc": "Pack de jetons à utiliser pour débloquer des objets ou certaines actions.",
 
     "shop_p_jetons30_title": "30",
     "shop_p_jetons30_desc": "Pack de jetons plus avantageux, pour avancer plus vite.",

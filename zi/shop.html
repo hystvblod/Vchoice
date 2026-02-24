@@ -206,6 +206,7 @@
       opacity: .98;
       text-shadow: 0 10px 22px rgba(0,0,0,.45);
       line-height: 1;
+      text-align:right;
     }
 
     .reward-btn{
@@ -224,9 +225,36 @@
     .reward-btn:active{ transform: translateY(1px); }
     .reward-btn.is-busy{ opacity:.7; cursor:not-allowed; }
 
+    /* ===== Divider "Store" ===== */
+    .shop-divider{
+      margin: 26px 2px 20px; /* ✅ espace sous les 2 cards gratuites + avant le store */
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      opacity: .95;
+    }
+
+    .shop-divider-line{
+      height: 1px;
+      flex: 1 1 auto;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+    }
+
+    .shop-divider-title{
+      margin: 0;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.78);
+      text-shadow: 0 10px 22px rgba(0,0,0,.55);
+      white-space: nowrap;
+    }
+
     /* ===== Product grid ===== */
     .shop-section{
-      margin-top: 10px;
+      margin-top: 0; /* ✅ on gère l’espace via le divider */
     }
 
     .shop-grid{
@@ -260,34 +288,45 @@
       position:relative;
       display:flex;
       flex-direction:column;
+      align-items:stretch;
+      justify-content:space-between;
+      gap: 10px;
+      min-height: 0; /* ✅ ne force plus une hauteur plus grande que les cards du haut */
+    }
+
+    /* ✅ même layout que les cards du haut (image gauche, texte droite) */
+    .prod-top{
+      display:flex;
       align-items:center;
       justify-content:space-between;
       gap: 10px;
-      min-height: 166px;
+      min-height: 74px;
+      width:100%;
     }
 
     .prod-ico{
-      width: 92px;
-      height: 92px;
+      width: 72px;
+      height: 72px;
       object-fit: contain;
       filter: drop-shadow(0 18px 34px rgba(0,0,0,.60));
       user-select:none;
       pointer-events:none;
+      flex: 0 0 auto;
     }
 
     .prod-amount{
+      flex: 1 1 auto;
       display:flex;
       align-items:center;
-      justify-content:center;
-      gap: 8px;
+      justify-content:flex-end;
       font-weight: 950;
       font-size: 20px;
       color: var(--vc-text);
       text-shadow: 0 10px 24px rgba(0,0,0,.5);
       line-height: 1.1;
-      margin-top: -4px;
       min-height: 22px;
-      text-align:center;
+      text-align:right;
+      padding-right: 2px;
     }
 
     .prod-price{
@@ -481,8 +520,8 @@
     <div class="vc-top-slot vc-top-center"></div>
 
     <div class="vc-top-slot vc-top-right">
-      <span class="vc-icon-button" aria-label="" data-i18n-aria="ui.aria_shop" aria-current="page">
-        <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
+      <span class="vc-icon-button" aria-label="" data-i18n-aria="" aria-current="page" href="profile.html">
+        <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
       </span>
     </div>
   </div>
@@ -510,13 +549,22 @@
       </div>
     </section>
 
+    <!-- ✅ Séparateur + titre i18n "Store" -->
+    <div class="shop-divider">
+      <div class="shop-divider-line"></div>
+      <h2 class="shop-divider-title" data-i18n="ui.shop_store_title"></h2>
+      <div class="shop-divider-line"></div>
+    </div>
+
     <section class="shop-section" aria-label="">
       <div class="shop-grid">
         <article class="shop-panel prod-card" data-product="vchoice_jetons_12">
           <span class="owned-badge" data-i18n="ui.shop_owned_badge"></span>
           <div class="prod-inner">
-            <img class="prod-ico" data-product-icon src="assets/img/ui/jeton.webp" alt="" draggable="false" />
-            <div class="prod-amount" data-i18n="ui.shop_p_jetons12_title"></div>
+            <div class="prod-top">
+              <img class="prod-ico" data-product-icon src="assets/img/ui/jeton.webp" alt="" draggable="false" />
+              <div class="prod-amount" data-i18n="ui.shop_p_jetons12_title"></div>
+            </div>
             <div class="prod-price" data-price-for="vchoice_jetons_12" data-i18n="ui.loading"></div>
           </div>
         </article>
@@ -524,8 +572,10 @@
         <article class="shop-panel prod-card" data-product="vchoice_jetons_30">
           <span class="owned-badge" data-i18n="ui.shop_owned_badge"></span>
           <div class="prod-inner">
-            <img class="prod-ico" data-product-icon src="assets/img/ui/jeton.webp" alt="" draggable="false" />
-            <div class="prod-amount" data-i18n="ui.shop_p_jetons30_title"></div>
+            <div class="prod-top">
+              <img class="prod-ico" data-product-icon src="assets/img/ui/jeton.webp" alt="" draggable="false" />
+              <div class="prod-amount" data-i18n="ui.shop_p_jetons30_title"></div>
+            </div>
             <div class="prod-price" data-price-for="vchoice_jetons_30" data-i18n="ui.loading"></div>
           </div>
         </article>
@@ -533,8 +583,10 @@
         <article class="shop-panel prod-card" data-product="vchoice_vcoins_500">
           <span class="owned-badge" data-i18n="ui.shop_owned_badge"></span>
           <div class="prod-inner">
-            <img class="prod-ico" data-product-icon src="assets/img/ui/vcoin.webp" alt="" draggable="false" />
-            <div class="prod-amount" data-i18n="ui.shop_p_vcoins500_title"></div>
+            <div class="prod-top">
+              <img class="prod-ico" data-product-icon src="assets/img/ui/vcoin.webp" alt="" draggable="false" />
+              <div class="prod-amount" data-i18n="ui.shop_p_vcoins500_title"></div>
+            </div>
             <div class="prod-price" data-price-for="vchoice_vcoins_500" data-i18n="ui.loading"></div>
           </div>
         </article>
@@ -542,8 +594,10 @@
         <article class="shop-panel prod-card" data-product="vchoice_vcoins_3000">
           <span class="owned-badge" data-i18n="ui.shop_owned_badge"></span>
           <div class="prod-inner">
-            <img class="prod-ico" data-product-icon src="assets/img/ui/vcoin.webp" alt="" draggable="false" />
-            <div class="prod-amount" data-i18n="ui.shop_p_vcoins3000_title"></div>
+            <div class="prod-top">
+              <img class="prod-ico" data-product-icon src="assets/img/ui/vcoin.webp" alt="" draggable="false" />
+              <div class="prod-amount" data-i18n="ui.shop_p_vcoins3000_title"></div>
+            </div>
             <div class="prod-price" data-price-for="vchoice_vcoins_3000" data-i18n="ui.loading"></div>
           </div>
         </article>
@@ -551,8 +605,10 @@
         <article class="shop-panel prod-card" data-product="vchoice_no_ads">
           <span class="owned-badge" data-i18n="ui.shop_owned_badge"></span>
           <div class="prod-inner">
-            <img class="prod-ico" data-product-icon src="assets/img/ui/no_ads.webp" alt="" draggable="false" />
-            <div class="prod-amount" style="font-size:16px" data-i18n="ui.shop_p_noads_title"></div>
+            <div class="prod-top">
+              <img class="prod-ico" data-product-icon src="assets/img/ui/no_ads.webp" alt="" draggable="false" />
+              <div class="prod-amount" style="font-size:16px" data-i18n="ui.shop_p_noads_title"></div>
+            </div>
             <div class="prod-price" data-price-for="vchoice_no_ads" data-i18n="ui.loading"></div>
           </div>
         </article>
@@ -560,8 +616,10 @@
         <article class="shop-panel prod-card" data-product="vchoice_ultra">
           <span class="owned-badge" data-i18n="ui.shop_owned_badge"></span>
           <div class="prod-inner">
-            <img class="prod-ico" data-product-icon src="assets/img/ui/diamond.webp" alt="" draggable="false" />
-            <div class="prod-amount" style="font-size:16px" data-i18n="ui.shop_p_diamond_title"></div>
+            <div class="prod-top">
+              <img class="prod-ico" data-product-icon src="assets/img/ui/diamond.webp" alt="" draggable="false" />
+              <div class="prod-amount" style="font-size:16px" data-i18n="ui.shop_p_diamond_title"></div>
+            </div>
             <div class="prod-price" data-price-for="vchoice_ultra" data-i18n="ui.loading"></div>
           </div>
         </article>

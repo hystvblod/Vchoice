@@ -1059,3 +1059,15 @@ body.page-game .scene__hud .choice_btn:disabled{ opacity: .42 !important; }
 body.page-game .scene__hud .choice_btn.is_locked{ color:#fff !important; }
 
 
+/* =========================
+   FIX CHOIX "GRIS" (FORCE BLANC)
+   À COLLER TOUT EN BAS DE app.css
+========================= */
+
+body.page-game .scene__hud .choice_btn{
+  opacity: 1 !important;
+  color: #fff !important;
+  text-shadow: none !important;
+}
+
+
