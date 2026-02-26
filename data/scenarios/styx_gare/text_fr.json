@@ -7,8 +7,8 @@
     "generated": "2026-02-14"
   },
   "strings": {
-    "styx.title": "STYX — Gare Terminale",
-    "styx.tagline": "Les horloges sont mortes. Les quais te trient. Et quelqu’un attend ton billet.",
+    "styx.title": "Gare Styx",
+    "styx.tagline": "Tu te réveilles seul dans une gare noyée de brume noire. Entre horloges mortes, quais sans fin et ticket noir, tout donne l’impression d’être arrivé dans un lieu qui juge ses voyageurs.",
 
     "styx.s01.title": "Réveil à quai",
     "styx.s01.body": "Tu t’endors dans un train de nuit… et tu te réveilles d’un coup. Le wagon est immobile. Les portes sont ouvertes. Aucun bruit de gare. Au-delà des vitres : une brume noire qui glisse au ras des rails.\n\nTon téléphone n’a plus d’heure. Juste une notification fantôme : « Dernier départ : inconnu ».",

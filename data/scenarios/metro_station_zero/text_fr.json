@@ -7,8 +7,8 @@
     "generated": "2026-02-15"
   },
   "strings": {
-    "msz.title": "Station Zéro — Prochaine Descente",
-    "msz.tagline": "La station n’existe pas. Mais elle sait que tu es là.",
+    "msz.title": "Station Zéro",
+    "msz.tagline": "Tu descends dans une station qui n’existe sur aucun plan. Quais figés, annonces étranges, ticket Zéro et couloirs mouvants te mènent vers un lieu qui semble t’attendre.",
 
     "msz.s01.title": "Descendre sans regarder",
     "msz.s01.body": "Tu descends de la rame sans lever les yeux. Quand tu relèves la tête, le quai est vide, trop froid, trop net — et le silence a quelque chose de volontaire.",
