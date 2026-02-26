@@ -201,6 +201,17 @@
     "shop_p_diamond_desc": "Accès Diamond : tous les scénarios actuels et à venir + No Ads. Bonus inclus selon ton pack."
   },
 
+  "ending_label_good": "fin bonne",
+"ending_label_bad": "fin mauvaise",
+"ending_label_secret": "fin secrète",
+
+"end_unlock_line": "Bravo, tu as débloqué la {ending}.",
+"end_reward_label": "Récompense :",
+"end_btn_double": "Doubler les gains avec pub",
+"end_double_done": "Gains doublés",
+"end_double_error": "Publicité indisponible pour le moment.",
+"end_double_wait": "Validation en cours…",
+
   "common": {
     "cancel": "Annuler"
   },
