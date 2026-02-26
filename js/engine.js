@@ -1,5 +1,5 @@
 /* engine.js — VERSION COMPLETE À JOUR
-   Base: ton fichier (lang device + menu + jetons + guide + end modal)
+  
    + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP non clignotant à gauche, bouton centré avec gros cartouche qui clignote)
    + ✅ Bypass “pas assez” : on seed 1 jeton tuto (1 seule fois) puis on le dépense
    + ✅ Pas de fermeture possible tant que le tuto jeton n’est pas fait
