@@ -32,6 +32,16 @@
     "end_title_bad": "Fin mauvaise",
     "end_title_secret": "Fin secrète",
 
+    "ending_label_good": "fin bonne",
+    "ending_label_bad": "fin mauvaise",
+    "ending_label_secret": "fin secrète",
+    "end_unlock_line": "Bravo, tu as débloqué la {ending}.",
+    "end_reward_label": "Récompense :",
+    "end_btn_add_bonus": "Rajouter +{amount}",
+    "end_add_bonus_wait": "Validation en cours…",
+    "end_add_bonus_done": "Bonus +{amount} ajouté",
+    "end_add_bonus_error": "Publicité indisponible pour le moment.",
+
     "profile_title": "Profil",
     "profile_subtitle": "Ton solde et tes fins débloquées.",
     "profile_jetons": "Jetons",
@@ -48,7 +58,7 @@
     "profile_username_working": "Mise à jour…",
     "profile_username_ok_saved": "Pseudo mis à jour.",
     "profile_username_ok_nochange": "Aucun changement.",
-    "profile_username_err_format": "Pseudo invalide (3–20 caractères, lettres/chiffres/underscore).",
+    "profile_username_err_format": "Pseudo invalide 3–20 caractères, lettres, chiffres ou underscore.",
     "profile_username_err_taken": "Pseudo déjà pris.",
     "profile_username_err_nojeton": "Pas assez de jetons.",
     "profile_username_err_generic": "Impossible de modifier le pseudo.",
@@ -106,9 +116,7 @@
 
     "end_congrats": "Bravo, tu as terminé la fin : {ending}.",
     "end_reward": "Bravo, tu as gagné {reward} VCoins.",
-    "end_btn_double": "Doubler",
     "end_btn_quit": "Quitter",
-    "end_double_wait": "Validation en cours…",
     "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale.",
 
     "settings_lang_desc": "Choisis la langue. Elle est sauvegardée sur l’appareil et sur ton profil.",
@@ -141,9 +149,9 @@
       "ja": "日本語"
     },
 
-"ios_enter_title": "Entrer",
-"ios_enter_body": "Tape pour commencer.",
-"ios_enter_btn": "Entrer",
+    "ios_enter_title": "Entrer",
+    "ios_enter_body": "Tape pour commencer.",
+    "ios_enter_btn": "Entrer",
 
     "icon_vcoins_webp": "assets/img/ui/vcoin.webp",
     "icon_jeton_webp": "assets/img/ui/jeton.webp",
@@ -200,17 +208,6 @@
     "shop_p_diamond_title": "Diamond",
     "shop_p_diamond_desc": "Accès Diamond : tous les scénarios actuels et à venir + No Ads. Bonus inclus selon ton pack."
   },
-
-  "ending_label_good": "fin bonne",
-"ending_label_bad": "fin mauvaise",
-"ending_label_secret": "fin secrète",
-
-"end_unlock_line": "Bravo, tu as débloqué la {ending}.",
-"end_reward_label": "Récompense :",
-"end_btn_double": "Doubler les gains avec pub",
-"end_double_done": "Gains doublés",
-"end_double_error": "Publicité indisponible pour le moment.",
-"end_double_wait": "Validation en cours…",
 
   "common": {
     "cancel": "Annuler"
