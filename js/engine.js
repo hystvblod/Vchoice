@@ -133,12 +133,37 @@ function resolveImageFile(logic, imageId){
 
 function sanitizeJetonLabel(s){
   if(s == null) return "";
-  return String(s).replace(/\s*[—–-]\s*/g, " ").replace(/\s{2,}/g, " ").trim();
+  return String(s)
+    .replace(/_/g, " ")
+    .replace(/\bjetons?\b/gi, "")
+    .replace(/\s*[—–-]\s*/g, " ")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 function clearNode(el){
   if(!el) return;
   while(el.firstChild) el.removeChild(el.firstChild);
+}
+
+function setLabelWithTrailingIcon(el, labelText, iconSrc){
+  if(!el) return;
+  clearNode(el);
+
+  const wrap = document.createElement("span");
+  wrap.className = "vc-choice-inline";
+
+  const text = document.createElement("span");
+  text.textContent = sanitizeJetonLabel(labelText);
+
+  const icon = document.createElement("img");
+  icon.src = iconSrc;
+  icon.alt = "";
+  icon.draggable = false;
+
+  wrap.appendChild(text);
+  wrap.appendChild(icon);
+  el.appendChild(wrap);
 }
 
 function tUI(key, params){
@@ -592,23 +617,23 @@ function applyStaticI18n(){
   const bal = $("jetonBalanceLabel");
   if(bal) bal.textContent = tUI("jeton_balance_label");
 
-  const bBack = $("btnJetonBackModal");
-  if(bBack) bBack.textContent = sanitizeJetonLabel(tUI("jeton_back_btn"));
+const bBack = $("btnJetonBackModal");
+if(bBack) setLabelWithTrailingIcon(bBack, tUI("jeton_back_btn"), UI_JETON_ICON_WEBP);
 
-  const guideLabel = $("jetonGuideLabel");
-  if(guideLabel) guideLabel.textContent = sanitizeJetonLabel(tUI("jeton_guide_btn"));
+const guideLabel = $("jetonGuideLabel");
+if(guideLabel) setLabelWithTrailingIcon(guideLabel, tUI("jeton_guide_btn"), UI_JETON_ICON_WEBP);
 
-  const bGood = $("btnJetonGuideGood");
-  if(bGood) bGood.textContent = sanitizeJetonLabel(tUI("jeton_guide_good"));
+const bGood = $("btnJetonGuideGood");
+if(bGood) bGood.textContent = sanitizeJetonLabel(tUI("jeton_guide_good"));
 
-  const bBad = $("btnJetonGuideBad");
-  if(bBad) bBad.textContent = sanitizeJetonLabel(tUI("jeton_guide_bad"));
+const bBad = $("btnJetonGuideBad");
+if(bBad) bBad.textContent = sanitizeJetonLabel(tUI("jeton_guide_bad"));
 
-  const bSecret = $("btnJetonGuideSecret");
-  if(bSecret) bSecret.textContent = sanitizeJetonLabel(tUI("jeton_guide_secret"));
+const bSecret = $("btnJetonGuideSecret");
+if(bSecret) bSecret.textContent = sanitizeJetonLabel(tUI("jeton_guide_secret"));
 
-  const bStop = $("btnJetonGuideStop");
-  if(bStop) bStop.textContent = sanitizeJetonLabel(tUI("jeton_guide_stop"));
+const bStop = $("btnJetonGuideStop");
+if(bStop) bStop.textContent = sanitizeJetonLabel(tUI("jeton_guide_stop"));
 
   const hintClose = $("hintClose");
   if(hintClose){
