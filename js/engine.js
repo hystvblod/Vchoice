@@ -152,6 +152,11 @@ function setLabelWithTrailingIcon(el, labelText, iconSrc){
 
   const wrap = document.createElement("span");
   wrap.className = "vc-choice-inline";
+  wrap.style.display = "inline-flex";
+  wrap.style.alignItems = "center";
+  wrap.style.justifyContent = "center";
+  wrap.style.gap = "10px";
+  wrap.style.width = "100%";
 
   const text = document.createElement("span");
   text.textContent = sanitizeJetonLabel(labelText);
@@ -160,6 +165,12 @@ function setLabelWithTrailingIcon(el, labelText, iconSrc){
   icon.src = iconSrc;
   icon.alt = "";
   icon.draggable = false;
+  icon.style.width = "22px";
+  icon.style.height = "22px";
+  icon.style.objectFit = "contain";
+  icon.style.flex = "0 0 auto";
+  icon.style.display = "block";
+  icon.style.filter = "drop-shadow(0 6px 14px rgba(0,0,0,0.35))";
 
   wrap.appendChild(text);
   wrap.appendChild(icon);
