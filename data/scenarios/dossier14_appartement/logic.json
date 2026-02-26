@@ -463,7 +463,7 @@
       "choices": [
         { "choice_key": "d14.s35.c1", "next": "s39" },
         { "choice_key": "d14.s35.c2", "next": "s33" },
-        { "choice_key": "d14.s35.c3", "next": "s40" }
+        { "choice_key": "d14.s35.c3", "next": "s36" }
       ]
     },
 
@@ -506,7 +506,7 @@
       "body_key": "d14.s39.body",
       "choices": [
         { "choice_key": "d14.s39.c1", "next": "s40" },
-        { "choice_key": "d14.s39.c2", "next": "s40" },
+        { "choice_key": "d14.s39.c2", "next": "s35" },
         { "choice_key": "d14.s39.c3", "next": "s33" }
       ]
     },
@@ -518,7 +518,7 @@
       "choices": [
         { "choice_key": "d14.s40.c1", "next": "s41" },
         { "choice_key": "d14.s40.c2", "next": "s42" },
-        { "choice_key": "d14.s40.c3", "next": "s41" }
+        { "choice_key": "d14.s40.c3", "next": "s43" }
       ]
     },
 

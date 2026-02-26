@@ -3,7 +3,7 @@
     "lang": "fr",
     "scenario_id": "dossier14_appartement",
     "title": "Appartement 14",
-    "tagline": "À 02:14, quelqu’un prononce ton nom dans le couloir. En suivant une porte qui ne devrait pas exister, tu t’enfonces dans un immeuble qui semble déjà te connaître.",
+    "tagline": "02:14. Un nom dans le couloir. Et l’immeuble te veut.",
     "hint_ns": "d14.h"
   },
 
@@ -217,7 +217,7 @@
     "d14.s35.body": "La petite porte descend dans le noir. L’air est glacé.",
     "d14.s35.c1": "Descendre",
     "d14.s35.c2": "Revenir au couloir",
-    "d14.s35.c3": "Prendre un autre passage",
+    "d14.s35.c3": "Suivre le passage étroit",
 
     "d14.s36.title": "Plans déchirés",
     "d14.s36.body": "Des plans sont arrachés et griffés. Quelqu’un a cherché une sortie.",
@@ -235,19 +235,19 @@
     "d14.s38.body": "La caméra montre plus que tes yeux. Sur l’écran, le couloir semble bouger.",
     "d14.s38.c1": "Aller vers la zone blanche",
     "d14.s38.c2": "Revenir à la vitre",
-    "d14.s38.c3": "Suivre le bruit des tuyaux",
+    "d14.s38.c3": "Suivre le souffle dans les murs",
 
     "d14.s39.title": "Air dans les murs",
     "d14.s39.body": "Dans la grille d’air, tu entends un souffle régulier. Par moments, on dirait ton prénom.",
     "d14.s39.c1": "Suivre le souffle jusqu’à la zone blanche",
-    "d14.s39.c2": "Revenir vers la zone blanche",
+    "d14.s39.c2": "Revenir vers la trappe",
     "d14.s39.c3": "Revenir au couloir étroit",
 
     "d14.s40.title": "Trop propre",
     "d14.s40.body": "Tout est blanc et propre. Ça ressemble à un hôpital. Ça fait peur.",
     "d14.s40.c1": "Aller vers la surveillance",
     "d14.s40.c2": "Entrer dans une salle",
-    "d14.s40.c3": "Longer le couloir blanc",
+    "d14.s40.c3": "Longer le couloir blanc jusqu’à aux archives",
 
     "d14.s41.title": "Surveillance",
     "d14.s41.body": "Des écrans montrent les couloirs. Sur un écran, tu vois ta porte, là-haut.",
