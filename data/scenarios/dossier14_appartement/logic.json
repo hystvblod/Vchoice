@@ -1,12 +1,12 @@
 {
   "meta": {
     "scenario_id": "dossier14_appartement",
-    "version": 4,
+    "version": 3,
     "start_scene": "s01",
     "hint_ns": "d14.h"
   },
   "scenario_id": "dossier14_appartement",
-  "version": 4,
+  "version": 3,
   "start_scene": "s01",
   "universe": "dossier14",
 
@@ -70,10 +70,11 @@
   },
 
   "state_model": {
-    "flags": ["has_badge", "has_key", "has_recording", "has_dossier"]
+    "flags": ["has_photo", "has_badge", "has_key", "has_recording", "has_dossier"]
   },
 
   "clues": {
+    "has_photo": { "title_key": "d14.h.clue.has_photo.title", "desc_key": "d14.h.clue.has_photo.desc" },
     "has_badge": { "title_key": "d14.h.clue.has_badge.title", "desc_key": "d14.h.clue.has_badge.desc" },
     "has_key": { "title_key": "d14.h.clue.has_key.title", "desc_key": "d14.h.clue.has_key.desc" },
     "has_recording": { "title_key": "d14.h.clue.has_recording.title", "desc_key": "d14.h.clue.has_recording.desc" },
@@ -131,7 +132,7 @@
       "body_key": "d14.s05.body",
       "choices": [
         { "choice_key": "d14.s05.c1", "next": "s09" },
-        { "choice_key": "d14.s05.c2", "next": "s10" },
+        { "choice_key": "d14.s05.c2", "next": "s06" },
         { "choice_key": "d14.s05.c3", "next": "s13" }
       ]
     },
@@ -231,7 +232,7 @@
       "choices": [
         { "choice_key": "d14.s14.c1", "next": "s13" },
         { "choice_key": "d14.s14.c2", "next": "s26" },
-        { "choice_key": "d14.s14.c3", "next": "s10" }
+        { "choice_key": "d14.s14.c3", "next": "s11" }
       ]
     },
 
@@ -252,7 +253,7 @@
       "body_key": "d14.s16.body",
       "choices": [
         { "choice_key": "d14.s16.c1", "next": "s17" },
-        { "choice_key": "d14.s16.c2", "next": "s15" },
+        { "choice_key": "d14.s16.c2", "next": "s13" },
         { "choice_key": "d14.s16.c3", "next": "s23" }
       ]
     },
@@ -273,7 +274,7 @@
       "title_key": "d14.s18.title",
       "body_key": "d14.s18.body",
       "choices": [
-        { "choice_key": "d14.s18.c1", "next": "s15" },
+        { "choice_key": "d14.s18.c1", "next": "s13" },
         { "choice_key": "d14.s18.c2", "next": "s16" },
         { "choice_key": "d14.s18.c3", "next": "s22" }
       ]
@@ -350,9 +351,9 @@
       "title_key": "d14.s25.title",
       "body_key": "d14.s25.body",
       "choices": [
-        { "choice_key": "d14.s25.c1", "next": "s41" },
-        { "choice_key": "d14.s25.c2", "next": "s26" },
-        { "choice_key": "d14.s25.c3", "next": "s27" }
+        { "choice_key": "d14.s25.c1", "next": "s26" },
+        { "choice_key": "d14.s25.c2", "next": "s15" },
+        { "choice_key": "d14.s25.c3", "next": "s41" }
       ]
     },
 
@@ -362,7 +363,7 @@
       "body_key": "d14.s26.body",
       "choices": [
         { "choice_key": "d14.s26.c1", "next": "s27", "requires_any_flags": ["has_badge"] },
-        { "choice_key": "d14.s26.c2", "next": "s24" },
+        { "choice_key": "d14.s26.c2", "next": "s20" },
         { "choice_key": "d14.s26.c3", "next": "s22" }
       ]
     },
@@ -374,7 +375,7 @@
       "choices": [
         { "choice_key": "d14.s27.c1", "next": "s37" },
         { "choice_key": "d14.s27.c2", "next": "s25" },
-        { "choice_key": "d14.s27.c3", "next": "s26" }
+        { "choice_key": "d14.s27.c3", "next": "s20" }
       ]
     },
 
@@ -395,8 +396,8 @@
       "body_key": "d14.s29.body",
       "choices": [
         { "choice_key": "d14.s29.c1", "next": "s35" },
-        { "choice_key": "d14.s29.c2", "next": "s31" },
-        { "choice_key": "d14.s29.c3", "next": "s22" }
+        { "choice_key": "d14.s29.c2", "next": "s28" },
+        { "choice_key": "d14.s29.c3", "next": "s33" }
       ]
     },
 
@@ -416,9 +417,9 @@
       "title_key": "d14.s31.title",
       "body_key": "d14.s31.body",
       "choices": [
-        { "choice_key": "d14.s31.c1", "next": "s32" },
+        { "choice_key": "d14.s31.c1", "next": "s28" },
         { "choice_key": "d14.s31.c2", "next": "s29" },
-        { "choice_key": "d14.s31.c3", "next": "s28" }
+        { "choice_key": "d14.s31.c3", "next": "s20" }
       ]
     },
 
@@ -429,7 +430,7 @@
       "choices": [
         { "choice_key": "d14.s32.c1", "next": "s33" },
         { "choice_key": "d14.s32.c2", "next": "s28" },
-        { "choice_key": "d14.s32.c3", "next": "s31" }
+        { "choice_key": "d14.s32.c3", "next": "s20" }
       ]
     },
 
@@ -451,7 +452,7 @@
       "choices": [
         { "choice_key": "d14.s34.c1", "next": "s40" },
         { "choice_key": "d14.s34.c2", "next": "s33" },
-        { "choice_key": "d14.s34.c3", "next": "s36" }
+        { "choice_key": "d14.s34.c3", "next": "s28" }
       ]
     },
 
@@ -460,9 +461,9 @@
       "title_key": "d14.s35.title",
       "body_key": "d14.s35.body",
       "choices": [
-        { "choice_key": "d14.s35.c1", "next": "s36" },
-        { "choice_key": "d14.s35.c2", "next": "s23" },
-        { "choice_key": "d14.s35.c3", "next": "s39" }
+        { "choice_key": "d14.s35.c1", "next": "s39" },
+        { "choice_key": "d14.s35.c2", "next": "s33" },
+        { "choice_key": "d14.s35.c3", "next": "s40" }
       ]
     },
 
@@ -505,7 +506,7 @@
       "body_key": "d14.s39.body",
       "choices": [
         { "choice_key": "d14.s39.c1", "next": "s40" },
-        { "choice_key": "d14.s39.c2", "next": "s35" },
+        { "choice_key": "d14.s39.c2", "next": "s40" },
         { "choice_key": "d14.s39.c3", "next": "s33" }
       ]
     },
@@ -517,7 +518,7 @@
       "choices": [
         { "choice_key": "d14.s40.c1", "next": "s41" },
         { "choice_key": "d14.s40.c2", "next": "s42" },
-        { "choice_key": "d14.s40.c3", "next": "s39" }
+        { "choice_key": "d14.s40.c3", "next": "s41" }
       ]
     },
 
@@ -528,7 +529,7 @@
       "choices": [
         { "choice_key": "d14.s41.c1", "next": "s42" },
         { "choice_key": "d14.s41.c2", "next": "s43" },
-        { "choice_key": "d14.s41.c3", "next": "s25" }
+        { "choice_key": "d14.s41.c3", "next": "s40" }
       ]
     },
 
@@ -538,8 +539,8 @@
       "body_key": "d14.s42.body",
       "choices": [
         { "choice_key": "d14.s42.c1", "next": "s43", "set_flags": ["has_recording"] },
-        { "choice_key": "d14.s42.c2", "next": "s41" },
-        { "choice_key": "d14.s42.c3", "next": "s40" }
+        { "choice_key": "d14.s42.c2", "next": "s40" },
+        { "choice_key": "d14.s42.c3", "next": "s41" }
       ]
     },
 
@@ -570,7 +571,7 @@
       "title_key": "d14.s45.title",
       "body_key": "d14.s45.body",
       "choices": [
-        { "choice_key": "d14.s45.c1", "next": "s46" },
+        { "choice_key": "d14.s45.c1", "next": "s46", "set_flags": ["has_photo"] },
         { "choice_key": "d14.s45.c2", "next": "s44" },
         { "choice_key": "d14.s45.c3", "next": "s47" }
       ]
@@ -603,9 +604,9 @@
       "title_key": "d14.s48.title",
       "body_key": "d14.s48.body",
       "choices": [
-        { "choice_key": "d14.s48.c1", "next": "s49" },
-        { "choice_key": "d14.s48.c2", "next": "s47" },
-        { "choice_key": "d14.s48.c3", "next": "s44" }
+        { "choice_key": "d14.s48.c1", "next": "s47" },
+        { "choice_key": "d14.s48.c2", "next": "s44" },
+        { "choice_key": "d14.s48.c3", "next": "s49" }
       ]
     },
 
@@ -616,7 +617,7 @@
       "choices": [
         { "choice_key": "d14.s49.c1", "next": "s50" },
         { "choice_key": "d14.s49.c2", "next": "s44" },
-        { "choice_key": "d14.s49.c3", "next": "s47" }
+        { "choice_key": "d14.s49.c3", "next": "s41" }
       ]
     },
 
@@ -627,33 +628,12 @@
       "choices": [
         { "choice_key": "d14.s50.c1", "next": "end_good" },
         { "choice_key": "d14.s50.c2", "next": "end_bad" },
-        {
-          "choice_key": "d14.s50.c3",
-          "next": "end_secret",
-          "requires_all_flags": ["has_badge", "has_key", "has_recording", "has_dossier"]
-        }
+        { "choice_key": "d14.s50.c3", "next": "end_secret", "requires_all_flags": ["has_badge", "has_key", "has_dossier"] }
       ]
     },
 
-    "end_good": {
-      "image_id": "final_good",
-      "title_key": "d14.end_good.title",
-      "body_key": "d14.end_good.body",
-      "choices": []
-    },
-
-    "end_bad": {
-      "image_id": "final_bad",
-      "title_key": "d14.end_bad.title",
-      "body_key": "d14.end_bad.body",
-      "choices": []
-    },
-
-    "end_secret": {
-      "image_id": "final_secret",
-      "title_key": "d14.end_secret.title",
-      "body_key": "d14.end_secret.body",
-      "choices": []
-    }
+    "end_good": { "image_id": "final_good", "title_key": "d14.end_good.title", "body_key": "d14.end_good.body", "choices": [] },
+    "end_bad": { "image_id": "final_bad", "title_key": "d14.end_bad.title", "body_key": "d14.end_bad.body", "choices": [] },
+    "end_secret": { "image_id": "final_secret", "title_key": "d14.end_secret.title", "body_key": "d14.end_secret.body", "choices": [] }
   }
 }

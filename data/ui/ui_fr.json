@@ -234,27 +234,27 @@
       "desc": "Une réserve scellée, des consignes effacées, et l’impression que quelqu’un vit encore derrière les murs."
     },
     "hopital_ferme": {
-      "title": "Hôpital",
+      "title": "Hôpital abandonné",
       "desc": "Les couloirs sont vides, mais les néons répondent. Certains dossiers semblent écrits pour toi."
     },
     "metro_station_zero": {
-      "title": "Métro — Station Zéro",
+      "title": "Station Zéro",
       "desc": "Un métro figé où les couloirs ne mènent jamais au même endroit."
     },
     "styx_gare": {
-      "title": "STYX — Gare Terminale",
+      "title": "Gare Styx",
       "desc": "Une gare hors du temps. Dernier départ. Dernière chance de prouver ta place."
     },
     "foret_relais": {
-      "title": "Forêt — Relais",
+      "title": "Forêt des murmures",
       "desc": "Une route forestière, un relais désert… et quelque chose qui t’observe entre les arbres."
     },
     "chateau_absents": {
-      "title": "Château — Les Absents",
+      "title": "Château des ombres",
       "desc": "Un château silencieux où chaque pièce semble habitée, par des ombres."
     },
     "temple_mictlan": {
-      "title": "Temple — Mictlan",
+      "title": "Temple Mictlan",
       "desc": "Un temple sous la pierre noire. Os, brume, et une reine immobile au centre."
     }
   }
