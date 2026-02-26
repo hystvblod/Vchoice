@@ -224,38 +224,39 @@
     "cancel": "Annuler"
   },
 
+ 
   "scenarios": {
     "dossier14_appartement": {
       "title": "Appartement 14",
-      "desc": "Un immeuble trop silencieux. Et une porte qui ne devrait pas exister. Que te veut cet immeuble ?"
+      "desc": "À 02:14, quelqu’un prononce ton nom dans le couloir. En suivant une porte qui ne devrait pas exister, tu t’enfonces dans un immeuble qui semble déjà te connaître."
     },
     "bunker_reserve": {
       "title": "Bunker",
-      "desc": "Une réserve scellée, des consignes effacées, et l’impression que quelqu’un vit encore derrière les murs."
+      "desc": "Sous une colline ordinaire, une trappe cache un bunker encore actif. Réserves intactes, badges, dortoirs et zones scellées te font comprendre que quelqu’un vit encore là-dessous."
     },
     "hopital_ferme": {
       "title": "Hôpital abandonné",
-      "desc": "Les couloirs sont vides, mais les néons répondent. Certains dossiers semblent écrits pour toi."
+      "desc": "Dans un hôpital fermé depuis des années, ton nom apparaît déjà dans les registres. Entre badge patient, chambre 14 et salles encore allumées, tout indique que ta venue était prévue."
     },
     "metro_station_zero": {
       "title": "Station Zéro",
-      "desc": "Un métro figé où les couloirs ne mènent jamais au même endroit."
+      "desc": "Tu descends dans une station qui n’existe sur aucun plan. Quais figés, annonces étranges, ticket Zéro et couloirs mouvants te mènent vers un lieu qui semble t’attendre."
     },
     "styx_gare": {
       "title": "Gare Styx",
-      "desc": "Une gare hors du temps. Dernier départ. Dernière chance de prouver ta place."
+      "desc": "Tu te réveilles seul dans une gare noyée de brume noire. Entre horloges mortes, quais sans fin et ticket noir, tout donne l’impression d’être arrivé dans un lieu qui juge ses voyageurs."
     },
     "foret_relais": {
       "title": "Forêt des murmures",
-      "desc": "Une route forestière, un relais désert… et quelque chose qui t’observe entre les arbres."
+      "desc": "Au cœur de la forêt, des panneaux portent ton prénom et les sentiers changent de place. Plus tu avances, plus l’ancien relais semble t’appeler."
     },
     "chateau_absents": {
       "title": "Château des ombres",
-      "desc": "Un château silencieux où chaque pièce semble habitée, par des ombres."
+      "desc": "Un château isolé t’ouvre ses grilles, puis déplace ses couloirs autour de toi. Entre portraits, salles désertes et passages cachés, le lieu garde la trace de ceux qui y entrent."
     },
     "temple_mictlan": {
       "title": "Temple Mictlan",
-      "desc": "Un temple sous la pierre noire. Os, brume, et une reine immobile au centre."
+      "desc": "Fraîchement diplômé, tu pars au Mexique pour étudier une étrange anomalie. Sous la pierre, tu découvres le temple enfoui de la Dame des morts."
     }
   }
 }
