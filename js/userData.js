@@ -953,15 +953,35 @@
       const s = _normScenarioId(scenarioId);
       if (!s) return { ok:false, reason:"invalid_scenario" };
 
-      // ✅ local (optimiste + permanent) : on l'ajoute tout de suite
-      const cur = this.getUnlockedScenarios();
-      if (!cur.includes(s)){
-        cur.push(s);
-        this.save({ ...this.load(), unlocked_scenarios: cur });
+      if (!window.VCRemoteStore?.enabled?.()){
+        return { ok:false, reason:"no_remote", local_ok:false, remote_ok:false, data:null };
       }
 
-      // ✅ write-through "pour toujours" si uid connu
+      const res = await window.VCRemoteStore.unlockScenario(s);
+      if (!res?.ok){
+        return {
+          ok:false,
+          reason: res?.reason || "rpc_error",
+          local_ok:false,
+          remote_ok:false,
+          error: res?.error || null,
+          data: res?.data || null
+        };
+      }
+
       try{
+        const payload = res.data || null;
+        const remoteList = Array.isArray(payload?.unlocked_scenarios) ? payload.unlocked_scenarios : [];
+        const merged = _mergeScenarioLists(this.getUnlockedScenarios(), remoteList, [s]);
+
+        const next = { ...this.load(), unlocked_scenarios: merged };
+
+        if (payload && typeof payload.vcoins === "number" && !Number.isNaN(payload.vcoins)){
+          next.vcoins = payload.vcoins;
+        }
+
+        this.save(next, { silent:true });
+
         let uid = String(_memState.user_id || "");
         if (!uid && window.VCRemoteStore?.ensureAuth){
           try{ uid = String(await window.VCRemoteStore.ensureAuth() || ""); }catch(_){}
@@ -970,32 +990,20 @@
             _persistLocal();
           }
         }
+
         if (uid){
-          const merged = _mergeScenarioLists(_getUnlockedCacheFor(uid), cur);
-          _writeUnlockedCache(uid, merged);
+          const cacheMerged = _mergeScenarioLists(_getUnlockedCacheFor(uid), merged);
+          _writeUnlockedCache(uid, cacheMerged);
         }
-      }catch(_){}
 
-      if (!window.VCRemoteStore?.enabled?.()){
-        return { ok:false, reason:"no_remote", local_ok:true, remote_ok:false, data:null };
-      }
-
-      const res = await window.VCRemoteStore.unlockScenario(s);
-      if (!res?.ok){
-        return { ok:false, reason: res?.reason || "rpc_error", local_ok:true, remote_ok:false, error: res?.error || null, data: res?.data || null };
-      }
-
-      // ✅ remote peut renvoyer unlocked_scenarios -> on merge (jamais shrink)
-      try{
-        const payload = res.data || null;
-        const list = payload && payload.unlocked_scenarios;
-        if (Array.isArray(list)){
-          const merged = _mergeScenarioLists(this.getUnlockedScenarios(), list);
-          this.save({ ...this.load(), unlocked_scenarios: merged });
-        } else {
+        if (!(payload && typeof payload.vcoins === "number" && !Number.isNaN(payload.vcoins))){
           await this.refresh().catch(() => false);
+        } else {
+          _emitProfileSoon();
         }
-      }catch(_){}
+      }catch(_){
+        await this.refresh().catch(() => false);
+      }
 
       return { ok:true, reason:"ok", local_ok:true, remote_ok:true, data: res.data || null };
     },
@@ -1042,9 +1050,6 @@
       const d = Number(delta || 0);
       if (!Number.isFinite(d) || d === 0) return { ok:false, reason:"invalid_delta" };
 
-      const cur = this.load();
-      this.save({ ...cur, vcoins: (Number(cur.vcoins || 0) + d) });
-
       if (!window.VCRemoteStore?.enabled?.()){
         return { ok:false, reason:"no_remote" };
       }
@@ -1052,8 +1057,8 @@
       const v = await window.VCRemoteStore.addVCoins(d);
       if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
 
-      const cur2 = this.load();
-      this.save({ ...cur2, vcoins: v });
+      const cur = this.load();
+      this.save({ ...cur, vcoins: v });
       return { ok:true, vcoins: v };
     },
 

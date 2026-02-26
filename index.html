@@ -694,7 +694,16 @@
     async function tryUnlockWithVcoins(scenarioId){
       showBuyError("");
 
-      try { await window.VUserData?.refresh?.({ force:true }); } catch(_){}
+      const refreshed = await window.VUserData?.refresh?.().catch(() => false);
+      if (!refreshed){
+        showBuyError(
+          _t(
+            "ui.scenario_buy.err_unlock",
+            "Impossible de débloquer le scénario."
+          ) + " [refresh_failed]"
+        );
+        return;
+      }
 
       const balance = getCurrentVCoins();
       if (balance < PRICE){
@@ -709,15 +718,35 @@
       }
 
       const res = await window.VUserData?.unlockScenario?.(scenarioId);
+
       if (!res?.ok){
+        const reason = String(
+          res?.reason ||
+          res?.error?.message ||
+          "rpc_error"
+        ).toLowerCase();
+
+        if (reason.includes("insufficient_vcoins")){
+          showBuyError(
+            _t(
+              "ui.scenario_buy.err_unlock_insufficient",
+              "Pas assez de VCoins ({balance}/{price}).",
+              { balance: getCurrentVCoins(), price: PRICE }
+            )
+          );
+          return;
+        }
+
         showBuyError(
           _t(
             "ui.scenario_buy.err_unlock",
             "Impossible de débloquer le scénario."
-          )
+          ) + " [" + reason + "]"
         );
         return;
       }
+
+      await window.VUserData?.refresh?.().catch(() => false);
 
       applyLocks();
       closeBuyPopup();
@@ -765,7 +794,7 @@
 
         if (r?.error) return false;
 
-        try { await window.VUserData?.refresh?.({ force:true }); } catch(_){}
+        try { await window.VUserData?.refresh?.(); } catch(_){}
         return true;
       }catch(_){
         return false;

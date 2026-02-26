@@ -785,7 +785,7 @@
       "title_key": "msz.s68.title",
       "body_key": "msz.s68.body",
       "choices": [
-        { "choice_key": "msz.s68.c1", "next": "s75" },
+        { "choice_key": "msz.s68.c1", "next": "end_good" },
         { "choice_key": "msz.s68.c2", "next": "s69" },
         { "choice_key": "msz.s68.c3", "next": "s10" }
       ]
