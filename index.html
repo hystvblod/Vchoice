@@ -19,8 +19,6 @@
   </script>
 
   <style>
-    /* ====== TON CSS (inchangé) ====== */
-
     .topbar{ display:none !important; }
 
     :root{
@@ -118,7 +116,6 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
     }
 
-    /* ✅ LOGO centré (ajout) */
     .vc-intro{
       margin-top: 6px;
       margin-bottom: 8px;
@@ -258,7 +255,6 @@
 
     .modal.hidden{ display:none !important; }
 
-    /* LOCK UI */
     .vc-card.vc-card-locked::after{
       background:
         linear-gradient(90deg, rgba(0,0,0,.68), rgba(0,0,0,.25) 55%, rgba(0,0,0,.68)),
@@ -300,7 +296,6 @@
       opacity:.98;
     }
 
-    /* POPUP ACHAT */
     #vc-scenario-buy-popup{
       position:fixed;
       inset:0;
@@ -462,7 +457,6 @@
     </section>
   </main>
 
-  <!-- Modal “?” -->
   <div id="hintModal" class="modal hidden" aria-hidden="true">
     <div id="hintBackdrop" class="modal__backdrop"></div>
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
@@ -474,7 +468,6 @@
     </div>
   </div>
 
-  <!-- Popup achat scénario (LOCKED) -->
   <div id="vc-scenario-buy-popup" aria-hidden="true">
     <div class="vc-buy-inner" role="dialog" aria-modal="true" aria-label="Débloquer scénario">
       <h2 id="vc-buy-title"></h2>
@@ -491,7 +484,6 @@
     </div>
   </div>
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
   <script src="js/supabaseBootstrap.js"></script>
@@ -499,12 +491,9 @@
   <script src="js/ads.js"></script>
   <script src="js/purchases.js"></script>
   <script src="js/shop.js"></script>
-
-  <!-- i18n -->
   <script src="js/i18n.js"></script>
 
   <script>
-    // helper i18n (pareil que toi)
     function _t(key, fallback, vars) {
       let s = "";
       try {
@@ -520,23 +509,38 @@
   </script>
 
   <script>
-    /* =========================
-       ✅ PRIX / IAP (MAJ)
-       - Déblocage scénario : 500 VCoins
-       - Achat store : pack 500 VCoins avec prix réel (getPrice)
-    ========================= */
-    const PRICE = 500;
-
-    // Pack VCoins acheté sur le store (doit matcher purchases.js + Play/App Store)
-    const COINS_PACK = 500;
-    const SKU_COINS_PACK = "vchoice_vcoins_500";
+    const PRICE = 600;
 
     const KEY_PREFIX = "vchoice";
     const IAP_TARGET_KEY = KEY_PREFIX + "_iap_unlock_target";
+    const SCENARIO_SKU_PREFIX = "vchoice_scenario_";
 
     function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(_){} }
     function lsGet(k){ try { return localStorage.getItem(k); } catch(_){ return null; } }
     function lsDel(k){ try { localStorage.removeItem(k); } catch(_){} }
+
+    function getScenarioIapSku(scenarioId){
+      return SCENARIO_SKU_PREFIX + String(scenarioId || "").trim().toLowerCase();
+    }
+
+    function currentScenarioIapPrice(scenarioId){
+      const sku = getScenarioIapSku(scenarioId);
+      const p = window.VRIAP?.getPrice?.(sku) || window.VCIAP?.getPrice?.(sku) || "";
+      return p ? (" " + p) : "";
+    }
+
+    function getCurrentVCoins(){
+      try{
+        if (window.VUserData && typeof window.VUserData.getVCoins === "function"){
+          return Number(window.VUserData.getVCoins() || 0) || 0;
+        }
+      }catch(_){}
+      try{
+        const u = window.VUserData?.load?.() || {};
+        return Number(u.vcoins || 0) || 0;
+      }catch(_){}
+      return 0;
+    }
 
     function setScenarioToLaunch(scenarioId){
       lsSet(KEY_PREFIX + "_scenario", scenarioId);
@@ -548,7 +552,6 @@
       lsSet("vrealms_shop_focus_scenario", scenarioId);
     }
 
-    // ✅ PATCH: plus aucun FREE côté front (Supabase = vérité)
     function isFreeScenario(id){
       return false;
     }
@@ -616,7 +619,6 @@
       window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
     }
 
-    // ===== Modal “?” =====
     const hintModal = document.getElementById("hintModal");
     const hintBackdrop = document.getElementById("hintBackdrop");
     const hintClose = document.getElementById("hintClose");
@@ -635,7 +637,6 @@
     if (hintBackdrop) hintBackdrop.addEventListener("click", closeHint);
     if (hintClose) hintClose.addEventListener("click", closeHint);
 
-    // ===== Popup achat scénario =====
     const buyPopup  = document.getElementById("vc-scenario-buy-popup");
     const buyTitle  = document.getElementById("vc-buy-title");
     const buyDesc   = document.getElementById("vc-buy-desc");
@@ -659,24 +660,29 @@
       buyPopup.setAttribute("aria-hidden","true");
     }
 
-    function currentCoinsPackPrice(){
-      const p = window.VRIAP?.getPrice?.(SKU_COINS_PACK) || "";
-      return p ? (" " + p) : "";
-    }
-
     function openBuyPopup(scenarioId){
       pendingScenarioId = scenarioId;
+
+      const balance = getCurrentVCoins();
 
       buyTitle.textContent = _t("scenarios." + scenarioId + ".title", scenarioId);
 
       buyDesc.textContent = _t(
         "ui.scenario_buy.desc",
-        "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter {coins} VCoins sur le store.",
-        { price: PRICE, coins: COINS_PACK }
+        "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, l’acheter directement au prix du store, ou ouvrir la boutique.",
+        { price: PRICE }
       );
 
-      buyPay.textContent = _t("ui.scenario_buy.pay", "Débloquer ({price} VCoins)", { price: PRICE });
-      buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter {coins} VCoins", { coins: COINS_PACK }) + currentCoinsPackPrice();
+      buyPay.textContent = _t(
+        "ui.scenario_buy.pay_balance",
+        "Débloquer ({price} VCoins) — solde actuel {balance}",
+        { price: PRICE, balance }
+      );
+
+      buyIap.textContent =
+        _t("ui.scenario_buy.iap_direct", "Acheter ce scénario") +
+        currentScenarioIapPrice(scenarioId);
+
       buyGet.textContent = _t("ui.scenario_buy.open_shop", "Ouvrir la boutique");
       buyCancel.textContent = _t("common.cancel", "Annuler");
 
@@ -687,31 +693,57 @@
 
     async function tryUnlockWithVcoins(scenarioId){
       showBuyError("");
-      try { await window.VUserData?.refresh?.(); } catch(_){}
-      const res = await window.VUserData?.unlockScenario?.(scenarioId);
-      if (!res?.ok){
-        showBuyError(_t("ui.scenario_buy.err_unlock", "Impossible de débloquer (VCoins insuffisants ou erreur réseau)."));
+
+      try { await window.VUserData?.refresh?.({ force:true }); } catch(_){}
+
+      const balance = getCurrentVCoins();
+      if (balance < PRICE){
+        showBuyError(
+          _t(
+            "ui.scenario_buy.err_unlock_insufficient",
+            "Pas assez de VCoins ({balance}/{price}).",
+            { balance, price: PRICE }
+          )
+        );
         return;
       }
+
+      const res = await window.VUserData?.unlockScenario?.(scenarioId);
+      if (!res?.ok){
+        showBuyError(
+          _t(
+            "ui.scenario_buy.err_unlock",
+            "Impossible de débloquer le scénario."
+          )
+        );
+        return;
+      }
+
       applyLocks();
       closeBuyPopup();
       launchScenario(scenarioId);
     }
 
-    async function buyCoinsPackThenUnlock(scenarioId){
+    async function buyScenarioDirect(scenarioId){
       showBuyError("");
 
-      if (!window.VRIAP?.isAvailable?.()){
-        showBuyError(_t("ui.scenario_buy.err_app_only", "Achat Play Store dispo uniquement dans l’app. Ouvre la boutique."));
+      if (!window.VRIAP?.isAvailable?.() && !window.VCIAP?.isAvailable?.()){
+        showBuyError(
+          _t(
+            "ui.scenario_buy.err_app_only",
+            "Achat store dispo uniquement dans l’app."
+          )
+        );
         return;
       }
 
-      // On garde la cible d’unlock, et on achète le pack VCoins sur le store
+      const sku = getScenarioIapSku(scenarioId);
       lsSet(IAP_TARGET_KEY, scenarioId);
 
       try {
-        if (typeof window.safeOrder === "function") await window.safeOrder(SKU_COINS_PACK);
-        else if (window.VRIAP?.order) await window.VRIAP.order(SKU_COINS_PACK);
+        if (typeof window.safeOrder === "function") await window.safeOrder(sku);
+        else if (window.VRIAP?.order) await window.VRIAP.order(sku);
+        else if (window.VCIAP?.order) await window.VCIAP.order(sku);
         else {
           showBuyError(_t("ui.scenario_buy.err_not_ready", "Système d’achat non prêt."));
           return;
@@ -721,39 +753,73 @@
       }
     }
 
-    if (buyPay) buyPay.addEventListener("click", () => { if (pendingScenarioId) tryUnlockWithVcoins(pendingScenarioId); });
-    if (buyIap) buyIap.addEventListener("click", () => { if (pendingScenarioId) buyCoinsPackThenUnlock(pendingScenarioId); });
+    async function completeScenarioDirectUnlock(target, productId, txId){
+      try{
+        if (!window.sb?.rpc) return false;
+
+        const r = await window.sb.rpc("secure_unlock_scenario_iap", {
+          p_scenario: String(target || ""),
+          p_product_id: String(productId || ""),
+          p_tx_id: String(txId || "")
+        });
+
+        if (r?.error) return false;
+
+        try { await window.VUserData?.refresh?.({ force:true }); } catch(_){}
+        return true;
+      }catch(_){
+        return false;
+      }
+    }
+
+    if (buyPay) buyPay.addEventListener("click", () => {
+      if (pendingScenarioId) tryUnlockWithVcoins(pendingScenarioId);
+    });
+
+    if (buyIap) buyIap.addEventListener("click", () => {
+      if (pendingScenarioId) buyScenarioDirect(pendingScenarioId);
+    });
+
     if (buyGet) buyGet.addEventListener("click", () => {
-      if (!pendingScenarioId) return;
-      setShopFocusScenario(pendingScenarioId);
+      if (pendingScenarioId) setShopFocusScenario(pendingScenarioId);
       window.location.href = "shop.html";
     });
+
     if (buyCancel) buyCancel.addEventListener("click", closeBuyPopup);
     if (buyPopup) buyPopup.addEventListener("click", (e) => { if (e.target === buyPopup) closeBuyPopup(); });
 
-    // Prix store mis à jour (quand purchases.js a récupéré les prix)
-    window.addEventListener("vr:iap_price", () => {
+    function refreshIapLabel(){
       try {
-        if (buyPopup && buyPopup.style.display === "flex"){
-          buyIap.textContent = _t("ui.scenario_buy.iap", "Acheter {coins} VCoins", { coins: COINS_PACK }) + currentCoinsPackPrice();
+        if (buyPopup && buyPopup.style.display === "flex" && pendingScenarioId){
+          buyIap.textContent =
+            _t("ui.scenario_buy.iap_direct", "Acheter ce scénario") +
+            currentScenarioIapPrice(pendingScenarioId);
         }
       } catch(_){}
-    });
+    }
 
-    // Achat crédité => refresh profil => unlock via VCoins
-    window.addEventListener("vr:iap_credited", async (ev) => {
+    window.addEventListener("vc:iap_price", refreshIapLabel);
+    window.addEventListener("vr:iap_price", refreshIapLabel);
+
+    async function handleScenarioIapCredited(ev){
       try {
         const d = ev?.detail || {};
-        if (String(d.productId || "") !== SKU_COINS_PACK) return;
-
-        const target = lsGet(IAP_TARGET_KEY);
+        const target = String(d.scenarioId || lsGet(IAP_TARGET_KEY) || "");
         if (!target) return;
+
+        const expectedSku = getScenarioIapSku(target);
+        if (String(d.productId || "") !== expectedSku) return;
+
         lsDel(IAP_TARGET_KEY);
 
-        try { await window.VUserData?.refresh?.(); } catch(_){}
-        const res = await window.VUserData?.unlockScenario?.(target);
-        if (!res?.ok){
-          showBuyError(_t("ui.scenario_buy.err_unlock_after_buy", "Achat ok, mais déblocage impossible (réessaye depuis la boutique)."));
+        const ok = await completeScenarioDirectUnlock(target, d.productId || expectedSku, d.txId || "");
+        if (!ok){
+          showBuyError(
+            _t(
+              "ui.scenario_buy.err_unlock_after_iap",
+              "Achat validé, mais le scénario n’a pas pu être ouvert."
+            )
+          );
           return;
         }
 
@@ -761,9 +827,11 @@
         closeBuyPopup();
         launchScenario(target);
       } catch(_){}
-    });
+    }
 
-    // ===== Bind clicks =====
+    window.addEventListener("vc:iap_credited", handleScenarioIapCredited);
+    window.addEventListener("vr:iap_credited", handleScenarioIapCredited);
+
     function bindCards(){
       document.querySelectorAll(".vc-card[data-scenario]").forEach((btn) => {
         const id = btn.getAttribute("data-scenario");
@@ -789,22 +857,16 @@
       });
     }
 
-    // ===== Boot (FIX) : binder tout de suite, puis faire le reste sans bloquer =====
     (function boot(){
-      // 1) UI immédiate (clics OK même si init/auth/i18n bloque)
       try { bindCards(); } catch(e){ console.error("[bindCards]", e); }
       try { applyLocks(); } catch(e){ console.error("[applyLocks pre]", e); }
 
-      // ✅ PATCH: re-apply locks dès que le profil est mis à jour (après secure_get_me / unlock / etc.)
       try {
         window.addEventListener("vc:profile", () => { try { applyLocks(); } catch(_){} });
-        window.addEventListener("vr:profile", () => { try { applyLocks(); } catch(_){} }); // compat
+        window.addEventListener("vr:profile", () => { try { applyLocks(); } catch(_){} });
       } catch(_) {}
 
-      // 2) Background init (ne bloque pas les clics)
       (async () => {
-
-        // ✅ i18n TOUT DE SUITE (sans dépendre du profil)
         try {
           const langEarly = window.VRI18n?.getLang?.() || "fr";
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
@@ -814,10 +876,8 @@
           console.error("[i18n early]", e);
         }
 
-        // ensuite seulement: auth/profil
         try { await window.bootstrapAuthAndProfile?.(); } catch(e){ console.error("[bootstrapAuthAndProfile]", e); }
 
-        // init peut rester en attente -> timeout soft
         try {
           const p = window.VUserData?.init?.();
           if (p && typeof p.then === "function") {
@@ -830,7 +890,6 @@
           console.error("[VUserData.init]", e);
         }
 
-        // ✅ resync i18n après profil (si la langue serveur diffère)
         try {
           const lang = window.VUserData?.getLang?.() || (window.VRI18n?.getLang?.() || "fr");
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
@@ -840,7 +899,6 @@
           console.error("[i18n boot]", e);
         }
 
-        // locks après refresh (si remote unlock)
         try { applyLocks(); } catch(e){ console.error("[applyLocks post]", e); }
       })();
     })();

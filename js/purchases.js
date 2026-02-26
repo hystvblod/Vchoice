@@ -7,36 +7,33 @@
 //    vc:iap_credited / vr:iap_credited
 // - Anti double-credit + replay local pending
 //
-// ✅ SKU UNIQUEMENT demandés :
+// ✅ SKU:
 // - 12 jetons, 30 jetons
 // - 500 vcoins, 3000 vcoins
 // - No Ads
-// - ULTRA (No Ads + tous scénarios actuels & à venir + 12 jetons)
-//
-// ✅ PATCH 2026-02-23:
-// - ULTRA = DIAMOND (local flag + sync DB via userData.grantEntitlement + resync auto refresh)
+// - ULTRA
+// - Achat direct scénario (1 SKU par scénario)
 
 (function () {
   "use strict";
 
-  const DEBUG = false; // mets true si tu veux logs
+  const DEBUG = false;
   const log  = (...a) => { if (DEBUG) console.log("[VC-IAP]", ...a); };
   const warn = (...a) => { if (DEBUG) console.warn("[VC-IAP]", ...a); };
 
-  // ---- Entitlements (local + cache userData)
-  const ENT_NO_ADS_KEY    = "vchoice_ent_no_ads_v1";    // "1"/"0"
-  const ENT_DIAMOND_KEY   = "vchoice_ent_diamond_v1";   // "1"/"0"
-  const ENT_ULTRA_KEY     = "vchoice_ent_ultra_v1";     // legacy compat "1"/"0"
+  const ENT_NO_ADS_KEY    = "vchoice_ent_no_ads_v1";
+  const ENT_DIAMOND_KEY   = "vchoice_ent_diamond_v1";
+  const ENT_ULTRA_KEY     = "vchoice_ent_ultra_v1";
 
   function _lsGet(k){ try { return localStorage.getItem(k); } catch { return null; } }
   function _lsSet(k,v){ try { localStorage.setItem(k, v); } catch(_){} }
 
   function hasUltra(){
-    try{ if (window.VUserData && typeof window.VUserData.hasDiamond === "function" && window.VUserData.hasDiamond()) return true; }catch(_){ }
+    try{ if (window.VUserData && typeof window.VUserData.hasDiamond === "function" && window.VUserData.hasDiamond()) return true; }catch(_){}
     return (_lsGet(ENT_DIAMOND_KEY) === "1") || (_lsGet(ENT_ULTRA_KEY) === "1");
   }
   function hasNoAds(){
-    try{ if (window.VUserData && typeof window.VUserData.hasNoAds === "function" && window.VUserData.hasNoAds()) return true; }catch(_){ }
+    try{ if (window.VUserData && typeof window.VUserData.hasNoAds === "function" && window.VUserData.hasNoAds()) return true; }catch(_){}
     return hasUltra() || (_lsGet(ENT_NO_ADS_KEY) === "1");
   }
 
@@ -47,7 +44,7 @@
       const cur = ud.load() || {};
       const next = Object.assign({}, cur, patch || {});
       ud.save(next, { silent:true });
-    }catch(_){ }
+    }catch(_){}
   }
 
   function setNoAdsEntitled(on){
@@ -57,19 +54,29 @@
   }
 
   function setUltraEntitled(on){
-    // ULTRA = DIAMOND
     _lsSet(ENT_DIAMOND_KEY, on ? "1" : "0");
-    _lsSet(ENT_ULTRA_KEY, on ? "1" : "0"); // legacy
+    _lsSet(ENT_ULTRA_KEY, on ? "1" : "0");
     persistEntToUserData({ diamond: !!on, no_ads: !!on ? true : (hasNoAds()) });
     if (on) setNoAdsEntitled(true);
   }
 
-  // Expose entitlements helper (pour shop.js)
   window.VCEnt = window.VCEnt || {};
   window.VCEnt.hasNoAds = hasNoAds;
   window.VCEnt.hasUltra = hasUltra;
 
-  // ---- SKU (IDs store)
+  const DIRECT_SCENARIO_IDS = [
+    "hopital_ferme",
+    "metro_station_zero",
+    "styx_gare",
+    "foret_relais",
+    "chateau_absents",
+    "temple_mictlan"
+  ];
+
+  function scenarioSku(scenarioId){
+    return "vchoice_scenario_" + String(scenarioId || "").trim().toLowerCase();
+  }
+
   const SKU = {
     vchoice_jetons_12:   { kind: "jetons", amount: 12,   type: "consumable" },
     vchoice_jetons_30:   { kind: "jetons", amount: 30,   type: "consumable" },
@@ -79,7 +86,10 @@
     vchoice_ultra:       { kind: "ultra",  amount: 0,    type: "non_consumable" }
   };
 
-  // ---- ULTRA: scénarios actuels (liste connue) + patch "à venir" via override isScenarioUnlocked()
+  DIRECT_SCENARIO_IDS.forEach((id) => {
+    SKU[scenarioSku(id)] = { kind: "scenario", scenario: id, amount: 0, type: "non_consumable" };
+  });
+
   const ULTRA_SCENARIOS_KNOWN = [
     "dossier14_appartement",
     "bunker_reserve",
@@ -91,21 +101,6 @@
     "temple_mictlan"
   ];
 
-  async function getScenarioIdsForUltra(){
-    const set = new Set(ULTRA_SCENARIOS_KNOWN);
-    // tente d'ajouter ceux du catalog si présent
-    try{
-      const r = await fetch("data/scenarios/catalog.json", { cache:"no-store" });
-      if (r.ok){
-        const j = await r.json();
-        if (Array.isArray(j?.scenarios)){
-          j.scenarios.forEach(s => { if (s?.id) set.add(String(s.id)); });
-        }
-      }
-    }catch(_){}
-    return Array.from(set);
-  }
-
   function applyUltraUnlockOverride(){
     try{
       const ud = window.VUserData;
@@ -113,26 +108,24 @@
 
       if (typeof ud.isScenarioUnlocked === "function"){
         const orig = ud.isScenarioUnlocked.bind(ud);
-     ud.isScenarioUnlocked = function(id, requiredPack){
-  if (hasUltra()) return true;
-  return orig(id, requiredPack);
+        ud.isScenarioUnlocked = function(id, requiredPack){
+          if (hasUltra()) return true;
+          return orig(id, requiredPack);
         };
       }
       ud.__vcUltraPatched = true;
     }catch(_){}
   }
 
-  // applique souvent (pages différentes)
   try { window.addEventListener("vc:profile", applyUltraUnlockOverride); } catch(_) {}
   try { document.addEventListener("DOMContentLoaded", applyUltraUnlockOverride, { once:true }); } catch(_) {}
   applyUltraUnlockOverride();
 
-  // ---- Anti double-credit
   const PRICES_BY_ID = Object.create(null);
   const IN_FLIGHT_TX = new Set();
 
-  const PENDING_KEY  = "vchoice_iap_pending_v1";   // [{txId, productId, ts}]
-  const CREDITED_KEY = "vchoice_iap_credited_v1";  // [txId]
+  const PENDING_KEY  = "vchoice_iap_pending_v1";
+  const CREDITED_KEY = "vchoice_iap_credited_v1";
   let STORE_READY = false;
 
   const readJson  = (k, d=[]) => { try { return JSON.parse(localStorage.getItem(k)||"null") ?? d; } catch { return d; } };
@@ -168,13 +161,11 @@
     try { window.dispatchEvent(new CustomEvent(name, { detail: detail || {} })); } catch (_) {}
   }
 
-  // ---- Expose API
   window.VCIAP = window.VCIAP || {};
   window.VCIAP.isAvailable = function(){ return !!window.CdvPurchase?.store; };
   window.VCIAP.getPrice = function(productId){ return PRICES_BY_ID[String(productId || "")] || ""; };
   window.VCIAP.order = function(productId){ return safeOrder(productId); };
 
-  // compat: certains écrans utilisent VRIAP
   window.VRIAP = window.VRIAP || {};
   if (!window.VRIAP.isAvailable) window.VRIAP.isAvailable = window.VCIAP.isAvailable;
   if (!window.VRIAP.getPrice) window.VRIAP.getPrice = window.VCIAP.getPrice;
@@ -243,23 +234,42 @@
   }
 
   async function grantUltra(txId){
-    // déjà acquis -> rien
     if (hasUltra()) return true;
 
-    // ✅ Local-first (UX) : active tout de suite
     setUltraEntitled(true);
     applyUltraUnlockOverride();
 
-    // ✅ Sync base (si RPC dispo) : diamond=true + no_ads=true + +12 jetons (idempotent côté SQL)
     try{
       if (window.VUserData && typeof window.VUserData.grantEntitlement === "function"){
-        await window.VUserData.grantEntitlement("diamond", { source:"iap", txId: String(txId||""), productId:"vchoice_ultra" });
+        await window.VUserData.grantEntitlement("diamond", {
+          source:"iap",
+          txId: String(txId||""),
+          productId:"vchoice_ultra"
+        });
       }
     }catch(e){
-      // non bloquant : le refresh (userData.js) tentera de resync plus tard
-      warn("ULTRA: remote grant failed", e?.message || e);
+      warn("ULTRA remote grant failed", e?.message || e);
     }
 
+    return true;
+  }
+
+  async function unlockScenarioDirectIap(scenarioId, productId, txId){
+    const uid = await ensureAuthStrict();
+    if (!uid) throw new Error("no_session");
+
+    const sb = window.sb;
+    if (!sb?.rpc) throw new Error("no_client");
+
+    const r = await sb.rpc("secure_unlock_scenario_iap", {
+      p_scenario: String(scenarioId || ""),
+      p_product_id: String(productId || ""),
+      p_tx_id: String(txId || "")
+    });
+
+    if (r?.error) throw new Error(r.error.message || "scenario_unlock_iap_failed");
+
+    try { await window.VUserData?.refresh?.(); } catch(_) {}
     return true;
   }
 
@@ -270,13 +280,13 @@
     const uid = await ensureAuthStrict();
     if (!uid) throw new Error("no_session");
 
-    // ✅ non-consumables: si déjà acquis ET tx déjà traité -> on sort
     if (cfg.kind === "no_ads" && hasNoAds() && (!txId || isCredited(txId))){
       if (txId) markCredited(txId);
       emit("vc:iap_credited", { productId:String(productId||""), kind:"no_ads", amount:0, txId:String(txId||"") });
       emit("vr:iap_credited", { productId:String(productId||""), kind:"no_ads", amount:0, txId:String(txId||"") });
       return true;
     }
+
     if (cfg.kind === "ultra" && hasUltra() && (!txId || isCredited(txId))){
       if (txId) markCredited(txId);
       emit("vc:iap_credited", { productId:String(productId||""), kind:"ultra", amount:0, txId:String(txId||"") });
@@ -293,14 +303,15 @@
       if (r === null || r === undefined) throw new Error("credit_jetons_failed");
     }
     else if (cfg.kind === "no_ads"){
-      // local-first
       setNoAdsEntitled(true);
       applyUltraUnlockOverride();
-      // best-effort remote sync
-      try{ await window.VUserData?.grantEntitlement?.("no_ads", { source:"iap", txId:String(txId||""), productId:String(productId||"") }); }catch(_){ }
+      try{ await window.VUserData?.grantEntitlement?.("no_ads", { source:"iap", txId:String(txId||""), productId:String(productId||"") }); }catch(_){}
     }
     else if (cfg.kind === "ultra"){
       await grantUltra(txId);
+    }
+    else if (cfg.kind === "scenario"){
+      await unlockScenarioDirectIap(cfg.scenario, productId, txId);
     }
     else {
       throw new Error("unknown_kind");
@@ -312,12 +323,14 @@
       productId: String(productId || ""),
       kind: String(cfg.kind || ""),
       amount: Number(cfg.amount || 0),
+      scenarioId: String(cfg.scenario || ""),
       txId: String(txId || "")
     });
     emit("vr:iap_credited", {
       productId: String(productId || ""),
       kind: String(cfg.kind || ""),
       amount: Number(cfg.amount || 0),
+      scenarioId: String(cfg.scenario || ""),
       txId: String(txId || "")
     });
 
@@ -348,7 +361,7 @@
 
   async function start(){
     const { S } = getStoreApi();
-    if (!S) return; // web => silence
+    if (!S) return;
 
     await ensureAuthStrict();
 
@@ -372,7 +385,7 @@
           if (id && price){
             PRICES_BY_ID[id] = String(price);
             emit("vc:iap_price", { productId: String(id), price: String(price) });
-            emit("vr:iap_price", { productId: String(id), price: String(price) }); // compat
+            emit("vr:iap_price", { productId: String(id), price: String(price) });
           }
         }catch(_){}
       })
@@ -397,7 +410,6 @@
         }catch(e){
           warn("credit failed", productId, txId, e?.message || e);
           if (txId) IN_FLIGHT_TX.delete(txId);
-          // on laisse pending pour replay
           return;
         }
 
@@ -472,5 +484,4 @@
   }
 
   startWhenReady();
-
 })();

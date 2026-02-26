@@ -7,6 +7,8 @@
    + ✅ FIN INTRO: texte long (comme ta capture) MAIS sans mots “Jetons/VCoins” -> on affiche les WEBP
    + ✅ FIN INTRO: icônes plus grandes + “Récompense” (pas “Récompense du tuto”) + en-tête centré + suppression du “x1” en bas
    + ✅ iOS ONLY: mini popup “Entrer” au tout début du scénario -> autorise la musique, puis lance VCAudio.play()
+   + ✅ FINS NORMALES: plus de popup fin ; image de fin conservée, texte final inline, bonus pub = +200 avec icône vcoin
+   + ✅ 0 texte visible utilisateur en dur dans le JS : tout passe par i18n
 */
 
 (function(){
@@ -17,25 +19,24 @@
 ========================= */
 const SAVE_KEY = "creepy_engine_save_v1";
 const DEFAULT_LANG = "en";
+const ENDING_AD_BONUS_AMOUNT = 200;
 
-// Langues prévues (même si certains ui_<lang>.json ne sont pas encore présents)
+// Langues prévues
 const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
 
-// ✅ Onboarding / Intro tuto
+// Onboarding / Intro tuto
 const ONBOARD_DONE_KEY   = "vchoice_onboarding_done_v1";
 const INTRO_REWARD_KEY   = "vchoice_intro_rewarded_v1";
 const INTRO_SCENARIO_ID  = "intro_tuto";
 
-// ✅ Intro tuto: popup jeton forcée
+// Intro tuto: popup jeton forcée
 const INTRO_FORCED_JETON_USED_KEY   = "vchoice_intro_forced_jeton_used_v1";
 const INTRO_FORCED_JETON_SEEDED_KEY = "vchoice_intro_forced_jeton_seeded_v1";
 
-// ✅ Jeton image (WEBP) affichée dans la popup tuto
+// Assets UI
 const TUTO_JETON_ICON_WEBP = "assets/img/ui/jeton.webp";
-
-// ✅ Icônes rewards fin (UI)
-const UI_VCOINS_ICON_WEBP = "assets/img/ui/vcoin.webp"; // ✅ vcoin (pas vcoins)
-const UI_JETON_ICON_WEBP  = "assets/img/ui/jeton.webp";
+const UI_VCOINS_ICON_WEBP  = "assets/img/ui/vcoin.webp";
+const UI_JETON_ICON_WEBP   = "assets/img/ui/jeton.webp";
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -59,7 +60,6 @@ let TEXT_STRINGS = null;
 
 let scenarioStates = {};
 
-// Guide vers une fin (BFS)
 let GUIDE_STATE = {
   active: false,
   targetType: null,
@@ -67,19 +67,17 @@ let GUIDE_STATE = {
   path: []
 };
 
-// ✅ Bypass flags (activé quand on paie 3 jetons)
 let OVERRIDE_FLAGS = false;
 
-// ✅ État écran de fin inline (évite doublons RPC)
 let ENDING_STATE = {
   key: "",
   reward: 300,
-  doubleClaimed: false,
+  adBonusClaimed: false,
   busy: false
 };
 
 /* =========================
-   SMALL HELPERS
+   HELPERS
 ========================= */
 function $(id){ return document.getElementById(id); }
 
@@ -100,7 +98,7 @@ function deepGet(obj, path){
   return cur;
 }
 
-function format(str, params={}){
+function format(str, params = {}){
   return String(str).replace(/\{(\w+)\}/g, (_, k) => (params[k] ?? `{${k}}`));
 }
 
@@ -133,17 +131,9 @@ function resolveImageFile(logic, imageId){
   return null;
 }
 
-/* ✅ supprime les "—" / "-" dans les libellés jetons (sans toucher aux JSON i18n) */
 function sanitizeJetonLabel(s){
   if(s == null) return "";
   return String(s).replace(/\s*[—–-]\s*/g, " ").replace(/\s{2,}/g, " ").trim();
-}
-
-function tUIOr(key, fallback, params){
-  let v = deepGet(UI, `ui.${key}`);
-  if(v == null || v === "") v = fallback;
-  v = (v == null) ? "" : String(v);
-  return params ? format(v, params) : v;
 }
 
 function clearNode(el){
@@ -151,11 +141,37 @@ function clearNode(el){
   while(el.firstChild) el.removeChild(el.firstChild);
 }
 
+function tUI(key, params){
+  const v = deepGet(UI, `ui.${key}`) ?? `[ui.${key}]`;
+  return params ? format(v, params) : v;
+}
+
+function tS(key, params){
+  let v;
+
+  if(TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key)){
+    v = TEXT_STRINGS[key];
+  } else {
+    v = deepGet(TEXT, key);
+  }
+
+  if(v == null) v = `[${key}]`;
+  return params ? format(v, params) : v;
+}
+
+function getScenarioInfo(scenarioId){
+  const info = deepGet(UI, `scenario_info.${scenarioId}`) || {};
+  const title = (typeof info.title === "string") ? info.title : tUI("hint_title");
+  const body  = (typeof info.body  === "string") ? info.body  : "";
+  if(!body && !title) return null;
+  return { title, body };
+}
+
 function getEndingLabel(type){
   const t = String(type || "").toLowerCase();
-  if(t === "good") return tUIOr("ending_label_good", "fin bonne");
-  if(t === "bad") return tUIOr("ending_label_bad", "fin mauvaise");
-  if(t === "secret") return tUIOr("ending_label_secret", "fin secrète");
+  if(t === "good") return tUI("ending_label_good");
+  if(t === "bad") return tUI("ending_label_bad");
+  if(t === "secret") return tUI("ending_label_secret");
   return tUI("end_title");
 }
 
@@ -176,6 +192,9 @@ function getEndingRewardAmount(payload){
   return 300;
 }
 
+/* =========================
+   ENDING INLINE UI
+========================= */
 function ensureEndingInlineStyle(){
   if(document.getElementById("vcEndingInlineStyle")) return;
 
@@ -223,15 +242,47 @@ function ensureEndingInlineStyle(){
       object-fit:contain;
       filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));
     }
+
+    .vc-choice-inline{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+    }
+
+    .vc-choice-inline img{
+      width:22px;
+      height:22px;
+      object-fit:contain;
+      filter:drop-shadow(0 6px 14px rgba(0,0,0,.35));
+      flex:0 0 auto;
+    }
   `;
   document.head.appendChild(st);
 }
 
+function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
+  clearNode(btn);
+
+  const wrap = document.createElement("span");
+  wrap.className = "vc-choice-inline";
+
+  const icon = document.createElement("img");
+  icon.src = iconSrc;
+  icon.alt = "";
+  icon.draggable = false;
+
+  const text = document.createElement("span");
+  text.textContent = labelText;
+
+  wrap.appendChild(icon);
+  wrap.appendChild(text);
+  btn.appendChild(wrap);
+}
+
 /* =========================
-   iOS AUDIO GATE (popup "Entrer")
-   - iOS bloque l'audio sans geste utilisateur
-   - on affiche une mini popup au début du scénario
-   - tap => unlock + play
+   iOS AUDIO GATE
 ========================= */
 let _iosGateDone = false;
 let _iosGateStyleDone = false;
@@ -311,7 +362,6 @@ function showIOSAudioGate(){
 
     if(_iosGateDone) return resolve();
 
-    // si audio désactivé côté app, pas de gate
     try{
       if(window.VCAudio && typeof window.VCAudio.isEnabled === "function"){
         if(!window.VCAudio.isEnabled()) return resolve();
@@ -341,7 +391,6 @@ function showIOSAudioGate(){
 
     btn.onclick = async () => {
       try{
-        // unlock si dispo, puis play
         if(window.VCAudio && typeof window.VCAudio.unlock === "function"){
           await window.VCAudio.unlock();
         }
@@ -450,141 +499,7 @@ async function setLang(newLang, opts = {}){
 }
 
 /* =========================
-   UI TEXT HELPERS
-========================= */
-function tUI(key, params){
-  const v = deepGet(UI, `ui.${key}`) ?? `[ui.${key}]`;
-  return params ? format(v, params) : v;
-}
-
-function tS(key, params){
-  let v;
-
-  if(TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key)){
-    v = TEXT_STRINGS[key];
-  } else {
-    v = deepGet(TEXT, key);
-  }
-
-  if(v == null) v = `[${key}]`;
-  return params ? format(v, params) : v;
-}
-
-function getScenarioInfo(scenarioId){
-  const info = deepGet(UI, `scenario_info.${scenarioId}`) || {};
-  const title = (typeof info.title === "string") ? info.title : tUI("hint_title");
-  const body  = (typeof info.body  === "string") ? info.body  : "";
-  if(!body && !title) return null;
-  return { title, body };
-}
-
-/* =========================
-   FLAGS LOCKING (avec override)
-========================= */
-function isChoiceAvailable(choice){
-  if(OVERRIDE_FLAGS) return true;
-
-  const flags = scenarioStates[currentScenarioId]?.flags || {};
-  const all = Array.isArray(choice.requires_all_flags) ? choice.requires_all_flags : null;
-  const any = Array.isArray(choice.requires_any_flags) ? choice.requires_any_flags : null;
-
-  if(all && all.length){
-    for(const f of all){
-      if(!flags[f]) return false;
-    }
-  }
-  if(any && any.length){
-    let ok = false;
-    for(const f of any){
-      if(flags[f]){ ok = true; break; }
-    }
-    if(!ok) return false;
-  }
-  return true;
-}
-
-/* =========================
-   GUIDE (BFS vers une fin)
-========================= */
-function _findEndingTargets(logic, type){
-  const scenes = logic?.scenes || {};
-  const direct = `end_${type}`;
-  if (Object.prototype.hasOwnProperty.call(scenes, direct)) return [direct];
-
-  const keys = Object.keys(scenes);
-  const out = [];
-  const needle = String(type || "").toLowerCase();
-
-  for(const k of keys){
-    const lk = k.toLowerCase();
-    if(lk.includes("end_" + needle) || lk.includes("fin_" + needle) || lk.includes("ending_" + needle)){
-      out.push(k);
-    }
-  }
-
-  if(!out.length){
-    for(const k of keys){
-      const sc = scenes[k];
-      const ch = Array.isArray(sc?.choices) ? sc.choices : [];
-      if(ch.length === 0) out.push(k);
-    }
-  }
-  return out;
-}
-
-function computeGuidePlan(fromSceneId, targetType){
-  if(!LOGIC?.scenes || !fromSceneId) return null;
-
-  const targets = new Set(_findEndingTargets(LOGIC, targetType));
-  if(!targets.size) return null;
-
-  const q = [String(fromSceneId)];
-  const visited = new Set(q);
-  const prev = {};
-  let found = null;
-
-  while(q.length){
-    const cur = q.shift();
-    if(targets.has(cur)){ found = cur; break; }
-
-    const sc = resolveSceneObject(LOGIC, cur);
-    const choices = Array.isArray(sc?.choices) ? sc.choices : [];
-
-    for(const ch of choices){
-      if(!ch?.next) continue;
-      const nxt = String(ch.next);
-      if(visited.has(nxt)) continue;
-      if(!LOGIC.scenes[nxt]) continue;
-
-      visited.add(nxt);
-      prev[nxt] = cur;
-      q.push(nxt);
-    }
-  }
-
-  if(!found) return null;
-
-  const path = [];
-  let cur = found;
-  while(cur){
-    path.push(cur);
-    if(cur === String(fromSceneId)) break;
-    cur = prev[cur];
-  }
-  path.reverse();
-
-  if(path.length < 2) return { path, nextByScene: {} };
-
-  const nextByScene = {};
-  for(let i=0;i<path.length-1;i++){
-    nextByScene[path[i]] = path[i+1];
-  }
-
-  return { path, nextByScene };
-}
-
-/* =========================
-   SAVE/LOAD (LOCAL)
+   SAVE/LOAD
 ========================= */
 function load(){
   try{
@@ -665,7 +580,7 @@ async function loadCatalog(){
 }
 
 /* =========================
-   STATIC i18n (game.html)
+   STATIC i18n
 ========================= */
 function applyStaticI18n(){
   const btnJeton = $("btnJetonBack");
@@ -722,7 +637,7 @@ function applyStaticI18n(){
 }
 
 /* =========================
-   HUD JETONS (game.html)
+   HUD JETONS
 ========================= */
 function updateHudJetons(){
   const el = $("hudJetonCount");
@@ -745,7 +660,6 @@ function updateJetonModalCount(){
   el.textContent = String(jetons);
 }
 
-/* ✅ Stop guide visible uniquement si guide actif */
 function updateJetonGuideUI(){
   const stopBtn = $("btnJetonGuideStop");
   if(stopBtn){
@@ -798,7 +712,7 @@ function bindJetonHud(){
       const b = ev.target && ev.target.closest ? ev.target.closest("button[data-target]") : null;
       if(!b) return;
 
-      const targetType = b.getAttribute("data-target"); // good|bad|secret
+      const targetType = b.getAttribute("data-target");
       const msg = $("jetonModalMsg");
 
       try{
@@ -929,7 +843,7 @@ function bindTopbar(){
 }
 
 /* =========================
-   MENU (index.html)
+   MENU
 ========================= */
 async function loadScenarioMeta(scenarioId){
   try{
@@ -1023,7 +937,7 @@ function renderTopbar(){
 }
 
 /* =========================
-   GAME (game.html)
+   GAME / RESUME / END MODAL
 ========================= */
 function ensureResumeModal(){
   const m = $("resumeModal");
@@ -1102,7 +1016,6 @@ function _setEndBodyRich(buildFn){
   try{ buildFn?.(b); }catch(_){}
 }
 
-/* ✅ showEndModal supporte body string OU body builder */
 function showEndModal(title, bodyOrBuilder, onBack, onReplay){
   ensureEndModal();
 
@@ -1114,21 +1027,18 @@ function showEndModal(title, bodyOrBuilder, onBack, onReplay){
 
   t.textContent = title || tUI("end_title");
 
-  // default buttons (tous scénarios)
   btnBack.textContent = tUI("btn_back");
   btnReplay.textContent = tUI("btn_restart");
   btnReplay.style.display = "";
   btnBack.onclick = () => { hideEndModal(); onBack && onBack(); };
   btnReplay.onclick = () => { hideEndModal(); onReplay && onReplay(); };
 
-  // body
   if(typeof bodyOrBuilder === "function"){
     _setEndBodyRich(bodyOrBuilder);
   } else {
     _setEndBodyText(bodyOrBuilder || "");
   }
 
-  // ✅ EXCEPTION: INTRO TUTO UNIQUEMENT -> pas de Recommencer, “Fermer” -> index
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     btnReplay.style.display = "none";
     btnBack.textContent = tUI("btn_close");
@@ -1225,7 +1135,7 @@ function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
   wrap.style.paddingTop = "14px";
   wrap.style.display = "flex";
   wrap.style.gap = "10px";
-  wrap.style.justifyContent = "center"; // ✅ bouton centré
+  wrap.style.justifyContent = "center";
   wrap.style.flexWrap = "wrap";
 
   try{ buildActionsFn?.(wrap); }catch(_){}
@@ -1234,6 +1144,108 @@ function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
 
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden","false");
+}
+
+/* =========================
+   FLAGS / GUIDE
+========================= */
+function isChoiceAvailable(choice){
+  if(OVERRIDE_FLAGS) return true;
+
+  const flags = scenarioStates[currentScenarioId]?.flags || {};
+  const all = Array.isArray(choice.requires_all_flags) ? choice.requires_all_flags : null;
+  const any = Array.isArray(choice.requires_any_flags) ? choice.requires_any_flags : null;
+
+  if(all && all.length){
+    for(const f of all){
+      if(!flags[f]) return false;
+    }
+  }
+  if(any && any.length){
+    let ok = false;
+    for(const f of any){
+      if(flags[f]){ ok = true; break; }
+    }
+    if(!ok) return false;
+  }
+  return true;
+}
+
+function _findEndingTargets(logic, type){
+  const scenes = logic?.scenes || {};
+  const direct = `end_${type}`;
+  if (Object.prototype.hasOwnProperty.call(scenes, direct)) return [direct];
+
+  const keys = Object.keys(scenes);
+  const out = [];
+  const needle = String(type || "").toLowerCase();
+
+  for(const k of keys){
+    const lk = k.toLowerCase();
+    if(lk.includes("end_" + needle) || lk.includes("fin_" + needle) || lk.includes("ending_" + needle)){
+      out.push(k);
+    }
+  }
+
+  if(!out.length){
+    for(const k of keys){
+      const sc = scenes[k];
+      const ch = Array.isArray(sc?.choices) ? sc.choices : [];
+      if(ch.length === 0) out.push(k);
+    }
+  }
+  return out;
+}
+
+function computeGuidePlan(fromSceneId, targetType){
+  if(!LOGIC?.scenes || !fromSceneId) return null;
+
+  const targets = new Set(_findEndingTargets(LOGIC, targetType));
+  if(!targets.size) return null;
+
+  const q = [String(fromSceneId)];
+  const visited = new Set(q);
+  const prev = {};
+  let found = null;
+
+  while(q.length){
+    const cur = q.shift();
+    if(targets.has(cur)){ found = cur; break; }
+
+    const sc = resolveSceneObject(LOGIC, cur);
+    const choices = Array.isArray(sc?.choices) ? sc.choices : [];
+
+    for(const ch of choices){
+      if(!ch?.next) continue;
+      const nxt = String(ch.next);
+      if(visited.has(nxt)) continue;
+      if(!LOGIC.scenes[nxt]) continue;
+
+      visited.add(nxt);
+      prev[nxt] = cur;
+      q.push(nxt);
+    }
+  }
+
+  if(!found) return null;
+
+  const path = [];
+  let cur = found;
+  while(cur){
+    path.push(cur);
+    if(cur === String(fromSceneId)) break;
+    cur = prev[cur];
+  }
+  path.reverse();
+
+  if(path.length < 2) return { path, nextByScene: {} };
+
+  const nextByScene = {};
+  for(let i=0;i<path.length-1;i++){
+    nextByScene[path[i]] = path[i+1];
+  }
+
+  return { path, nextByScene };
 }
 
 /* =========================
@@ -1280,7 +1292,6 @@ async function openScenario(scenarioId, opts = {}){
   scenarioStates[scenarioId].clues ??= [];
   scenarioStates[scenarioId].history ??= [];
 
-  // ✅ iOS ONLY: Gate "Entrer" AVANT resume modal / rendu (pour autoriser la musique)
   if (isIOS() && !_iosGateDone && window.VCAudio) {
     await showIOSAudioGate();
   }
@@ -1320,7 +1331,7 @@ function clearFlag(flag){
 }
 
 /* =========================
-   JETONS UTILS
+   JETONS
 ========================= */
 function getMissingFlagsForChoice(choice){
   const flags = scenarioStates[currentScenarioId]?.flags || {};
@@ -1462,12 +1473,11 @@ function ensureIntroTutoStyle(){
         100%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
       }
 
-      /* ✅ Intro end (texte long + icônes) */
       .vc-intro-end{ display:flex; flex-direction:column; gap:14px; }
       .vc-intro-head{
         white-space:pre-wrap;
         opacity:.98;
-        text-align:center; /* ✅ centre “Le silence…” */
+        text-align:center;
       }
       .vc-intro-reward-title{ display:flex; align-items:center; gap:10px; font-weight:850; }
       .vc-intro-reward-title .vc-check{ display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; }
@@ -1476,18 +1486,18 @@ function ensureIntroTutoStyle(){
 
       .vc-intro-li{ display:flex; align-items:center; gap:12px; }
       .vc-intro-li img{
-        width:28px; height:28px; /* ✅ plus grand */
+        width:28px; height:28px;
         flex:0 0 auto;
         filter: drop-shadow(0 10px 22px rgba(0,0,0,.28));
       }
       .vc-intro-li span{
-        font-size:1.05em; /* ✅ chiffres un peu plus visibles */
+        font-size:1.05em;
         font-weight:800;
       }
 
       .vc-intro-line{ display:flex; align-items:flex-start; gap:12px; }
       .vc-intro-line img{
-        width:26px; height:26px; /* ✅ plus grand */
+        width:26px; height:26px;
         flex:0 0 auto;
         margin-top:1px;
         filter: drop-shadow(0 10px 22px rgba(0,0,0,.28));
@@ -1496,7 +1506,6 @@ function ensureIntroTutoStyle(){
       .vc-intro-tip img{ width:26px; height:26px; }
       .vc-intro-tip b{ font-weight:850; }
 
-      /* (garde l’ancien, utile ailleurs) */
       .vc-end-reward{ display:flex; align-items:center; justify-content:center; gap:16px; padding-top:10px; flex-wrap:wrap; }
       .vc-end-pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border:1px solid rgba(255,255,255,.12); border-radius:999px; background: rgba(0,0,0,.25); }
       .vc-end-pill img{ width:20px; height:20px; }
@@ -1545,7 +1554,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
   const first = missing.length ? missing[0] : null;
   const itemTitle = first ? prettyFlagTitle(first) : "";
 
-  // ✅ Textes 100% via UI i18n (intro_*), pas de “tu as raté…”
   const title   = tUI("intro_forced_jeton_title");
   const body    = tUI("intro_forced_jeton_body", { item: itemTitle });
   const note    = tUI("intro_forced_jeton_note");
@@ -1563,7 +1571,7 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       img.src = TUTO_JETON_ICON_WEBP;
       img.alt = "";
       img.draggable = false;
-      img.className = "vc-tuto-side"; // ✅ pas de clignotement
+      img.className = "vc-tuto-side";
       row.appendChild(img);
 
       const col = document.createElement("div");
@@ -1593,7 +1601,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       btn.type = "button";
       btn.className = "btn";
 
-      // ✅ CLIGNOTE SUR LE CARTOUCHE ENTIER (pas juste l’icône)
       const inner = document.createElement("span");
       inner.className = "vc-tuto-btn vc-jeton-cta";
 
@@ -1605,10 +1612,9 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
       ic.src = TUTO_JETON_ICON_WEBP;
       ic.alt = "";
       ic.draggable = false;
-      ic.className = "vc-jeton-cta-big"; // ✅ juste la taille, pas d’anim
+      ic.className = "vc-jeton-cta-big";
       inner.appendChild(ic);
 
-      // ✅ pas de mot “jeton” -> x1 via i18n
       const q = document.createElement("b");
       q.textContent = tUI("shop_reward_jeton_x1");
       inner.appendChild(q);
@@ -1619,10 +1625,8 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
         const msg = $("vcTutoMsg");
 
         try{
-          // ✅ 1) seed 1 jeton tuto (1 seule fois)
           await seedIntroTutoJetonIfNeeded();
 
-          // ✅ 2) dépenser 1 jeton
           let ok = true;
           if(window.VUserData && typeof window.VUserData.spendJetons === "function"){
             const r = await spendJetons(1);
@@ -1636,7 +1640,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
             return;
           }
 
-          // ✅ 3) débloquer l’objet manquant puis exécuter
           grantMissingFlags(choice, missingAll, missingAny);
           save();
 
@@ -1645,7 +1648,6 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
           updateHudJetons();
           updateJetonModalCount();
 
-          // ✅ libère la fermeture
           const m = $("hintModal");
           if(m){
             try{ delete m.dataset.forceLock; }catch(_){}
@@ -1668,15 +1670,15 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
     }
   );
 
-  // seed immédiat (le jeton existe réellement au moment du clic)
   seedIntroTutoJetonIfNeeded();
 }
 
-/* ✅ popup locked: propose Jeton OU Pub pour obtenir l’objet manquant */
+/* =========================
+   LOCKED CHOICE MODAL
+========================= */
 function showLockedChoiceModal(choice){
   const { missingAll, missingAny } = getMissingFlagsForChoice(choice);
 
-  // ✅ Intro tuto : 1ère fois uniquement -> popup forcée
   try{
     if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
       let used = false;
@@ -1815,7 +1817,7 @@ function showLockedChoiceModal(choice){
 }
 
 /* =========================
-   ENDING (modal fin / inline selon scénario)
+   ENDING
 ========================= */
 async function handleEnding(type, endScene){
   const st = scenarioStates[currentScenarioId];
@@ -1837,7 +1839,7 @@ async function handleEnding(type, endScene){
 
   const endingType = String(type || "").toLowerCase();
 
-  // ✅ INTRO TUTO : on garde la popup spéciale actuelle
+  /* ===== INTRO TUTO : on garde la popup spéciale ===== */
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     try{
       if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
@@ -1891,9 +1893,6 @@ async function handleEnding(type, endScene){
     const vcoins = introRewardVCoins || 100;
     const jetons = introRewardJetons || 2;
 
-    const iconV = (tUI("icon_vcoins_webp") || UI_VCOINS_ICON_WEBP);
-    const iconJ = (tUI("icon_jeton_webp") || UI_JETON_ICON_WEBP);
-
     const l1 = tUI("intro_end_line1") || tUI("intro_end_silence") || body || "";
     const l2 = tUI("intro_end_line2") || "";
 
@@ -1942,7 +1941,7 @@ async function handleEnding(type, endScene){
         const rowJ = document.createElement("div");
         rowJ.className = "vc-intro-li";
         const imgJ = document.createElement("img");
-        imgJ.src = iconJ;
+        imgJ.src = UI_JETON_ICON_WEBP;
         imgJ.alt = "";
         imgJ.draggable = false;
         const txtJ = document.createElement("span");
@@ -1956,7 +1955,7 @@ async function handleEnding(type, endScene){
         const rowV = document.createElement("div");
         rowV.className = "vc-intro-li";
         const imgV = document.createElement("img");
-        imgV.src = iconV;
+        imgV.src = UI_VCOINS_ICON_WEBP;
         imgV.alt = "";
         imgV.draggable = false;
         const txtV = document.createElement("span");
@@ -1973,7 +1972,7 @@ async function handleEnding(type, endScene){
         const sLesV = document.createElement("span");
         sLesV.textContent = les;
         const iV = document.createElement("img");
-        iV.src = iconV;
+        iV.src = UI_VCOINS_ICON_WEBP;
         iV.alt = "";
         iV.draggable = false;
         const sUseV = document.createElement("span");
@@ -1988,7 +1987,7 @@ async function handleEnding(type, endScene){
         const sLesJ = document.createElement("span");
         sLesJ.textContent = les;
         const iJ2 = document.createElement("img");
-        iJ2.src = iconJ;
+        iJ2.src = UI_JETON_ICON_WEBP;
         iJ2.alt = "";
         iJ2.draggable = false;
         const sUseJ = document.createElement("span");
@@ -2018,13 +2017,14 @@ async function handleEnding(type, endScene){
     return;
   }
 
+  /* ===== FINS NORMALES INLINE ===== */
   const endingKey = `${String(currentScenarioId || "")}:${String(endScene?.id || endingType)}`;
 
   if(ENDING_STATE.key !== endingKey){
     ENDING_STATE = {
       key: endingKey,
       reward: 300,
-      doubleClaimed: false,
+      adBonusClaimed: false,
       busy: false
     };
 
@@ -2083,6 +2083,8 @@ async function handleEnding(type, endScene){
 
   ensureEndingInlineStyle();
 
+  let rewardValue = null;
+
   if(bodyEl){
     clearNode(bodyEl);
 
@@ -2095,7 +2097,7 @@ async function handleEnding(type, endScene){
 
     const unlock = document.createElement("span");
     unlock.className = "vc-end-unlock";
-    unlock.textContent = tUIOr("end_unlock_line", "Bravo, tu as débloqué la {ending}.", {
+    unlock.textContent = tUI("end_unlock_line", {
       ending: getEndingLabel(endingType)
     });
 
@@ -2103,11 +2105,11 @@ async function handleEnding(type, endScene){
     reward.className = "vc-end-reward-line";
 
     const rewardIcon = document.createElement("img");
-    rewardIcon.src = tUIOr("icon_vcoins_webp", UI_VCOINS_ICON_WEBP);
+    rewardIcon.src = UI_VCOINS_ICON_WEBP;
     rewardIcon.alt = "";
     rewardIcon.draggable = false;
 
-    const rewardValue = document.createElement("span");
+    rewardValue = document.createElement("span");
     rewardValue.className = "vc-end-reward-value";
     rewardValue.textContent = `+${rewardAmount}`;
 
@@ -2124,46 +2126,74 @@ async function handleEnding(type, endScene){
   if(choicesEl){
     clearNode(choicesEl);
 
-    const btnDouble = document.createElement("button");
-    btnDouble.type = "button";
-    btnDouble.className = "choice_btn";
-    btnDouble.textContent = ENDING_STATE.doubleClaimed
-      ? tUIOr("end_double_done", "Gains doublés")
-      : tUIOr("end_btn_double", "Doubler les gains avec pub");
+    const btnBonus = document.createElement("button");
+    btnBonus.type = "button";
+    btnBonus.className = "choice_btn";
 
-    btnDouble.disabled = !!ENDING_STATE.doubleClaimed || !!ENDING_STATE.busy;
+    if(ENDING_STATE.adBonusClaimed){
+      setChoiceButtonContentWithIcon(
+        btnBonus,
+        UI_VCOINS_ICON_WEBP,
+        tUI("end_add_bonus_done", { amount: ENDING_AD_BONUS_AMOUNT })
+      );
+    } else {
+      setChoiceButtonContentWithIcon(
+        btnBonus,
+        UI_VCOINS_ICON_WEBP,
+        tUI("end_btn_add_bonus", { amount: ENDING_AD_BONUS_AMOUNT })
+      );
+    }
 
-    btnDouble.onclick = async () => {
-      if(ENDING_STATE.doubleClaimed || ENDING_STATE.busy) return;
+    btnBonus.disabled = !!ENDING_STATE.adBonusClaimed || !!ENDING_STATE.busy;
+
+    btnBonus.onclick = async () => {
+      if(ENDING_STATE.adBonusClaimed || ENDING_STATE.busy) return;
 
       ENDING_STATE.busy = true;
-      btnDouble.disabled = true;
-      btnDouble.textContent = tUIOr("end_double_wait", "Validation en cours…");
+      btnBonus.disabled = true;
+      setChoiceButtonContentWithIcon(
+        btnBonus,
+        UI_VCOINS_ICON_WEBP,
+        tUI("end_add_bonus_wait", { amount: ENDING_AD_BONUS_AMOUNT })
+      );
 
       let adOk = false;
       try{
         const ad = await window.VAds?.showRewarded?.();
         adOk = !!ad?.ok;
-      }catch(_){ adOk = false; }
+      }catch(_){
+        adOk = false;
+      }
 
       if(!adOk){
         ENDING_STATE.busy = false;
-        btnDouble.disabled = false;
-        btnDouble.textContent = tUIOr("end_btn_double", "Doubler les gains avec pub");
-        showHintModal(tUI("hint_title"), tUIOr("end_double_error", "Publicité indisponible pour le moment."));
+        btnBonus.disabled = false;
+        setChoiceButtonContentWithIcon(
+          btnBonus,
+          UI_VCOINS_ICON_WEBP,
+          tUI("end_btn_add_bonus", { amount: ENDING_AD_BONUS_AMOUNT })
+        );
+        showHintModal(tUI("hint_title"), tUI("end_add_bonus_error"));
         return;
       }
 
       try{
-        await window.VUserData?.addVCoins?.(rewardAmount);
+        await window.VUserData?.addVCoins?.(ENDING_AD_BONUS_AMOUNT);
       }catch(_){}
 
       ENDING_STATE.busy = false;
-      ENDING_STATE.doubleClaimed = true;
-      btnDouble.disabled = true;
-      btnDouble.textContent = tUIOr("end_double_done", "Gains doublés");
+      ENDING_STATE.adBonusClaimed = true;
+      btnBonus.disabled = true;
 
-      rewardValue.textContent = `+${rewardAmount * 2}`;
+      setChoiceButtonContentWithIcon(
+        btnBonus,
+        UI_VCOINS_ICON_WEBP,
+        tUI("end_add_bonus_done", { amount: ENDING_AD_BONUS_AMOUNT })
+      );
+
+      if(rewardValue){
+        rewardValue.textContent = `+${rewardAmount + ENDING_AD_BONUS_AMOUNT}`;
+      }
     };
 
     const btnRestart = document.createElement("button");
@@ -2171,7 +2201,7 @@ async function handleEnding(type, endScene){
     btnRestart.className = "choice_btn";
     btnRestart.textContent = tUI("btn_restart");
     btnRestart.onclick = () => {
-      ENDING_STATE = { key:"", reward:300, doubleClaimed:false, busy:false };
+      ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
       hardResetScenario(currentScenarioId);
       renderScene();
     };
@@ -2181,11 +2211,11 @@ async function handleEnding(type, endScene){
     btnBack.className = "choice_btn";
     btnBack.textContent = tUI("btn_back");
     btnBack.onclick = () => {
-      ENDING_STATE = { key:"", reward:300, doubleClaimed:false, busy:false };
+      ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
       location.href = "index.html";
     };
 
-    choicesEl.appendChild(btnDouble);
+    choicesEl.appendChild(btnBonus);
     choicesEl.appendChild(btnRestart);
     choicesEl.appendChild(btnBack);
   }
@@ -2209,7 +2239,6 @@ function renderScene(){
     return renderScene();
   }
 
-  // auto end_xxx
   try{
     const m = /^end_(good|bad|secret)$/i.exec(String(scene.id || ""));
     if(m && !scene.ending) scene.ending = String(m[1]).toLowerCase();
@@ -2220,7 +2249,7 @@ function renderScene(){
     return;
   }
 
-  ENDING_STATE = { key:"", reward:300, doubleClaimed:false, busy:false };
+  ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
 
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
@@ -2302,13 +2331,13 @@ function renderScene(){
 }
 
 /* =========================
-   PUBLIC API (settings.html)
+   PUBLIC API
 ========================= */
 window.VLang = {
   get: () => LANG,
   supported: () => SUPPORTED_LANGS.slice(),
   normalize: normalizeLang,
-  set: async (lang, opts={}) => {
+  set: async (lang, opts = {}) => {
     return await setLang(lang, {
       persistLocal: opts.persistLocal !== false,
       persistRemote: opts.persistRemote !== false,
@@ -2323,4 +2352,3 @@ window.VLang = {
 document.addEventListener("DOMContentLoaded", boot);
 
 })();
-
