@@ -1,5 +1,5 @@
 /* engine.js — VERSION COMPLETE À JOUR
-  
+   Base: ton fichier (lang device + menu + jetons + guide + end modal)
    + ✅ Intro tuto: popup FORCÉE “Débloquer avec 1 jeton” (jeton WEBP non clignotant à gauche, bouton centré avec gros cartouche qui clignote)
    + ✅ Bypass “pas assez” : on seed 1 jeton tuto (1 seule fois) puis on le dépense
    + ✅ Pas de fermeture possible tant que le tuto jeton n’est pas fait
@@ -70,6 +70,14 @@ let GUIDE_STATE = {
 // ✅ Bypass flags (activé quand on paie 3 jetons)
 let OVERRIDE_FLAGS = false;
 
+// ✅ État écran de fin inline (évite doublons RPC)
+let ENDING_STATE = {
+  key: "",
+  reward: 300,
+  doubleClaimed: false,
+  busy: false
+};
+
 /* =========================
    SMALL HELPERS
 ========================= */
@@ -129,6 +137,94 @@ function resolveImageFile(logic, imageId){
 function sanitizeJetonLabel(s){
   if(s == null) return "";
   return String(s).replace(/\s*[—–-]\s*/g, " ").replace(/\s{2,}/g, " ").trim();
+}
+
+function tUIOr(key, fallback, params){
+  let v = deepGet(UI, `ui.${key}`);
+  if(v == null || v === "") v = fallback;
+  v = (v == null) ? "" : String(v);
+  return params ? format(v, params) : v;
+}
+
+function clearNode(el){
+  if(!el) return;
+  while(el.firstChild) el.removeChild(el.firstChild);
+}
+
+function getEndingLabel(type){
+  const t = String(type || "").toLowerCase();
+  if(t === "good") return tUIOr("ending_label_good", "fin bonne");
+  if(t === "bad") return tUIOr("ending_label_bad", "fin mauvaise");
+  if(t === "secret") return tUIOr("ending_label_secret", "fin secrète");
+  return tUI("end_title");
+}
+
+function getEndingRewardAmount(payload){
+  const candidates = [
+    payload?.reward_vcoins,
+    payload?.reward,
+    payload?.granted_vcoins,
+    payload?.delta_vcoins,
+    payload?.vcoins_reward
+  ];
+
+  for(const raw of candidates){
+    const n = Number(raw);
+    if(Number.isFinite(n) && n > 0) return n;
+  }
+
+  return 300;
+}
+
+function ensureEndingInlineStyle(){
+  if(document.getElementById("vcEndingInlineStyle")) return;
+
+  const st = document.createElement("style");
+  st.id = "vcEndingInlineStyle";
+  st.textContent = `
+    .vc-end-wrap{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      text-align:center;
+      width:100%;
+    }
+
+    .vc-end-copy{
+      display:block;
+      white-space:pre-wrap;
+      width:100%;
+    }
+
+    .vc-end-unlock{
+      display:block;
+      width:100%;
+      font-weight:800;
+      color:rgba(255,255,255,.98);
+    }
+
+    .vc-end-reward-line{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      font-weight:900;
+      font-size:18px;
+    }
+
+    .vc-end-reward-line img{
+      width:30px;
+      height:30px;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));
+    }
+  `;
+  document.head.appendChild(st);
 }
 
 /* =========================
@@ -1719,7 +1815,7 @@ function showLockedChoiceModal(choice){
 }
 
 /* =========================
-   ENDING (modal fin)
+   ENDING (modal fin / inline selon scénario)
 ========================= */
 async function handleEnding(type, endScene){
   const st = scenarioStates[currentScenarioId];
@@ -1741,18 +1837,18 @@ async function handleEnding(type, endScene){
 
   const endingType = String(type || "").toLowerCase();
 
-  try{
-    if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
-      await window.VUserData.completeScenario(currentScenarioId, endingType);
-    }
-  }catch(e){}
+  // ✅ INTRO TUTO : on garde la popup spéciale actuelle
+  if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
+    try{
+      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+        await window.VUserData.completeScenario(currentScenarioId, endingType);
+      }
+    }catch(e){}
 
-  // ✅ Reward spécifique Intro (1 seule fois)
-  let introRewardJetons = 0;
-  let introRewardVCoins = 0;
+    let introRewardJetons = 0;
+    let introRewardVCoins = 0;
 
-  try{
-    if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
+    try{
       let rewarded = false;
       try{ rewarded = (localStorage.getItem(INTRO_REWARD_KEY) === "1"); }catch(_){}
       if(!rewarded){
@@ -1775,29 +1871,23 @@ async function handleEnding(type, endScene){
         updateHudJetons();
         updateJetonModalCount();
       }
-    }
-  }catch(_){}
+    }catch(_){}
 
-  let title = tUI("end_title");
-  if(endingType === "good") title = tUI("end_title_good");
-  if(endingType === "bad") title = tUI("end_title_bad");
-  if(endingType === "secret") title = tUI("end_title_secret");
+    let title = tUI("end_title");
+    if(endingType === "good") title = tUI("end_title_good");
+    if(endingType === "bad") title = tUI("end_title_bad");
+    if(endingType === "secret") title = tUI("end_title_secret");
 
-  // body default
-  let body = tUI("ending_desc");
+    let body = tUI("ending_desc");
 
-  try{
-    if(endScene && endScene.title_key) title = tS(endScene.title_key);
-    if(endScene && endScene.body_key) body  = tS(endScene.body_key);
-  }catch(_){}
+    try{
+      if(endScene && endScene.title_key) title = tS(endScene.title_key);
+      if(endScene && endScene.body_key) body  = tS(endScene.body_key);
+    }catch(_){}
 
-  // ✅ INTRO: texte long (comme ta capture) + icônes (pas de mots)
-  if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     ensureIntroTutoStyle();
 
     const introTitle = tUI("intro_end_title");
-
-    // même si déjà rewardé, on affiche les valeurs standard demandées
     const vcoins = introRewardVCoins || 100;
     const jetons = introRewardJetons || 2;
 
@@ -1808,7 +1898,7 @@ async function handleEnding(type, endScene){
     const l2 = tUI("intro_end_line2") || "";
 
     const check = tUI("symbol_check");
-    const rewardLabel = tUI("intro_end_reward_label"); // ✅ “Récompense :”
+    const rewardLabel = tUI("intro_end_reward_label");
 
     const les = tUI("intro_end_prefix_les");
     const useV = tUI("intro_end_use_vcoins");
@@ -1928,13 +2018,177 @@ async function handleEnding(type, endScene){
     return;
   }
 
-  // autres scénarios (normal)
-  showEndModal(
-    title,
-    body,
-    () => { history.back(); },
-    () => { hardResetScenario(currentScenarioId); renderScene(); }
-  );
+  const endingKey = `${String(currentScenarioId || "")}:${String(endScene?.id || endingType)}`;
+
+  if(ENDING_STATE.key !== endingKey){
+    ENDING_STATE = {
+      key: endingKey,
+      reward: 300,
+      doubleClaimed: false,
+      busy: false
+    };
+
+    try{
+      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+        const res = await window.VUserData.completeScenario(currentScenarioId, endingType);
+        ENDING_STATE.reward = getEndingRewardAmount(res?.data || null);
+      }
+    }catch(e){}
+  }
+
+  const rewardAmount = Number(ENDING_STATE.reward || 300);
+
+  let title = tUI("end_title");
+  if(endingType === "good") title = tUI("end_title_good");
+  if(endingType === "bad") title = tUI("end_title_bad");
+  if(endingType === "secret") title = tUI("end_title_secret");
+
+  let body = tUI("ending_desc");
+
+  try{
+    if(endScene && endScene.title_key) title = tS(endScene.title_key);
+    if(endScene && endScene.body_key) body = tS(endScene.body_key);
+  }catch(_){}
+
+  const titleEl = $("sceneTitle");
+  const bodyEl  = $("sceneBody");
+  const imgEl   = $("scene_img") || $("sceneImg");
+  const imgSourceEl = $("scene_img_source");
+  const choicesEl = $("choices");
+  const hintBtn = $("btnHint");
+
+  hideEndModal();
+
+  if(hintBtn){
+    hintBtn.disabled = true;
+    hintBtn.onclick = null;
+  }
+
+  if(titleEl) titleEl.textContent = title;
+
+  if(imgEl){
+    const img = resolveImageFile(LOGIC, endScene?.image_id);
+    if(img && img.file){
+      if(imgSourceEl) imgSourceEl.srcset = img.file;
+      imgEl.src = img.file;
+      imgEl.alt = img.alt || "";
+      imgEl.classList.remove("hidden");
+    } else {
+      imgEl.removeAttribute("src");
+      imgEl.alt = "";
+      imgEl.classList.add("hidden");
+      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
+    }
+  }
+
+  ensureEndingInlineStyle();
+
+  if(bodyEl){
+    clearNode(bodyEl);
+
+    const wrap = document.createElement("span");
+    wrap.className = "vc-end-wrap";
+
+    const copy = document.createElement("span");
+    copy.className = "vc-end-copy";
+    copy.textContent = body;
+
+    const unlock = document.createElement("span");
+    unlock.className = "vc-end-unlock";
+    unlock.textContent = tUIOr("end_unlock_line", "Bravo, tu as débloqué la {ending}.", {
+      ending: getEndingLabel(endingType)
+    });
+
+    const reward = document.createElement("span");
+    reward.className = "vc-end-reward-line";
+
+    const rewardIcon = document.createElement("img");
+    rewardIcon.src = tUIOr("icon_vcoins_webp", UI_VCOINS_ICON_WEBP);
+    rewardIcon.alt = "";
+    rewardIcon.draggable = false;
+
+    const rewardValue = document.createElement("span");
+    rewardValue.className = "vc-end-reward-value";
+    rewardValue.textContent = `+${rewardAmount}`;
+
+    reward.appendChild(rewardIcon);
+    reward.appendChild(rewardValue);
+
+    wrap.appendChild(copy);
+    wrap.appendChild(unlock);
+    wrap.appendChild(reward);
+
+    bodyEl.appendChild(wrap);
+  }
+
+  if(choicesEl){
+    clearNode(choicesEl);
+
+    const btnDouble = document.createElement("button");
+    btnDouble.type = "button";
+    btnDouble.className = "choice_btn";
+    btnDouble.textContent = ENDING_STATE.doubleClaimed
+      ? tUIOr("end_double_done", "Gains doublés")
+      : tUIOr("end_btn_double", "Doubler les gains avec pub");
+
+    btnDouble.disabled = !!ENDING_STATE.doubleClaimed || !!ENDING_STATE.busy;
+
+    btnDouble.onclick = async () => {
+      if(ENDING_STATE.doubleClaimed || ENDING_STATE.busy) return;
+
+      ENDING_STATE.busy = true;
+      btnDouble.disabled = true;
+      btnDouble.textContent = tUIOr("end_double_wait", "Validation en cours…");
+
+      let adOk = false;
+      try{
+        const ad = await window.VAds?.showRewarded?.();
+        adOk = !!ad?.ok;
+      }catch(_){ adOk = false; }
+
+      if(!adOk){
+        ENDING_STATE.busy = false;
+        btnDouble.disabled = false;
+        btnDouble.textContent = tUIOr("end_btn_double", "Doubler les gains avec pub");
+        showHintModal(tUI("hint_title"), tUIOr("end_double_error", "Publicité indisponible pour le moment."));
+        return;
+      }
+
+      try{
+        await window.VUserData?.addVCoins?.(rewardAmount);
+      }catch(_){}
+
+      ENDING_STATE.busy = false;
+      ENDING_STATE.doubleClaimed = true;
+      btnDouble.disabled = true;
+      btnDouble.textContent = tUIOr("end_double_done", "Gains doublés");
+
+      rewardValue.textContent = `+${rewardAmount * 2}`;
+    };
+
+    const btnRestart = document.createElement("button");
+    btnRestart.type = "button";
+    btnRestart.className = "choice_btn";
+    btnRestart.textContent = tUI("btn_restart");
+    btnRestart.onclick = () => {
+      ENDING_STATE = { key:"", reward:300, doubleClaimed:false, busy:false };
+      hardResetScenario(currentScenarioId);
+      renderScene();
+    };
+
+    const btnBack = document.createElement("button");
+    btnBack.type = "button";
+    btnBack.className = "choice_btn";
+    btnBack.textContent = tUI("btn_back");
+    btnBack.onclick = () => {
+      ENDING_STATE = { key:"", reward:300, doubleClaimed:false, busy:false };
+      location.href = "index.html";
+    };
+
+    choicesEl.appendChild(btnDouble);
+    choicesEl.appendChild(btnRestart);
+    choicesEl.appendChild(btnBack);
+  }
 }
 
 /* =========================
@@ -1965,6 +2219,8 @@ function renderScene(){
     handleEnding(scene.ending, scene);
     return;
   }
+
+  ENDING_STATE = { key:"", reward:300, doubleClaimed:false, busy:false };
 
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
