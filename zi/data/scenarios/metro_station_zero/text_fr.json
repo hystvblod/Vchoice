@@ -414,7 +414,7 @@
 
     "msz.s68.title": "Dernier doute",
     "msz.s68.body": "Tu vois la sortie. Tu pourrais courir. Mais une part de toi sait : si tu sors mal, la station peut réécrire ce que tu crois avoir vécu.",
-    "msz.s68.c1": "Fuir avec une preuve",
+    "msz.s68.c1": "Fuir",
     "msz.s68.c2": "Retourner au contrôle",
     "msz.s68.c3": "Revenir au couloir principal",
 
@@ -438,7 +438,7 @@
 
     "msz.s72.title": "Choisir : sortir / rester",
     "msz.s72.body": "Le panneau lumineux, loin, clignote encore : « STATION ZÉRO ». La station te laisse une liberté étrange : elle veut que tu choisisses. Et que tu signes.",
-    "msz.s72.c1": "Retourner au quai pour décider",
+    "msz.s72.c1": "Sortir par l’issue",
     "msz.s72.c2": "Monter dans la rame",
     "msz.s72.c3": "Revenir au contrôle",
 

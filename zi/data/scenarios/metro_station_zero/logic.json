@@ -115,9 +115,9 @@
       "title_key": "msz.s01.title",
       "body_key": "msz.s01.body",
       "choices": [
-        { "choice_key": "msz.s01.c1", "next": "s04" },
+        { "choice_key": "msz.s01.c1", "next": "s02" },
         { "choice_key": "msz.s01.c2", "next": "s03" },
-        { "choice_key": "msz.s01.c3", "next": "s02" }
+        { "choice_key": "msz.s01.c3", "next": "s04" }
       ]
     },
     "s02": {
@@ -427,7 +427,7 @@
       "choices": [
         { "choice_key": "msz.s32.c1", "next": "s33" },
         { "choice_key": "msz.s32.c2", "next": "s35" },
-        { "choice_key": "msz.s32.c3", "next": "s27" }
+        { "choice_key": "msz.s32.c3", "next": "s23" }
       ]
     },
     "s33": {
@@ -466,7 +466,7 @@
       "body_key": "msz.s36.body",
       "choices": [
         { "choice_key": "msz.s36.c1", "next": "s38" },
-        { "choice_key": "msz.s36.c2", "next": "s23" },
+        { "choice_key": "msz.s36.c2", "next": "s39" },
         { "choice_key": "msz.s36.c3", "next": "s35" }
       ]
     },
@@ -767,7 +767,7 @@
       "choices": [
         { "choice_key": "msz.s66.c1", "next": "s67" },
         { "choice_key": "msz.s66.c2", "next": "s68" },
-        { "choice_key": "msz.s66.c3", "next": "s65" }
+        { "choice_key": "msz.s66.c3", "next": "s10" }
       ]
     },
     "s67": {
@@ -777,7 +777,7 @@
       "choices": [
         { "choice_key": "msz.s67.c1", "next": "s68" },
         { "choice_key": "msz.s67.c2", "next": "s69" },
-        { "choice_key": "msz.s67.c3", "next": "s65" }
+        { "choice_key": "msz.s67.c3", "next": "s10" }
       ]
     },
     "s68": {
@@ -785,11 +785,7 @@
       "title_key": "msz.s68.title",
       "body_key": "msz.s68.body",
       "choices": [
-        {
-          "choice_key": "msz.s68.c1",
-          "next": "end_good",
-          "requires_any_flags": ["has_phone_recording", "has_name_tag", "has_map_fragment"]
-        },
+        { "choice_key": "msz.s68.c1", "next": "end_good" },
         { "choice_key": "msz.s68.c2", "next": "s69" },
         { "choice_key": "msz.s68.c3", "next": "s10" }
       ]
