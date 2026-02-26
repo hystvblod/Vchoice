@@ -4,9 +4,11 @@
     "app_subtitle": "Histoire interactive",
     "index_title": "Choisis ton scénario",
     "index_subtitle": "Clique sur une carte pour commencer.",
+    "index_menu_aria": "Menu des scénarios",
     "language": "Langue",
     "symbol_close": "×",
     "symbol_check": "✓",
+    "symbol_help": "?",
     "hint_title": "Info",
     "hint_close": "Fermer",
     "hint_close_aria": "Fermer",
@@ -115,6 +117,13 @@
       "err_buy_failed": "Achat annulé ou impossible.",
       "err_unlock_after_iap": "Achat validé, mais le scénario n’a pas pu être ouvert."
     },
+
+    "update_banner_title": "Mise à jour disponible",
+    "update_banner_desc": "Une nouvelle version de l’application est disponible.",
+    "update_banner_desc_install": "La mise à jour est prête. Tu peux l’installer maintenant.",
+    "update_banner_later": "Plus tard",
+    "update_banner_update": "Mettre à jour",
+    "update_banner_install": "Installer",
 
     "end_congrats": "Bravo, tu as terminé la fin : {ending}.",
     "end_reward": "Bravo, tu as gagné {reward} VCoins.",

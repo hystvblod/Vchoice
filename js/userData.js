@@ -25,6 +25,19 @@
 // - Ajout VCRemoteStore.grantEntitlement() -> RPC secure_grant_entitlement
 // - Ajout VUserData.grantEntitlement() local-first + remote best-effort
 // - Refresh: resync auto DB si entitlement présent en local mais absent en remote (cooldown anti-boucle)
+//
+// ✅ PATCH 2026-02-26 (wallet base-first minimal):
+// - VCoins / jetons restent décidés par la base
+// - Plus de fallback local_only sur les mutations wallet
+// - Mutations wallet sérialisées via queueRemote
+// - Retry léger x3 sur les RPC wallet
+// - Refresh différé en secours si échec
+//
+// ✅ PATCH 2026-02-26 (unlock sync bidirectionnelle):
+// - Ajout VCRemoteStore.syncUnlockedScenarios() -> RPC secure_sync_unlocked_scenarios
+// - Ajout VUserData.syncUnlockedScenarios()
+// - Refresh: merge remote/local/cache puis write-back best-effort vers la base si local a plus
+// - Refresh auto quand l'app/onglet revient au premier plan pour récupérer les unlocks faits côté table/admin
 
 (function () {
   "use strict";
@@ -55,6 +68,10 @@
 
   // ======= utils =======
   function _now(){ return Date.now(); }
+
+  function _sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   function _safeParse(raw){
     try{ return JSON.parse(raw); }catch{ return null; }
@@ -97,6 +114,19 @@
       }
     }
     return out;
+  }
+
+  function _hasScenariosMissingFromBase(localList, remoteList){
+    try{
+      const remoteSet = new Set(_mergeScenarioLists(remoteList || []));
+      const localArr = _mergeScenarioLists(localList || []);
+      for (let i = 0; i < localArr.length; i++){
+        if (!remoteSet.has(localArr[i])) return true;
+      }
+      return false;
+    }catch(_){
+      return false;
+    }
   }
 
   const _errState = { last: null, ts: 0 };
@@ -510,6 +540,27 @@
       }
     },
 
+    // ✅ NEW : unionne les scénarios débloqués dans la base sans casser le système actuel
+    async syncUnlockedScenarios(list){
+      const sb = window.sb;
+      if (!sbReady()) return null;
+
+      const uid = await this.ensureAuth();
+      if (!uid) return null;
+
+      const arr = _mergeScenarioLists(Array.isArray(list) ? list : []);
+      if (!arr.length) return null;
+
+      const r = await _tryRpc(
+        "secure_sync_unlocked_scenarios",
+        { p_scenarios: arr },
+        "rpc.secure_sync_unlocked_scenarios"
+      );
+      if (r?.error) return null;
+
+      return _normalizeRow(_unwrapRpcData(r?.data)) || null;
+    },
+
     async addVCoins(delta){
       const sb = window.sb;
       if (!sbReady()) return null;
@@ -721,11 +772,31 @@
         const remoteList = Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios.slice() : [];
         const cacheList = nextUid ? _getUnlockedCacheFor(nextUid) : [];
         const localList = uidChanged ? [] : (Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : []);
+        const mergedList = _mergeScenarioLists(cacheList, localList, remoteList);
 
         // ⚠️ si uid change, on évite de garder les unlocks de l'ancien user
-        _memState.unlocked_scenarios = _mergeScenarioLists(cacheList, localList, remoteList);
+        _memState.unlocked_scenarios = mergedList;
 
         _persistLocal();
+
+        // ✅ WRITE-BACK best effort :
+        // si le local/cache a plus que la base, on pousse dans la table
+        try{
+          const needsWriteBack = !!nextUid && _hasScenariosMissingFromBase(mergedList, remoteList);
+          if (needsWriteBack && window.VCRemoteStore?.enabled?.() && typeof window.VCRemoteStore.syncUnlockedScenarios === "function"){
+            const syncKey = `vchoice_unlock_sync_ts_v1:${nextUid}`;
+            const lastSync = Number(localStorage.getItem(syncKey) || 0) || 0;
+            const canSync = (_now() - lastSync) > 10_000;
+
+            if (canSync){
+              localStorage.setItem(syncKey, String(_now()));
+              const row = await window.VCRemoteStore.syncUnlockedScenarios(mergedList);
+              if (row){
+                this.save(row, { silent:true });
+              }
+            }
+          }
+        }catch(_){}
 
         // ✅ si la lang change, on peut prévenir (engine.js gère UI)
         if (prevLang && prevLang !== _memState.lang){
@@ -946,6 +1017,33 @@
       return false;
     },
 
+    // ✅ NEW : push explicite d'une liste d'unlocks vers la base
+    async syncUnlockedScenarios(list){
+      try{ await this.init(); }catch(_){}
+
+      const arr = _mergeScenarioLists(Array.isArray(list) ? list : []);
+      if (!arr.length){
+        return { ok:false, reason:"empty_list", local_ok:false, remote_ok:false, data:null };
+      }
+
+      // local d'abord
+      try{
+        this.save({ ...this.load(), unlocked_scenarios: arr }, { silent:true });
+      }catch(_){}
+
+      if (!window.VCRemoteStore?.enabled?.()){
+        return { ok:false, reason:"no_remote", local_ok:true, remote_ok:false, data:null };
+      }
+
+      const row = await window.VCRemoteStore.syncUnlockedScenarios(arr);
+      if (!row){
+        return { ok:false, reason:"rpc_error", local_ok:true, remote_ok:false, data:null };
+      }
+
+      this.save(row, { silent:true });
+      return { ok:true, reason:"ok", local_ok:true, remote_ok:true, data: row };
+    },
+
     async unlockScenario(scenarioId){
       // ✅ sécurité: si init pas fait, on le fait ici
       try{ await this.init(); }catch(_){}
@@ -1054,12 +1152,26 @@
         return { ok:false, reason:"no_remote" };
       }
 
-      const v = await window.VCRemoteStore.addVCoins(d);
-      if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
+      return await queueRemote(async () => {
+        const delays = [0, 600, 1800];
 
-      const cur = this.load();
-      this.save({ ...cur, vcoins: v });
-      return { ok:true, vcoins: v };
+        for (const ms of delays){
+          if (ms > 0) await _sleep(ms);
+
+          const v = await window.VCRemoteStore.addVCoins(d);
+          if (typeof v === "number" && !Number.isNaN(v)){
+            const cur = this.load();
+            this.save({ ...cur, vcoins: v });
+            return { ok:true, vcoins: v };
+          }
+        }
+
+        setTimeout(() => {
+          try{ window.VUserData?.refresh?.().catch(() => false); }catch(_){}
+        }, 4000);
+
+        return { ok:false, reason:"rpc_error" };
+      });
     },
 
     async reduceVCoinsTo(value){
@@ -1067,17 +1179,29 @@
       if (!Number.isFinite(v0)) return { ok:false, reason:"invalid_value" };
 
       if (!window.VCRemoteStore?.enabled?.()){
-        const cur = this.load();
-        this.save({ ...cur, vcoins: Math.max(0, v0) });
-        return { ok:true, vcoins: Math.max(0, v0), local_only:true };
+        return { ok:false, reason:"no_remote" };
       }
 
-      const v = await window.VCRemoteStore.reduceVCoinsTo(v0);
-      if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
+      return await queueRemote(async () => {
+        const delays = [0, 600, 1800];
 
-      const cur = this.load();
-      this.save({ ...cur, vcoins: v });
-      return { ok:true, vcoins: v };
+        for (const ms of delays){
+          if (ms > 0) await _sleep(ms);
+
+          const v = await window.VCRemoteStore.reduceVCoinsTo(v0);
+          if (typeof v === "number" && !Number.isNaN(v)){
+            const cur = this.load();
+            this.save({ ...cur, vcoins: v });
+            return { ok:true, vcoins: v };
+          }
+        }
+
+        setTimeout(() => {
+          try{ window.VUserData?.refresh?.().catch(() => false); }catch(_){}
+        }, 4000);
+
+        return { ok:false, reason:"rpc_error" };
+      });
     },
 
     async addJetons(delta){
@@ -1085,17 +1209,29 @@
       if (!Number.isFinite(d) || d === 0) return { ok:false, reason:"invalid_delta" };
 
       if (!window.VCRemoteStore?.enabled?.()){
-        const cur = this.load();
-        this.save({ ...cur, jetons: Math.max(0, Number(cur.jetons||0) + d) });
-        return { ok:true, jetons: this.load().jetons, local_only:true };
+        return { ok:false, reason:"no_remote" };
       }
 
-      const v = await window.VCRemoteStore.addJetons(d);
-      if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
+      return await queueRemote(async () => {
+        const delays = [0, 600, 1800];
 
-      const cur = this.load();
-      this.save({ ...cur, jetons: v });
-      return { ok:true, jetons: v };
+        for (const ms of delays){
+          if (ms > 0) await _sleep(ms);
+
+          const v = await window.VCRemoteStore.addJetons(d);
+          if (typeof v === "number" && !Number.isNaN(v)){
+            const cur = this.load();
+            this.save({ ...cur, jetons: v });
+            return { ok:true, jetons: v };
+          }
+        }
+
+        setTimeout(() => {
+          try{ window.VUserData?.refresh?.().catch(() => false); }catch(_){}
+        }, 4000);
+
+        return { ok:false, reason:"rpc_error" };
+      });
     },
 
     async spendJetons(delta){
@@ -1103,18 +1239,29 @@
       if (!Number.isFinite(d) || d <= 0) return { ok:false, reason:"invalid_delta" };
 
       if (!window.VCRemoteStore?.enabled?.()){
-        const cur = this.load();
-        const left = Math.max(0, Number(cur.jetons||0) - d);
-        this.save({ ...cur, jetons: left });
-        return { ok:true, jetons: left, local_only:true };
+        return { ok:false, reason:"no_remote" };
       }
 
-      const v = await window.VCRemoteStore.spendJetons(d);
-      if (typeof v !== "number" || Number.isNaN(v)) return { ok:false, reason:"rpc_error" };
+      return await queueRemote(async () => {
+        const delays = [0, 600, 1800];
 
-      const cur = this.load();
-      this.save({ ...cur, jetons: v });
-      return { ok:true, jetons: v };
+        for (const ms of delays){
+          if (ms > 0) await _sleep(ms);
+
+          const v = await window.VCRemoteStore.spendJetons(d);
+          if (typeof v === "number" && !Number.isNaN(v)){
+            const cur = this.load();
+            this.save({ ...cur, jetons: v });
+            return { ok:true, jetons: v };
+          }
+        }
+
+        setTimeout(() => {
+          try{ window.VUserData?.refresh?.().catch(() => false); }catch(_){}
+        }, 4000);
+
+        return { ok:false, reason:"rpc_error" };
+      });
     },
 
     async completeScenario(scenarioId, ending){
@@ -1182,6 +1329,56 @@
     } else {
       run();
     }
+  })();
+
+  // ✅ AUTO REFRESH depuis la base quand l'app/onglet revient au premier plan
+  // - utile si tu débloques un scénario directement dans la table profiles.unlocked_scenarios
+  // - le local se resynchronise tout seul au retour sur l'app
+  (function autoRefreshOnResume(){
+    let timer = null;
+    let lastRun = 0;
+
+    function kick(){
+      const now = Date.now();
+      if ((now - lastRun) < 1200) return;
+      lastRun = now;
+
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        try{
+          window.VUserData?.refresh?.().catch(() => false);
+        }catch(_){}
+      }, 250);
+    }
+
+    try{
+      window.addEventListener("focus", kick);
+    }catch(_){}
+
+    try{
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") kick();
+      });
+    }catch(_){}
+
+    // Cordova / anciens wrappers
+    try{
+      document.addEventListener("resume", kick, false);
+    }catch(_){}
+
+    // Capacitor App plugin
+    try{
+      const capApp =
+        window.Capacitor?.Plugins?.App ||
+        window.Capacitor?.App ||
+        null;
+
+      if (capApp && typeof capApp.addListener === "function"){
+        capApp.addListener("appStateChange", (state) => {
+          if (state && state.isActive) kick();
+        });
+      }
+    }catch(_){}
   })();
 
 })();

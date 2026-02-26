@@ -21,6 +21,9 @@ const SAVE_KEY = "creepy_engine_save_v1";
 const DEFAULT_LANG = "en";
 const ENDING_AD_BONUS_AMOUNT = 200;
 
+const INTERSTITIAL_EVERY_N_CHOICES = 12;
+const INTERSTITIAL_COUNTER_PREFIX = "vchoice_inter_count_";
+
 // Langues prévues
 const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
 
@@ -235,7 +238,67 @@ function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
   wrap.appendChild(text);
   btn.appendChild(wrap);
 }
+function getInterstitialCounterKey(scenarioId){
+  const sid = String(scenarioId || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+  return `${INTERSTITIAL_COUNTER_PREFIX}${sid}`;
+}
 
+function readScenarioInterstitialCount(scenarioId){
+  try{
+    const key = getInterstitialCounterKey(scenarioId);
+    const v = Number(localStorage.getItem(key) || 0);
+    return Number.isFinite(v) && v > 0 ? v : 0;
+  }catch(_){
+    return 0;
+  }
+}
+
+function writeScenarioInterstitialCount(scenarioId, value){
+  try{
+    const key = getInterstitialCounterKey(scenarioId);
+    const n = Math.max(0, Number(value || 0) || 0);
+    localStorage.setItem(key, String(n));
+  }catch(_){}
+}
+
+async function maybeShowInterstitialAfterChoice(){
+  const scenarioId = String(currentScenarioId || "").trim();
+  if(!scenarioId) return false;
+
+  // pas d'interstitial dans l'intro tuto
+  if(scenarioId === INTRO_SCENARIO_ID) return false;
+
+  let count = readScenarioInterstitialCount(scenarioId);
+  count += 1;
+
+  if(count < INTERSTITIAL_EVERY_N_CHOICES){
+    writeScenarioInterstitialCount(scenarioId, count);
+    return false;
+  }
+
+  // on remet à 0 dès qu'on atteint le seuil
+  // comme ça on évite de retenter à chaque clic si la pub n'est pas dispo
+  writeScenarioInterstitialCount(scenarioId, 0);
+
+  try{
+    if(!window.VAds || typeof window.VAds.showInterstitial !== "function"){
+      return false;
+    }
+
+    if(typeof window.VAds.isInterstitialAllowed === "function" && !window.VAds.isInterstitialAllowed()){
+      return false;
+    }
+
+    const res = await window.VAds.showInterstitial();
+    return !!res?.ok;
+  }catch(_){
+    return false;
+  }
+}
 /* =========================
    iOS AUDIO GATE
 ========================= */
@@ -1309,6 +1372,7 @@ async function executeChoice(ch){
 
   if(ch.ending){
     save();
+    await maybeShowInterstitialAfterChoice();
     await handleEnding(ch.ending, null);
     return;
   }
@@ -1319,6 +1383,9 @@ async function executeChoice(ch){
 
     st.scene = ch.next;
     save();
+
+    await maybeShowInterstitialAfterChoice();
+
     renderScene();
     return;
   }

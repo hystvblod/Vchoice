@@ -52,7 +52,6 @@
       pointer-events:none;
       z-index: 0;
       opacity: .08;
-
       background-size: 260px 260px;
       mix-blend-mode: overlay;
     }
@@ -66,7 +65,7 @@
       background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
     }
 
-    .page{ position:relative; z-index:1; padding-bottom:22px; }
+    .page{ position:relative; z-index:1; padding-bottom:132px; }
 
     .vc-top-actions{
       position: relative;
@@ -400,25 +399,126 @@
       color: rgba(255, 220, 220, 0.95);
       text-align:center;
     }
+
+    /* ===== BANNIÈRE MAJ ===== */
+    #vc-update-banner{
+      position: fixed;
+      left: 50%;
+      bottom: calc(env(safe-area-inset-bottom) + 20px);
+      transform: translateX(-50%);
+      width: min(92vw, 560px);
+      display: none;
+      z-index: 9500;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        linear-gradient(180deg, rgba(20,24,40,.96), rgba(10,12,22,.96));
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.45),
+        0 0 0 1px rgba(255,59,59,.08) inset;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    #vc-update-banner::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(600px 140px at 20% 20%, rgba(255,59,59,.12), transparent 60%),
+        radial-gradient(500px 160px at 80% 100%, rgba(120,80,255,.10), transparent 60%);
+    }
+
+    .vc-update-inner{
+      position:relative;
+      z-index:1;
+      padding: 14px 14px 12px 14px;
+    }
+
+    .vc-update-title{
+      margin:0 0 6px 0;
+      color:#fff;
+      font-size:16px;
+      font-weight:900;
+      letter-spacing:.2px;
+      line-height:1.15;
+      text-align:center;
+    }
+
+    .vc-update-desc{
+      margin:0;
+      color:rgba(255,255,255,.80);
+      font-size:13px;
+      line-height:1.35;
+      text-align:center;
+    }
+
+    .vc-update-actions{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .vc-update-btn{
+      min-width: 132px;
+      min-height: 46px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+      text-align:center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .vc-update-btn.primary{
+      background: rgba(255,59,59,.16);
+      border-color: rgba(255,59,59,.30);
+      box-shadow: 0 0 0 1px rgba(255,59,59,.10) inset;
+    }
+
+    .vc-update-btn.ghost{
+      background: rgba(0,0,0,.18);
+    }
+
+    .vc-update-btn:active{
+      transform: scale(.985);
+    }
+
+    @media (max-width: 520px){
+      .vc-update-actions{
+        flex-direction:column;
+      }
+      .vc-update-btn{
+        width:100%;
+      }
+    }
   </style>
 </head>
 
 <body>
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
-      <a class="vc-icon-button" href="profile.html" aria-label="Profil">
+      <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.profile_title">
         <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
       </a>
     </div>
 
     <div class="vc-top-slot vc-top-center">
-      <a class="vc-icon-button" href="settings.html" aria-label="Paramètres">
+      <a class="vc-icon-button" href="settings.html" aria-label="" data-i18n-aria="ui.settings_title">
         <img src="assets/img/ui/btn_settings.webp" alt="" draggable="false" />
       </a>
     </div>
 
     <div class="vc-top-slot vc-top-right">
-      <a class="vc-icon-button" href="shop.html" aria-label="Boutique">
+      <a class="vc-icon-button" href="shop.html" aria-label="" data-i18n-aria="ui.shop_title">
         <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
       </a>
     </div>
@@ -434,7 +534,7 @@
       <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle"></p>
     </section>
 
-    <section class="menu" aria-label="Menu">
+    <section class="menu" aria-label="" data-i18n-aria="ui.index_menu_aria">
       <div class="vc-grid">
 
         <button class="vc-card" data-scenario="dossier14_appartement" type="button">
@@ -442,7 +542,7 @@
           <div class="vc-card-content">
             <div class="vc-line">
               <h3 class="vc-title" data-i18n="scenarios.dossier14_appartement.title"></h3>
-              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.dossier14_appartement.desc">?</span>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.dossier14_appartement.desc" data-i18n="ui.symbol_help"></span>
             </div>
           </div>
         </button>
@@ -452,7 +552,7 @@
           <div class="vc-card-content">
             <div class="vc-line">
               <h3 class="vc-title" data-i18n="scenarios.bunker_reserve.title"></h3>
-              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.bunker_reserve.desc">?</span>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.bunker_reserve.desc" data-i18n="ui.symbol_help"></span>
             </div>
           </div>
         </button>
@@ -462,7 +562,7 @@
           <div class="vc-card-content">
             <div class="vc-line">
               <h3 class="vc-title" data-i18n="scenarios.hopital_ferme.title"></h3>
-              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.hopital_ferme.desc">?</span>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.hopital_ferme.desc" data-i18n="ui.symbol_help"></span>
             </div>
           </div>
         </button>
@@ -472,7 +572,7 @@
           <div class="vc-card-content">
             <div class="vc-line">
               <h3 class="vc-title" data-i18n="scenarios.metro_station_zero.title"></h3>
-              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.metro_station_zero.desc">?</span>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.metro_station_zero.desc" data-i18n="ui.symbol_help"></span>
             </div>
           </div>
         </button>
@@ -482,7 +582,7 @@
           <div class="vc-card-content">
             <div class="vc-line">
               <h3 class="vc-title" data-i18n="scenarios.styx_gare.title"></h3>
-              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.styx_gare.desc">?</span>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.styx_gare.desc" data-i18n="ui.symbol_help"></span>
             </div>
           </div>
         </button>
@@ -492,7 +592,7 @@
           <div class="vc-card-content">
             <div class="vc-line">
               <h3 class="vc-title" data-i18n="scenarios.foret_relais.title"></h3>
-              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.foret_relais.desc">?</span>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.foret_relais.desc" data-i18n="ui.symbol_help"></span>
             </div>
           </div>
         </button>
@@ -502,7 +602,7 @@
           <div class="vc-card-content">
             <div class="vc-line">
               <h3 class="vc-title" data-i18n="scenarios.chateau_absents.title"></h3>
-              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.chateau_absents.desc">?</span>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.chateau_absents.desc" data-i18n="ui.symbol_help"></span>
             </div>
           </div>
         </button>
@@ -512,7 +612,7 @@
           <div class="vc-card-content">
             <div class="vc-line">
               <h3 class="vc-title" data-i18n="scenarios.temple_mictlan.title"></h3>
-              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.temple_mictlan.desc">?</span>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.temple_mictlan.desc" data-i18n="ui.symbol_help"></span>
             </div>
           </div>
         </button>
@@ -526,7 +626,13 @@
     <div class="modal__content" role="dialog" aria-modal="true" aria-labelledby="hintTitle">
       <div class="modal__head">
         <h2 id="hintTitle" data-i18n="ui.hint_title"></h2>
-        <button id="hintClose" class="modal__close" type="button" aria-label="Fermer" data-i18n-aria="ui.hint_close_aria">×</button>
+        <button
+          id="hintClose"
+          class="modal__close"
+          type="button"
+          aria-label=""
+          data-i18n-aria="ui.hint_close_aria"
+          data-i18n="ui.symbol_close"></button>
       </div>
       <div class="modal__body" id="hintBody"></div>
     </div>
@@ -559,6 +665,18 @@
       </div>
 
       <div id="vc-buy-error"></div>
+    </div>
+  </div>
+
+  <!-- ===== BANNIÈRE MAJ ===== -->
+  <div id="vc-update-banner" aria-hidden="true">
+    <div class="vc-update-inner" role="dialog" aria-modal="false" aria-labelledby="vc-update-title">
+      <h2 id="vc-update-title" class="vc-update-title"></h2>
+      <p id="vc-update-desc" class="vc-update-desc"></p>
+      <div class="vc-update-actions">
+        <button id="vc-update-later" class="vc-update-btn ghost" type="button"></button>
+        <button id="vc-update-primary" class="vc-update-btn primary" type="button"></button>
+      </div>
     </div>
   </div>
 
@@ -955,6 +1073,138 @@
       });
     }
 
+    /* ===== LOGIQUE MAJ ===== */
+    const VC_UPDATE_AVAILABLE = 2;
+    const VC_UPDATE_IN_PROGRESS = 3;
+    const VC_UPDATE_DOWNLOADED = 11;
+
+    const vcUpdateBanner = document.getElementById("vc-update-banner");
+    const vcUpdateTitle = document.getElementById("vc-update-title");
+    const vcUpdateDesc = document.getElementById("vc-update-desc");
+    const vcUpdateLater = document.getElementById("vc-update-later");
+    const vcUpdatePrimary = document.getElementById("vc-update-primary");
+
+    let vcUpdateInfo = null;
+    let vcUpdateReadyToInstall = false;
+    let vcUpdateListenerBound = false;
+
+    function hideUpdateBanner(){
+      if (!vcUpdateBanner) return;
+      vcUpdateBanner.style.display = "none";
+      vcUpdateBanner.setAttribute("aria-hidden", "true");
+    }
+
+    function showUpdateBanner(){
+      if (!vcUpdateBanner) return;
+      vcUpdateBanner.style.display = "block";
+      vcUpdateBanner.setAttribute("aria-hidden", "false");
+    }
+
+    function renderUpdateBanner(){
+      if (!vcUpdateTitle || !vcUpdateDesc || !vcUpdateLater || !vcUpdatePrimary) return;
+
+      vcUpdateTitle.textContent = _t("ui.update_banner_title", "");
+
+      if (vcUpdateReadyToInstall) {
+        vcUpdateDesc.textContent = _t("ui.update_banner_desc_install", "");
+        vcUpdatePrimary.textContent = _t("ui.update_banner_install", "");
+      } else {
+        vcUpdateDesc.textContent = _t("ui.update_banner_desc", "");
+        vcUpdatePrimary.textContent = _t("ui.update_banner_update", "");
+      }
+
+      vcUpdateLater.textContent = _t("ui.update_banner_later", "");
+    }
+
+    async function bindFlexibleUpdateListener(){
+      if (vcUpdateListenerBound) return;
+      const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
+      if (!AppUpdate?.addListener) return;
+
+      vcUpdateListenerBound = true;
+
+      try{
+        await AppUpdate.addListener("onFlexibleUpdateStateChange", (state) => {
+          try{
+            if (Number(state?.installStatus) === VC_UPDATE_DOWNLOADED){
+              vcUpdateReadyToInstall = true;
+              renderUpdateBanner();
+              showUpdateBanner();
+            }
+          }catch(_){}
+        });
+      }catch(_){
+        vcUpdateListenerBound = false;
+      }
+    }
+
+    async function openNativeStore(){
+      const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
+      if (!AppUpdate?.openAppStore) return false;
+
+      try{
+        await AppUpdate.openAppStore();
+        return true;
+      }catch(_){
+        return false;
+      }
+    }
+
+    async function handlePrimaryUpdateAction(){
+      const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
+      if (!AppUpdate) return;
+
+      try{
+        if (vcUpdateReadyToInstall && AppUpdate.completeFlexibleUpdate){
+          await AppUpdate.completeFlexibleUpdate();
+          return;
+        }
+
+        if (vcUpdateInfo?.flexibleUpdateAllowed && AppUpdate.startFlexibleUpdate){
+          await AppUpdate.startFlexibleUpdate();
+          return;
+        }
+
+        await openNativeStore();
+      }catch(_){
+        await openNativeStore();
+      }
+    }
+
+    async function checkAppUpdateAndMaybeShow(){
+      const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
+      if (!AppUpdate?.getAppUpdateInfo) return;
+
+      try{
+        const info = await AppUpdate.getAppUpdateInfo();
+        vcUpdateInfo = info || null;
+        vcUpdateReadyToInstall = Number(info?.installStatus) === VC_UPDATE_DOWNLOADED;
+
+        const availability = Number(info?.updateAvailability || 0);
+
+        if (vcUpdateReadyToInstall){
+          renderUpdateBanner();
+          showUpdateBanner();
+          await bindFlexibleUpdateListener();
+          return;
+        }
+
+        if (availability === VC_UPDATE_AVAILABLE || availability === VC_UPDATE_IN_PROGRESS){
+          renderUpdateBanner();
+          showUpdateBanner();
+          await bindFlexibleUpdateListener();
+          return;
+        }
+
+        hideUpdateBanner();
+      }catch(_){
+        hideUpdateBanner();
+      }
+    }
+
+    if (vcUpdateLater) vcUpdateLater.addEventListener("click", hideUpdateBanner);
+    if (vcUpdatePrimary) vcUpdatePrimary.addEventListener("click", handlePrimaryUpdateAction);
+
     (function boot(){
       try { bindCards(); } catch(e){ console.error("[bindCards]", e); }
       try { applyLocks(); } catch(e){ console.error("[applyLocks pre]", e); }
@@ -998,6 +1248,7 @@
         }
 
         try { applyLocks(); } catch(e){ console.error("[applyLocks post]", e); }
+        try { await checkAppUpdateAndMaybeShow(); } catch(e){ console.error("[checkAppUpdateAndMaybeShow]", e); }
       })();
     })();
   </script>
