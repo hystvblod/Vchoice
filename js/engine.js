@@ -8,6 +8,7 @@
    + ✅ FIN INTRO: icônes plus grandes + “Récompense” (pas “Récompense du tuto”) + en-tête centré + suppression du “x1” en bas
    + ✅ iOS ONLY: mini popup “Entrer” au tout début du scénario -> autorise la musique, puis lance VCAudio.play()
    + ✅ FINS NORMALES: plus de popup fin ; image de fin conservée, texte final inline, bonus pub = +200 avec icône vcoin
+   + ✅ Fins first/already done pilotées en local uniquement via vchoice_endings_cache_v1
    + ✅ 0 texte visible utilisateur en dur dans le JS : tout passe par i18n
 */
 
@@ -40,6 +41,9 @@ const INTRO_FORCED_JETON_SEEDED_KEY = "vchoice_intro_forced_jeton_seeded_v1";
 const TUTO_JETON_ICON_WEBP = "assets/img/ui/jeton.webp";
 const UI_VCOINS_ICON_WEBP  = "assets/img/ui/vcoin.webp";
 const UI_JETON_ICON_WEBP   = "assets/img/ui/jeton.webp";
+
+// Cache local des fins
+const LOCAL_ENDINGS_KEY    = "vchoice_endings_cache_v1";
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -204,33 +208,61 @@ function getEndingLabel(type){
   return tUI("end_title");
 }
 
-function getEndingRewardAmount(payload){
-  const candidates = [
-    payload?.reward_vcoins,
-    payload?.reward,
-    payload?.granted_vcoins,
-    payload?.delta_vcoins,
-    payload?.vcoins_reward
-  ];
-
-  for(const raw of candidates){
-    const n = Number(raw);
-    if(Number.isFinite(n) && n > 0) return n;
+function readLocalEndings(){
+  try{
+    const raw = localStorage.getItem(LOCAL_ENDINGS_KEY);
+    if(!raw) return {};
+    const parsed = JSON.parse(raw);
+    return (parsed && typeof parsed === "object") ? parsed : {};
+  }catch(_){
+    return {};
   }
-
-  return 300;
 }
 
-function getEndingFirstTime(payload){
-  if(payload && typeof payload.first_time === "boolean"){
-    return payload.first_time;
+function writeLocalEndings(data){
+  try{
+    localStorage.setItem(LOCAL_ENDINGS_KEY, JSON.stringify(data || {}));
+  }catch(_){}
+}
+
+function normalizeEndingScenarioId(scenarioId){
+  return String(scenarioId || "")
+    .trim()
+    .toLowerCase();
+}
+
+function normalizeEndingType(endingType){
+  return String(endingType || "")
+    .trim()
+    .toLowerCase();
+}
+
+function hasLocalEndingDone(scenarioId, endingType){
+  const all = readLocalEndings();
+  const s = normalizeEndingScenarioId(scenarioId);
+  const e = normalizeEndingType(endingType);
+  return !!(all[s] && all[s][e] === true);
+}
+
+function markLocalEndingDone(scenarioId, endingType){
+  const all = readLocalEndings();
+  const s = normalizeEndingScenarioId(scenarioId);
+  const e = normalizeEndingType(endingType);
+
+  if(!all[s] || typeof all[s] !== "object"){
+    all[s] = {};
   }
 
-  if(payload && typeof payload.already_done === "boolean"){
-    return !payload.already_done;
-  }
+  all[s][e] = true;
+  writeLocalEndings(all);
+}
 
-  return getEndingRewardAmount(payload) >= 300;
+function getLocalEndingReward(scenarioId, endingType){
+  return hasLocalEndingDone(scenarioId, endingType) ? 100 : 300;
+}
+
+function getLocalEndingFirstTime(scenarioId, endingType){
+  return !hasLocalEndingDone(scenarioId, endingType);
 }
 
 function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
@@ -251,6 +283,7 @@ function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
   wrap.appendChild(text);
   btn.appendChild(wrap);
 }
+
 function getInterstitialCounterKey(scenarioId){
   const sid = String(scenarioId || "")
     .trim()
@@ -312,6 +345,7 @@ async function maybeShowInterstitialAfterChoice(){
     return false;
   }
 }
+
 /* =========================
    iOS AUDIO GATE
 ========================= */
@@ -1732,10 +1766,8 @@ async function handleEnding(type, endScene){
   /* ===== INTRO TUTO : on garde la popup spéciale ===== */
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     try{
-      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
-        await window.VUserData.completeScenario(currentScenarioId, endingType);
-      }
-    }catch(e){}
+      markLocalEndingDone(currentScenarioId, endingType);
+    }catch(_){}
 
     let introRewardJetons = 0;
     let introRewardVCoins = 0;
@@ -1908,24 +1940,26 @@ async function handleEnding(type, endScene){
   /* ===== FINS NORMALES INLINE ===== */
   const endingKey = `${String(currentScenarioId || "")}:${String(endScene?.id || endingType)}`;
 
-if(ENDING_STATE.key !== endingKey){
-  ENDING_STATE = {
-    key: endingKey,
-    reward: 300,
-    firstTime: true,
-    adBonusClaimed: false,
-    busy: false
-  };
+  if(ENDING_STATE.key !== endingKey){
+    const localFirstTime = getLocalEndingFirstTime(currentScenarioId, endingType);
+    const localReward = getLocalEndingReward(currentScenarioId, endingType);
 
-  try{
-    if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
-      const res = await window.VUserData.completeScenario(currentScenarioId, endingType);
-      const payload = res?.data || null;
-      ENDING_STATE.reward = getEndingRewardAmount(payload);
-      ENDING_STATE.firstTime = getEndingFirstTime(payload);
-    }
-  }catch(e){}
-}
+    ENDING_STATE = {
+      key: endingKey,
+      reward: localReward,
+      firstTime: localFirstTime,
+      adBonusClaimed: false,
+      busy: false
+    };
+
+    markLocalEndingDone(currentScenarioId, endingType);
+
+    try{
+      if(window.VUserData && typeof window.VUserData.addVCoins === "function"){
+        await window.VUserData.addVCoins(localReward);
+      }
+    }catch(_){}
+  }
 
   const rewardAmount = Number(ENDING_STATE.reward || 300);
   const isFirstTimeEnding = !!ENDING_STATE.firstTime;
@@ -1985,15 +2019,15 @@ if(ENDING_STATE.key !== endingKey){
     copy.className = "vc-end-copy";
     copy.textContent = body;
 
-  const unlock = document.createElement("span");
-unlock.className = "vc-end-unlock";
-unlock.textContent = isFirstTimeEnding
-  ? tUI("end_unlock_line", {
-      ending: getEndingLabel(endingType)
-    })
-  : tUI("end_already_done_line", {
-      ending: getEndingLabel(endingType)
-    });
+    const unlock = document.createElement("span");
+    unlock.className = "vc-end-unlock";
+    unlock.textContent = isFirstTimeEnding
+      ? tUI("end_unlock_line", {
+          ending: getEndingLabel(endingType)
+        })
+      : tUI("end_already_done_line", {
+          ending: getEndingLabel(endingType)
+        });
 
     const reward = document.createElement("span");
     reward.className = "vc-end-reward-line";
@@ -2095,7 +2129,7 @@ unlock.textContent = isFirstTimeEnding
     btnRestart.className = "choice_btn";
     btnRestart.textContent = tUI("btn_restart");
     btnRestart.onclick = () => {
-      ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
+      ENDING_STATE = { key:"", reward:300, firstTime:true, adBonusClaimed:false, busy:false };
       hardResetScenario(currentScenarioId);
       renderScene();
     };
@@ -2105,7 +2139,7 @@ unlock.textContent = isFirstTimeEnding
     btnBack.className = "choice_btn";
     btnBack.textContent = tUI("btn_back");
     btnBack.onclick = () => {
-      ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
+      ENDING_STATE = { key:"", reward:300, firstTime:true, adBonusClaimed:false, busy:false };
       location.href = "index.html";
     };
 
@@ -2143,7 +2177,7 @@ function renderScene(){
     return;
   }
 
-  ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
+  ENDING_STATE = { key:"", reward:300, firstTime:true, adBonusClaimed:false, busy:false };
 
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
