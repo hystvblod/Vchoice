@@ -20,33 +20,85 @@
     "images_dir": "assets/scenarios/metro_station_zero/img/"
   },
   "images": {
-    "cover": { "file": "assets/scenarios/metro_station_zero/img/cover.webp", "alt": "Quai de métro vide, néons froids, rame qui s’éloigne" },
-    "platform_empty": { "file": "assets/scenarios/metro_station_zero/img/platform_empty.webp", "alt": "Long quai désert, bancs métalliques, affiches déchirées" },
-    "train_dark": { "file": "assets/scenarios/metro_station_zero/img/train_dark.webp", "alt": "Intérieur de rame sombre, sièges vides, reflets inquiétants" },
-    "signage_glitch": { "file": "assets/scenarios/metro_station_zero/img/signage_glitch.webp", "alt": "Panneau lumineux affichant une station inconnue, glitch discret" },
-    "corridor_tiles": { "file": "assets/scenarios/metro_station_zero/img/corridor_tiles.webp", "alt": "Couloir carrelé, portes identiques, néon qui grésille" },
-    "ticket_machine": { "file": "assets/scenarios/metro_station_zero/img/ticket_machine.webp", "alt": "Distributeur de tickets ancien, écran allumé, ticket qui dépasse" },
-    "map_board": { "file": "assets/scenarios/metro_station_zero/img/map_board.webp", "alt": "Plan du réseau métro, zone arrachée, papier usé" },
-    "service_door": { "file": "assets/scenarios/metro_station_zero/img/service_door.webp", "alt": "Porte métallique SERVICE, peinture écaillée, lecteur badge" },
-    "maintenance_tunnel": { "file": "assets/scenarios/metro_station_zero/img/maintenance_tunnel.webp", "alt": "Tunnel de maintenance étroit, câbles, tuyaux, condensation" },
-    "control_room": { "file": "assets/scenarios/metro_station_zero/img/control_room.webp", "alt": "Salle de contrôle métro, consoles, écrans CRT, chaise vide" },
-    "office_lostfound": { "file": "assets/scenarios/metro_station_zero/img/office_lostfound.webp", "alt": "Bureau objets trouvés, registre ouvert, tampons" },
-    "restroom_mirror": { "file": "assets/scenarios/metro_station_zero/img/restroom_mirror.webp", "alt": "Toilettes de station, miroir fendu, reflet légèrement décalé" },
-    "escalator": { "file": "assets/scenarios/metro_station_zero/img/escalator.webp", "alt": "Escalator immobile montant vers un noir trop dense" },
-    "stairs_down": { "file": "assets/scenarios/metro_station_zero/img/stairs_down.webp", "alt": "Escalier descendant, murs humides, panneau accès interdit" },
-    "turnstiles": { "file": "assets/scenarios/metro_station_zero/img/turnstiles.webp", "alt": "Tourniquets de sortie, lecteurs éteints sauf un voyant rouge" },
-    "exit_street": { "file": "assets/scenarios/metro_station_zero/img/exit_street.webp", "alt": "Sortie vers la rue à l’aube, air froid, sensation de libération" },
-    "exit_blocked": { "file": "assets/scenarios/metro_station_zero/img/exit_blocked.webp", "alt": "Grille de sortie fermée, chaîne neuve, dehors vide" },
-    "security_cctv": { "file": "assets/scenarios/metro_station_zero/img/security_cctv.webp", "alt": "Mur d’écrans CCTV, une vue avec retard, horodatage impossible" },
-    "speaker_grille": { "file": "assets/scenarios/metro_station_zero/img/speaker_grille.webp", "alt": "Grille haut-parleur plafond, poussière, petite LED" },
-    "poster_wall": { "file": "assets/scenarios/metro_station_zero/img/poster_wall.webp", "alt": "Mur d’affiches, une affiche neuve menaçante" },
-    "flooded_passage": { "file": "assets/scenarios/metro_station_zero/img/flooded_passage.webp", "alt": "Passage bas partiellement inondé, reflets sombres" },
-    "graffiti_arrow": { "file": "assets/scenarios/metro_station_zero/img/graffiti_arrow.webp", "alt": "Graffiti flèche vers SERVICE, peinture récente" },
-    "shadow_figure": { "file": "assets/scenarios/metro_station_zero/img/shadow_figure.webp", "alt": "Silhouette floue au bout d’un couloir, dos tourné" },
-    "locker_room": { "file": "assets/scenarios/metro_station_zero/img/locker_room.webp", "alt": "Vestiaire technique, casiers, gilet fluorescent, badge" },
-    "final_good": { "file": "assets/scenarios/metro_station_zero/img/final_good.webp", "alt": "Aube dehors, sortie réelle, détail impossible en preuve" },
-    "final_bad": { "file": "assets/scenarios/metro_station_zero/img/final_bad.webp", "alt": "Rame vide portes ouvertes, intérieur noir avalant la lumière" },
-    "final_secret": { "file": "assets/scenarios/metro_station_zero/img/final_secret.webp", "alt": "Salle de contrôle, écrans OPÉRATEUR ACTIF, chaise qui attend" }
+    "s01": { "file": "assets/scenarios/metro_station_zero/img/s01.webp", "alt": "Quai de métro vide, néons froids, silence trop net" },
+    "s02": { "file": "assets/scenarios/metro_station_zero/img/s02.webp", "alt": "Rame qui s’éloigne au loin, flou de mouvement, quai désert" },
+    "s03": { "file": "assets/scenarios/metro_station_zero/img/s03.webp", "alt": "Long quai désert, bancs métalliques, affiches déchirées, poussière" },
+    "s04": { "file": "assets/scenarios/metro_station_zero/img/s04.webp", "alt": "Panneau lumineux grésillant, glitch discret, station inconnue" },
+    "s05": { "file": "assets/scenarios/metro_station_zero/img/s05.webp", "alt": "Quai vide, perspective oppressante, impression d’écho rapproché" },
+    "s06": { "file": "assets/scenarios/metro_station_zero/img/s06.webp", "alt": "Bouton d’urgence rouge sous grille de haut-parleur, poussière intacte" },
+    "s07": { "file": "assets/scenarios/metro_station_zero/img/s07.webp", "alt": "Grille de haut-parleur au plafond, petite LED active, sensation d’écoute" },
+    "s08": { "file": "assets/scenarios/metro_station_zero/img/s08.webp", "alt": "Mur d’affiches usées, une feuille neuve collée, menace implicite" },
+    "s09": { "file": "assets/scenarios/metro_station_zero/img/s09.webp", "alt": "Quai semblant plus long, perspective étirée, froideur artificielle" },
+    "s10": { "file": "assets/scenarios/metro_station_zero/img/s10.webp", "alt": "Couloir carrelé humide, portes identiques, néon froid" },
+    "s11": { "file": "assets/scenarios/metro_station_zero/img/s11.webp", "alt": "Signalétique contradictoire, flèches inversées, confusion guidée" },
+    "s12": { "file": "assets/scenarios/metro_station_zero/img/s12.webp", "alt": "Escalator immobile, haut plongé dans un noir trop dense" },
+    "s13": { "file": "assets/scenarios/metro_station_zero/img/s13.webp", "alt": "Tourniquets de sortie, lecteurs éteints, un voyant rouge vivant" },
+    "s14": { "file": "assets/scenarios/metro_station_zero/img/s14.webp", "alt": "Gros plan lecteur rouge, lumière dure, impression de jugement" },
+    "s15": { "file": "assets/scenarios/metro_station_zero/img/s15.webp", "alt": "Grille de sortie fermée, chaîne neuve, dehors gris et vide" },
+    "s16": { "file": "assets/scenarios/metro_station_zero/img/s16.webp", "alt": "Couloir carrelé presque identique, teinte subtilement différente" },
+    "s17": { "file": "assets/scenarios/metro_station_zero/img/s17.webp", "alt": "Distributeur ancien allumé, ticket déjà imprimé, invitation suspecte" },
+    "s18": { "file": "assets/scenarios/metro_station_zero/img/s18.webp", "alt": "Main tenant un ticket marqué d’un seul chiffre, papier tiède" },
+    "s19": { "file": "assets/scenarios/metro_station_zero/img/s19.webp", "alt": "Plan du réseau métro, zone arrachée, bords récents et irréguliers" },
+    "s20": { "file": "assets/scenarios/metro_station_zero/img/s20.webp", "alt": "Fragment de plan arraché, annotation au crayon, secret gratté" },
+    "s21": { "file": "assets/scenarios/metro_station_zero/img/s21.webp", "alt": "Toilettes de station, néon qui bourdonne, miroir fendu" },
+    "s22": { "file": "assets/scenarios/metro_station_zero/img/s22.webp", "alt": "Miroir fissuré, reflet légèrement décalé, malaise intime" },
+    "s23": { "file": "assets/scenarios/metro_station_zero/img/s23.webp", "alt": "Couloir secondaire plus froid, marques de craie et griffures répétées" },
+    "s24": { "file": "assets/scenarios/metro_station_zero/img/s24.webp", "alt": "Graffiti flèche vers service, peinture récente, marque de craie au sol" },
+    "s25": { "file": "assets/scenarios/metro_station_zero/img/s25.webp", "alt": "Porte métallique service, lecteur badge, griffure profonde sur la poignée" },
+    "s26": { "file": "assets/scenarios/metro_station_zero/img/s26.webp", "alt": "Oreille contre une porte métallique, ombre sous la porte, souffle discret" },
+    "s27": { "file": "assets/scenarios/metro_station_zero/img/s27.webp", "alt": "Escalier vers niveau inférieur, marches humides, accès interdit" },
+    "s28": { "file": "assets/scenarios/metro_station_zero/img/s28.webp", "alt": "Passage bas inondé, reflets noirs, odeur de métal, attente" },
+    "s29": { "file": "assets/scenarios/metro_station_zero/img/s29.webp", "alt": "Eau stagnante sombre, plastique et papier déformé flottant" },
+    "s30": { "file": "assets/scenarios/metro_station_zero/img/s30.webp", "alt": "Vestiaire technique, casiers, gilet fluorescent, badge trop visible" },
+    "s31": { "file": "assets/scenarios/metro_station_zero/img/s31.webp", "alt": "Gros plan badge plastifié, photo d’identité floue, preuve d’accès" },
+    "s32": { "file": "assets/scenarios/metro_station_zero/img/s32.webp", "alt": "Couloir secondaire repris par la station, carreaux plus brillants" },
+    "s33": { "file": "assets/scenarios/metro_station_zero/img/s33.webp", "alt": "Silhouette floue au bout du couloir, dos tourné, disparition" },
+    "s34": { "file": "assets/scenarios/metro_station_zero/img/s34.webp", "alt": "Angle sombre du couloir, hésitation, menace sans forme nette" },
+    "s35": { "file": "assets/scenarios/metro_station_zero/img/s35.webp", "alt": "Bureau objets trouvés, lampe verte, registre ouvert, tampons" },
+    "s36": { "file": "assets/scenarios/metro_station_zero/img/s36.webp", "alt": "Registre rempli de lignes, certaines marquées d’un signe isolé, emplacement préparé" },
+    "s37": { "file": "assets/scenarios/metro_station_zero/img/s37.webp", "alt": "Tampon usé sur un bureau poussiéreux, outil de protocole" },
+    "s38": { "file": "assets/scenarios/metro_station_zero/img/s38.webp", "alt": "Lumière froide de station, sensation d’être catalogué, présence administrative" },
+    "s39": { "file": "assets/scenarios/metro_station_zero/img/s39.webp", "alt": "Ouverture technique vers tunnel étroit, câbles, tuyaux, condensation" },
+    "s40": { "file": "assets/scenarios/metro_station_zero/img/s40.webp", "alt": "Tunnel où l’on se sent évalué, lueur fine comme un scan, vapeur" },
+    "s41": { "file": "assets/scenarios/metro_station_zero/img/s41.webp", "alt": "Porte vers salle de contrôle entrouverte, lumière froide invitante" },
+    "s42": { "file": "assets/scenarios/metro_station_zero/img/s42.webp", "alt": "Salle de contrôle, consoles analogiques, écrans CRT, chaise vide orientée" },
+    "s43": { "file": "assets/scenarios/metro_station_zero/img/s43.webp", "alt": "Écrans qui se figent, lignes et schémas stoppés, silence machine" },
+    "s44": { "file": "assets/scenarios/metro_station_zero/img/s44.webp", "alt": "Mur de CCTV, vue du quai avec retard, preuve possible" },
+    "s45": { "file": "assets/scenarios/metro_station_zero/img/s45.webp", "alt": "Téléphone en mode enregistrement filmant un écran, souffle capté" },
+    "s46": { "file": "assets/scenarios/metro_station_zero/img/s46.webp", "alt": "Gros plan horodatage incohérent sur écran de surveillance, froid dans le ventre" },
+    "s47": { "file": "assets/scenarios/metro_station_zero/img/s47.webp", "alt": "Retour au quai, permission étrange, vide contrôlé" },
+    "s48": { "file": "assets/scenarios/metro_station_zero/img/s48.webp", "alt": "Rame arrivant sans bruit, intérieur sombre visible derrière la vitre" },
+    "s49": { "file": "assets/scenarios/metro_station_zero/img/s49.webp", "alt": "Portes ouvertes sur un intérieur noir qui avale la lumière" },
+    "s50": { "file": "assets/scenarios/metro_station_zero/img/s50.webp", "alt": "Haut-parleur grésillant et panneau d’annonce, message personnel implicite" },
+    "s51": { "file": "assets/scenarios/metro_station_zero/img/s51.webp", "alt": "Quai plus froid après un refus, sensation de déception du lieu" },
+    "s52": { "file": "assets/scenarios/metro_station_zero/img/s52.webp", "alt": "Plan du réseau observé de près, fragment manquant, vertige" },
+    "s53": { "file": "assets/scenarios/metro_station_zero/img/s53.webp", "alt": "Fragment de plan recollé, ligne cachée révélée, secret d’employé" },
+    "s54": { "file": "assets/scenarios/metro_station_zero/img/s54.webp", "alt": "Couloir qui boucle, même endroit retrouvé, cage invisible" },
+    "s55": { "file": "assets/scenarios/metro_station_zero/img/s55.webp", "alt": "Affiche identique réimprimée, encre fraîche, boucle insistante" },
+    "s56": { "file": "assets/scenarios/metro_station_zero/img/s56.webp", "alt": "Mur de flèches et marques, une direction semble vraie" },
+    "s57": { "file": "assets/scenarios/metro_station_zero/img/s57.webp", "alt": "Lecteur badge service en attente, plastique mort sans rôle" },
+    "s58": { "file": "assets/scenarios/metro_station_zero/img/s58.webp", "alt": "Badge présenté, bip, porte service cède d’un cran, odeur électrique" },
+    "s59": { "file": "assets/scenarios/metro_station_zero/img/s59.webp", "alt": "Tunnel plus profond, condensation, clic lointain de relais" },
+    "s60": { "file": "assets/scenarios/metro_station_zero/img/s60.webp", "alt": "Armoire technique entrouverte, petite clé de service visible" },
+    "s61": { "file": "assets/scenarios/metro_station_zero/img/s61.webp", "alt": "Main prenant une clé froide et lourde, métal ancien" },
+    "s62": { "file": "assets/scenarios/metro_station_zero/img/s62.webp", "alt": "Tourniquets retrouvés, voyant rouge toujours vivant, trajet prévu" },
+    "s63": { "file": "assets/scenarios/metro_station_zero/img/s63.webp", "alt": "Ticket présenté au lecteur, reconnaissance d’accès, tension" },
+    "s64": { "file": "assets/scenarios/metro_station_zero/img/s64.webp", "alt": "Chaîne de grille qui se détend, cliquetis, dernière condition" },
+    "s65": { "file": "assets/scenarios/metro_station_zero/img/s65.webp", "alt": "Couloir d’issue plus sec, air plus réel, endroit improbable" },
+    "s66": { "file": "assets/scenarios/metro_station_zero/img/s66.webp", "alt": "Escalier extérieur, lumière grise au-dessus, absence de néons" },
+    "s67": { "file": "assets/scenarios/metro_station_zero/img/s67.webp", "alt": "Air froid presque réel, sortie brumeuse, station silencieuse derrière" },
+    "s68": { "file": "assets/scenarios/metro_station_zero/img/s68.webp", "alt": "Seuil de sortie, hésitation, crainte d’une réécriture du vécu" },
+    "s69": { "file": "assets/scenarios/metro_station_zero/img/s69.webp", "alt": "Retour au contrôle, écrans en attente, dernier marché" },
+    "s70": { "file": "assets/scenarios/metro_station_zero/img/s70.webp", "alt": "Poste opérateur, siège parfaitement aligné, place réservée" },
+    "s71": { "file": "assets/scenarios/metro_station_zero/img/s71.webp", "alt": "Preuves posées sur une console, réalité qui se stabilise" },
+    "s72": { "file": "assets/scenarios/metro_station_zero/img/s72.webp", "alt": "Station qui laisse choisir, panneau lointain clignotant, signature" },
+    "s73": { "file": "assets/scenarios/metro_station_zero/img/s73.webp", "alt": "Quai encore plus vide, silence lourd, attente d’un verdict" },
+    "s74": { "file": "assets/scenarios/metro_station_zero/img/s74.webp", "alt": "Quai qui s’efface, détails qui disparaissent, simplification du monde" },
+    "s75": { "file": "assets/scenarios/metro_station_zero/img/s75.webp", "alt": "Dernière décision sous un haut-parleur, contrats silencieux" },
+
+    "final_good": { "file": "assets/scenarios/metro_station_zero/img/final_good.webp", "alt": "Aube dehors, sortie réelle, preuve intacte, détail impossible" },
+    "final_bad": { "file": "assets/scenarios/metro_station_zero/img/final_bad.webp", "alt": "Rame vide, portes fermées, monde qui devient page blanche" },
+    "final_secret": { "file": "assets/scenarios/metro_station_zero/img/final_secret.webp", "alt": "Salle de contrôle, opérateur actif, chaise qui attend" }
   },
   "state_model": {
     "flags": {
@@ -59,7 +111,7 @@
   },
   "scenes": {
     "s01": {
-      "image_id": "cover",
+      "image_id": "s01",
       "title_key": "msz.s01.title",
       "body_key": "msz.s01.body",
       "choices": [
@@ -69,7 +121,7 @@
       ]
     },
     "s02": {
-      "image_id": "cover",
+      "image_id": "s02",
       "title_key": "msz.s02.title",
       "body_key": "msz.s02.body",
       "choices": [
@@ -79,7 +131,7 @@
       ]
     },
     "s03": {
-      "image_id": "platform_empty",
+      "image_id": "s03",
       "title_key": "msz.s03.title",
       "body_key": "msz.s03.body",
       "choices": [
@@ -89,7 +141,7 @@
       ]
     },
     "s04": {
-      "image_id": "signage_glitch",
+      "image_id": "s04",
       "title_key": "msz.s04.title",
       "body_key": "msz.s04.body",
       "choices": [
@@ -99,7 +151,7 @@
       ]
     },
     "s05": {
-      "image_id": "platform_empty",
+      "image_id": "s05",
       "title_key": "msz.s05.title",
       "body_key": "msz.s05.body",
       "choices": [
@@ -109,7 +161,7 @@
       ]
     },
     "s06": {
-      "image_id": "speaker_grille",
+      "image_id": "s06",
       "title_key": "msz.s06.title",
       "body_key": "msz.s06.body",
       "choices": [
@@ -119,7 +171,7 @@
       ]
     },
     "s07": {
-      "image_id": "speaker_grille",
+      "image_id": "s07",
       "title_key": "msz.s07.title",
       "body_key": "msz.s07.body",
       "choices": [
@@ -129,7 +181,7 @@
       ]
     },
     "s08": {
-      "image_id": "poster_wall",
+      "image_id": "s08",
       "title_key": "msz.s08.title",
       "body_key": "msz.s08.body",
       "choices": [
@@ -139,7 +191,7 @@
       ]
     },
     "s09": {
-      "image_id": "platform_empty",
+      "image_id": "s09",
       "title_key": "msz.s09.title",
       "body_key": "msz.s09.body",
       "choices": [
@@ -149,7 +201,7 @@
       ]
     },
     "s10": {
-      "image_id": "corridor_tiles",
+      "image_id": "s10",
       "title_key": "msz.s10.title",
       "body_key": "msz.s10.body",
       "choices": [
@@ -159,7 +211,7 @@
       ]
     },
     "s11": {
-      "image_id": "escalator",
+      "image_id": "s11",
       "title_key": "msz.s11.title",
       "body_key": "msz.s11.body",
       "choices": [
@@ -169,7 +221,7 @@
       ]
     },
     "s12": {
-      "image_id": "escalator",
+      "image_id": "s12",
       "title_key": "msz.s12.title",
       "body_key": "msz.s12.body",
       "choices": [
@@ -179,7 +231,7 @@
       ]
     },
     "s13": {
-      "image_id": "turnstiles",
+      "image_id": "s13",
       "title_key": "msz.s13.title",
       "body_key": "msz.s13.body",
       "choices": [
@@ -189,7 +241,7 @@
       ]
     },
     "s14": {
-      "image_id": "turnstiles",
+      "image_id": "s14",
       "title_key": "msz.s14.title",
       "body_key": "msz.s14.body",
       "choices": [
@@ -199,7 +251,7 @@
       ]
     },
     "s15": {
-      "image_id": "exit_blocked",
+      "image_id": "s15",
       "title_key": "msz.s15.title",
       "body_key": "msz.s15.body",
       "choices": [
@@ -209,7 +261,7 @@
       ]
     },
     "s16": {
-      "image_id": "corridor_tiles",
+      "image_id": "s16",
       "title_key": "msz.s16.title",
       "body_key": "msz.s16.body",
       "choices": [
@@ -219,7 +271,7 @@
       ]
     },
     "s17": {
-      "image_id": "ticket_machine",
+      "image_id": "s17",
       "title_key": "msz.s17.title",
       "body_key": "msz.s17.body",
       "choices": [
@@ -229,7 +281,7 @@
       ]
     },
     "s18": {
-      "image_id": "ticket_machine",
+      "image_id": "s18",
       "title_key": "msz.s18.title",
       "body_key": "msz.s18.body",
       "choices": [
@@ -239,7 +291,7 @@
       ]
     },
     "s19": {
-      "image_id": "map_board",
+      "image_id": "s19",
       "title_key": "msz.s19.title",
       "body_key": "msz.s19.body",
       "choices": [
@@ -249,7 +301,7 @@
       ]
     },
     "s20": {
-      "image_id": "map_board",
+      "image_id": "s20",
       "title_key": "msz.s20.title",
       "body_key": "msz.s20.body",
       "choices": [
@@ -259,7 +311,7 @@
       ]
     },
     "s21": {
-      "image_id": "restroom_mirror",
+      "image_id": "s21",
       "title_key": "msz.s21.title",
       "body_key": "msz.s21.body",
       "choices": [
@@ -269,7 +321,7 @@
       ]
     },
     "s22": {
-      "image_id": "restroom_mirror",
+      "image_id": "s22",
       "title_key": "msz.s22.title",
       "body_key": "msz.s22.body",
       "choices": [
@@ -279,7 +331,7 @@
       ]
     },
     "s23": {
-      "image_id": "corridor_tiles",
+      "image_id": "s23",
       "title_key": "msz.s23.title",
       "body_key": "msz.s23.body",
       "choices": [
@@ -289,7 +341,7 @@
       ]
     },
     "s24": {
-      "image_id": "graffiti_arrow",
+      "image_id": "s24",
       "title_key": "msz.s24.title",
       "body_key": "msz.s24.body",
       "choices": [
@@ -299,7 +351,7 @@
       ]
     },
     "s25": {
-      "image_id": "service_door",
+      "image_id": "s25",
       "title_key": "msz.s25.title",
       "body_key": "msz.s25.body",
       "choices": [
@@ -309,7 +361,7 @@
       ]
     },
     "s26": {
-      "image_id": "service_door",
+      "image_id": "s26",
       "title_key": "msz.s26.title",
       "body_key": "msz.s26.body",
       "choices": [
@@ -319,7 +371,7 @@
       ]
     },
     "s27": {
-      "image_id": "stairs_down",
+      "image_id": "s27",
       "title_key": "msz.s27.title",
       "body_key": "msz.s27.body",
       "choices": [
@@ -329,7 +381,7 @@
       ]
     },
     "s28": {
-      "image_id": "flooded_passage",
+      "image_id": "s28",
       "title_key": "msz.s28.title",
       "body_key": "msz.s28.body",
       "choices": [
@@ -339,7 +391,7 @@
       ]
     },
     "s29": {
-      "image_id": "flooded_passage",
+      "image_id": "s29",
       "title_key": "msz.s29.title",
       "body_key": "msz.s29.body",
       "choices": [
@@ -349,7 +401,7 @@
       ]
     },
     "s30": {
-      "image_id": "locker_room",
+      "image_id": "s30",
       "title_key": "msz.s30.title",
       "body_key": "msz.s30.body",
       "choices": [
@@ -359,7 +411,7 @@
       ]
     },
     "s31": {
-      "image_id": "locker_room",
+      "image_id": "s31",
       "title_key": "msz.s31.title",
       "body_key": "msz.s31.body",
       "choices": [
@@ -369,7 +421,7 @@
       ]
     },
     "s32": {
-      "image_id": "corridor_tiles",
+      "image_id": "s32",
       "title_key": "msz.s32.title",
       "body_key": "msz.s32.body",
       "choices": [
@@ -379,7 +431,7 @@
       ]
     },
     "s33": {
-      "image_id": "shadow_figure",
+      "image_id": "s33",
       "title_key": "msz.s33.title",
       "body_key": "msz.s33.body",
       "choices": [
@@ -389,7 +441,7 @@
       ]
     },
     "s34": {
-      "image_id": "shadow_figure",
+      "image_id": "s34",
       "title_key": "msz.s34.title",
       "body_key": "msz.s34.body",
       "choices": [
@@ -399,7 +451,7 @@
       ]
     },
     "s35": {
-      "image_id": "office_lostfound",
+      "image_id": "s35",
       "title_key": "msz.s35.title",
       "body_key": "msz.s35.body",
       "choices": [
@@ -409,7 +461,7 @@
       ]
     },
     "s36": {
-      "image_id": "office_lostfound",
+      "image_id": "s36",
       "title_key": "msz.s36.title",
       "body_key": "msz.s36.body",
       "choices": [
@@ -419,7 +471,7 @@
       ]
     },
     "s37": {
-      "image_id": "office_lostfound",
+      "image_id": "s37",
       "title_key": "msz.s37.title",
       "body_key": "msz.s37.body",
       "choices": [
@@ -429,7 +481,7 @@
       ]
     },
     "s38": {
-      "image_id": "signage_glitch",
+      "image_id": "s38",
       "title_key": "msz.s38.title",
       "body_key": "msz.s38.body",
       "choices": [
@@ -439,7 +491,7 @@
       ]
     },
     "s39": {
-      "image_id": "maintenance_tunnel",
+      "image_id": "s39",
       "title_key": "msz.s39.title",
       "body_key": "msz.s39.body",
       "choices": [
@@ -449,7 +501,7 @@
       ]
     },
     "s40": {
-      "image_id": "maintenance_tunnel",
+      "image_id": "s40",
       "title_key": "msz.s40.title",
       "body_key": "msz.s40.body",
       "choices": [
@@ -459,7 +511,7 @@
       ]
     },
     "s41": {
-      "image_id": "control_room",
+      "image_id": "s41",
       "title_key": "msz.s41.title",
       "body_key": "msz.s41.body",
       "choices": [
@@ -469,7 +521,7 @@
       ]
     },
     "s42": {
-      "image_id": "control_room",
+      "image_id": "s42",
       "title_key": "msz.s42.title",
       "body_key": "msz.s42.body",
       "choices": [
@@ -479,7 +531,7 @@
       ]
     },
     "s43": {
-      "image_id": "control_room",
+      "image_id": "s43",
       "title_key": "msz.s43.title",
       "body_key": "msz.s43.body",
       "choices": [
@@ -489,7 +541,7 @@
       ]
     },
     "s44": {
-      "image_id": "security_cctv",
+      "image_id": "s44",
       "title_key": "msz.s44.title",
       "body_key": "msz.s44.body",
       "choices": [
@@ -499,7 +551,7 @@
       ]
     },
     "s45": {
-      "image_id": "security_cctv",
+      "image_id": "s45",
       "title_key": "msz.s45.title",
       "body_key": "msz.s45.body",
       "choices": [
@@ -509,7 +561,7 @@
       ]
     },
     "s46": {
-      "image_id": "security_cctv",
+      "image_id": "s46",
       "title_key": "msz.s46.title",
       "body_key": "msz.s46.body",
       "choices": [
@@ -519,7 +571,7 @@
       ]
     },
     "s47": {
-      "image_id": "platform_empty",
+      "image_id": "s47",
       "title_key": "msz.s47.title",
       "body_key": "msz.s47.body",
       "choices": [
@@ -529,7 +581,7 @@
       ]
     },
     "s48": {
-      "image_id": "train_dark",
+      "image_id": "s48",
       "title_key": "msz.s48.title",
       "body_key": "msz.s48.body",
       "choices": [
@@ -539,7 +591,7 @@
       ]
     },
     "s49": {
-      "image_id": "train_dark",
+      "image_id": "s49",
       "title_key": "msz.s49.title",
       "body_key": "msz.s49.body",
       "choices": [
@@ -549,7 +601,7 @@
       ]
     },
     "s50": {
-      "image_id": "speaker_grille",
+      "image_id": "s50",
       "title_key": "msz.s50.title",
       "body_key": "msz.s50.body",
       "choices": [
@@ -559,7 +611,7 @@
       ]
     },
     "s51": {
-      "image_id": "platform_empty",
+      "image_id": "s51",
       "title_key": "msz.s51.title",
       "body_key": "msz.s51.body",
       "choices": [
@@ -569,7 +621,7 @@
       ]
     },
     "s52": {
-      "image_id": "map_board",
+      "image_id": "s52",
       "title_key": "msz.s52.title",
       "body_key": "msz.s52.body",
       "choices": [
@@ -579,7 +631,7 @@
       ]
     },
     "s53": {
-      "image_id": "map_board",
+      "image_id": "s53",
       "title_key": "msz.s53.title",
       "body_key": "msz.s53.body",
       "choices": [
@@ -589,7 +641,7 @@
       ]
     },
     "s54": {
-      "image_id": "corridor_tiles",
+      "image_id": "s54",
       "title_key": "msz.s54.title",
       "body_key": "msz.s54.body",
       "choices": [
@@ -599,7 +651,7 @@
       ]
     },
     "s55": {
-      "image_id": "poster_wall",
+      "image_id": "s55",
       "title_key": "msz.s55.title",
       "body_key": "msz.s55.body",
       "choices": [
@@ -609,7 +661,7 @@
       ]
     },
     "s56": {
-      "image_id": "graffiti_arrow",
+      "image_id": "s56",
       "title_key": "msz.s56.title",
       "body_key": "msz.s56.body",
       "choices": [
@@ -619,7 +671,7 @@
       ]
     },
     "s57": {
-      "image_id": "service_door",
+      "image_id": "s57",
       "title_key": "msz.s57.title",
       "body_key": "msz.s57.body",
       "choices": [
@@ -629,7 +681,7 @@
       ]
     },
     "s58": {
-      "image_id": "service_door",
+      "image_id": "s58",
       "title_key": "msz.s58.title",
       "body_key": "msz.s58.body",
       "choices": [
@@ -639,7 +691,7 @@
       ]
     },
     "s59": {
-      "image_id": "maintenance_tunnel",
+      "image_id": "s59",
       "title_key": "msz.s59.title",
       "body_key": "msz.s59.body",
       "choices": [
@@ -649,7 +701,7 @@
       ]
     },
     "s60": {
-      "image_id": "maintenance_tunnel",
+      "image_id": "s60",
       "title_key": "msz.s60.title",
       "body_key": "msz.s60.body",
       "choices": [
@@ -659,7 +711,7 @@
       ]
     },
     "s61": {
-      "image_id": "maintenance_tunnel",
+      "image_id": "s61",
       "title_key": "msz.s61.title",
       "body_key": "msz.s61.body",
       "choices": [
@@ -669,7 +721,7 @@
       ]
     },
     "s62": {
-      "image_id": "turnstiles",
+      "image_id": "s62",
       "title_key": "msz.s62.title",
       "body_key": "msz.s62.body",
       "choices": [
@@ -679,7 +731,7 @@
       ]
     },
     "s63": {
-      "image_id": "turnstiles",
+      "image_id": "s63",
       "title_key": "msz.s63.title",
       "body_key": "msz.s63.body",
       "choices": [
@@ -689,7 +741,7 @@
       ]
     },
     "s64": {
-      "image_id": "exit_blocked",
+      "image_id": "s64",
       "title_key": "msz.s64.title",
       "body_key": "msz.s64.body",
       "choices": [
@@ -699,7 +751,7 @@
       ]
     },
     "s65": {
-      "image_id": "corridor_tiles",
+      "image_id": "s65",
       "title_key": "msz.s65.title",
       "body_key": "msz.s65.body",
       "choices": [
@@ -709,7 +761,7 @@
       ]
     },
     "s66": {
-      "image_id": "exit_street",
+      "image_id": "s66",
       "title_key": "msz.s66.title",
       "body_key": "msz.s66.body",
       "choices": [
@@ -719,7 +771,7 @@
       ]
     },
     "s67": {
-      "image_id": "exit_street",
+      "image_id": "s67",
       "title_key": "msz.s67.title",
       "body_key": "msz.s67.body",
       "choices": [
@@ -729,7 +781,7 @@
       ]
     },
     "s68": {
-      "image_id": "exit_street",
+      "image_id": "s68",
       "title_key": "msz.s68.title",
       "body_key": "msz.s68.body",
       "choices": [
@@ -739,7 +791,7 @@
       ]
     },
     "s69": {
-      "image_id": "control_room",
+      "image_id": "s69",
       "title_key": "msz.s69.title",
       "body_key": "msz.s69.body",
       "choices": [
@@ -749,7 +801,7 @@
       ]
     },
     "s70": {
-      "image_id": "control_room",
+      "image_id": "s70",
       "title_key": "msz.s70.title",
       "body_key": "msz.s70.body",
       "choices": [
@@ -759,7 +811,7 @@
       ]
     },
     "s71": {
-      "image_id": "control_room",
+      "image_id": "s71",
       "title_key": "msz.s71.title",
       "body_key": "msz.s71.body",
       "choices": [
@@ -777,7 +829,7 @@
       ]
     },
     "s72": {
-      "image_id": "signage_glitch",
+      "image_id": "s72",
       "title_key": "msz.s72.title",
       "body_key": "msz.s72.body",
       "choices": [
@@ -787,7 +839,7 @@
       ]
     },
     "s73": {
-      "image_id": "platform_empty",
+      "image_id": "s73",
       "title_key": "msz.s73.title",
       "body_key": "msz.s73.body",
       "choices": [
@@ -797,7 +849,7 @@
       ]
     },
     "s74": {
-      "image_id": "platform_empty",
+      "image_id": "s74",
       "title_key": "msz.s74.title",
       "body_key": "msz.s74.body",
       "choices": [
@@ -807,7 +859,7 @@
       ]
     },
     "s75": {
-      "image_id": "speaker_grille",
+      "image_id": "s75",
       "title_key": "msz.s75.title",
       "body_key": "msz.s75.body",
       "choices": [
