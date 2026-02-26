@@ -103,15 +103,17 @@
     "locked_unlock_error": "Impossible de débloquer maintenant.",
 
     "scenario_buy": {
-      "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, ou acheter 300 VCoins sur le store.",
-      "pay": "Débloquer — {price} VCoins",
-      "iap": "Acheter 300 VCoins",
+      "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec des VCoins, l’acheter directement au prix du store, ou ouvrir la boutique.",
+      "pay_prefix": "Débloquer :",
+      "pay_balance_inline": "(solde actuel {balance})",
+      "iap_direct": "Débloquer : {price}",
       "open_shop": "Ouvrir la boutique",
-      "err_unlock": "Impossible de débloquer. VCoins insuffisants ou erreur réseau.",
-      "err_app_only": "Achat Play Store dispo uniquement dans l’app. Ouvre la boutique.",
+      "err_unlock": "Impossible de débloquer le scénario.",
+      "err_unlock_insufficient": "Pas assez de VCoins ({balance}/{price}).",
+      "err_app_only": "Achat store dispo uniquement dans l’app.",
       "err_not_ready": "Système d’achat non prêt.",
       "err_buy_failed": "Achat annulé ou impossible.",
-      "err_unlock_after_buy": "Achat ok, mais déblocage impossible. Réessaye depuis la boutique."
+      "err_unlock_after_iap": "Achat validé, mais le scénario n’a pas pu être ouvert."
     },
 
     "end_congrats": "Bravo, tu as terminé la fin : {ending}.",

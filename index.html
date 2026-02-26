@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VChoice</title>
+  <title>VChronicles</title>
   <link rel="stylesheet" href="css/app.css" />
 
   <!-- ✅ REDIRECTION TUTO 1ère OUVERTURE -->
@@ -308,6 +308,7 @@
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
     }
+
     #vc-scenario-buy-popup .vc-buy-inner{
       width: min(520px, calc(100vw - 36px));
       border-radius: 18px;
@@ -317,11 +318,33 @@
       box-shadow: 0 14px 40px rgba(0,0,0,.35);
       color: #fff;
     }
-    #vc-buy-title{ margin:0 0 8px 0; font-weight:900; font-size:18px; line-height:1.15; }
-    #vc-buy-desc{ margin:0 0 12px 0; opacity:.92; font-size:13px; line-height:1.35; }
-    #vc-buy-actions{ display:flex; flex-direction:column; gap:10px; margin-top:12px; }
+
+    #vc-buy-title{
+      margin:0 0 8px 0;
+      font-weight:900;
+      font-size:18px;
+      line-height:1.15;
+      text-align:center;
+    }
+
+    #vc-buy-desc{
+      margin:0 0 12px 0;
+      opacity:.92;
+      font-size:13px;
+      line-height:1.35;
+      text-align:center;
+    }
+
+    #vc-buy-actions{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:12px;
+    }
+
     .vc-buy-btn{
       width:100%;
+      min-height:54px;
       padding: 12px 14px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.18);
@@ -332,10 +355,51 @@
       text-align:center;
       -webkit-tap-highlight-color: transparent;
     }
-    .vc-buy-btn.primary{ background: rgba(255,59,59,.16); border-color: rgba(255,59,59,.28); }
-    .vc-buy-btn.ghost{ background: rgba(0,0,0,.18); border-color: rgba(255,255,255,.16); font-weight:800; opacity:.95; }
+
+    .vc-buy-btn.primary{
+      background: rgba(255,59,59,.16);
+      border-color: rgba(255,59,59,.28);
+    }
+
+    .vc-buy-btn.ghost{
+      background: rgba(0,0,0,.18);
+      border-color: rgba(255,255,255,.16);
+      font-weight:800;
+      opacity:.95;
+    }
+
     .vc-buy-btn:active{ transform: scale(.99); }
-    #vc-buy-error{ margin-top:10px; font-size:13px; opacity:.95; display:none; color: rgba(255, 220, 220, 0.95); }
+
+    .vc-buy-btn-line{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      flex-wrap:wrap;
+      width:100%;
+      text-align:center;
+    }
+
+    .vc-buy-btn-icon{
+      width:18px;
+      height:18px;
+      object-fit:contain;
+      display:block;
+      flex:0 0 auto;
+    }
+
+    .vc-buy-inline-note{
+      opacity:.92;
+    }
+
+    #vc-buy-error{
+      margin-top:10px;
+      font-size:13px;
+      opacity:.95;
+      display:none;
+      color: rgba(255, 220, 220, 0.95);
+      text-align:center;
+    }
   </style>
 </head>
 
@@ -361,7 +425,7 @@
   </div>
 
   <div class="vc-intro">
-    <img class="vc-logo" src="assets/img/ui/logo_vchoice.webp" alt="VChoice" draggable="false" />
+    <img class="vc-logo" src="assets/img/ui/logo_vchoice.webp" alt="" draggable="false" />
   </div>
 
   <main class="page">
@@ -469,12 +533,26 @@
   </div>
 
   <div id="vc-scenario-buy-popup" aria-hidden="true">
-    <div class="vc-buy-inner" role="dialog" aria-modal="true" aria-label="Débloquer scénario">
+    <div class="vc-buy-inner" role="dialog" aria-modal="true" aria-labelledby="vc-buy-title">
       <h2 id="vc-buy-title"></h2>
       <p id="vc-buy-desc"></p>
 
       <div id="vc-buy-actions">
-        <button id="vc-buy-pay" class="vc-buy-btn primary" type="button"></button>
+        <button id="vc-buy-pay" class="vc-buy-btn primary" type="button">
+          <span class="vc-buy-btn-line">
+            <span id="vc-buy-pay-prefix"></span>
+            <img
+              class="vc-buy-btn-icon"
+              src="assets/img/ui/vcoin.webp"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+            />
+            <span id="vc-buy-pay-price"></span>
+            <span id="vc-buy-pay-balance" class="vc-buy-inline-note"></span>
+          </span>
+        </button>
+
         <button id="vc-buy-iap" class="vc-buy-btn primary" type="button"></button>
         <button id="vc-buy-getcoins" class="vc-buy-btn ghost" type="button"></button>
         <button id="vc-buy-cancel" class="vc-buy-btn" type="button"></button>
@@ -517,7 +595,7 @@
 
     function lsSet(k, v){ try { localStorage.setItem(k, v); } catch(_){} }
     function lsGet(k){ try { return localStorage.getItem(k); } catch(_){ return null; } }
-    function lsDel(k){ try { localStorage.removeItem(k); } catch(_){} }
+    function lsDel(k){ try { localStorage.removeItem(k); } catch(_){ } }
 
     function getScenarioIapSku(scenarioId){
       return SCENARIO_SKU_PREFIX + String(scenarioId || "").trim().toLowerCase();
@@ -526,7 +604,7 @@
     function currentScenarioIapPrice(scenarioId){
       const sku = getScenarioIapSku(scenarioId);
       const p = window.VRIAP?.getPrice?.(sku) || window.VCIAP?.getPrice?.(sku) || "";
-      return p ? (" " + p) : "";
+      return String(p || "").trim();
     }
 
     function getCurrentVCoins(){
@@ -637,14 +715,17 @@
     if (hintBackdrop) hintBackdrop.addEventListener("click", closeHint);
     if (hintClose) hintClose.addEventListener("click", closeHint);
 
-    const buyPopup  = document.getElementById("vc-scenario-buy-popup");
-    const buyTitle  = document.getElementById("vc-buy-title");
-    const buyDesc   = document.getElementById("vc-buy-desc");
-    const buyPay    = document.getElementById("vc-buy-pay");
-    const buyIap    = document.getElementById("vc-buy-iap");
-    const buyGet    = document.getElementById("vc-buy-getcoins");
-    const buyCancel = document.getElementById("vc-buy-cancel");
-    const buyErr    = document.getElementById("vc-buy-error");
+    const buyPopup       = document.getElementById("vc-scenario-buy-popup");
+    const buyTitle       = document.getElementById("vc-buy-title");
+    const buyDesc        = document.getElementById("vc-buy-desc");
+    const buyPay         = document.getElementById("vc-buy-pay");
+    const buyIap         = document.getElementById("vc-buy-iap");
+    const buyGet         = document.getElementById("vc-buy-getcoins");
+    const buyCancel      = document.getElementById("vc-buy-cancel");
+    const buyErr         = document.getElementById("vc-buy-error");
+    const buyPayPrefix   = document.getElementById("vc-buy-pay-prefix");
+    const buyPayPrice    = document.getElementById("vc-buy-pay-price");
+    const buyPayBalance  = document.getElementById("vc-buy-pay-balance");
 
     let pendingScenarioId = null;
 
@@ -664,27 +745,27 @@
       pendingScenarioId = scenarioId;
 
       const balance = getCurrentVCoins();
+      const storePrice = currentScenarioIapPrice(scenarioId);
 
-      buyTitle.textContent = _t("scenarios." + scenarioId + ".title", scenarioId);
+      buyTitle.textContent = _t("scenarios." + scenarioId + ".title", "");
+      buyDesc.textContent = _t("ui.scenario_buy.desc", "");
 
-      buyDesc.textContent = _t(
-        "ui.scenario_buy.desc",
-        "Ce scénario est verrouillé. Tu peux le débloquer avec {price} VCoins, l’acheter directement au prix du store, ou ouvrir la boutique.",
-        { price: PRICE }
+      buyPayPrefix.textContent = _t("ui.scenario_buy.pay_prefix", "");
+      buyPayPrice.textContent = String(PRICE);
+      buyPayBalance.textContent = _t(
+        "ui.scenario_buy.pay_balance_inline",
+        "",
+        { balance }
       );
 
-      buyPay.textContent = _t(
-        "ui.scenario_buy.pay_balance",
-        "Débloquer ({price} VCoins) — solde actuel {balance}",
-        { price: PRICE, balance }
+      buyIap.textContent = _t(
+        "ui.scenario_buy.iap_direct",
+        "",
+        { price: storePrice || "" }
       );
 
-      buyIap.textContent =
-        _t("ui.scenario_buy.iap_direct", "Acheter ce scénario") +
-        currentScenarioIapPrice(scenarioId);
-
-      buyGet.textContent = _t("ui.scenario_buy.open_shop", "Ouvrir la boutique");
-      buyCancel.textContent = _t("common.cancel", "Annuler");
+      buyGet.textContent = _t("ui.scenario_buy.open_shop", "");
+      buyCancel.textContent = _t("common.cancel", "");
 
       showBuyError("");
       buyPopup.style.display = "flex";
@@ -694,14 +775,13 @@
     async function tryUnlockWithVcoins(scenarioId){
       showBuyError("");
 
-      const refreshed = await window.VUserData?.refresh?.().catch(() => false);
+      let refreshed = false;
+      try{
+        refreshed = await window.VUserData?.refresh?.().catch(() => false);
+      }catch(_){}
+
       if (!refreshed){
-        showBuyError(
-          _t(
-            "ui.scenario_buy.err_unlock",
-            "Impossible de débloquer le scénario."
-          ) + " [refresh_failed]"
-        );
+        showBuyError(_t("ui.scenario_buy.err_unlock", ""));
         return;
       }
 
@@ -710,7 +790,7 @@
         showBuyError(
           _t(
             "ui.scenario_buy.err_unlock_insufficient",
-            "Pas assez de VCoins ({balance}/{price}).",
+            "",
             { balance, price: PRICE }
           )
         );
@@ -730,19 +810,15 @@
           showBuyError(
             _t(
               "ui.scenario_buy.err_unlock_insufficient",
-              "Pas assez de VCoins ({balance}/{price}).",
+              "",
               { balance: getCurrentVCoins(), price: PRICE }
             )
           );
           return;
         }
 
-        showBuyError(
-          _t(
-            "ui.scenario_buy.err_unlock",
-            "Impossible de débloquer le scénario."
-          ) + " [" + reason + "]"
-        );
+        console.warn("[unlockScenario]", reason);
+        showBuyError(_t("ui.scenario_buy.err_unlock", ""));
         return;
       }
 
@@ -757,12 +833,7 @@
       showBuyError("");
 
       if (!window.VRIAP?.isAvailable?.() && !window.VCIAP?.isAvailable?.()){
-        showBuyError(
-          _t(
-            "ui.scenario_buy.err_app_only",
-            "Achat store dispo uniquement dans l’app."
-          )
-        );
+        showBuyError(_t("ui.scenario_buy.err_app_only", ""));
         return;
       }
 
@@ -774,11 +845,11 @@
         else if (window.VRIAP?.order) await window.VRIAP.order(sku);
         else if (window.VCIAP?.order) await window.VCIAP.order(sku);
         else {
-          showBuyError(_t("ui.scenario_buy.err_not_ready", "Système d’achat non prêt."));
+          showBuyError(_t("ui.scenario_buy.err_not_ready", ""));
           return;
         }
       } catch (_) {
-        showBuyError(_t("ui.scenario_buy.err_buy_failed", "Achat annulé ou impossible."));
+        showBuyError(_t("ui.scenario_buy.err_buy_failed", ""));
       }
     }
 
@@ -820,9 +891,12 @@
     function refreshIapLabel(){
       try {
         if (buyPopup && buyPopup.style.display === "flex" && pendingScenarioId){
-          buyIap.textContent =
-            _t("ui.scenario_buy.iap_direct", "Acheter ce scénario") +
-            currentScenarioIapPrice(pendingScenarioId);
+          const storePrice = currentScenarioIapPrice(pendingScenarioId);
+          buyIap.textContent = _t(
+            "ui.scenario_buy.iap_direct",
+            "",
+            { price: storePrice || "" }
+          );
         }
       } catch(_){}
     }
@@ -843,12 +917,7 @@
 
         const ok = await completeScenarioDirectUnlock(target, d.productId || expectedSku, d.txId || "");
         if (!ok){
-          showBuyError(
-            _t(
-              "ui.scenario_buy.err_unlock_after_iap",
-              "Achat validé, mais le scénario n’a pas pu être ouvert."
-            )
-          );
+          showBuyError(_t("ui.scenario_buy.err_unlock_after_iap", ""));
           return;
         }
 
