@@ -3,8 +3,8 @@
   "meta": {
     "lang": "fr",
     "scenario_id": "bunker_reserve",
-    "title": "Réserves",
-    "tagline": "Tout est plein. Tout est prêt. Et pourtant, quelqu’un vit ici… la nuit.",
+    "title": "Bunker",
+    "tagline": "Sous une colline ordinaire, une trappe cache un bunker encore actif. Réserves intactes, badges, dortoirs et zones scellées te font comprendre que quelqu’un vit encore là-dessous.",
     "hint_ns": "br.h"
   },
   "strings": {
