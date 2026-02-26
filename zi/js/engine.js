@@ -75,7 +75,6 @@ let OVERRIDE_FLAGS = false;
 let ENDING_STATE = {
   key: "",
   reward: 300,
-  firstTime: true,
   adBonusClaimed: false,
   busy: false
 };
@@ -219,18 +218,6 @@ function getEndingRewardAmount(payload){
   }
 
   return 300;
-}
-
-function getEndingFirstTime(payload){
-  if(payload && typeof payload.first_time === "boolean"){
-    return payload.first_time;
-  }
-
-  if(payload && typeof payload.already_done === "boolean"){
-    return !payload.already_done;
-  }
-
-  return getEndingRewardAmount(payload) >= 300;
 }
 
 function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
@@ -1908,27 +1895,23 @@ async function handleEnding(type, endScene){
   /* ===== FINS NORMALES INLINE ===== */
   const endingKey = `${String(currentScenarioId || "")}:${String(endScene?.id || endingType)}`;
 
-if(ENDING_STATE.key !== endingKey){
-  ENDING_STATE = {
-    key: endingKey,
-    reward: 300,
-    firstTime: true,
-    adBonusClaimed: false,
-    busy: false
-  };
+  if(ENDING_STATE.key !== endingKey){
+    ENDING_STATE = {
+      key: endingKey,
+      reward: 300,
+      adBonusClaimed: false,
+      busy: false
+    };
 
-  try{
-    if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
-      const res = await window.VUserData.completeScenario(currentScenarioId, endingType);
-      const payload = res?.data || null;
-      ENDING_STATE.reward = getEndingRewardAmount(payload);
-      ENDING_STATE.firstTime = getEndingFirstTime(payload);
-    }
-  }catch(e){}
-}
+    try{
+      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+        const res = await window.VUserData.completeScenario(currentScenarioId, endingType);
+        ENDING_STATE.reward = getEndingRewardAmount(res?.data || null);
+      }
+    }catch(e){}
+  }
 
   const rewardAmount = Number(ENDING_STATE.reward || 300);
-  const isFirstTimeEnding = !!ENDING_STATE.firstTime;
 
   let title = tUI("end_title");
   if(endingType === "good") title = tUI("end_title_good");
@@ -1985,13 +1968,9 @@ if(ENDING_STATE.key !== endingKey){
     copy.className = "vc-end-copy";
     copy.textContent = body;
 
-  const unlock = document.createElement("span");
-unlock.className = "vc-end-unlock";
-unlock.textContent = isFirstTimeEnding
-  ? tUI("end_unlock_line", {
-      ending: getEndingLabel(endingType)
-    })
-  : tUI("end_already_done_line", {
+    const unlock = document.createElement("span");
+    unlock.className = "vc-end-unlock";
+    unlock.textContent = tUI("end_unlock_line", {
       ending: getEndingLabel(endingType)
     });
 

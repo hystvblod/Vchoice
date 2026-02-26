@@ -80,7 +80,7 @@
   const SKU = {
     vchoice_jetons_12:   { kind: "jetons", amount: 12,   type: "consumable" },
     vchoice_jetons_30:   { kind: "jetons", amount: 30,   type: "consumable" },
-    vchoice_vcoins_1200:  { kind: "vcoins", amount: 1200,  type: "consumable" },
+    vchoice_vcoins_500:  { kind: "vcoins", amount: 500,  type: "consumable" },
     vchoice_vcoins_3000: { kind: "vcoins", amount: 3000, type: "consumable" },
     vchoice_no_ads:      { kind: "no_ads", amount: 0,    type: "non_consumable" },
     vchoice_ultra:       { kind: "ultra",  amount: 0,    type: "non_consumable" }

@@ -1,0 +1,651 @@
+<!-- settings.html — VERSION COMPLETE À JOUR (sans dropdown, grille seule + toggle pubs + topbar home/profil) -->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title></title>
+  <link rel="stylesheet" href="css/app.css" />
+
+  <style>
+    /* ===== TOPBAR (comme index, mais flèche + profil) ===== */
+    .topbar{ display:none !important; }
+
+    .vc-top-actions{
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
+    }
+    .vc-top-slot{
+      flex: 1 1 0;
+      display:flex;
+      align-items:center;
+    }
+    .vc-top-left{ justify-content:flex-start; }
+    .vc-top-center{ justify-content:center; }
+    .vc-top-right{ justify-content:flex-end; }
+
+    .vc-icon-button{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.26);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .vc-icon-button:active{ transform: scale(.98); }
+
+    .vc-icon-button img{
+      width:30px;
+      height:30px;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
+    }
+
+    .vc-back-ico{
+      width:24px;
+      height:24px;
+      display:block;
+      opacity:.98;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65));
+    }
+
+    /* ====== PANEL HEAD centré ====== */
+    .panel__headCentered{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap:6px;
+      padding-top:2px;
+    }
+    .panel__headCentered .title{
+      margin:0;
+      text-align:center;
+      width:100%;
+    }
+    .panel__headCentered .muted{
+      margin:0;
+      text-align:center;
+      max-width: 520px;
+    }
+
+    /* ✅ marge globale : évite les textes collés au bord */
+    body.page-settings .panel__body{
+      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-right: calc(16px + env(safe-area-inset-right));
+    }
+    body.page-settings .panel__head{
+      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-right: calc(16px + env(safe-area-inset-right));
+    }
+
+    /* ====== Grille langues ======
+       ✅ au moins 3 drapeaux par ligne
+       ✅ plus d’espace sous le titre + plus d’espace avant les sections textes
+    */
+    .langGrid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:10px;
+      margin-top: 22px;     /* ✅ plus d’espace titre -> 1ère ligne */
+      margin-bottom: 22px;  /* ✅ plus d’espace dernière ligne -> textes */
+    }
+    @media (min-width: 520px){
+      .langGrid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    /* ✅ BOUTONS LANGUES SANS “CARRÉ” (pas de cartouche/border/bg) */
+    .langBtn{
+      width:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0;
+      padding: 10px 6px;
+      border-radius: 14px;
+      border: 0 !important;
+      background: transparent !important;
+      color: inherit;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      text-align:center;
+      box-shadow: none !important;
+    }
+    .langBtn:active{ transform: scale(.98); }
+
+    /* ✅ état actif : pas de carré, juste un glow discret */
+    .langBtn.isActive{
+      outline: 0;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.22), 0 14px 34px rgba(0,0,0,.26) !important;
+      background: transparent !important;
+      border: 0 !important;
+    }
+
+    /* ✅ FLAGS : SANS encadré (aucun border/box) */
+    .flag{
+      width: 46px;
+      height: 32px;
+      border-radius: 8px;
+      overflow:hidden;
+      flex: 0 0 auto;
+      border: 0 !important;
+      outline: 0 !important;
+      box-shadow: none !important;
+      background: transparent !important;
+    }
+    .flag svg{ width:100%; height:100%; display:block; }
+
+    /* ✅ on masque les textes (tu veux juste les drapeaux) */
+    .langText{ display:none !important; }
+
+    /* ====== Sections ====== */
+    .settingsSection{
+      margin-top: 18px;   /* un peu plus aéré */
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+    .settingsSectionTitle{
+      font-weight: 950;
+      font-size: 13px;
+      letter-spacing: .2px;
+      opacity: .92;
+      margin: 0 0 10px 0;
+    }
+
+    /* ✅ enlever les “carrés” autour du bloc pubs */
+    .toggleRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 8px 0;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+    }
+    .toggleText{ min-width:0; }
+    .toggleLabel{
+      font-weight: 950;
+      line-height: 1.2;
+      margin:0;
+    }
+    .toggleDesc{
+      margin:6px 0 0 0;
+      opacity: .78;
+      font-size: 12px;
+      line-height: 1.25;
+    }
+
+    .switch{
+      position: relative;
+      width: 54px;
+      height: 32px;
+      flex: 0 0 auto;
+    }
+    .switch input{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      width:100%;
+      height:100%;
+      margin:0;
+      cursor:pointer;
+    }
+    .switchUi{
+      position:absolute;
+      inset:0;
+      border-radius: 999px;
+      background: rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+      transition: .18s ease;
+    }
+    .switchUi::after{
+      content:"";
+      position:absolute;
+      top: 4px;
+      left: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
+      transition: .18s ease;
+    }
+    .switch input:checked + .switchUi{
+      background: rgba(255,255,255,.14);
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,59,59,.12) inset;
+    }
+    .switch input:checked + .switchUi::after{
+      transform: translateX(22px);
+    }
+
+    /* ====== Aide / email ======
+       ✅ centré
+       ✅ pas de carré
+    */
+    #settingsHelpTitle{ text-align:center; width:100%; }
+
+    .helpLine{
+      display:flex;
+      align-items:center;
+      justify-content:center;  /* ✅ centré */
+      gap:8px;
+      padding: 8px 0;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      margin-top:10px;
+      overflow:hidden;
+      text-align:center;
+    }
+    .helpLabel{ font-weight: 950; opacity:.92; }
+    .helpMail{
+      opacity:.86;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width: 100%;
+    }
+
+   
+    #settingsAdsTitle{
+  text-align:center;
+  width:100%;
+}
+  </style>
+</head>
+
+<body class="page-settings">
+  <!-- ✅ Topbar : flèche home + bouton profil -->
+  <div class="vc-top-actions">
+    <div class="vc-top-slot vc-top-left">
+      <a id="btnBackHome" class="vc-icon-button" href="index.html" aria-label="">
+        <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="white" d="M15.5 5.5a1 1 0 0 1 0 1.4L10.4 12l5.1 5.1a1 1 0 1 1-1.4 1.4l-5.8-5.8a1.2 1.2 0 0 1 0-1.4l5.8-5.8a1 1 0 0 1 1.4 0z"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="vc-top-slot vc-top-center"></div>
+
+    <div class="vc-top-slot vc-top-right">
+      <a id="btnGoProfile" class="vc-icon-button" href="profile.html" aria-label="">
+        <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
+      </a>
+    </div>
+  </div>
+
+  <div class="app">
+    <main class="main">
+      <section class="panel">
+        <!-- ✅ Head centré (titre + desc) -->
+        <div class="panel__head panel__headCentered">
+          <h1 id="settingsTitle" class="title"></h1>
+          <p id="settingsLangDesc" class="muted"></p>
+        </div>
+
+        <div class="panel__body" style="padding-top:14px;">
+          <!-- ✅ plus de dropdown -->
+          <div id="settingsLangGrid" class="langGrid" aria-label=""></div>
+
+          <div class="settingsSection">
+            <div id="settingsAdsTitle" class="settingsSectionTitle"></div>
+
+            <div class="toggleRow">
+              <div class="toggleText">
+                <p id="adsLabel" class="toggleLabel"></p>
+                <p id="adsDesc" class="toggleDesc"></p>
+              </div>
+
+              <label id="adsSwitch" class="switch" aria-label="">
+                <input id="adsPersonalized" type="checkbox" />
+                <span class="switchUi"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settingsSection">
+            <div id="settingsHelpTitle" class="settingsSectionTitle"></div>
+
+            <div class="helpLine">
+              <span id="helpEmailLabel" class="helpLabel"></span>
+              <span id="helpEmailValue" class="helpMail"></span>
+            </div>
+          </div>
+
+          <div id="settingsMsg" class="muted" style="margin-top:10px;"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/supabaseBootstrap.js"></script>
+  <script src="js/userData.js"></script>
+  <script src="js/ads.js"></script>
+  <script src="js/i18n.js"></script>
+
+  <script>
+  (async () => {
+    const LangStorageKey = "vchoice_lang";
+    const AdsPrefKey = "vchoice_ads_personalized"; // "1" / "0"
+
+    const LANGS = [
+      { code:"en",  ui:"EN",  nameKey:"ui.lang_name.en"  },
+      { code:"fr",  ui:"FR",  nameKey:"ui.lang_name.fr"  },
+      { code:"de",  ui:"DE",  nameKey:"ui.lang_name.de"  },
+      { code:"es",  ui:"ES",  nameKey:"ui.lang_name.es"  },
+      { code:"pt",  ui:"PT",  nameKey:"ui.lang_name.pt"  },
+      { code:"ptbr",ui:"PTBR",nameKey:"ui.lang_name.ptbr"},
+      { code:"it",  ui:"IT",  nameKey:"ui.lang_name.it"  },
+      { code:"ko",  ui:"KO",  nameKey:"ui.lang_name.ko"  },
+      { code:"ja",  ui:"JP",  nameKey:"ui.lang_name.ja"  },
+      { code:"id",  ui:"ID",  nameKey:"ui.lang_name.id"  }  // ✅ Indonésien
+    ];
+
+    function $(id){ return document.getElementById(id); }
+    function safeLower(x){ return String(x||"").trim().toLowerCase(); }
+
+    function normalizeLang(raw){
+      if(!raw) return null;
+      const s = safeLower(raw);
+      const map = {
+        "pt-br":"ptbr","pt_br":"ptbr",
+        "pt-pt":"pt","pt_pt":"pt",
+        "jp":"ja","ja-jp":"ja",
+        "kr":"ko","ko-kr":"ko",
+        "in":"id","id-id":"id"
+      };
+      if(map[s]) return map[s];
+      const base = s.split(/[-_]/)[0];
+      if(base === "pt" && (s.includes("br") || s.includes("ptbr"))) return "ptbr";
+      if(base === "ja") return "ja";
+      if(base === "ko") return "ko";
+      if(base === "in") return "id";
+      return base || null;
+    }
+
+    function supported(code){
+      const c = normalizeLang(code);
+      return LANGS.some(x => x.code === c);
+    }
+
+    function getStoredLang(){
+      try{
+        const v = normalizeLang(localStorage.getItem(LangStorageKey));
+        if(v && supported(v)) return v;
+      }catch(_){}
+      return null;
+    }
+
+    function detectDeviceLang(){
+      const list = Array.isArray(navigator.languages) && navigator.languages.length
+        ? navigator.languages
+        : [navigator.language];
+      for(const cand of list){
+        const base = normalizeLang(cand);
+        if(base && supported(base)) return base;
+      }
+      return "en";
+    }
+
+    function t(key, fallback){
+      try{
+        if(window.VRI18n && typeof window.VRI18n.t === "function"){
+          const v = window.VRI18n.t(key);
+          if(v) return v;
+        }
+      }catch(_){}
+      return fallback || "";
+    }
+
+    // ====== SVG flags ======
+    const FLAGS = {
+      fr: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" x="0" y="0" fill="#1f4fbf"/><rect width="10" height="20" x="10" y="0" fill="#ffffff"/><rect width="10" height="20" x="20" y="0" fill="#d11f2e"/></svg>`,
+      en: `<svg viewBox="0 0 30 20" aria-hidden="true">
+  <rect width="30" height="20" fill="#fff"/>
+  <g fill="#b22234">
+    <rect y="0" width="30" height="1.538"/>
+    <rect y="3.076" width="30" height="1.538"/>
+    <rect y="6.152" width="30" height="1.538"/>
+    <rect y="9.228" width="30" height="1.538"/>
+    <rect y="12.304" width="30" height="1.538"/>
+    <rect y="15.38" width="30" height="1.538"/>
+    <rect y="18.456" width="30" height="1.544"/>
+  </g>
+  <rect width="12.6" height="10.77" fill="#3c3b6e"/>
+  <g fill="#fff" opacity="0.95">
+    <circle cx="1.8" cy="1.6" r=".35"/><circle cx="3.6" cy="1.6" r=".35"/><circle cx="5.4" cy="1.6" r=".35"/><circle cx="7.2" cy="1.6" r=".35"/><circle cx="9.0" cy="1.6" r=".35"/><circle cx="10.8" cy="1.6" r=".35"/>
+    <circle cx="2.7" cy="2.8" r=".35"/><circle cx="4.5" cy="2.8" r=".35"/><circle cx="6.3" cy="2.8" r=".35"/><circle cx="8.1" cy="2.8" r=".35"/><circle cx="9.9" cy="2.8" r=".35"/>
+    <circle cx="1.8" cy="4.0" r=".35"/><circle cx="3.6" cy="4.0" r=".35"/><circle cx="5.4" cy="4.0" r=".35"/><circle cx="7.2" cy="4.0" r=".35"/><circle cx="9.0" cy="4.0" r=".35"/><circle cx="10.8" cy="4.0" r=".35"/>
+    <circle cx="2.7" cy="5.2" r=".35"/><circle cx="4.5" cy="5.2" r=".35"/><circle cx="6.3" cy="5.2" r=".35"/><circle cx="8.1" cy="5.2" r=".35"/><circle cx="9.9" cy="5.2" r=".35"/>
+    <circle cx="1.8" cy="6.4" r=".35"/><circle cx="3.6" cy="6.4" r=".35"/><circle cx="5.4" cy="6.4" r=".35"/><circle cx="7.2" cy="6.4" r=".35"/><circle cx="9.0" cy="6.4" r=".35"/><circle cx="10.8" cy="6.4" r=".35"/>
+    <circle cx="2.7" cy="7.6" r=".35"/><circle cx="4.5" cy="7.6" r=".35"/><circle cx="6.3" cy="7.6" r=".35"/><circle cx="8.1" cy="7.6" r=".35"/><circle cx="9.9" cy="7.6" r=".35"/>
+    <circle cx="1.8" cy="8.8" r=".35"/><circle cx="3.6" cy="8.8" r=".35"/><circle cx="5.4" cy="8.8" r=".35"/><circle cx="7.2" cy="8.8" r=".35"/><circle cx="9.0" cy="8.8" r=".35"/><circle cx="10.8" cy="8.8" r=".35"/>
+  </g>
+</svg>`,
+      de: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="6.67" y="0" fill="#111"/><rect width="30" height="6.67" y="6.67" fill="#d11f2e"/><rect width="30" height="6.66" y="13.34" fill="#f4c300"/></svg>`,
+      es: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="5" y="0" fill="#c8102e"/><rect width="30" height="10" y="5" fill="#f4c300"/><rect width="30" height="5" y="15" fill="#c8102e"/></svg>`,
+      pt: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="12" height="20" x="0" y="0" fill="#1a7f3b"/><rect width="18" height="20" x="12" y="0" fill="#c8102e"/><circle cx="12" cy="10" r="4.5" fill="#f4c300" opacity="0.95"/></svg>`,
+      ptbr:`<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#1a7f3b"/><path d="M15 3 L26 10 L15 17 L4 10 Z" fill="#f4c300"/><circle cx="15" cy="10" r="4" fill="#1f4fbf"/></svg>`,
+      it: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" x="0" y="0" fill="#1a7f3b"/><rect width="10" height="20" x="10" y="0" fill="#ffffff"/><rect width="10" height="20" x="20" y="0" fill="#c8102e"/></svg>`,
+      ko: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#ffffff"/><circle cx="15" cy="10" r="5" fill="#c8102e"/><path d="M15 5a5 5 0 0 0 0 10a2.5 2.5 0 0 1 0-5a2.5 2.5 0 0 0 0-5Z" fill="#0a3a87" opacity="0.95"/></svg>`,
+      ja: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="20" fill="#ffffff"/><circle cx="15" cy="10" r="5" fill="#d11f2e"/></svg>`,
+      id: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="10" y="0" fill="#d11f2e"/><rect width="30" height="10" y="10" fill="#ffffff"/></svg>`
+    };
+
+    function renderTexts(){
+      const elTitle = $("settingsTitle");
+      const elDesc  = $("settingsLangDesc");
+      if(elTitle) elTitle.textContent = t("ui.settings_title", "Settings");
+      if(elDesc)  elDesc.textContent  = t("ui.settings_lang_desc", "Choisis la langue. Elle est sauvegardée sur l’appareil et sur ton profil.");
+
+      document.title = t("ui.settings_title", "Settings");
+
+      // topbar aria
+      const back = $("btnBackHome");
+      const prof = $("btnGoProfile");
+      if(back) back.setAttribute("aria-label", t("ui.settings_back_home_aria", "Back to home"));
+      if(prof) prof.setAttribute("aria-label", t("ui.settings_open_profile_aria", "Open profile"));
+
+      // grid aria
+      const grid = $("settingsLangGrid");
+      if(grid) grid.setAttribute("aria-label", t("ui.language", "Language"));
+
+      // pubs
+      const adsTitle = $("settingsAdsTitle");
+      const adsLabel = $("adsLabel");
+      const adsDesc  = $("adsDesc");
+      const adsSw    = $("adsSwitch");
+
+      if(adsTitle) adsTitle.textContent = t("ui.settings_ads_title", "Ads");
+      if(adsLabel) adsLabel.textContent = t("ui.settings_ads_personalized_label", "Personalized ads");
+      if(adsDesc)  adsDesc.textContent  = t("ui.settings_ads_personalized_desc", "");
+      if(adsSw)    adsSw.setAttribute("aria-label", t("ui.settings_ads_personalized_label", "Personalized ads"));
+
+      // help
+      const helpTitle = $("settingsHelpTitle");
+      const helpLab   = $("helpEmailLabel");
+      const helpVal   = $("helpEmailValue");
+
+      if(helpTitle) helpTitle.textContent = t("ui.settings_help_title", "Help");
+      if(helpLab)   helpLab.textContent   = t("ui.settings_help_email_label", "Contact:");
+      if(helpVal)   helpVal.textContent   = t("ui.settings_help_email", "help.vboldstudio@gmail.com");
+    }
+
+    function buildGrid(){
+      const grid = $("settingsLangGrid");
+      if(!grid) return;
+
+      grid.innerHTML = "";
+      const cur = getStoredLang() || detectDeviceLang();
+      const active = supported(cur) ? cur : "en";
+
+      for(const L of LANGS){
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "langBtn" + ((active === L.code) ? " isActive" : "");
+        btn.setAttribute("data-lang", L.code);
+
+        const flag = document.createElement("div");
+        flag.className = "flag";
+        flag.innerHTML = FLAGS[L.code] || FLAGS.en;
+
+        // (texts hidden by CSS, but kept for a11y)
+        const txt = document.createElement("div");
+        txt.className = "langText";
+
+        const code = document.createElement("div");
+        code.className = "langCode";
+        code.textContent = L.ui;
+
+        const name = document.createElement("div");
+        name.className = "langName";
+        name.textContent = t(L.nameKey, L.ui);
+
+        txt.appendChild(code);
+        txt.appendChild(name);
+
+        btn.appendChild(flag);
+        btn.appendChild(txt);
+
+        const aria = t("ui.settings_choose_lang_aria", "Choisir la langue : {code}").replace("{code}", L.ui);
+        btn.setAttribute("aria-label", aria);
+
+        btn.addEventListener("click", () => setLanguage(L.code, { showMsg:true }));
+        grid.appendChild(btn);
+      }
+    }
+
+    function markActive(code){
+      document.querySelectorAll(".langBtn[data-lang]").forEach((b) => {
+        b.classList.toggle("isActive", b.getAttribute("data-lang") === code);
+      });
+    }
+
+    async function setLanguage(raw, opts = {}){
+      const code = normalizeLang(raw) || "en";
+      const safe = supported(code) ? code : "en";
+
+      // local first
+      try{ localStorage.setItem("vchoice_lang", safe); }catch(_){}
+      try{ localStorage.setItem("VREALMS_LANG", safe); }catch(_){}
+
+      // update cache local VUserData
+      try{
+        if(window.VUserData && typeof window.VUserData.save === "function"){
+          window.VUserData.save({ lang: safe }, { silent:true });
+        }
+      }catch(_){}
+
+      // remote
+      let remoteOk = true;
+      try{
+        if(window.VUserData && typeof window.VUserData.setLang === "function"){
+          remoteOk = !!(await window.VUserData.setLang(safe));
+        } else if(window.VCRemoteStore && typeof window.VCRemoteStore.setLang === "function"){
+          remoteOk = !!(await window.VCRemoteStore.setLang(safe));
+        }
+      }catch(_){ remoteOk = false; }
+
+      // i18n reload
+      try{
+        if(window.VRI18n && typeof window.VRI18n.initI18n === "function"){
+          await window.VRI18n.initI18n(safe);
+        }
+      }catch(_){}
+
+      renderTexts();
+      buildGrid();
+      markActive(safe);
+
+      const msg = $("settingsMsg");
+      if(msg && opts.showMsg){
+        msg.textContent = remoteOk
+          ? t("ui.settings_msg_saved", "Langue enregistrée.")
+          : t("ui.settings_msg_saved_local", "Langue enregistrée sur l’appareil. Synchronisation serveur plus tard.");
+      }
+    }
+
+    // ====== PUBS PERSONNALISÉES (stock + envoi au bridge) ======
+    function getAdsPref(){
+      try{
+        const v = localStorage.getItem(AdsPrefKey);
+        if(v === "1") return true;
+        if(v === "0") return false;
+      }catch(_){}
+      // défaut OFF (le plus safe)
+      return false;
+    }
+
+    async function setAdsPref(value, { showMsg } = {}){
+      const on = !!value;
+      try{ localStorage.setItem(AdsPrefKey, on ? "1" : "0"); }catch(_){}
+
+      // push au module ads.js (qui push ensuite au natif si dispo)
+      try{ window.VAds?.setPersonalized?.(on); }catch(_){}
+
+      const box = $("adsPersonalized");
+      if(box) box.checked = on;
+
+      const msg = $("settingsMsg");
+      if(msg && showMsg){
+        msg.textContent = t("ui.settings_ads_saved", "Préférence publicitaire enregistrée.");
+      }
+    }
+
+    // ==== BOOT ====
+    try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
+    try { await window.VUserData?.init?.(); } catch(e) {}
+    try { await window.VRI18n?.initI18n?.(); } catch(e) {}
+
+    // ensure local lang exists
+    try{
+      const cur = getStoredLang();
+      if(!cur){
+        const d = detectDeviceLang();
+        localStorage.setItem(LangStorageKey, d);
+        localStorage.setItem("VREALMS_LANG", d);
+      }
+    }catch(_){}
+
+    renderTexts();
+    buildGrid();
+
+    // set initial lang (no msg)
+    await setLanguage(getStoredLang() || detectDeviceLang(), { showMsg:false });
+
+    // init ads pref UI
+    const adsBox = $("adsPersonalized");
+    if(adsBox){
+      adsBox.checked = getAdsPref();
+      adsBox.addEventListener("change", () => setAdsPref(adsBox.checked, { showMsg:true }));
+    }
+
+    // push pref now
+    try{ window.VAds?.setPersonalized?.(getAdsPref()); }catch(_){}
+  })();
+  </script>
+</body>
+</html>

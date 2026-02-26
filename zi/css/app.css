@@ -1,0 +1,1078 @@
+/* app.css — VERSION COMPLETE À JOUR (ajouts popup Jetons inclus) */
+
+/* =========================
+   APP.CSS — VERSION COMPLETE À JOUR
+   - Garde ton style pro (index + game)
+   - Ajoute les “cartouches” index (grid/card) + bouton ?
+   - Sécurise le game (pas de calcul foireux de height)
+   - Sécurise les modals (scroll interne si contenu long)
+   - ✅ GAME: image plein écran + HUD en bas (cartouche arrondi)
+   - ✅ GAME: supprime la topbar sur game (si présente)
+========================= */
+
+/* ====== BASE ====== */
+:root{
+  --bg:#0b0f18;
+  --panel:#101827;
+  --panel2:#0f1522;
+
+  --text:#e8eefc;
+  --muted:#a9b4cf;
+  --muted2: rgba(255,255,255,.52);
+
+  --line:rgba(255,255,255,.10);
+  --border:rgba(255,255,255,.12);
+
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --shadowDeep:0 18px 60px rgba(0,0,0,.55);
+
+  --r:16px;
+  --radius:18px;
+
+  --accent:#7aa7ff;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1000px 600px at 20% 0%, rgba(116,142,255,.10), transparent 55%),
+              radial-gradient(1000px 600px at 80% 20%, rgba(255,132,203,.08), transparent 60%),
+              var(--bg);
+  color:var(--text);
+}
+
+.sr_only{
+  position:absolute;
+  width:1px;height:1px;
+  padding:0;margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  white-space:nowrap;border:0;
+}
+
+/* ====== APP LAYOUT ====== */
+.app{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ====== TOPBAR ====== */
+.topbar{
+  position:sticky; top:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px 16px;
+  background: linear-gradient(to bottom, rgba(16,24,39,.92), rgba(16,24,39,.65));
+  border-bottom:1px solid var(--line);
+  backdrop-filter: blur(10px);
+  z-index:10;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+  user-select:none;
+}
+
+.brand__dot{
+  width:12px;
+  height:12px;
+  border-radius:999px;
+  background: rgba(255,255,255,.9);
+  box-shadow: 0 0 0 6px rgba(255,255,255,.08);
+}
+
+.brand__texts{ display:flex; flex-direction:column; }
+
+.brand__title{
+  font-weight:800;
+  letter-spacing:.2px;
+  line-height:1.05;
+}
+.brand__subtitle{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:2px;
+}
+
+.topbar__right{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* Select langue */
+.lang__select{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:var(--text);
+  padding:8px 10px;
+  border-radius:12px;
+  outline:none;
+}
+
+/* ====== BUTTONS ====== */
+.btn{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.08);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 9px 12px;
+  cursor:pointer;
+  font-weight: 700;
+}
+.btn:hover{
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.18);
+}
+.btn:active{ transform: translateY(1px); }
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+/* Option */
+.btn--ghost{
+  background: rgba(255,255,255,.06);
+}
+
+/* ====== PAGE (index.html) — style “menu_*” (compat) ====== */
+.page{
+  padding:18px 16px 28px;
+  max-width:1100px;
+  margin:0 auto;
+}
+
+.hero{
+  padding:10px 2px 18px;
+}
+.hero__title{
+  margin:0;
+  font-size:22px;
+  letter-spacing:.2px;
+}
+.hero__text{
+  margin:8px 0 0;
+  color:var(--muted);
+}
+
+/* ====== MENU GRID (si ton index utilise menu_* ) ====== */
+.menu_grid{
+  display:grid;
+  grid-template-columns: repeat( auto-fit, minmax(240px, 1fr) );
+  gap:14px;
+  margin-top:10px;
+}
+
+.menu_card{
+  position:relative;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  padding:0;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  overflow:hidden;
+  cursor:pointer;
+  box-shadow: var(--shadow);
+  transition: transform .12s ease, border-color .12s ease, background .12s ease;
+}
+.menu_card:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+}
+
+.menu_cover{
+  width:100%;
+  aspect-ratio: 16 / 9;
+  background-size: cover;
+  background-position:center;
+  filter: saturate(1.05) contrast(1.05);
+}
+
+.menu_meta{
+  width:100%;
+  padding:14px 14px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.menu_title{
+  font-size:16px;
+  font-weight:800;
+}
+.menu_sub{
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.35;
+}
+
+/* Bouton ? (menu_*) */
+.menu_help{
+  position:absolute;
+  top:10px;
+  right:10px;
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.35);
+  color: rgba(255,255,255,.95);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  cursor:pointer;
+}
+.menu_help:hover{ background: rgba(0,0,0,.45); }
+
+/* ====== INDEX (cartouches) — style “grid/card” (AJOUT) ====== */
+/* Si ton index utilise .grid + .card, tout est supporté ici */
+.page{
+  width: min(1100px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 18px 0 28px;
+}
+
+.gridWrap{ margin-top: 12px; }
+
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 940px){
+  .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px){
+  .grid{ grid-template-columns: 1fr; }
+}
+
+.card{
+  position: relative;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+  box-shadow: 0 12px 30px rgba(0,0,0,.45);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform .12s ease, filter .12s ease;
+  min-height: 158px;
+}
+.card:hover{ transform: translateY(-2px); filter: brightness(1.06); }
+
+.card__cover{
+  height: 92px;
+  background: rgba(255,255,255,.05);
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  position: relative;
+  overflow: hidden;
+}
+
+.card__cover img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+  filter: saturate(1.02) contrast(1.02);
+}
+
+.card__content{ padding: 12px 12px 14px; }
+
+.card__title{
+  margin: 0;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.25;
+}
+
+.card__tagline{
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.card__hint{
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.52);
+  font-size: 12px;
+}
+
+/* bouton ? (card__info) */
+.card__info{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(10,10,14,.55);
+  color: var(--text);
+  font-weight: 950;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+.card__info:hover{ filter: brightness(1.12); }
+
+/* empty state / utilitaires */
+.hidden{ display:none !important; }
+.empty{
+  padding: 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.04);
+}
+.empty__title{ font-weight: 950; }
+.empty__desc{ margin-top: 8px; color: var(--muted); line-height: 1.55; }
+
+/* ====== MODAL (commun) — compatible “modal__content” ET “modal__panel” ====== */
+.modal{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+/* état hidden */
+.modal.hidden{ display:none !important; }
+
+/* backdrop (deux noms possibles) */
+.modal__backdrop,
+#hintBackdrop{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.62);
+  backdrop-filter: blur(2px);
+}
+
+/* conteneur modal (deux noms possibles) */
+.modal__content{
+  position:relative;
+  width:min(720px, calc(100% - 24px));
+  background: rgba(16,24,39,.96);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;
+  box-shadow: var(--shadowDeep);
+  overflow:hidden;
+  max-height: min(80vh, 720px);
+  display:flex;
+  flex-direction:column;
+}
+
+.modal__panel{
+  position:relative;
+  width: min(560px, calc(100vw - 24px));
+  background: rgba(20,20,24,.96);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadowDeep);
+  overflow:hidden;
+  max-height: min(80vh, 720px);
+  display:flex;
+  flex-direction:column;
+}
+
+/* headers possibles */
+.modal__header,
+.modal__head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  padding:14px 16px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+
+.modal__title{
+  font-weight:900;
+}
+
+.modal__close{
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.06);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.modal__close:hover{ filter:brightness(1.10); }
+
+/* body scroll interne */
+.modal__body{
+  padding:14px 16px 18px;
+  color: rgba(255,255,255,.92);
+  line-height:1.6;
+  overflow:auto;
+  white-space: pre-wrap;
+}
+
+.modal__actions{
+  padding: 0 16px 16px;
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+}
+
+.modal__actions--center{
+  justify-content:center;
+}
+
+/* ====== GAME (game.html) ====== */
+.main--game{
+  flex:1;
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  padding:16px;
+  min-height:0;
+}
+
+.panel--game{
+  width:min(980px, 100%);
+  border-radius: 24px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  box-shadow: var(--shadow);
+}
+
+.scene{
+  position:relative;
+  min-height: calc(100vh - 110px);
+}
+
+.scene__media{
+  position:absolute;
+  inset:0;
+}
+.scene__media img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter: saturate(1.05) contrast(1.05);
+}
+
+.scene__shade{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(1200px 700px at 20% 10%, rgba(0,0,0,.25), rgba(0,0,0,.65) 55%, rgba(0,0,0,.78)),
+    linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,.30));
+}
+
+.scene__content{
+  position:relative;
+  z-index:2;
+  padding:18px 18px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.25);
+  backdrop-filter: blur(8px);
+  font-weight: 800;
+  font-size: 12px;
+}
+.pill--muted{
+  opacity:.9;
+  font-weight: 700;
+}
+
+.title{
+  margin: 2px 0 0;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing:.2px;
+  text-shadow: 0 10px 30px rgba(0,0,0,.55);
+}
+
+.body{
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 10px 30px rgba(0,0,0,.55);
+  max-width: 72ch;
+}
+
+/* CHOICES : gros boutons texte */
+.choices{
+  margin-top: 10px;
+  display:grid;
+  gap:10px;
+  width:100%;
+  max-width: 720px;
+}
+
+.choice_btn{
+  width:100%;
+  text-align:left;
+  padding: 14px 14px;
+  border-radius: 16px;
+  border:1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.30);
+  color: rgba(255,255,255,.96);
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 800;
+  cursor:pointer;
+  backdrop-filter: blur(10px);
+  transition: transform .10s ease, background .10s ease, border-color .10s ease, filter .10s ease;
+}
+
+.choice_btn:hover{
+  transform: translateY(-1px);
+  background: rgba(0,0,0,.40);
+  border-color: rgba(255,255,255,.22);
+  filter:brightness(1.06);
+}
+
+.choice_btn:active{
+  transform: translateY(0px);
+}
+
+/* Choix verrouillés (requires_*_flags) */
+.choice_btn.is_locked,
+.choice_btn:disabled{
+  opacity: 1;
+  cursor: not-allowed;
+  filter:none;
+}
+.choice_btn.is_locked:hover{
+  transform:none;
+}
+
+/* Footer */
+.footer{
+  margin-top: 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,.72);
+  text-align:center;
+  border-top: 1px solid var(--border);
+  padding: 14px 16px 18px;
+}
+
+/* Responsive */
+@media (max-width: 520px){
+  .main--game{ padding:12px; }
+  .scene__content{ padding:14px 14px 16px; }
+  .title{ font-size: 20px; }
+  .choice_btn{ padding: 13px 12px; font-size: 14.5px; }
+}
+
+/* =========================================================
+   VCHOICE — Cartouches style VUniverse (index)
+   ========================================================= */
+
+.menu_grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+/* bouton carte */
+.menu_card{
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 64px;
+  height: 64px;
+  border-radius: 18px;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.55),
+    0 2px 0 rgba(255,255,255,.04) inset;
+}
+
+.menu_card:focus-visible{
+  outline: 2px solid rgba(255,255,255,0.65);
+  outline-offset: 3px;
+}
+
+.menu_card_bg{
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 1;
+  z-index: 0;
+  transform: scale(1.04);
+  filter: saturate(.95) contrast(1.05);
+}
+
+/* voile + dégradé sombre (lisibilité) */
+.menu_card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.20) 55%, rgba(0,0,0,.52)),
+    radial-gradient(700px 120px at 15% 50%, rgba(180, 40, 60, .14), transparent 60%),
+    rgba(0,0,0,.10);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  pointer-events:none;
+  z-index:1;
+}
+
+/* liseré */
+.menu_card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.10);
+  pointer-events:none;
+  z-index:2;
+}
+
+.menu_card:hover{
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.62),
+    0 0 0 1px rgba(255,60,80,.18) inset;
+}
+
+.menu_card_content{
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.menu_card_line{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+}
+
+.menu_card_title{
+  margin: 0;
+  color: #fff;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: .2px;
+  line-height: 1.1;
+  text-shadow: 0 2px 10px rgba(0,0,0,.75);
+}
+
+/* bouton ? */
+.menu_info_btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.95);
+  font-weight: 900;
+  font-size: 16px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  cursor: pointer;
+
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 4;
+}
+
+.menu_info_btn:hover{ background: rgba(255,255,255,.14); }
+.menu_info_btn:active{ transform: scale(.96); }
+
+@media (max-width: 520px){
+  .menu_card{ min-height: 60px; height: 60px; }
+  .menu_card_title{ font-size: 14px; }
+  .menu_info_btn{ width: 38px; height: 38px; font-size: 15px; }
+}
+
+/* =========================================================
+   GAME FULLSCREEN (page-game)
+   ========================================================= */
+
+body.page-game{
+  margin:0;
+  background:#000;
+  overflow:hidden;
+}
+
+body.page-game .topbar{ display:none !important; }
+
+body.page-game .app{ min-height:100vh; }
+
+body.page-game .main--game{
+  padding:0 !important;
+  min-height:100vh;
+  width:100%;
+}
+
+body.page-game .panel--game{
+  width:100% !important;
+  height:100vh;
+  border-radius:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+}
+
+body.page-game .scene{
+  min-height:100vh;
+}
+
+body.page-game .scene__shade{ display:none !important; }
+
+body.page-game .scene__media img{
+  filter:none !important;
+}
+
+body.page-game .scene__content{ display:none !important; }
+
+/* HUD (cartouche) */
+body.page-game .scene__hud{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom: max(14px, calc(env(safe-area-inset-bottom) + 80px));
+  width:min(940px, calc(100vw - 24px));
+  max-height:56vh;
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+
+  padding:16px 16px 14px;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.34);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.55),
+    0 2px 0 rgba(255,255,255,.04) inset;
+
+  text-align:center;
+}
+
+body.page-game .scene__hud .title{
+  text-align:center;
+  font-size:20px;
+  margin:0 0 6px;
+  text-shadow:none;
+}
+
+body.page-game .scene__hud .body{
+  text-align:center;
+  margin:0;
+  max-width:none;
+  font-size:15px;
+  line-height:1.55;
+  text-shadow:none;
+}
+
+body.page-game .scene__hud .choices{
+  justify-items:center;
+  max-width:none;
+  margin-top:12px;
+}
+
+body.page-game .scene__hud .choice_btn{
+  text-align:center;
+  border:0;
+  isolation:isolate;
+  z-index:0;
+  border-radius:18px;
+  background:transparent;
+  position:relative;
+  overflow:hidden;
+  padding:14px 14px;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.55),
+    0 2px 0 rgba(255,255,255,.04) inset;
+}
+
+body.page-game .scene__hud .choice_btn::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.52), rgba(0,0,0,.18) 55%, rgba(0,0,0,.52)),
+    rgba(0,0,0,.08);
+  pointer-events:none;
+  z-index:0;
+}
+
+body.page-game .scene__hud .choice_btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  pointer-events:none;
+  z-index:1;
+}
+
+body.page-game .scene__hud .choice_btn{
+  color: #ffffff;
+}
+
+body.page-game .scene__hud .choice_btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+body.page-game .scene__hud .choice_btn.is_locked,
+body.page-game .scene__hud .choice_btn:disabled{
+  opacity: 1;
+  filter:none;
+  transform:none;
+  box-shadow:
+    0 14px 38px rgba(0,0,0,.50),
+    0 2px 0 rgba(255,255,255,.03) inset;
+}
+
+@media (max-width: 520px){
+  body.page-game .scene__hud{
+    width: calc(100vw - 16px);
+    padding:14px 14px 12px;
+    border-radius:20px;
+    max-height:60vh;
+    bottom: max(24px, calc(env(safe-area-inset-bottom) + 80px));
+  }
+  body.page-game .scene__hud .title{ font-size:18.5px; }
+  body.page-game .scene__hud .choice_btn{ padding:13px 12px; }
+}
+
+/* ===== HUD TOP (Jetons) ===== */
+.hud_top{
+  position: fixed;
+  top: calc(10px + env(safe-area-inset-top));
+  right: calc(10px + env(safe-area-inset-right));
+  z-index: 50;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.hud_jeton{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.hud_jeton:disabled{
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.hud_jeton_icon{
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.hud_jeton_count{
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* guide highlight */
+body.page-game .scene__hud .choice_btn.is_guide{
+  box-shadow: 0 0 0 2px rgba(255, 214, 102, .75), 0 12px 30px rgba(255, 214, 102, .12);
+  border-color: rgba(255, 214, 102, .85);
+}
+body.page-game .scene__hud .choice_btn.is_guide::after{
+  opacity: .85;
+  background: rgba(255, 214, 102, .18);
+}
+
+/* =========================================================
+   ✅ MODAL JETONS — COMPACT + JETON PLUS GROS
+   ========================================================= */
+
+/* réduit le padding interne UNIQUEMENT pour la popup Jetons */
+#jetonModal .modal__body{
+  padding: 8px 12px 10px;
+  line-height: 1.25;
+}
+
+/* header plus compact + titre centré + X à droite */
+#jetonModal .modal__head{
+  padding: 10px 12px;
+  justify-content: center;
+  position: relative;
+}
+#jetonModal .modal__title{
+  text-align: center;
+  width: 100%;
+  font-size: 18px;
+  letter-spacing: .2px;
+}
+#jetonModal .modal__close{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Header compact : jeton + solde CENTRÉS */
+#jetonModal .jeton_top{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin: 0;
+  padding: 0;
+}
+
+#jetonModal .jeton_top__coin{
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  display:block;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+  flex: 0 0 auto;
+}
+
+#jetonModal .jeton_top__info_inline{
+  display:flex;
+  align-items: center;
+  gap:8px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+#jetonModal .jeton_top__label{
+  font-weight: 850;
+  opacity: .92;
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+#jetonModal .jeton_top__count{
+  font-weight: 950;
+  font-size: 19px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* actions */
+#jetonModal .jeton_actions{
+  display:grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* boutons popup */
+#jetonModal .btn{
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 14px;
+}
+
+/* “Guide vers une fin …” = texte simple */
+#jetonModal .jeton_guide_label{
+  text-align: center;
+  font-weight: 900;
+  letter-spacing: .2px;
+  opacity: .92;
+  font-size: 15px;
+  padding: 2px 0 0;
+}
+
+/* targets */
+#jetonModal .jeton_targets{
+  display:grid;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+#jetonModal .jeton_msg{
+  opacity:.85;
+  font-size:14.5px;
+  line-height: 1.35;
+}
+
+/* mobile */
+@media (max-width: 520px){
+  #jetonModal .modal__title{ font-size: 17px; }
+  #jetonModal .jeton_top__coin{ width: 76px; height: 76px; }
+  #jetonModal .jeton_top__label{ font-size: 14.5px; }
+  #jetonModal .jeton_top__count{ font-size: 18px; }
+  #jetonModal .btn{ font-size: 14.8px; }
+}
+
+/* disabled only */
+.choice_btn:disabled{ opacity: .45 !important; }
+body.page-game .scene__hud .choice_btn:disabled{ opacity: .42 !important; }
+
+.choice_btn.is_locked{ color:#fff !important; }
+body.page-game .scene__hud .choice_btn.is_locked{ color:#fff !important; }
+
+/* =========================
+   FIX CHOIX "GRIS" (FORCE BLANC)
+========================= */
+
+body.page-game .scene__hud .choice_btn{
+  opacity: 1 !important;
+  color: #fff !important;
+  text-shadow: none !important;
+}

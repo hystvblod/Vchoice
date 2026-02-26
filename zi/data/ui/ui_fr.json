@@ -38,7 +38,6 @@
     "ending_label_bad": "fin mauvaise",
     "ending_label_secret": "fin secrète",
     "end_unlock_line": "Bravo, tu as débloqué la {ending}.",
-    "end_already_done_line": "Tu avais déjà débloqué la {ending}.",
     "end_reward_label": "Récompense :",
     "end_btn_add_bonus": "Rajouter +{amount}",
     "end_add_bonus_wait": "Validation en cours…",
@@ -208,8 +207,8 @@
     "shop_p_jetons30_title": "30",
     "shop_p_jetons30_desc": "Pack de jetons plus avantageux, pour avancer plus vite.",
 
-    "shop_p_vcoins1200_title": "1200",
-    "shop_p_vcoins1200_desc": "VCoins utilisables pour les achats en jeu et déblocages.",
+    "shop_p_vcoins500_title": "500",
+    "shop_p_vcoins500_desc": "VCoins utilisables pour les achats en jeu et déblocages.",
 
     "shop_p_vcoins3000_title": "3000",
     "shop_p_vcoins3000_desc": "Gros pack de VCoins pour le meilleur ratio.",
@@ -225,6 +224,7 @@
     "cancel": "Annuler"
   },
 
+ 
   "scenarios": {
     "dossier14_appartement": {
       "title": "Appartement 14",
