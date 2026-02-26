@@ -425,6 +425,18 @@ body{
   white-space: pre-wrap;
 }
 
+.modal__actions{
+  padding: 0 16px 16px;
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  flex-wrap:wrap;
+}
+
+.modal__actions--center{
+  justify-content:center;
+}
+
 /* ====== GAME (game.html) ====== */
 .main--game{
   flex:1;
@@ -432,7 +444,7 @@ body{
   align-items:stretch;
   justify-content:center;
   padding:16px;
-  min-height:0; /* IMPORTANT: évite overflow flex */
+  min-height:0;
 }
 
 .panel--game{
@@ -814,7 +826,7 @@ body.page-game .scene__hud .choice_btn{
   text-align:center;
   border:0;
   isolation:isolate;
-z-index:0;
+  z-index:0;
   border-radius:18px;
   background:transparent;
   position:relative;
@@ -875,7 +887,6 @@ body.page-game .scene__hud .choice_btn:disabled{
   }
   body.page-game .scene__hud .title{ font-size:18.5px; }
   body.page-game .scene__hud .choice_btn{ padding:13px 12px; }
-  
 }
 
 /* ===== HUD TOP (Jetons) ===== */
@@ -934,18 +945,17 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 
 /* =========================================================
    ✅ MODAL JETONS — COMPACT + JETON PLUS GROS
-   - corrige le bug de commentaire qui cassait le CSS
    ========================================================= */
 
-/* ✅ réduit le padding interne UNIQUEMENT pour la popup Jetons */
+/* réduit le padding interne UNIQUEMENT pour la popup Jetons */
 #jetonModal .modal__body{
-  padding: 8px 12px 10px;     /* moins de vide global */
-  line-height: 1.25;          /* évite l'effet “gonflé” */
+  padding: 8px 12px 10px;
+  line-height: 1.25;
 }
 
-/* ✅ header plus compact + titre centré + X à droite */
+/* header plus compact + titre centré + X à droite */
 #jetonModal .modal__head{
-  padding: 10px 12px;         /* réduit la barre du haut */
+  padding: 10px 12px;
   justify-content: center;
   position: relative;
 }
@@ -962,19 +972,18 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   transform: translateY(-50%);
 }
 
-/* ✅ Header compact : jeton + solde CENTRÉS (plus serré, moins de vide) */
+/* Header compact : jeton + solde CENTRÉS */
 #jetonModal .jeton_top{
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
-  margin: 0;                 /* supprime vide au-dessus/en-dessous */
+  margin: 0;
   padding: 0;
 }
 
-/* ✅ jeton plus gros */
 #jetonModal .jeton_top__coin{
-  width: 72px;               /* AUGMENTE ICI si tu veux encore plus */
+  width: 72px;
   height: 72px;
   object-fit: contain;
   display:block;
@@ -1008,11 +1017,11 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
 /* actions */
 #jetonModal .jeton_actions{
   display:grid;
-  gap: 8px;                  /* réduit l’espace entre éléments */
-  margin-top: 8px;           /* petit espace après le jeton */
+  gap: 8px;
+  margin-top: 8px;
 }
 
-/* boutons popup un peu + grands (mais pas “trop”) */
+/* boutons popup */
 #jetonModal .btn{
   padding: 10px 14px;
   font-size: 15px;
@@ -1058,10 +1067,8 @@ body.page-game .scene__hud .choice_btn:disabled{ opacity: .42 !important; }
 .choice_btn.is_locked{ color:#fff !important; }
 body.page-game .scene__hud .choice_btn.is_locked{ color:#fff !important; }
 
-
 /* =========================
    FIX CHOIX "GRIS" (FORCE BLANC)
-   À COLLER TOUT EN BAS DE app.css
 ========================= */
 
 body.page-game .scene__hud .choice_btn{
@@ -1069,5 +1076,3 @@ body.page-game .scene__hud .choice_btn{
   color: #fff !important;
   text-shadow: none !important;
 }
-
-

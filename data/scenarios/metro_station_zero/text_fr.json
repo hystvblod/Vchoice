@@ -13,7 +13,7 @@
     "msz.s01.title": "Descendre sans regarder",
     "msz.s01.body": "Tu descends de la rame sans lever les yeux. Quand tu relèves la tête, le quai est vide, trop froid, trop net — et le silence a quelque chose de volontaire.",
     "msz.s01.c1": "Chercher le nom de la station",
-    "msz.s01.c2": "Courir vers l’escalier le plus proche",
+    "msz.s01.c2": "Courir le long du quai vers un accès",
     "msz.s01.c3": "Revenir vers la rame déjà loin",
 
     "msz.s02.title": "La rame s’éloigne",
@@ -290,7 +290,7 @@
     "msz.s47.body": "Tu reviens au quai. La station semble t’avoir laissé faire… et tu réalises que ça aussi, c’est un choix qu’elle te donne.",
     "msz.s47.c1": "Attendre si une rame revient",
     "msz.s47.c2": "Revenir aux couloirs",
-    "msz.s47.c3": "Retourner à la salle de contrôle",
+    "msz.s47.c3": "Retourner vers la porte de contrôle",
 
     "msz.s48.title": "La rame revient",
     "msz.s48.body": "Dans le tunnel, une rame arrive sans bruit. L’intérieur est sombre, visible à travers la vitre. Les portes s’ouvrent comme une bouche qui sait ton nom.",
@@ -374,7 +374,7 @@
     "msz.s61.body": "La clé est froide et lourde. Le métal semble absorber ton doigt. Comme si elle était plus ancienne que la station, et pourtant prête pour maintenant.",
     "msz.s61.c1": "Retourner vers les tourniquets",
     "msz.s61.c2": "Retourner à la salle de contrôle",
-    "msz.s61.c3": "Revenir au contrôle",
+    "msz.s61.c3": "Revenir vers la porte de contrôle",
 
     "msz.s62.title": "Retour vers tourniquets",
     "msz.s62.body": "Les tourniquets te retrouvent. Le voyant rouge est toujours là. Il paraît content de te revoir, comme si ton trajet avait été prévu.",
@@ -414,7 +414,7 @@
 
     "msz.s68.title": "Dernier doute",
     "msz.s68.body": "Tu vois la sortie. Tu pourrais courir. Mais une part de toi sait : si tu sors mal, la station peut réécrire ce que tu crois avoir vécu.",
-    "msz.s68.c1": "Fuir avec une preuve",
+    "msz.s68.c1": "Fuir avec une preuve solide",
     "msz.s68.c2": "Retourner au contrôle",
     "msz.s68.c3": "Revenir au couloir principal",
 
@@ -431,8 +431,8 @@
     "msz.s70.c3": "Revenir en arrière",
 
     "msz.s71.title": "Insérer preuves",
-    "msz.s71.body": "Tu poses ce que tu as : ticket « 0 », fragment de plan, badge, enregistrement… Chaque preuve rend la station plus “nette”. Comme si tu forçais sa réalité à se stabiliser.",
-    "msz.s71.c1": "Valider au moins une preuve",
+    "msz.s71.body": "Tu poses ce que tu as sur la console. Certaines pièces pèsent plus lourd que d’autres ici : fragment de plan, badge, enregistrement. La station devient plus nette, comme si tu forçais sa réalité à se stabiliser.",
+    "msz.s71.c1": "Valider au moins une preuve solide",
     "msz.s71.c2": "Tout valider pour forcer la vérité",
     "msz.s71.c3": "Revenir en arrière",
 
@@ -456,7 +456,7 @@
 
     "msz.s75.title": "Le choix final",
     "msz.s75.body": "Tu as assez vu pour comprendre une chose : ici, rien n’est gratuit. Sortir a un prix. Rester aussi. Et la station adore les contrats silencieux.",
-    "msz.s75.c1": "Sortir avec tes preuves",
+    "msz.s75.c1": "Sortir avec une preuve solide",
     "msz.s75.c2": "Rester et accepter la logique",
     "msz.s75.c3": "Forcer la station et chercher la révélation",
 

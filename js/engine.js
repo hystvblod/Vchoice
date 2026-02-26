@@ -152,11 +152,6 @@ function setLabelWithTrailingIcon(el, labelText, iconSrc){
 
   const wrap = document.createElement("span");
   wrap.className = "vc-choice-inline";
-  wrap.style.display = "inline-flex";
-  wrap.style.alignItems = "center";
-  wrap.style.justifyContent = "center";
-  wrap.style.gap = "10px";
-  wrap.style.width = "100%";
 
   const text = document.createElement("span");
   text.textContent = sanitizeJetonLabel(labelText);
@@ -165,12 +160,6 @@ function setLabelWithTrailingIcon(el, labelText, iconSrc){
   icon.src = iconSrc;
   icon.alt = "";
   icon.draggable = false;
-  icon.style.width = "22px";
-  icon.style.height = "22px";
-  icon.style.objectFit = "contain";
-  icon.style.flex = "0 0 auto";
-  icon.style.display = "block";
-  icon.style.filter = "drop-shadow(0 6px 14px rgba(0,0,0,0.35))";
 
   wrap.appendChild(text);
   wrap.appendChild(icon);
@@ -228,76 +217,6 @@ function getEndingRewardAmount(payload){
   return 300;
 }
 
-/* =========================
-   ENDING INLINE UI
-========================= */
-function ensureEndingInlineStyle(){
-  if(document.getElementById("vcEndingInlineStyle")) return;
-
-  const st = document.createElement("style");
-  st.id = "vcEndingInlineStyle";
-  st.textContent = `
-    .vc-end-wrap{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      align-items:center;
-      text-align:center;
-      width:100%;
-    }
-
-    .vc-end-copy{
-      display:block;
-      white-space:pre-wrap;
-      width:100%;
-    }
-
-    .vc-end-unlock{
-      display:block;
-      width:100%;
-      font-weight:800;
-      color:rgba(255,255,255,.98);
-    }
-
-    .vc-end-reward-line{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.22);
-      font-weight:900;
-      font-size:18px;
-    }
-
-    .vc-end-reward-line img{
-      width:30px;
-      height:30px;
-      object-fit:contain;
-      filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));
-    }
-
-    .vc-choice-inline{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      width:100%;
-    }
-
-    .vc-choice-inline img{
-      width:22px;
-      height:22px;
-      object-fit:contain;
-      filter:drop-shadow(0 6px 14px rgba(0,0,0,.35));
-      flex:0 0 auto;
-    }
-  `;
-  document.head.appendChild(st);
-}
-
 function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
   clearNode(btn);
 
@@ -321,7 +240,6 @@ function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
    iOS AUDIO GATE
 ========================= */
 let _iosGateDone = false;
-let _iosGateStyleDone = false;
 
 function isIOS(){
   try{
@@ -336,66 +254,8 @@ function isIOS(){
   return isAppleMobile || isIPadOS13Plus;
 }
 
-function ensureIOSGateStyle(){
-  if(_iosGateStyleDone) return;
-  _iosGateStyleDone = true;
-
-  try{
-    const css = `
-      .vc-iosgate{
-        position:fixed; inset:0; z-index:99999;
-        display:flex; align-items:center; justify-content:center;
-        padding:24px;
-        background: rgba(0,0,0,.55);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-      }
-      .vc-iosgate-card{
-        width:min(520px, 92vw);
-        border:1px solid rgba(255,255,255,.14);
-        border-radius:18px;
-        background: rgba(16,24,39,.92);
-        box-shadow: 0 20px 60px rgba(0,0,0,.55);
-        padding:18px 16px 16px;
-        text-align:center;
-      }
-      .vc-iosgate-title{
-        font-weight:900;
-        letter-spacing:.2px;
-        font-size:1.15rem;
-        margin-bottom:10px;
-      }
-      .vc-iosgate-body{
-        opacity:.9;
-        white-space:pre-wrap;
-        margin:0 0 14px 0;
-      }
-      .vc-iosgate-btn{
-        width:100%;
-        display:inline-flex;
-        align-items:center;
-        justify-content:center;
-        gap:10px;
-        padding:12px 14px;
-        border-radius:14px;
-        border:1px solid rgba(255,255,255,.14);
-        background: rgba(255,255,255,.10);
-        color: inherit;
-        font-weight:900;
-      }
-      .vc-iosgate-btn:active{ transform: scale(.99); }
-    `;
-    const st = document.createElement("style");
-    st.id = "vc_ios_gate_style";
-    st.textContent = css;
-    document.head.appendChild(st);
-  }catch(_){}
-}
-
 function showIOSAudioGate(){
   return new Promise((resolve) => {
-    ensureIOSGateStyle();
-
     if(_iosGateDone) return resolve();
 
     try{
@@ -404,28 +264,22 @@ function showIOSAudioGate(){
       }
     }catch(_){}
 
-    const gate = document.createElement("div");
-    gate.className = "vc-iosgate";
-    gate.setAttribute("role","dialog");
-    gate.setAttribute("aria-modal","true");
+    const gate = $("iosGate");
+    const title = $("iosGateTitle");
+    const body = $("iosGateBody");
+    const btn = $("iosGateBtn");
 
-    const card = document.createElement("div");
-    card.className = "vc-iosgate-card";
+    if(!gate || !title || !body || !btn){
+      return resolve();
+    }
 
-    const title = document.createElement("div");
-    title.className = "vc-iosgate-title";
     title.textContent = tUI("ios_enter_title");
-
-    const body = document.createElement("div");
-    body.className = "vc-iosgate-body";
     body.textContent = tUI("ios_enter_body");
-
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "vc-iosgate-btn";
     btn.textContent = tUI("ios_enter_btn");
 
     btn.onclick = async () => {
+      if(_iosGateDone) return;
+
       try{
         if(window.VCAudio && typeof window.VCAudio.unlock === "function"){
           await window.VCAudio.unlock();
@@ -436,18 +290,15 @@ function showIOSAudioGate(){
       }catch(_){}
 
       _iosGateDone = true;
-
-      try{ gate.remove(); }catch(_){
-        try{ gate.parentNode && gate.parentNode.removeChild(gate); }catch(__){}
-      }
+      gate.classList.add("hidden");
+      gate.setAttribute("aria-hidden","true");
       resolve();
     };
 
-    card.appendChild(title);
-    card.appendChild(body);
-    card.appendChild(btn);
-    gate.appendChild(card);
-    document.body.appendChild(gate);
+    gate.classList.remove("hidden");
+    gate.setAttribute("aria-hidden","false");
+
+    try{ btn.focus(); }catch(_){}
   });
 }
 
@@ -628,23 +479,23 @@ function applyStaticI18n(){
   const bal = $("jetonBalanceLabel");
   if(bal) bal.textContent = tUI("jeton_balance_label");
 
-const bBack = $("btnJetonBackModal");
-if(bBack) setLabelWithTrailingIcon(bBack, tUI("jeton_back_btn"), UI_JETON_ICON_WEBP);
+  const bBack = $("btnJetonBackModal");
+  if(bBack) setLabelWithTrailingIcon(bBack, tUI("jeton_back_btn"), UI_JETON_ICON_WEBP);
 
-const guideLabel = $("jetonGuideLabel");
-if(guideLabel) setLabelWithTrailingIcon(guideLabel, tUI("jeton_guide_btn"), UI_JETON_ICON_WEBP);
+  const guideLabel = $("jetonGuideLabel");
+  if(guideLabel) setLabelWithTrailingIcon(guideLabel, tUI("jeton_guide_btn"), UI_JETON_ICON_WEBP);
 
-const bGood = $("btnJetonGuideGood");
-if(bGood) bGood.textContent = sanitizeJetonLabel(tUI("jeton_guide_good"));
+  const bGood = $("btnJetonGuideGood");
+  if(bGood) bGood.textContent = sanitizeJetonLabel(tUI("jeton_guide_good"));
 
-const bBad = $("btnJetonGuideBad");
-if(bBad) bBad.textContent = sanitizeJetonLabel(tUI("jeton_guide_bad"));
+  const bBad = $("btnJetonGuideBad");
+  if(bBad) bBad.textContent = sanitizeJetonLabel(tUI("jeton_guide_bad"));
 
-const bSecret = $("btnJetonGuideSecret");
-if(bSecret) bSecret.textContent = sanitizeJetonLabel(tUI("jeton_guide_secret"));
+  const bSecret = $("btnJetonGuideSecret");
+  if(bSecret) bSecret.textContent = sanitizeJetonLabel(tUI("jeton_guide_secret"));
 
-const bStop = $("btnJetonGuideStop");
-if(bStop) bStop.textContent = sanitizeJetonLabel(tUI("jeton_guide_stop"));
+  const bStop = $("btnJetonGuideStop");
+  if(bStop) bStop.textContent = sanitizeJetonLabel(tUI("jeton_guide_stop"));
 
   const hintClose = $("hintClose");
   if(hintClose){
@@ -1168,11 +1019,7 @@ function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
 
   const wrap = document.createElement("div");
   wrap.id = "hintActions";
-  wrap.style.paddingTop = "14px";
-  wrap.style.display = "flex";
-  wrap.style.gap = "10px";
-  wrap.style.justifyContent = "center";
-  wrap.style.flexWrap = "wrap";
+  wrap.className = "modal__actions modal__actions--center";
 
   try{ buildActionsFn?.(wrap); }catch(_){}
 
@@ -1485,75 +1332,6 @@ async function executeChoice(ch){
 /* =========================
    INTRO TUTO — POPUP JETON FORCÉE
 ========================= */
-let _introTutoStyleDone = false;
-
-function ensureIntroTutoStyle(){
-  if(_introTutoStyleDone) return;
-  _introTutoStyleDone = true;
-
-  try{
-    const css = `
-      .vc-tuto-row{ display:flex; align-items:flex-start; gap:14px; padding:6px 0 2px; }
-      .vc-tuto-row img.vc-tuto-side{ width:58px; height:58px; flex:0 0 auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,.30)); }
-      .vc-tuto-col{ display:flex; flex-direction:column; gap:10px; }
-      .vc-tuto-body{ opacity:.98; }
-      .vc-tuto-note{ opacity:.92; }
-      .vc-tuto-msg{ margin-top:12px; opacity:.95; text-align:center; }
-      .vc-tuto-btn{ display:inline-flex; align-items:center; gap:12px; justify-content:center; }
-      .vc-tuto-btn img{ width:34px; height:34px; }
-      .vc-jeton-cta{ animation: vcJetonBlink 0.9s infinite ease-in-out; transform-origin:center; }
-      .vc-jeton-cta-big{ width:36px !important; height:36px !important; }
-      @keyframes vcJetonBlink{
-        0%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
-        50%{ transform:scale(1.08); filter:drop-shadow(0 12px 30px rgba(0,0,0,.45)); opacity:.92; }
-        100%{ transform:scale(1); filter:drop-shadow(0 8px 22px rgba(0,0,0,.35)); opacity:1; }
-      }
-
-      .vc-intro-end{ display:flex; flex-direction:column; gap:14px; }
-      .vc-intro-head{
-        white-space:pre-wrap;
-        opacity:.98;
-        text-align:center;
-      }
-      .vc-intro-reward-title{ display:flex; align-items:center; gap:10px; font-weight:850; }
-      .vc-intro-reward-title .vc-check{ display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; }
-      .vc-intro-ul{ margin:8px 0 0 22px; padding:0; }
-      .vc-intro-ul li{ margin:6px 0; }
-
-      .vc-intro-li{ display:flex; align-items:center; gap:12px; }
-      .vc-intro-li img{
-        width:28px; height:28px;
-        flex:0 0 auto;
-        filter: drop-shadow(0 10px 22px rgba(0,0,0,.28));
-      }
-      .vc-intro-li span{
-        font-size:1.05em;
-        font-weight:800;
-      }
-
-      .vc-intro-line{ display:flex; align-items:flex-start; gap:12px; }
-      .vc-intro-line img{
-        width:26px; height:26px;
-        flex:0 0 auto;
-        margin-top:1px;
-        filter: drop-shadow(0 10px 22px rgba(0,0,0,.28));
-      }
-      .vc-intro-tip{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; opacity:.98; }
-      .vc-intro-tip img{ width:26px; height:26px; }
-      .vc-intro-tip b{ font-weight:850; }
-
-      .vc-end-reward{ display:flex; align-items:center; justify-content:center; gap:16px; padding-top:10px; flex-wrap:wrap; }
-      .vc-end-pill{ display:inline-flex; align-items:center; gap:10px; padding:8px 12px; border:1px solid rgba(255,255,255,.12); border-radius:999px; background: rgba(0,0,0,.25); }
-      .vc-end-pill img{ width:20px; height:20px; }
-      .vc-end-pill b{ font-weight:850; letter-spacing:.2px; }
-    `;
-    const st = document.createElement("style");
-    st.id = "vc_intro_tuto_style";
-    st.textContent = css;
-    document.head.appendChild(st);
-  }catch(_){}
-}
-
 async function seedIntroTutoJetonIfNeeded(){
   try{
     if(String(currentScenarioId || "") !== INTRO_SCENARIO_ID) return;
@@ -1574,8 +1352,6 @@ async function seedIntroTutoJetonIfNeeded(){
 }
 
 function showIntroForcedJetonModal(choice, missingAll, missingAny){
-  ensureIntroTutoStyle();
-
   const modal = $("hintModal");
   const close = $("hintClose");
   if(modal){
@@ -1827,15 +1603,13 @@ function showLockedChoiceModal(choice){
     modalTitle,
     (root) => {
       const p = document.createElement("div");
-      p.style.whiteSpace = "pre-wrap";
+      p.className = "vc-modal-prewrap";
       p.textContent = modalBody;
       root.appendChild(p);
 
       const msg = document.createElement("div");
       msg.id = "vcLockedMsg";
-      msg.style.marginTop = "10px";
-      msg.style.textAlign = "center";
-      msg.style.opacity = ".95";
+      msg.className = "vc-lock-msg";
       msg.textContent = "";
       root.appendChild(msg);
     },
@@ -1922,8 +1696,6 @@ async function handleEnding(type, endScene){
       if(endScene && endScene.title_key) title = tS(endScene.title_key);
       if(endScene && endScene.body_key) body  = tS(endScene.body_key);
     }catch(_){}
-
-    ensureIntroTutoStyle();
 
     const introTitle = tUI("intro_end_title");
     const vcoins = introRewardVCoins || 100;
@@ -2041,7 +1813,7 @@ async function handleEnding(type, endScene){
         wrap.appendChild(ulJ);
 
         const pMulti = document.createElement("div");
-        pMulti.style.whiteSpace = "pre-wrap";
+        pMulti.className = "vc-modal-prewrap";
         pMulti.textContent = multi;
         wrap.appendChild(pMulti);
 
@@ -2116,8 +1888,6 @@ async function handleEnding(type, endScene){
       if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
     }
   }
-
-  ensureEndingInlineStyle();
 
   let rewardValue = null;
 

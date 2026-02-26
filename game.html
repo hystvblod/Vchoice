@@ -6,7 +6,6 @@
   <title></title>
   <link rel="stylesheet" href="css/app.css" />
 
-  <!-- ✅ Back button identique à Paramètres -->
   <style>
     .game-back{
       position: fixed;
@@ -32,7 +31,10 @@
       text-decoration:none;
       -webkit-tap-highlight-color: transparent;
     }
-    .vc-icon-button:active{ transform: scale(.98); }
+
+    .vc-icon-button:active{
+      transform: scale(.98);
+    }
 
     .vc-back-ico{
       width:24px;
@@ -41,12 +43,323 @@
       opacity:.98;
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65));
     }
+
+    .vc-choice-inline{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+    }
+
+    .vc-choice-inline img{
+      width:22px;
+      height:22px;
+      object-fit:contain;
+      filter:drop-shadow(0 6px 14px rgba(0,0,0,.35));
+      flex:0 0 auto;
+      display:block;
+    }
+
+    .vc-end-wrap{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      text-align:center;
+      width:100%;
+    }
+
+    .vc-end-copy{
+      display:block;
+      white-space:pre-wrap;
+      width:100%;
+    }
+
+    .vc-end-unlock{
+      display:block;
+      width:100%;
+      font-weight:800;
+      color:rgba(255,255,255,.98);
+    }
+
+    .vc-end-reward-line{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      font-weight:900;
+      font-size:18px;
+    }
+
+    .vc-end-reward-line img{
+      width:30px;
+      height:30px;
+      object-fit:contain;
+      filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));
+    }
+
+    .vc-modal-prewrap{
+      white-space:pre-wrap;
+    }
+
+    .vc-lock-msg{
+      margin-top:10px;
+      text-align:center;
+      opacity:.95;
+    }
+
+    .vc-iosgate{
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .vc-iosgate-card{
+      width:min(520px, 92vw);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:18px;
+      background: rgba(16,24,39,.92);
+      box-shadow: 0 20px 60px rgba(0,0,0,.55);
+      padding:18px 16px 16px;
+      text-align:center;
+    }
+
+    .vc-iosgate-title{
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size:1.15rem;
+      margin-bottom:10px;
+    }
+
+    .vc-iosgate-body{
+      opacity:.9;
+      white-space:pre-wrap;
+      margin:0 0 14px 0;
+    }
+
+    .vc-iosgate-btn{
+      width:100%;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.10);
+      color: inherit;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .vc-iosgate-btn:active{
+      transform: scale(.99);
+    }
+
+    .vc-tuto-row{
+      display:flex;
+      align-items:flex-start;
+      gap:14px;
+      padding:6px 0 2px;
+    }
+
+    .vc-tuto-row img.vc-tuto-side{
+      width:58px;
+      height:58px;
+      flex:0 0 auto;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.30));
+    }
+
+    .vc-tuto-col{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .vc-tuto-body{
+      opacity:.98;
+    }
+
+    .vc-tuto-note{
+      opacity:.92;
+    }
+
+    .vc-tuto-msg{
+      margin-top:12px;
+      opacity:.95;
+      text-align:center;
+    }
+
+    .vc-tuto-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      justify-content:center;
+    }
+
+    .vc-tuto-btn img{
+      width:34px;
+      height:34px;
+    }
+
+    .vc-jeton-cta{
+      animation: vcJetonBlink 0.9s infinite ease-in-out;
+      transform-origin:center;
+    }
+
+    .vc-jeton-cta-big{
+      width:36px !important;
+      height:36px !important;
+    }
+
+    @keyframes vcJetonBlink{
+      0%{
+        transform:scale(1);
+        filter:drop-shadow(0 8px 22px rgba(0,0,0,.35));
+        opacity:1;
+      }
+      50%{
+        transform:scale(1.08);
+        filter:drop-shadow(0 12px 30px rgba(0,0,0,.45));
+        opacity:.92;
+      }
+      100%{
+        transform:scale(1);
+        filter:drop-shadow(0 8px 22px rgba(0,0,0,.35));
+        opacity:1;
+      }
+    }
+
+    .vc-intro-end{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .vc-intro-head{
+      white-space:pre-wrap;
+      opacity:.98;
+      text-align:center;
+    }
+
+    .vc-intro-reward-title{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:850;
+    }
+
+    .vc-intro-reward-title .vc-check{
+      display:inline-flex;
+      width:18px;
+      height:18px;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .vc-intro-ul{
+      margin:8px 0 0 22px;
+      padding:0;
+    }
+
+    .vc-intro-ul li{
+      margin:6px 0;
+    }
+
+    .vc-intro-li{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .vc-intro-li img{
+      width:28px;
+      height:28px;
+      flex:0 0 auto;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,.28));
+    }
+
+    .vc-intro-li span{
+      font-size:1.05em;
+      font-weight:800;
+    }
+
+    .vc-intro-line{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+    }
+
+    .vc-intro-line img{
+      width:26px;
+      height:26px;
+      flex:0 0 auto;
+      margin-top:1px;
+      filter: drop-shadow(0 10px 22px rgba(0,0,0,.28));
+    }
+
+    .vc-intro-tip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      opacity:.98;
+    }
+
+    .vc-intro-tip img{
+      width:26px;
+      height:26px;
+    }
+
+    .vc-intro-tip b{
+      font-weight:850;
+    }
+
+    .vc-end-reward{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      padding-top:10px;
+      flex-wrap:wrap;
+    }
+
+    .vc-end-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:8px 12px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:999px;
+      background: rgba(0,0,0,.25);
+    }
+
+    .vc-end-pill img{
+      width:20px;
+      height:20px;
+    }
+
+    .vc-end-pill b{
+      font-weight:850;
+      letter-spacing:.2px;
+    }
   </style>
 </head>
 
 <body class="page-game">
 
-  <!-- ✅ flèche retour vers index (même rendu que Paramètres) -->
   <a id="btnBackIndex" class="vc-icon-button game-back" href="index.html" data-i18n-aria="ui.aria_back" aria-label="">
     <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
       <path fill="white" d="M15.5 5.5a1 1 0 0 1 0 1.4L10.4 12l5.1 5.1a1 1 0 1 1-1.4 1.4l-5.8-5.8a1.2 1.2 0 0 1 0-1.4l5.8-5.8a1 1 0 0 1 1.4 0z"/>
@@ -58,7 +371,6 @@
       <section class="panel panel--game">
         <div class="scene scene--overlay">
 
-          <!-- IMAGE FULLSCREEN -->
           <div class="scene__media">
             <picture>
               <source id="scene_img_source" type="image/webp" />
@@ -66,10 +378,9 @@
             </picture>
           </div>
 
-          <!-- HUD (cartouche) -->
           <div class="scene__hud" aria-live="polite">
             <h1 id="sceneTitle" class="title"></h1>
-           <div id="sceneBody" class="body"></div>
+            <div id="sceneBody" class="body"></div>
             <div id="choices" class="choices"></div>
           </div>
 
@@ -77,7 +388,6 @@
       </section>
     </main>
 
-    <!-- TOP HUD (jetons) -->
     <div class="hud_top" aria-hidden="false">
       <button id="btnJetonBack" class="hud_jeton" type="button" title="">
         <img src="assets/img/ui/jeton.webp" alt="" class="hud_jeton_icon" />
@@ -85,7 +395,6 @@
       </button>
     </div>
 
-    <!-- MODAL: Indice -->
     <div id="hintModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
       <div id="hintBackdrop" class="modal__backdrop"></div>
       <div class="modal__content">
@@ -97,7 +406,6 @@
       </div>
     </div>
 
-    <!-- MODAL: Reprendre / Recommencer -->
     <div id="resumeModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
       <div id="resumeBackdrop" class="modal__backdrop"></div>
       <div class="modal__panel">
@@ -106,16 +414,13 @@
           <button id="resumeClose" class="modal__close" type="button" aria-label=""></button>
         </div>
         <div class="modal__body" id="resumeBody"></div>
-
-        <!-- boutons (pas de texte en dur) -->
-        <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
+        <div class="modal__actions">
           <button id="btnResumeRestart" class="btn btn--ghost" type="button"></button>
           <button id="btnResumeContinue" class="btn" type="button"></button>
         </div>
       </div>
     </div>
 
-    <!-- MODAL: Fin -->
     <div id="endModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
       <div id="endBackdrop" class="modal__backdrop"></div>
       <div class="modal__panel">
@@ -124,16 +429,13 @@
           <button id="endClose" class="modal__close" type="button" aria-label=""></button>
         </div>
         <div class="modal__body" id="endBody"></div>
-
-        <!-- boutons (pas de texte en dur) -->
-        <div style="padding: 0 16px 16px; display:flex; gap:10px; justify-content:flex-end;">
+        <div class="modal__actions">
           <button id="btnEndBack" class="btn btn--ghost" type="button"></button>
           <button id="btnEndReplay" class="btn" type="button"></button>
         </div>
       </div>
     </div>
 
-    <!-- MODAL: Jetons -->
     <div id="jetonModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
       <div id="jetonBackdrop" class="modal__backdrop"></div>
       <div class="modal__panel">
@@ -143,8 +445,6 @@
         </div>
 
         <div class="modal__body">
-
-          <!-- ✅ Header compact : image jeton (déjà présente) + solde à côté (AUCUNE nouvelle image) -->
           <div class="jeton_top">
             <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
 
@@ -160,39 +460,43 @@
 
           <div class="jeton_actions">
             <button id="btnJetonBackModal" class="btn btn--ghost" type="button"></button>
-
-            <!-- ✅ “Guide vers une fin 3 jetons” = texte simple (pas un bouton) -->
             <div id="jetonGuideLabel" class="jeton_guide_label"></div>
 
-            <!-- ✅ cibles visibles directement -->
             <div id="jetonGuideTargets" class="jeton_targets">
               <button id="btnJetonGuideGood" data-target="good" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideBad" data-target="bad" class="btn btn--ghost" type="button"></button>
               <button id="btnJetonGuideSecret" data-target="secret" class="btn btn--ghost" type="button"></button>
             </div>
 
-            <!-- ✅ Stop guide visible seulement si guide actif (géré dans engine.js) -->
             <button id="btnJetonGuideStop" class="btn btn--ghost" type="button"></button>
 
             <div id="jetonModalMsg" class="jeton_msg"></div>
           </div>
-
         </div>
       </div>
     </div>
-
   </div>
 
-  <!-- Compat engine.js -->
+  <div id="iosGate" class="vc-iosgate hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="vc-iosgate-card">
+      <div id="iosGateTitle" class="vc-iosgate-title"></div>
+      <div id="iosGateBody" class="vc-iosgate-body"></div>
+      <button id="iosGateBtn" type="button" class="vc-iosgate-btn"></button>
+    </div>
+  </div>
+
   <select id="langSelect" class="sr_only" aria-hidden="true" tabindex="-1">
     <option value="fr" selected>FR</option>
     <option value="en">EN</option>
     <option value="de">DE</option>
     <option value="es">ES</option>
-    <option value="it">IT</option>
-    <option value="nl">NL</option>
     <option value="pt">PT</option>
+    <option value="ptbr">PTBR</option>
+    <option value="it">IT</option>
+    <option value="ko">KO</option>
+    <option value="ja">JA</option>
   </select>
+
   <button id="btnHint" class="sr_only" aria-hidden="true" tabindex="-1" type="button"></button>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
