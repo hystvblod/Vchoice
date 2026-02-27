@@ -136,7 +136,10 @@
 
     .hero{ padding: 0 12px; }
     .hero__title{ color: var(--vc-text) !important; }
-    .hero__text{ color: var(--vc-muted) !important; }
+    .hero__text{
+      color: var(--vc-muted) !important;
+      min-height: 24px;
+    }
 
     .vc-grid{
       display:grid;
@@ -212,25 +215,32 @@
     }
 
     .vc-line{
+      position:relative;
       width:100%;
+      height:100%;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding: 0 14px;
+      justify-content:center;
+      padding: 0 56px;
     }
 
     .vc-title{
       margin:0;
+      width:100%;
       color:#fff;
       font-weight: 950;
       font-size: 16px;
       letter-spacing: .3px;
       line-height: 1.1;
+      text-align:center;
       text-shadow: 0 2px 10px rgba(0,0,0,.75);
     }
 
     .vc-info{
+      position:absolute;
+      top:50%;
+      right:14px;
+      transform:translateY(-50%);
       width:40px;
       height:40px;
       border-radius: 999px;
@@ -244,13 +254,12 @@
       justify-content:center;
       user-select:none;
       cursor:pointer;
-      position:relative;
       z-index:4;
       box-shadow:
         0 10px 26px rgba(0,0,0,.35),
         0 0 0 1px rgba(255,59,59,.12) inset;
     }
-    .vc-info:active{ transform: scale(.96); }
+    .vc-info:active{ transform: translateY(-50%) scale(.96); }
 
     .modal.hidden{ display:none !important; }
 
@@ -579,7 +588,7 @@
   <main class="page">
     <section class="hero">
       <h1 class="hero__title" id="ui_index_title" data-i18n="ui.index_title"></h1>
-      <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle"></p>
+      <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle_short"></p>
     </section>
 
     <section class="menu" aria-label="" data-i18n-aria="ui.index_menu_aria">
@@ -1195,26 +1204,26 @@
       }
     }
 
- async function openNativeStore(){
-  const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
-  if (!AppUpdate?.openAppStore) return false;
+    async function openNativeStore(){
+      const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
+      if (!AppUpdate?.openAppStore) return false;
 
-  try{
-    const platform = window.Capacitor?.getPlatform?.() || "";
+      try{
+        const platform = window.Capacitor?.getPlatform?.() || "";
 
-    if (platform === "ios") {
-      await AppUpdate.openAppStore({
-        appId: "TON_APPLE_ID_IOS"
-      });
-    } else {
-      await AppUpdate.openAppStore();
+        if (platform === "ios") {
+          await AppUpdate.openAppStore({
+            appId: "TON_APPLE_ID_IOS"
+          });
+        } else {
+          await AppUpdate.openAppStore();
+        }
+
+        return true;
+      }catch(_){
+        return false;
+      }
     }
-
-    return true;
-  }catch(_){
-    return false;
-  }
-}
 
     async function handlePrimaryUpdateAction(){
       const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
