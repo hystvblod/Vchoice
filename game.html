@@ -369,15 +369,25 @@
   <div class="app">
     <main class="main main--game" id="screen_game">
       <section class="panel panel--game">
-        <div class="scene scene--overlay">
+ <div class="scene scene--overlay">
+  <div class="scene__media">
+    <picture id="scene_picture">
+      <source id="scene_img_source" type="image/webp" />
+      <img id="scene_img" alt="" />
+    </picture>
 
-       <div class="scene__media">
+    <div id="sceneLoadingOverlay" class="scene_loading hidden" aria-hidden="true">
+      <div class="scene_loading__veil"></div>
+      <div class="scene_loading__spinner"></div>
+    </div>
+  </div>
 
-          <div class="scene__hud" aria-live="polite">
-            <h1 id="sceneTitle" class="title"></h1>
-            <div id="sceneBody" class="body"></div>
-            <div id="choices" class="choices"></div>
-          </div>
+  <div class="scene__hud" aria-live="polite">
+    <h1 id="sceneTitle" class="title"></h1>
+    <div id="sceneBody" class="body"></div>
+    <div id="choices" class="choices"></div>
+  </div>
+</div>
 
         </div>
       </section>
