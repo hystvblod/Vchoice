@@ -272,7 +272,7 @@
     "tm.s44.title": "Mécanisme vivant",
     "tm.s44.body": "Quand tu approches les emplacements, la pierre vibre. La poussière tremble. Le temple n’est pas un bâtiment. C’est une volonté qui avale des décisions.",
     "tm.s44.c1": "Finaliser l’offrande",
-    "tm.s44.c2": "Retirer les objets (si possible)",
+    "tm.s44.c2": "Retirer les objets",
     "tm.s44.c3": "Reculer (et respirer peu)",
 
     "tm.s45.title": "Salle du puits vertical",
@@ -285,13 +285,13 @@
     "tm.s46.body": "Des alcôves de crânes. Certains semblent briller de l’intérieur, juste assez pour que tu doutes de ta lampe. L’endroit n’aime pas l’attention.",
     "tm.s46.c1": "Avancer",
     "tm.s46.c2": "Reculer",
-    "tm.s46.c3": "Mettre du sel au sol (si tu en as)",
+    "tm.s46.c3": "Mettre du sel au sol",
 
     "tm.s47.title": "Le pont de pierre",
     "tm.s47.body": "Un pont étroit au-dessus d’un vide noir. La pierre est glissante. Chaque pas ressemble à une négociation silencieuse.",
     "tm.s47.c1": "Traverser",
     "tm.s47.c2": "Revenir",
-    "tm.s47.c3": "Descendre doucement (regarder le vide)",
+    "tm.s47.c3": "Descendre doucement",
 
     "tm.s48.title": "Le choix du vide",
     "tm.s48.body": "Au bord, tu regardes : le noir avale la profondeur. Une goutte tombe… et tu ne l’entends jamais toucher. Le temple adore le vertige.",
@@ -476,7 +476,7 @@
     "tm.s78.title": "Les traces impossibles",
     "tm.s78.body": "Tes empreintes font une boucle parfaite. Comme si tu étais sorti… et rentré… sans t’en souvenir. Et ton souffle fait de petits nuages, comme en hiver.",
     "tm.s78.c1": "Retourner au camp coûte que coûte",
-    "tm.s78.c2": "Revenir sceller le temple (folie)",
+    "tm.s78.c2": "Revenir sceller le temple",
     "tm.s78.c3": "Relire la règle (codex)",
 
     "tm.s79.title": "Comprendre",
@@ -489,7 +489,7 @@
     "tm.s80.body": "Tu es dehors… mais tu sens encore l’ossuaire derrière tes yeux. Tu peux fuir avec des preuves, revenir sceller, ou signer le pacte. Trois routes. Trois fins.",
     "tm.s80.c1": "Fuir avec des preuves",
     "tm.s80.c2": "Revenir sceller le temple",
-    "tm.s80.c3": "Accepter le pacte (vérité complète)",
+    "tm.s80.c3": "Accepter le pacte",
 
     "tm.end_good.title": "Fin — La fuite ",
     "tm.end_good.body": "Tu cours jusqu’au camp, tu racontes ce que tu as vécu. On te croit à moitié… mais on ferme le site. Cette nuit-là, tu dors peu. Chaque fois que tu respires trop fort, tu crois sentir une brume froide au bord de tes lèvres.",
