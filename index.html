@@ -1195,17 +1195,26 @@
       }
     }
 
-    async function openNativeStore(){
-      const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
-      if (!AppUpdate?.openAppStore) return false;
+ async function openNativeStore(){
+  const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;
+  if (!AppUpdate?.openAppStore) return false;
 
-      try{
-        await AppUpdate.openAppStore();
-        return true;
-      }catch(_){
-        return false;
-      }
+  try{
+    const platform = window.Capacitor?.getPlatform?.() || "";
+
+    if (platform === "ios") {
+      await AppUpdate.openAppStore({
+        appId: "TON_APPLE_ID_IOS"
+      });
+    } else {
+      await AppUpdate.openAppStore();
     }
+
+    return true;
+  }catch(_){
+    return false;
+  }
+}
 
     async function handlePrimaryUpdateAction(){
       const AppUpdate = window.Capacitor?.Plugins?.AppUpdate;

@@ -219,7 +219,7 @@
     "styx.s32.c3": "Reculer vers l’escalier",
 
     "styx.s33.title": "Accès restreint",
-    "styx.s33.body": "Un symbole gravé barre la porte. Tu comprends le message sans le lire : seuls certains passent.\n\nLa brume, elle, semble autorisée.",
+    "styx.s33.body": "deux statues barrent la porte. Tu comprends le message sans le lire : seuls certains passent.\n\nLa brume, elle, semble autorisée.",
     "styx.s33.c1": "Tenter quand même",
     "styx.s33.c2": "Chercher une autre voie",
     "styx.s33.c3": "Revenir à la porte précédente",

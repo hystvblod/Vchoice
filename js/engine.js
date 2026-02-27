@@ -107,15 +107,8 @@ function preloadImage(url){
 
   const promise = new Promise((resolve, reject) => {
     const img = new Image();
-    img.decoding = "async";
 
-    img.onload = async () => {
-      try{
-        if(typeof img.decode === "function") await img.decode();
-      }catch(_){ }
-      resolve(url);
-    };
-
+    img.onload = () => resolve(url);
     img.onerror = () => {
       IMAGE_PRELOAD_CACHE.delete(url);
       reject(new Error(`image preload failed: ${url}`));
@@ -137,6 +130,9 @@ function setSceneImage(file, alt = ""){
 
   const reqId = ++SCENE_IMAGE_REQ;
 
+  imgEl.onload = null;
+  imgEl.onerror = null;
+
   if(!file){
     if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
     imgEl.removeAttribute("src");
@@ -150,39 +146,46 @@ function setSceneImage(file, alt = ""){
 
   showSceneLoading(true);
 
-  preloadImage(file)
-    .then(() => {
+  imgEl.classList.remove("is-ready");
+  imgEl.classList.add("hidden");
+  if(pictureEl) pictureEl.classList.remove("hidden");
+
+  if(imgSourceEl) imgSourceEl.srcset = file;
+  imgEl.alt = alt || "";
+
+  imgEl.onload = () => {
+    if(reqId !== SCENE_IMAGE_REQ) return;
+
+    imgEl.classList.remove("hidden");
+
+    requestAnimationFrame(() => {
       if(reqId !== SCENE_IMAGE_REQ) return;
-
-      if(imgSourceEl) imgSourceEl.srcset = file;
-      imgEl.alt = alt || "";
-      imgEl.classList.remove("hidden");
-      imgEl.classList.remove("is-ready");
-      if(pictureEl) pictureEl.classList.remove("hidden");
-
-      if(imgEl.getAttribute("src") !== file){
-        imgEl.src = file;
-      }
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          if(reqId !== SCENE_IMAGE_REQ) return;
-          imgEl.classList.add("is-ready");
-          showSceneLoading(false);
-        });
-      });
-    })
-    .catch((err) => {
-      if(reqId !== SCENE_IMAGE_REQ) return;
-      console.warn("[scene image preload]", err);
-      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
-      imgEl.removeAttribute("src");
-      imgEl.alt = "";
-      imgEl.classList.remove("is-ready");
-      imgEl.classList.add("hidden");
-      if(pictureEl) pictureEl.classList.add("hidden");
+      imgEl.classList.add("is-ready");
       showSceneLoading(false);
     });
+  };
+
+  imgEl.onerror = () => {
+    if(reqId !== SCENE_IMAGE_REQ) return;
+
+    console.warn("[scene image load failed]", file);
+
+    if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
+    imgEl.removeAttribute("src");
+    imgEl.alt = "";
+    imgEl.classList.remove("is-ready");
+    imgEl.classList.add("hidden");
+    if(pictureEl) pictureEl.classList.add("hidden");
+    showSceneLoading(false);
+  };
+
+  imgEl.src = file;
+
+  if(imgEl.complete && imgEl.naturalWidth > 0){
+    imgEl.onload();
+  }
+
+  preloadImage(file).catch(() => {});
 }
 
 function preloadNextSceneImages(sceneId){
@@ -353,6 +356,7 @@ function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
   wrap.appendChild(text);
   btn.appendChild(wrap);
 }
+
 function getInterstitialCounterKey(scenarioId){
   const sid = String(scenarioId || "")
     .trim()
@@ -384,7 +388,6 @@ async function maybeShowInterstitialAfterChoice(){
   const scenarioId = String(currentScenarioId || "").trim();
   if(!scenarioId) return false;
 
-  // pas d'interstitial dans l'intro tuto
   if(scenarioId === INTRO_SCENARIO_ID) return false;
 
   let count = readScenarioInterstitialCount(scenarioId);
@@ -395,8 +398,6 @@ async function maybeShowInterstitialAfterChoice(){
     return false;
   }
 
-  // on remet à 0 dès qu'on atteint le seuil
-  // comme ça on évite de retenter à chaque clic si la pub n'est pas dispo
   writeScenarioInterstitialCount(scenarioId, 0);
 
   try{
@@ -414,6 +415,7 @@ async function maybeShowInterstitialAfterChoice(){
     return false;
   }
 }
+
 /* =========================
    iOS AUDIO GATE
 ========================= */
@@ -1831,7 +1833,6 @@ async function handleEnding(type, endScene){
 
   const endingType = String(type || "").toLowerCase();
 
-  /* ===== INTRO TUTO : on garde la popup spéciale ===== */
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     try{
       if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
@@ -2007,7 +2008,6 @@ async function handleEnding(type, endScene){
     return;
   }
 
-  /* ===== FINS NORMALES INLINE ===== */
   const endingKey = `${String(currentScenarioId || "")}:${String(endScene?.id || endingType)}`;
 
   if(ENDING_STATE.key !== endingKey){
@@ -2043,7 +2043,6 @@ async function handleEnding(type, endScene){
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
   const imgEl   = $("scene_img") || $("sceneImg");
-  const imgSourceEl = $("scene_img_source");
   const choicesEl = $("choices");
   const hintBtn = $("btnHint");
 
@@ -2057,7 +2056,7 @@ async function handleEnding(type, endScene){
   if(titleEl) titleEl.textContent = title;
 
   if(imgEl){
-    const img = resolveImageFile(LOGIC, endScene?.image_id);
+    const img = resolveImageFile(LOGIC, endScene?.image_id || endScene?.id);
     setSceneImage(img?.file || "", img?.alt || "");
   }
 
@@ -2232,7 +2231,6 @@ function renderScene(){
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
   const imgEl   = $("scene_img") || $("sceneImg");
-  const imgSourceEl = $("scene_img_source");
   const choicesEl = $("choices");
   const hintBtn = $("btnHint");
 
@@ -2240,7 +2238,7 @@ function renderScene(){
   if(bodyEl) bodyEl.textContent = tS(scene.body_key);
 
   if(imgEl){
-    const img = resolveImageFile(LOGIC, scene.image_id);
+    const img = resolveImageFile(LOGIC, scene.image_id || scene.id);
     setSceneImage(img?.file || "", img?.alt || "");
   }
 
