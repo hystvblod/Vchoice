@@ -795,6 +795,49 @@
       return 0;
     }
 
+    function getScenarioStoreButtonLabel(scenarioId){
+      const storePrice = currentScenarioIapPrice(scenarioId);
+
+      const customWithPrice = _t(
+        "ui.scenario_buy.unlock_direct",
+        "",
+        { price: storePrice || "" }
+      ).trim();
+
+      const customNoPrice = _t(
+        "ui.scenario_buy.unlock_direct_no_price",
+        ""
+      ).trim();
+
+      if (storePrice) {
+        if (customWithPrice) return customWithPrice;
+
+        const legacyWithPrice = _t(
+          "ui.scenario_buy.iap_direct",
+          "",
+          { price: storePrice }
+        ).trim();
+
+        if (legacyWithPrice) {
+          return legacyWithPrice.replace(/^acheter\b/i, "Débloquer");
+        }
+      }
+
+      if (customNoPrice) return customNoPrice;
+
+      const legacyNoPrice = _t(
+        "ui.scenario_buy.iap_direct",
+        "",
+        { price: "" }
+      ).trim();
+
+      if (legacyNoPrice) {
+        return legacyNoPrice.replace(/^acheter\b/i, "Débloquer").trim();
+      }
+
+      return "";
+    }
+
     function setScenarioToLaunch(scenarioId){
       lsSet(KEY_PREFIX + "_scenario", scenarioId);
       lsSet("vrealms_scenario", scenarioId);
@@ -929,7 +972,6 @@
       pendingScenarioId = scenarioId;
 
       const balance = getCurrentVCoins();
-      const storePrice = currentScenarioIapPrice(scenarioId);
 
       buyTitle.textContent = _t("scenarios." + scenarioId + ".title", "");
       buyDesc.textContent = _t("ui.scenario_buy.desc", "");
@@ -942,11 +984,7 @@
         { balance }
       );
 
-      buyIap.textContent = _t(
-        "ui.scenario_buy.iap_direct",
-        "",
-        { price: storePrice || "" }
-      );
+      buyIap.textContent = getScenarioStoreButtonLabel(scenarioId);
 
       buyGet.textContent = _t("ui.scenario_buy.open_shop", "");
       buyCancel.textContent = _t("common.cancel", "");
@@ -1075,12 +1113,7 @@
     function refreshIapLabel(){
       try {
         if (buyPopup && buyPopup.style.display === "flex" && pendingScenarioId){
-          const storePrice = currentScenarioIapPrice(pendingScenarioId);
-          buyIap.textContent = _t(
-            "ui.scenario_buy.iap_direct",
-            "",
-            { price: storePrice || "" }
-          );
+          buyIap.textContent = getScenarioStoreButtonLabel(pendingScenarioId);
         }
       } catch(_){}
     }

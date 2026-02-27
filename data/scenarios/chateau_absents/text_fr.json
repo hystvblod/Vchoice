@@ -11,7 +11,7 @@
     "ca.tagline": "Un château isolé t’ouvre ses grilles, puis déplace ses couloirs autour de toi. Entre portraits, salles désertes et passages cachés, le lieu garde la trace de ceux qui y entrent.",
 
     "ca.s01.title": "La route en contrebas",
-    "ca.s01.body": "Tu coupes le moteur. Le château domine la colline, opaque et muet. Le vent sent la pierre mouillée, comme une cave ouverte.",
+    "ca.s01.body": "Tu coupes le moteur. Le château domine la colline, massif et muet. Le vent sent la pierre mouillée, comme une cave ouverte.",
     "ca.s01.c1": "Monter vers le portail",
     "ca.s01.c2": "Faire le tour par les arbres",
     "ca.s01.c3": "Observer la cour de loin",
@@ -31,7 +31,7 @@
     "ca.s04.title": "Cour intérieure",
     "ca.s04.body": "La cour est envahie de ronces. Une statue érodée te regarde sans visage. Toutes les fenêtres sont ouvertes, mais rien ne respire.",
     "ca.s04.c1": "Traverser vers le hall",
-    "ca.s04.c2": "Inspecter les fenêtres béantes",
+    "ca.s04.c2": "Passer par une fenêtre béante",
     "ca.s04.c3": "Reculer vers l’entrée",
 
     "ca.s05.title": "Grand hall",
@@ -73,7 +73,7 @@
     "ca.s11.title": "Galerie de portraits",
     "ca.s11.body": "Des visages ternis, cadres piqués. Certains regards semblent suivre ta position, mais seulement quand tu détournes les yeux.",
     "ca.s11.c1": "Approcher un portrait précis",
-    "ca.s11.c2": "Chercher une inscription au dos d’un cadre",
+    "ca.s11.c2": "Déplacer un cadre et regarder derrière",
     "ca.s11.c3": "Revenir au couloir",
 
     "ca.s12.title": "Cadre sans reflet",
@@ -138,12 +138,12 @@
 
     "ca.s22.title": "Cave à vin intacte",
     "ca.s22.body": "Des casiers, des bouteilles vides… sauf une scellée, intacte. Près d’elle, un petit enregistreur couvert de poussière fine.",
-    "ca.s22.c1": "Prendre l’enregistreur",
+    "ca.s22.c1": "Prendre l’enregistreur puis examiner la bouteille intacte",
     "ca.s22.c2": "Revenir au couloir de cave",
     "ca.s22.c3": "Fuir par le couloir de cave",
 
     "ca.s23.title": "Bouteille scellée",
-    "ca.s23.body": "La cire est parfaite. Trop parfaite. En la touchant, tu sens une vibration, comme une voix retenue. Tu n’as aucune envie de l’ouvrir.",
+    "ca.s23.body": "L’enregistreur dans ta poche, tu reviens à la bouteille. La cire est parfaite. Trop parfaite. En la touchant, tu sens une vibration, comme une voix retenue. Tu n’as aucune envie de l’ouvrir.",
     "ca.s23.c1": "Revenir au couloir de cave",
     "ca.s23.c2": "Remonter et chercher une autre voie",
     "ca.s23.c3": "Quitter la cave au plus vite",
@@ -164,7 +164,7 @@
     "ca.s26.body": "Un livre de prières est ouvert. Une clé ancienne repose dessus, comme une offrande. Les pages ont été tournées récemment.",
     "ca.s26.c1": "Prendre la clé",
     "ca.s26.c2": "Reculer et ressortir",
-    "ca.s26.c3": "Revenir à l’autel",
+    "ca.s26.c3": "Rester encore un instant devant l’autel",
 
     "ca.s27.title": "Bruit sous les dalles",
     "ca.s27.body": "Dès que la clé quitte l’autel, un bruit sourd traverse la chapelle, comme un verrou qui saute très loin. Tu viens d’autoriser quelque chose.",
@@ -240,7 +240,7 @@
 
     "ca.s39.title": "Marque de craie",
     "ca.s39.body": "Une marque au sol : une flèche vers « dessous ». Le château te parle par gestes, pas par mots. Tu comprends où chercher un passage.",
-    "ca.s39.c1": "Suivre l’idée du dessous",
+    "ca.s39.c1": "Comprendre où chercher sous le château",
     "ca.s39.c2": "Revenir vers l’escalier",
     "ca.s39.c3": "Retourner au couloir déformé",
 
@@ -258,7 +258,7 @@
 
     "ca.s42.title": "Lettre sans date",
     "ca.s42.body": "La lettre ne porte pas de date. Elle parle d’un chemin derrière les murs, et d’une preuve à réunir avant la crypte.",
-    "ca.s42.c1": "Redescendre en gardant la preuve",
+    "ca.s42.c1": "Garder la preuve et revenir près de la malle",
     "ca.s42.c2": "Retourner au couloir déformé",
     "ca.s42.c3": "Continuer sans emporter la lettre",
 
@@ -282,7 +282,7 @@
 
     "ca.s46.title": "Rayonnages déplacés",
     "ca.s46.body": "Un espace entre deux étagères est trop propre. La poussière forme une ligne nette, comme si un meuble glissait parfois.",
-    "ca.s46.c1": "Revenir au bureau",
+    "ca.s46.c1": "Chercher sous le bureau",
     "ca.s46.c2": "Retourner à la page arrachée",
     "ca.s46.c3": "Rejoindre la galerie de portraits",
 
@@ -386,11 +386,11 @@
     "ca.s63.body": "La grille est là, ouverte. Trop ouverte. Tu sens que ce n’est pas seulement une sortie : c’est un test final.",
     "ca.s63.c1": "Tenter de sortir immédiatement",
     "ca.s63.c2": "Revenir dans la cour",
-    "ca.s63.c3": "Revenir à l’intérieur",
+    "ca.s63.c3": "Revenir vers la salle de bal",
 
     "ca.s64.title": "Dernier seuil",
-    "ca.s64.body": "La grille t’attend comme une bouche. Si tu as une preuve, tu peux la franchir. Sinon, tu risques de ressortir… ailleurs.",
-    "ca.s64.c1": "Franchir la grille avec ce que tu as",
+    "ca.s64.body": "La grille t’attend comme une bouche. Si tu emportes une preuve réelle du château, tu peux tenter de la franchir. Sinon, tu risques seulement de revenir dans son jeu.",
+    "ca.s64.c1": "Franchir la grille avec une preuve",
     "ca.s64.c2": "Hésiter et reculer",
     "ca.s64.c3": "Revenir au hall pour comprendre",
 
@@ -433,7 +433,7 @@
     "ca.s71.title": "Grenier, retour au signet",
     "ca.s71.body": "La malle est toujours ouverte. Le signet dans ta main semble plus lourd qu’un bijou. Comme si c’était un droit temporaire.",
     "ca.s71.c1": "Aller vers la crypte",
-    "ca.s71.c2": "Tenter de sortir",
+    "ca.s71.c2": "Tenter de sortir par la salle de bal",
     "ca.s71.c3": "Revenir au palier",
 
     "ca.s72.title": "Crypte, mécanisme",
@@ -503,7 +503,7 @@
     "ca.clue.has_diary_page.title": "Page de journal",
     "ca.clue.has_map_fragment.title": "Fragment de plan",
     "ca.clue.has_recording.title": "Enregistrement",
-    "ca.clue.has_signet.title": "Chevalière",
+    "ca.clue.has_signet.title": "Signet",
     "ca.clue.knows_symbol.title": "Symbole compris",
     "ca.clue.refused_call.title": "Appel refusé",
     "ca.clue.touched_mirror.title": "Miroir touché"

@@ -745,7 +745,9 @@
       "title_key": "ca.s64.title",
       "body_key": "ca.s64.body",
       "choices": [
-        { "choice_key": "ca.s64.c1", "next": "end_good" },
+        {
+          "choice_key": "ca.s64.c1",
+          "next": "end_good"},
         { "choice_key": "ca.s64.c2", "next": "s77" },
         { "choice_key": "ca.s64.c3", "next": "s65" }
       ]
