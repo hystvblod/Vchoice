@@ -254,6 +254,50 @@
 
     .modal.hidden{ display:none !important; }
 
+    .app-transition{
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:1;
+      visibility:visible;
+      transition:opacity .18s ease, visibility .18s ease;
+      pointer-events:none;
+    }
+
+    .app-transition.hidden{
+      opacity:0;
+      visibility:hidden;
+    }
+
+    .app-transition__veil{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
+        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
+        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
+    }
+
+    .app-transition__spinner{
+      position:relative;
+      z-index:1;
+      width:42px;
+      height:42px;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,.14);
+      border-top-color:rgba(255,255,255,.92);
+      animation:vcAppSpin .85s linear infinite;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+
+    @keyframes vcAppSpin{
+      to{ transform:rotate(360deg); }
+    }
+
     .vc-card.vc-card-locked::after{
       background:
         linear-gradient(90deg, rgba(0,0,0,.68), rgba(0,0,0,.25) 55%, rgba(0,0,0,.68)),
@@ -504,6 +548,10 @@
 </head>
 
 <body>
+  <div id="appTransition" class="app-transition hidden" aria-hidden="true">
+    <div class="app-transition__veil"></div>
+    <div class="app-transition__spinner"></div>
+  </div>
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.profile_title">
@@ -810,9 +858,18 @@
       });
     }
 
+    function showAppTransition(show){
+      const el = document.getElementById("appTransition");
+      if(!el) return;
+      el.classList.toggle("hidden", !show);
+    }
+
     function launchScenario(scenarioId){
       setScenarioToLaunch(scenarioId);
-      window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
+      showAppTransition(true);
+      requestAnimationFrame(() => {
+        window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
+      });
     }
 
     const hintModal = document.getElementById("hintModal");
@@ -1254,4 +1311,3 @@
   </script>
 </body>
 </html>
-

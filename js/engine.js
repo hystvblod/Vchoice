@@ -8,7 +8,6 @@
    + ✅ FIN INTRO: icônes plus grandes + “Récompense” (pas “Récompense du tuto”) + en-tête centré + suppression du “x1” en bas
    + ✅ iOS ONLY: mini popup “Entrer” au tout début du scénario -> autorise la musique, puis lance VCAudio.play()
    + ✅ FINS NORMALES: plus de popup fin ; image de fin conservée, texte final inline, bonus pub = +200 avec icône vcoin
-   + ✅ Fins first/already done pilotées en local uniquement via vchoice_endings_cache_v1
    + ✅ 0 texte visible utilisateur en dur dans le JS : tout passe par i18n
 */
 
@@ -41,9 +40,6 @@ const INTRO_FORCED_JETON_SEEDED_KEY = "vchoice_intro_forced_jeton_seeded_v1";
 const TUTO_JETON_ICON_WEBP = "assets/img/ui/jeton.webp";
 const UI_VCOINS_ICON_WEBP  = "assets/img/ui/vcoin.webp";
 const UI_JETON_ICON_WEBP   = "assets/img/ui/jeton.webp";
-
-// Cache local des fins
-const LOCAL_ENDINGS_KEY    = "vchoice_endings_cache_v1";
 
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
@@ -79,7 +75,6 @@ let OVERRIDE_FLAGS = false;
 let ENDING_STATE = {
   key: "",
   reward: 300,
-  firstTime: true,
   adBonusClaimed: false,
   busy: false
 };
@@ -89,10 +84,125 @@ let ENDING_STATE = {
 ========================= */
 function $(id){ return document.getElementById(id); }
 
+const IMAGE_PRELOAD_CACHE = new Map();
+let SCENE_IMAGE_REQ = 0;
+
 async function fetchJSON(url){
-  const r = await fetch(url, { cache: "no-store" });
+  const r = await fetch(url, { cache: "default" });
   if(!r.ok) throw new Error(`fetch ${url} => ${r.status}`);
   return await r.json();
+}
+
+function showSceneLoading(show){
+  const el = $("sceneLoadingOverlay");
+  if(!el) return;
+  el.classList.toggle("hidden", !show);
+}
+
+function preloadImage(url){
+  if(!url) return Promise.resolve(null);
+
+  const cached = IMAGE_PRELOAD_CACHE.get(url);
+  if(cached) return cached;
+
+  const promise = new Promise((resolve, reject) => {
+    const img = new Image();
+    img.decoding = "async";
+
+    img.onload = async () => {
+      try{
+        if(typeof img.decode === "function") await img.decode();
+      }catch(_){ }
+      resolve(url);
+    };
+
+    img.onerror = () => {
+      IMAGE_PRELOAD_CACHE.delete(url);
+      reject(new Error(`image preload failed: ${url}`));
+    };
+
+    img.src = url;
+  });
+
+  IMAGE_PRELOAD_CACHE.set(url, promise);
+  return promise;
+}
+
+function setSceneImage(file, alt = ""){
+  const imgEl = $("scene_img") || $("sceneImg");
+  const imgSourceEl = $("scene_img_source");
+  const pictureEl = $("scene_picture");
+
+  if(!imgEl) return;
+
+  const reqId = ++SCENE_IMAGE_REQ;
+
+  if(!file){
+    if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
+    imgEl.removeAttribute("src");
+    imgEl.alt = "";
+    imgEl.classList.remove("is-ready");
+    imgEl.classList.add("hidden");
+    if(pictureEl) pictureEl.classList.add("hidden");
+    showSceneLoading(false);
+    return;
+  }
+
+  showSceneLoading(true);
+
+  preloadImage(file)
+    .then(() => {
+      if(reqId !== SCENE_IMAGE_REQ) return;
+
+      if(imgSourceEl) imgSourceEl.srcset = file;
+      imgEl.alt = alt || "";
+      imgEl.classList.remove("hidden");
+      imgEl.classList.remove("is-ready");
+      if(pictureEl) pictureEl.classList.remove("hidden");
+
+      if(imgEl.getAttribute("src") !== file){
+        imgEl.src = file;
+      }
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if(reqId !== SCENE_IMAGE_REQ) return;
+          imgEl.classList.add("is-ready");
+          showSceneLoading(false);
+        });
+      });
+    })
+    .catch((err) => {
+      if(reqId !== SCENE_IMAGE_REQ) return;
+      console.warn("[scene image preload]", err);
+      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
+      imgEl.removeAttribute("src");
+      imgEl.alt = "";
+      imgEl.classList.remove("is-ready");
+      imgEl.classList.add("hidden");
+      if(pictureEl) pictureEl.classList.add("hidden");
+      showSceneLoading(false);
+    });
+}
+
+function preloadNextSceneImages(sceneId){
+  try{
+    const scene = resolveSceneObject(LOGIC, sceneId);
+    const choices = Array.isArray(scene?.choices) ? scene.choices : [];
+
+    for(const choice of choices){
+      const nextId = String(choice?.next || "").trim();
+      if(!nextId) continue;
+
+      const nextScene = resolveSceneObject(LOGIC, nextId);
+      if(!nextScene) continue;
+
+      const img = resolveImageFile(LOGIC, nextScene.image_id || nextId);
+      if(img?.file) preloadImage(img.file).catch(() => {});
+    }
+  }catch(err){
+    console.warn("[preloadNextSceneImages]", err);
+  }
 }
 
 function deepGet(obj, path){
@@ -208,61 +318,21 @@ function getEndingLabel(type){
   return tUI("end_title");
 }
 
-function readLocalEndings(){
-  try{
-    const raw = localStorage.getItem(LOCAL_ENDINGS_KEY);
-    if(!raw) return {};
-    const parsed = JSON.parse(raw);
-    return (parsed && typeof parsed === "object") ? parsed : {};
-  }catch(_){
-    return {};
-  }
-}
+function getEndingRewardAmount(payload){
+  const candidates = [
+    payload?.reward_vcoins,
+    payload?.reward,
+    payload?.granted_vcoins,
+    payload?.delta_vcoins,
+    payload?.vcoins_reward
+  ];
 
-function writeLocalEndings(data){
-  try{
-    localStorage.setItem(LOCAL_ENDINGS_KEY, JSON.stringify(data || {}));
-  }catch(_){}
-}
-
-function normalizeEndingScenarioId(scenarioId){
-  return String(scenarioId || "")
-    .trim()
-    .toLowerCase();
-}
-
-function normalizeEndingType(endingType){
-  return String(endingType || "")
-    .trim()
-    .toLowerCase();
-}
-
-function hasLocalEndingDone(scenarioId, endingType){
-  const all = readLocalEndings();
-  const s = normalizeEndingScenarioId(scenarioId);
-  const e = normalizeEndingType(endingType);
-  return !!(all[s] && all[s][e] === true);
-}
-
-function markLocalEndingDone(scenarioId, endingType){
-  const all = readLocalEndings();
-  const s = normalizeEndingScenarioId(scenarioId);
-  const e = normalizeEndingType(endingType);
-
-  if(!all[s] || typeof all[s] !== "object"){
-    all[s] = {};
+  for(const raw of candidates){
+    const n = Number(raw);
+    if(Number.isFinite(n) && n > 0) return n;
   }
 
-  all[s][e] = true;
-  writeLocalEndings(all);
-}
-
-function getLocalEndingReward(scenarioId, endingType){
-  return hasLocalEndingDone(scenarioId, endingType) ? 100 : 300;
-}
-
-function getLocalEndingFirstTime(scenarioId, endingType){
-  return !hasLocalEndingDone(scenarioId, endingType);
+  return 300;
 }
 
 function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
@@ -283,7 +353,6 @@ function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
   wrap.appendChild(text);
   btn.appendChild(wrap);
 }
-
 function getInterstitialCounterKey(scenarioId){
   const sid = String(scenarioId || "")
     .trim()
@@ -345,7 +414,6 @@ async function maybeShowInterstitialAfterChoice(){
     return false;
   }
 }
-
 /* =========================
    iOS AUDIO GATE
 ========================= */
@@ -1249,17 +1317,17 @@ async function openScenario(scenarioId, opts = {}){
 
   currentScenarioId = scenarioId;
 
-  LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
+  const logicPromise = fetchJSON(PATHS.scenarioLogic(scenarioId));
+  const textPromise = fetchJSON(PATHS.scenarioText(scenarioId, LANG))
+    .catch(() => fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG)));
+
+  LOGIC = await logicPromise;
   try{
     const uni = (LOGIC?.meta?.universe || scenarioId || "").trim();
     if (uni && window.VCAudio?.setUniverse) window.VCAudio.setUniverse(uni);
   } catch(_){}
 
-  try{
-    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
-  }catch(_){
-    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG));
-  }
+  TEXT = await textPromise;
 
   TEXT_STRINGS = (TEXT && typeof TEXT === "object" && TEXT.strings && typeof TEXT.strings === "object")
     ? TEXT.strings
@@ -1766,8 +1834,10 @@ async function handleEnding(type, endScene){
   /* ===== INTRO TUTO : on garde la popup spéciale ===== */
   if(String(currentScenarioId || "") === INTRO_SCENARIO_ID){
     try{
-      markLocalEndingDone(currentScenarioId, endingType);
-    }catch(_){}
+      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+        await window.VUserData.completeScenario(currentScenarioId, endingType);
+      }
+    }catch(e){}
 
     let introRewardJetons = 0;
     let introRewardVCoins = 0;
@@ -1941,28 +2011,22 @@ async function handleEnding(type, endScene){
   const endingKey = `${String(currentScenarioId || "")}:${String(endScene?.id || endingType)}`;
 
   if(ENDING_STATE.key !== endingKey){
-    const localFirstTime = getLocalEndingFirstTime(currentScenarioId, endingType);
-    const localReward = getLocalEndingReward(currentScenarioId, endingType);
-
     ENDING_STATE = {
       key: endingKey,
-      reward: localReward,
-      firstTime: localFirstTime,
+      reward: 300,
       adBonusClaimed: false,
       busy: false
     };
 
-    markLocalEndingDone(currentScenarioId, endingType);
-
     try{
-      if(window.VUserData && typeof window.VUserData.addVCoins === "function"){
-        await window.VUserData.addVCoins(localReward);
+      if(window.VUserData && typeof window.VUserData.completeScenario === "function"){
+        const res = await window.VUserData.completeScenario(currentScenarioId, endingType);
+        ENDING_STATE.reward = getEndingRewardAmount(res?.data || null);
       }
-    }catch(_){}
+    }catch(e){}
   }
 
   const rewardAmount = Number(ENDING_STATE.reward || 300);
-  const isFirstTimeEnding = !!ENDING_STATE.firstTime;
 
   let title = tUI("end_title");
   if(endingType === "good") title = tUI("end_title_good");
@@ -1994,17 +2058,7 @@ async function handleEnding(type, endScene){
 
   if(imgEl){
     const img = resolveImageFile(LOGIC, endScene?.image_id);
-    if(img && img.file){
-      if(imgSourceEl) imgSourceEl.srcset = img.file;
-      imgEl.src = img.file;
-      imgEl.alt = img.alt || "";
-      imgEl.classList.remove("hidden");
-    } else {
-      imgEl.removeAttribute("src");
-      imgEl.alt = "";
-      imgEl.classList.add("hidden");
-      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
-    }
+    setSceneImage(img?.file || "", img?.alt || "");
   }
 
   let rewardValue = null;
@@ -2021,13 +2075,9 @@ async function handleEnding(type, endScene){
 
     const unlock = document.createElement("span");
     unlock.className = "vc-end-unlock";
-    unlock.textContent = isFirstTimeEnding
-      ? tUI("end_unlock_line", {
-          ending: getEndingLabel(endingType)
-        })
-      : tUI("end_already_done_line", {
-          ending: getEndingLabel(endingType)
-        });
+    unlock.textContent = tUI("end_unlock_line", {
+      ending: getEndingLabel(endingType)
+    });
 
     const reward = document.createElement("span");
     reward.className = "vc-end-reward-line";
@@ -2129,7 +2179,7 @@ async function handleEnding(type, endScene){
     btnRestart.className = "choice_btn";
     btnRestart.textContent = tUI("btn_restart");
     btnRestart.onclick = () => {
-      ENDING_STATE = { key:"", reward:300, firstTime:true, adBonusClaimed:false, busy:false };
+      ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
       hardResetScenario(currentScenarioId);
       renderScene();
     };
@@ -2139,7 +2189,7 @@ async function handleEnding(type, endScene){
     btnBack.className = "choice_btn";
     btnBack.textContent = tUI("btn_back");
     btnBack.onclick = () => {
-      ENDING_STATE = { key:"", reward:300, firstTime:true, adBonusClaimed:false, busy:false };
+      ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
       location.href = "index.html";
     };
 
@@ -2177,7 +2227,7 @@ function renderScene(){
     return;
   }
 
-  ENDING_STATE = { key:"", reward:300, firstTime:true, adBonusClaimed:false, busy:false };
+  ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
 
   const titleEl = $("sceneTitle");
   const bodyEl  = $("sceneBody");
@@ -2191,18 +2241,10 @@ function renderScene(){
 
   if(imgEl){
     const img = resolveImageFile(LOGIC, scene.image_id);
-    if(img && img.file){
-      if(imgSourceEl) imgSourceEl.srcset = img.file;
-      imgEl.src = img.file;
-      imgEl.alt = img.alt || "";
-      imgEl.classList.remove("hidden");
-    } else {
-      imgEl.removeAttribute("src");
-      imgEl.alt = "";
-      imgEl.classList.add("hidden");
-      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
-    }
+    setSceneImage(img?.file || "", img?.alt || "");
   }
+
+  preloadNextSceneImages(scene.id);
 
   if(hintBtn){
     const hintKey = scene.hint_key;
