@@ -465,6 +465,13 @@ body{
   position:absolute;
   inset:0;
 }
+
+.scene__media picture{
+  position:absolute;
+  inset:0;
+  display:block;
+}
+
 .scene__media img{
   position:absolute;
   inset:0;
@@ -472,6 +479,61 @@ body{
   height:100%;
   object-fit:cover;
   filter: saturate(1.05) contrast(1.05);
+  opacity:0;
+  transition: opacity .22s ease;
+}
+
+.scene__media img.is-ready{
+  opacity:1;
+}
+
+.scene__media img.hidden,
+.scene__media img:not([src]),
+.scene__media img[src=""]{
+  display:none !important;
+}
+
+.scene_loading{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  opacity:1;
+  visibility:visible;
+  transition: opacity .22s ease, visibility .22s ease;
+}
+
+.scene_loading.hidden{
+  opacity:0;
+  visibility:hidden;
+}
+
+.scene_loading__veil{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.10), transparent 60%),
+    radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.08), transparent 55%),
+    linear-gradient(180deg, #05060a, #090b13 45%, #0b1226);
+}
+
+.scene_loading__spinner{
+  position:relative;
+  z-index:1;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,.14);
+  border-top-color: rgba(255,255,255,.88);
+  animation: vcSceneSpin .85s linear infinite;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+@keyframes vcSceneSpin{
+  to{ transform: rotate(360deg); }
 }
 
 .scene__shade{
@@ -741,7 +803,10 @@ body{
 
 body.page-game{
   margin:0;
-  background:#000;
+  background:
+    radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.10), transparent 60%),
+    radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.08), transparent 55%),
+    linear-gradient(180deg, #05060a, #090b13 45%, #0b1226);
   overflow:hidden;
 }
 

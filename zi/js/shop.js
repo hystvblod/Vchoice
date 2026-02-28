@@ -94,7 +94,7 @@
   const PRODUCT_IDS = [
     "vchoice_jetons_12",
     "vchoice_jetons_30",
-    "vchoice_vcoins_500",
+    "vchoice_vcoins_1200",
     "vchoice_vcoins_3000",
     "vchoice_no_ads",
     "vchoice_ultra"
@@ -103,7 +103,7 @@
   const PRODUCT_META = {
     vchoice_jetons_12:   { kind:"jetons", amount:12,   titleKey:"ui.shop_p_jetons12_title",   descKey:"ui.shop_p_jetons12_desc" },
     vchoice_jetons_30:   { kind:"jetons", amount:30,   titleKey:"ui.shop_p_jetons30_title",   descKey:"ui.shop_p_jetons30_desc" },
-    vchoice_vcoins_500:  { kind:"vcoins", amount:500,  titleKey:"ui.shop_p_vcoins500_title",  descKey:"ui.shop_p_vcoins500_desc" },
+    vchoice_vcoins_1200:  { kind:"vcoins", amount:1200,  titleKey:"ui.shop_p_vcoins1200_title",  descKey:"ui.shop_p_vcoins1200_desc" },
     vchoice_vcoins_3000: { kind:"vcoins", amount:3000, titleKey:"ui.shop_p_vcoins3000_title", descKey:"ui.shop_p_vcoins3000_desc" },
     vchoice_no_ads:      { kind:"no_ads", amount:0,    titleKey:"ui.shop_p_noads_title",      descKey:"ui.shop_p_noads_desc" },
     vchoice_ultra:       { kind:"ultra",  amount:0,    titleKey:"ui.shop_p_diamond_title",    descKey:"ui.shop_p_diamond_desc" }

@@ -1496,7 +1496,7 @@
         },
         {
           "choice_key": "styx.s63.c3",
-          "next": "s29"
+          "next": "end_bad"
         }
       ]
     },

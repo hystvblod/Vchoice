@@ -277,7 +277,7 @@
       "body_key": "br.s20.body",
       "choices": [
         { "choice_key": "br.s20.c1", "next": "s25" },
-        { "choice_key": "br.s20.c2", "next": "s25" },
+        { "choice_key": "br.s20.c2", "next": "s26" },
         { "choice_key": "br.s20.c3", "next": "s19" }
       ]
     },
@@ -328,7 +328,7 @@
       "choices": [
         { "choice_key": "br.s25.c1", "next": "s26" },
         { "choice_key": "br.s25.c2", "next": "s19" },
-        { "choice_key": "br.s25.c3", "next": "s31" }
+        { "choice_key": "br.s25.c3", "next": "s20" }
       ]
     },
     "s26": {
@@ -497,7 +497,7 @@
       "body_key": "br.s42.body",
       "choices": [
         { "choice_key": "br.s42.c1", "next": "s43", "set_flags": ["has_protocol_truth"] },
-        { "choice_key": "br.s42.c2", "next": "s39" },
+        { "choice_key": "br.s42.c2", "next": "s43" },
         { "choice_key": "br.s42.c3", "next": "s31" }
       ]
     },
@@ -596,7 +596,7 @@
       "title_key": "br.s52.title",
       "body_key": "br.s52.body",
       "choices": [
-        { "choice_key": "br.s52.c1", "next": "end_good" },
+        { "choice_key": "br.s52.c1", "next": "end_good", "requires_any_flags": ["has_recording"] },
         { "choice_key": "br.s52.c2", "next": "s49" },
         { "choice_key": "br.s52.c3", "next": "s56" }
       ]
@@ -636,7 +636,7 @@
       "title_key": "br.s56.title",
       "body_key": "br.s56.body",
       "choices": [
-        { "choice_key": "br.s56.c1", "next": "end_good", "requires_all_flags": ["has_recording"] },
+        { "choice_key": "br.s56.c1", "next": "end_good", "requires_any_flags": ["has_recording"] },
         { "choice_key": "br.s56.c2", "next": "end_bad" },
         { "choice_key": "br.s56.c3", "next": "end_secret", "requires_all_flags": ["has_override", "has_protocol_truth", "has_recording", "has_sanctuary_mark"] }
       ]

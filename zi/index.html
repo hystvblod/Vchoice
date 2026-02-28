@@ -136,7 +136,10 @@
 
     .hero{ padding: 0 12px; }
     .hero__title{ color: var(--vc-text) !important; }
-    .hero__text{ color: var(--vc-muted) !important; }
+    .hero__text{
+      color: var(--vc-muted) !important;
+      min-height: 24px;
+    }
 
     .vc-grid{
       display:grid;
@@ -212,25 +215,32 @@
     }
 
     .vc-line{
+      position:relative;
       width:100%;
+      height:100%;
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      padding: 0 14px;
+      justify-content:center;
+      padding: 0 56px;
     }
 
     .vc-title{
       margin:0;
+      width:100%;
       color:#fff;
       font-weight: 950;
       font-size: 16px;
       letter-spacing: .3px;
       line-height: 1.1;
+      text-align:center;
       text-shadow: 0 2px 10px rgba(0,0,0,.75);
     }
 
     .vc-info{
+      position:absolute;
+      top:50%;
+      right:14px;
+      transform:translateY(-50%);
       width:40px;
       height:40px;
       border-radius: 999px;
@@ -244,15 +254,58 @@
       justify-content:center;
       user-select:none;
       cursor:pointer;
-      position:relative;
       z-index:4;
       box-shadow:
         0 10px 26px rgba(0,0,0,.35),
         0 0 0 1px rgba(255,59,59,.12) inset;
     }
-    .vc-info:active{ transform: scale(.96); }
+    .vc-info:active{ transform: translateY(-50%) scale(.96); }
 
     .modal.hidden{ display:none !important; }
+
+    .app-transition{
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:1;
+      visibility:visible;
+      transition:opacity .18s ease, visibility .18s ease;
+      pointer-events:none;
+    }
+
+    .app-transition.hidden{
+      opacity:0;
+      visibility:hidden;
+    }
+
+    .app-transition__veil{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
+        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
+        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
+    }
+
+    .app-transition__spinner{
+      position:relative;
+      z-index:1;
+      width:42px;
+      height:42px;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,.14);
+      border-top-color:rgba(255,255,255,.92);
+      animation:vcAppSpin .85s linear infinite;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+
+    @keyframes vcAppSpin{
+      to{ transform:rotate(360deg); }
+    }
 
     .vc-card.vc-card-locked::after{
       background:
@@ -504,6 +557,10 @@
 </head>
 
 <body>
+  <div id="appTransition" class="app-transition hidden" aria-hidden="true">
+    <div class="app-transition__veil"></div>
+    <div class="app-transition__spinner"></div>
+  </div>
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.profile_title">
@@ -531,7 +588,7 @@
   <main class="page">
     <section class="hero">
       <h1 class="hero__title" id="ui_index_title" data-i18n="ui.index_title"></h1>
-      <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle"></p>
+      <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle_short"></p>
     </section>
 
     <section class="menu" aria-label="" data-i18n-aria="ui.index_menu_aria">
@@ -738,6 +795,49 @@
       return 0;
     }
 
+    function getScenarioStoreButtonLabel(scenarioId){
+      const storePrice = currentScenarioIapPrice(scenarioId);
+
+      const customWithPrice = _t(
+        "ui.scenario_buy.unlock_direct",
+        "",
+        { price: storePrice || "" }
+      ).trim();
+
+      const customNoPrice = _t(
+        "ui.scenario_buy.unlock_direct_no_price",
+        ""
+      ).trim();
+
+      if (storePrice) {
+        if (customWithPrice) return customWithPrice;
+
+        const legacyWithPrice = _t(
+          "ui.scenario_buy.iap_direct",
+          "",
+          { price: storePrice }
+        ).trim();
+
+        if (legacyWithPrice) {
+          return legacyWithPrice.replace(/^acheter\b/i, "Débloquer");
+        }
+      }
+
+      if (customNoPrice) return customNoPrice;
+
+      const legacyNoPrice = _t(
+        "ui.scenario_buy.iap_direct",
+        "",
+        { price: "" }
+      ).trim();
+
+      if (legacyNoPrice) {
+        return legacyNoPrice.replace(/^acheter\b/i, "Débloquer").trim();
+      }
+
+      return "";
+    }
+
     function setScenarioToLaunch(scenarioId){
       lsSet(KEY_PREFIX + "_scenario", scenarioId);
       lsSet("vrealms_scenario", scenarioId);
@@ -810,9 +910,18 @@
       });
     }
 
+    function showAppTransition(show){
+      const el = document.getElementById("appTransition");
+      if(!el) return;
+      el.classList.toggle("hidden", !show);
+    }
+
     function launchScenario(scenarioId){
       setScenarioToLaunch(scenarioId);
-      window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
+      showAppTransition(true);
+      requestAnimationFrame(() => {
+        window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
+      });
     }
 
     const hintModal = document.getElementById("hintModal");
@@ -863,7 +972,6 @@
       pendingScenarioId = scenarioId;
 
       const balance = getCurrentVCoins();
-      const storePrice = currentScenarioIapPrice(scenarioId);
 
       buyTitle.textContent = _t("scenarios." + scenarioId + ".title", "");
       buyDesc.textContent = _t("ui.scenario_buy.desc", "");
@@ -876,11 +984,7 @@
         { balance }
       );
 
-      buyIap.textContent = _t(
-        "ui.scenario_buy.iap_direct",
-        "",
-        { price: storePrice || "" }
-      );
+      buyIap.textContent = getScenarioStoreButtonLabel(scenarioId);
 
       buyGet.textContent = _t("ui.scenario_buy.open_shop", "");
       buyCancel.textContent = _t("common.cancel", "");
@@ -1009,12 +1113,7 @@
     function refreshIapLabel(){
       try {
         if (buyPopup && buyPopup.style.display === "flex" && pendingScenarioId){
-          const storePrice = currentScenarioIapPrice(pendingScenarioId);
-          buyIap.textContent = _t(
-            "ui.scenario_buy.iap_direct",
-            "",
-            { price: storePrice || "" }
-          );
+          buyIap.textContent = getScenarioStoreButtonLabel(pendingScenarioId);
         }
       } catch(_){}
     }
@@ -1143,7 +1242,16 @@
       if (!AppUpdate?.openAppStore) return false;
 
       try{
-        await AppUpdate.openAppStore();
+        const platform = window.Capacitor?.getPlatform?.() || "";
+
+        if (platform === "ios") {
+          await AppUpdate.openAppStore({
+            appId: "TON_APPLE_ID_IOS"
+          });
+        } else {
+          await AppUpdate.openAppStore();
+        }
+
         return true;
       }catch(_){
         return false;
@@ -1254,4 +1362,3 @@
   </script>
 </body>
 </html>
-

@@ -84,10 +84,125 @@ let ENDING_STATE = {
 ========================= */
 function $(id){ return document.getElementById(id); }
 
+const IMAGE_PRELOAD_CACHE = new Map();
+let SCENE_IMAGE_REQ = 0;
+
 async function fetchJSON(url){
-  const r = await fetch(url, { cache: "no-store" });
+  const r = await fetch(url, { cache: "default" });
   if(!r.ok) throw new Error(`fetch ${url} => ${r.status}`);
   return await r.json();
+}
+
+function showSceneLoading(show){
+  const el = $("sceneLoadingOverlay");
+  if(!el) return;
+  el.classList.toggle("hidden", !show);
+}
+
+function preloadImage(url){
+  if(!url) return Promise.resolve(null);
+
+  const cached = IMAGE_PRELOAD_CACHE.get(url);
+  if(cached) return cached;
+
+  const promise = new Promise((resolve, reject) => {
+    const img = new Image();
+    img.decoding = "async";
+
+    img.onload = async () => {
+      try{
+        if(typeof img.decode === "function") await img.decode();
+      }catch(_){ }
+      resolve(url);
+    };
+
+    img.onerror = () => {
+      IMAGE_PRELOAD_CACHE.delete(url);
+      reject(new Error(`image preload failed: ${url}`));
+    };
+
+    img.src = url;
+  });
+
+  IMAGE_PRELOAD_CACHE.set(url, promise);
+  return promise;
+}
+
+function setSceneImage(file, alt = ""){
+  const imgEl = $("scene_img") || $("sceneImg");
+  const imgSourceEl = $("scene_img_source");
+  const pictureEl = $("scene_picture");
+
+  if(!imgEl) return;
+
+  const reqId = ++SCENE_IMAGE_REQ;
+
+  if(!file){
+    if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
+    imgEl.removeAttribute("src");
+    imgEl.alt = "";
+    imgEl.classList.remove("is-ready");
+    imgEl.classList.add("hidden");
+    if(pictureEl) pictureEl.classList.add("hidden");
+    showSceneLoading(false);
+    return;
+  }
+
+  showSceneLoading(true);
+
+  preloadImage(file)
+    .then(() => {
+      if(reqId !== SCENE_IMAGE_REQ) return;
+
+      if(imgSourceEl) imgSourceEl.srcset = file;
+      imgEl.alt = alt || "";
+      imgEl.classList.remove("hidden");
+      imgEl.classList.remove("is-ready");
+      if(pictureEl) pictureEl.classList.remove("hidden");
+
+      if(imgEl.getAttribute("src") !== file){
+        imgEl.src = file;
+      }
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if(reqId !== SCENE_IMAGE_REQ) return;
+          imgEl.classList.add("is-ready");
+          showSceneLoading(false);
+        });
+      });
+    })
+    .catch((err) => {
+      if(reqId !== SCENE_IMAGE_REQ) return;
+      console.warn("[scene image preload]", err);
+      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
+      imgEl.removeAttribute("src");
+      imgEl.alt = "";
+      imgEl.classList.remove("is-ready");
+      imgEl.classList.add("hidden");
+      if(pictureEl) pictureEl.classList.add("hidden");
+      showSceneLoading(false);
+    });
+}
+
+function preloadNextSceneImages(sceneId){
+  try{
+    const scene = resolveSceneObject(LOGIC, sceneId);
+    const choices = Array.isArray(scene?.choices) ? scene.choices : [];
+
+    for(const choice of choices){
+      const nextId = String(choice?.next || "").trim();
+      if(!nextId) continue;
+
+      const nextScene = resolveSceneObject(LOGIC, nextId);
+      if(!nextScene) continue;
+
+      const img = resolveImageFile(LOGIC, nextScene.image_id || nextId);
+      if(img?.file) preloadImage(img.file).catch(() => {});
+    }
+  }catch(err){
+    console.warn("[preloadNextSceneImages]", err);
+  }
 }
 
 function deepGet(obj, path){
@@ -1202,17 +1317,17 @@ async function openScenario(scenarioId, opts = {}){
 
   currentScenarioId = scenarioId;
 
-  LOGIC = await fetchJSON(PATHS.scenarioLogic(scenarioId));
+  const logicPromise = fetchJSON(PATHS.scenarioLogic(scenarioId));
+  const textPromise = fetchJSON(PATHS.scenarioText(scenarioId, LANG))
+    .catch(() => fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG)));
+
+  LOGIC = await logicPromise;
   try{
     const uni = (LOGIC?.meta?.universe || scenarioId || "").trim();
     if (uni && window.VCAudio?.setUniverse) window.VCAudio.setUniverse(uni);
   } catch(_){}
 
-  try{
-    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, LANG));
-  }catch(_){
-    TEXT = await fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG));
-  }
+  TEXT = await textPromise;
 
   TEXT_STRINGS = (TEXT && typeof TEXT === "object" && TEXT.strings && typeof TEXT.strings === "object")
     ? TEXT.strings
@@ -1943,17 +2058,7 @@ async function handleEnding(type, endScene){
 
   if(imgEl){
     const img = resolveImageFile(LOGIC, endScene?.image_id);
-    if(img && img.file){
-      if(imgSourceEl) imgSourceEl.srcset = img.file;
-      imgEl.src = img.file;
-      imgEl.alt = img.alt || "";
-      imgEl.classList.remove("hidden");
-    } else {
-      imgEl.removeAttribute("src");
-      imgEl.alt = "";
-      imgEl.classList.add("hidden");
-      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
-    }
+    setSceneImage(img?.file || "", img?.alt || "");
   }
 
   let rewardValue = null;
@@ -2136,18 +2241,10 @@ function renderScene(){
 
   if(imgEl){
     const img = resolveImageFile(LOGIC, scene.image_id);
-    if(img && img.file){
-      if(imgSourceEl) imgSourceEl.srcset = img.file;
-      imgEl.src = img.file;
-      imgEl.alt = img.alt || "";
-      imgEl.classList.remove("hidden");
-    } else {
-      imgEl.removeAttribute("src");
-      imgEl.alt = "";
-      imgEl.classList.add("hidden");
-      if(imgSourceEl) imgSourceEl.removeAttribute("srcset");
-    }
+    setSceneImage(img?.file || "", img?.alt || "");
   }
+
+  preloadNextSceneImages(scene.id);
 
   if(hintBtn){
     const hintKey = scene.hint_key;

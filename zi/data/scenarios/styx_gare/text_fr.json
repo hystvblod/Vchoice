@@ -219,7 +219,7 @@
     "styx.s32.c3": "Reculer vers l’escalier",
 
     "styx.s33.title": "Accès restreint",
-    "styx.s33.body": "Un symbole gravé barre la porte. Tu comprends le message sans le lire : seuls certains passent.\n\nLa brume, elle, semble autorisée.",
+    "styx.s33.body": "deux statues barrent la porte. Tu comprends le message sans le lire : seuls certains passent.\n\nLa brume, elle, semble autorisée.",
     "styx.s33.c1": "Tenter quand même",
     "styx.s33.c2": "Chercher une autre voie",
     "styx.s33.c3": "Revenir à la porte précédente",
@@ -382,8 +382,8 @@
     "styx.s58.c2": "Chercher une autre ouverture",
     "styx.s58.c3": "Retourner vers Charon",
 
-    "styx.s59.title": "Les portes rouges",
-    "styx.s59.body": "Des portes monumentales s’ouvrent sur un gouffre rouge incandescent. La chaleur n’arrive pas jusqu’à toi.\n\nTu comprends : ce n’est pas une entrée spectaculaire. C’est une formalité.",
+    "styx.s59.title": "Les portes",
+    "styx.s59.body": "Des portes monumentales s’ouvrent sur un monde de ténèbre. Le froidn’arrive pas jusqu’à toi et des ombres te regardent.",
     "styx.s59.c1": "Entrer",
     "styx.s59.c2": "Reculer vers Charon",
     "styx.s59.c3": "Fuir vers le train rouge",
@@ -414,7 +414,7 @@
     "styx.s63.body": "Tu détournes les yeux de Léthé. Ton cerveau hurle de fatigue, puis se stabilise.\n\nTu restes toi. Pour l’instant.",
     "styx.s63.c1": "Chercher une sortie depuis le bassin",
     "styx.s63.c2": "Revenir vers le tunnel",
-    "styx.s63.c3": "Regarder l’eau une dernière fois",
+    "styx.s63.c3": "Boire l'eau",
 
     "styx.s64.title": "Effacement",
     "styx.s64.body": "Une gorgée suffit. Le monde se simplifie. Les détails s’envolent.\n\nTu sais que tu avais des preuves. Mais tu ne sais plus lesquelles. Tu souris presque.",
@@ -441,7 +441,7 @@
     "styx.s67.c3": "Aller vers le contrôleur",
 
     "styx.s68.title": "La ligne de retour",
-    "styx.s68.body": "La ligne clignote enfin : « RETOUR — QUAI 0 — Preuve requise ».\n\nElle n’apparaît qu’une seconde à la fois. Mais tu as lu. Et la gare sait que tu as lu.",
+    "styx.s68.body": "La ligne clignote enfin : « RETOUR — QUAI 0 ».\n\nElle n’apparaît qu’une seconde à la fois. Mais tu as lu. Et la gare sait que tu as lu.",
     "styx.s68.c1": "Tout noter (retour + preuve)",
     "styx.s68.c2": "Aller immédiatement voir le contrôleur",
     "styx.s68.c3": "Rester au panneau (vérifier les autres destinations)",
@@ -460,11 +460,11 @@
     "styx.s70.c2": "Retourner dans le wagon",
     "styx.s70.c3": "Aller au contrôleur",
 
-    "styx.s71.title": "Preuve en main",
-    "styx.s71.body": "Le log de contrôle est froid dans ta main. Les lignes sont simples. Administratives.\n\nC’est peut-être la seule langue que STYX respecte vraiment.",
-    "styx.s71.c1": "Aller vers le contrôleur",
-    "styx.s71.c2": "Rester au pupitre (chercher plus)",
-    "styx.s71.c3": "Revenir à la salle d’attente",
+    "styx.s71.title": "Une preuve",
+"styx.s71.body": "Le papier est froid dans ta main. Quelques lignes. Très claires.\n\nÇa peut suffire.",
+"styx.s71.c1": "Aller voir le contrôleur",
+"styx.s71.c2": "Rester ici et chercher encore",
+"styx.s71.c3": "Retourner à la salle d’attente",
 
     "styx.s72.title": "Dernier avertissement",
     "styx.s72.body": "Le contrôleur est là, comme un point fixe. « Tu hésites. Alors écoute : ceux qui hésitent trop finissent par appartenir à la gare. »\n\nIl désigne la brume. « Elle sait déjà ton poids. »",
@@ -476,7 +476,7 @@
     "styx.end_good.body": "Tu montes. Les portes se referment avec un bruit normal.\n\nLa lumière blanche avale la gare. Puis, d’un coup, tu te réveilles dans le monde réel, dans un train banal. Des passagers parlent, un enfant rit, une annonce grésille.\n\nTon téléphone affiche l’heure. 03:17 vient de passer.\n\nEt dans ta poche… il n’y a plus de ticket.",
 
     "styx.end_bad.title": "END BAD — Arrivée",
-    "styx.end_bad.body": "Tu franchis le seuil. La chaleur ne te brûle pas : elle t’enregistre.\n\nCharon t’attend comme un employé ancien. Cerbère garde la porte sans colère.\n\nTu comprends enfin : ce n’était pas un arrêt.\n\nC’était une arrivée.\n\nDerrière toi, STYX referme ses portes avec la douceur d’un dossier classé.",
+    "styx.end_bad.body": "Charon t’attend comme un employé ancien. Cerbère garde la porte sans colère.\n\nTu comprends enfin : ce n’était pas un arrêt.\n\nC’était une arrivée.\n\nDerrière toi, STYX referme ses portes et tu deviens une ombre de plus.",
 
     "styx.end_secret.title": "END SECRET — Conducteur",
     "styx.end_secret.body": "Tu prends la casquette noire.\n\nQuand tu la mets, la gare se tait d’un silence parfait, comme si elle saluait.\n\nLes trains continuent d’arriver. Les silhouettes descendent. Le quai se remplit d’ombres dociles.\n\nEt cette fois… tu es dans la cabine.\n\nLe levier répond à ta main.\n\nTu ne cherches plus la sortie.\n\nTu fais les arrivées.",
