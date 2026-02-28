@@ -1,4 +1,3 @@
-<!-- shop.html -->
 <!doctype html>
 <html lang="fr">
 <head>
@@ -83,7 +82,13 @@
       gap: 10px;
       padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
     }
-    .vc-top-slot{ flex: 1 1 0; display:flex; align-items:center; }
+
+    .vc-top-slot{
+      flex: 1 1 0;
+      display:flex;
+      align-items:center;
+    }
+
     .vc-top-left{ justify-content:flex-start; }
     .vc-top-center{ justify-content:center; }
     .vc-top-right{ justify-content:flex-end; }
@@ -105,7 +110,10 @@
       text-decoration:none;
       -webkit-tap-highlight-color: transparent;
     }
-    .vc-icon-button:active{ transform: scale(.98); }
+
+    .vc-icon-button:active{
+      transform: scale(.98);
+    }
 
     .vc-icon-button img{
       width:30px;
@@ -117,18 +125,21 @@
       filter: drop-shadow(0 2px 10px rgba(0,0,0,0.7)) contrast(1.15) brightness(1.08);
     }
 
-    .vc-back-ico{
-      width:24px;
-      height:24px;
+    .vc-head-ico{
+      width:22px;
+      height:22px;
       display:block;
       opacity:.98;
       filter: drop-shadow(0 2px 10px rgba(0,0,0,0.75));
+      pointer-events:none;
+      user-select:none;
     }
 
     .shop-head{
       padding: 6px 2px 12px;
       text-align:center;
     }
+
     .shop-title{
       margin: 4px 0 0;
       font-size: 20px;
@@ -139,7 +150,7 @@
       min-height: 24px;
     }
 
-    /* ===== Top rewarded offers (2 cards) ===== */
+    /* ===== Top rewarded offers ===== */
     .reward-grid{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -198,21 +209,21 @@
       pointer-events:none;
     }
 
- .reward-x{
-  flex: 1 1 auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight: 950;
-  font-size: 20px;
-  letter-spacing: .2px;
-  color: var(--vc-text);
-  opacity: .98;
-  text-shadow: 0 10px 22px rgba(0,0,0,.45);
-  line-height: 1;
-  text-align:center;
-  padding-right: 0;
-}
+    .reward-x{
+      flex: 1 1 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 950;
+      font-size: 20px;
+      letter-spacing: .2px;
+      color: var(--vc-text);
+      opacity: .98;
+      text-shadow: 0 10px 22px rgba(0,0,0,.45);
+      line-height: 1;
+      text-align:center;
+      padding-right: 0;
+    }
 
     .reward-btn{
       position:relative;
@@ -227,12 +238,19 @@
       box-shadow: 0 10px 20px rgba(0,0,0,.22);
       min-height: 42px;
     }
-    .reward-btn:active{ transform: translateY(1px); }
-    .reward-btn.is-busy{ opacity:.7; cursor:not-allowed; }
 
-    /* ===== Divider "Store" ===== */
+    .reward-btn:active{
+      transform: translateY(1px);
+    }
+
+    .reward-btn.is-busy{
+      opacity:.7;
+      cursor:not-allowed;
+    }
+
+    /* ===== Divider ===== */
     .shop-divider{
-      margin: 26px 2px 20px; /* ✅ espace sous les 2 cards gratuites + avant le store */
+      margin: 26px 2px 20px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -259,7 +277,7 @@
 
     /* ===== Product grid ===== */
     .shop-section{
-      margin-top: 0; /* ✅ on gère l’espace via le divider */
+      margin-top: 0;
     }
 
     .shop-grid{
@@ -275,7 +293,10 @@
       position:relative;
       transition: transform .12s ease;
     }
-    .prod-card:active{ transform: scale(.99); }
+
+    .prod-card:active{
+      transform: scale(.99);
+    }
 
     .prod-card::before{
       content:"";
@@ -296,10 +317,9 @@
       align-items:stretch;
       justify-content:space-between;
       gap: 10px;
-      min-height: 0; /* ✅ ne force plus une hauteur plus grande que les cards du haut */
+      min-height: 0;
     }
 
-    /* ✅ même layout que les cards du haut (image gauche, texte droite) */
     .prod-top{
       display:flex;
       align-items:center;
@@ -319,20 +339,36 @@
       flex: 0 0 auto;
     }
 
-.prod-amount{
-  flex: 1 1 auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight: 950;
-  font-size: 20px;
-  color: var(--vc-text);
-  text-shadow: 0 10px 24px rgba(0,0,0,.5);
-  line-height: 1.1;
-  min-height: 22px;
-  text-align:center;
-  padding-right: 0;
-}
+    .prod-amount{
+      flex: 1 1 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 950;
+      font-size: 20px;
+      color: var(--vc-text);
+      text-shadow: 0 10px 24px rgba(0,0,0,.5);
+      line-height: 1.1;
+      min-height: 22px;
+      text-align:center;
+      padding-right: 0;
+    }
+
+    .prod-card[data-product="vchoice_no_ads"] .prod-top,
+    .prod-card[data-product="vchoice_ultra"] .prod-top{
+      justify-content: center;
+      gap: 0;
+    }
+
+    .prod-card[data-product="vchoice_no_ads"] .prod-amount,
+    .prod-card[data-product="vchoice_ultra"] .prod-amount{
+      display: none;
+    }
+
+    .prod-card[data-product="vchoice_no_ads"] .prod-ico,
+    .prod-card[data-product="vchoice_ultra"] .prod-ico{
+      margin: 0 auto;
+    }
 
     .prod-price{
       width:100%;
@@ -377,9 +413,12 @@
       justify-content:center;
       text-align:center;
     }
-    .prod-card.is-owned .owned-badge{ display:inline-flex; }
 
-    /* ===== Modal (center) ===== */
+    .prod-card.is-owned .owned-badge{
+      display:inline-flex;
+    }
+
+    /* ===== Modal ===== */
     .shop-modal{
       position: fixed;
       inset: 0;
@@ -393,6 +432,7 @@
       pointer-events:none;
       transition: opacity .14s ease;
     }
+
     .shop-modal.is-open{
       opacity: 1;
       pointer-events:auto;
@@ -413,6 +453,7 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
+
     .shop-modal.is-open .shop-modal-card{
       transform: scale(1) translateY(0);
     }
@@ -501,14 +542,21 @@
       justify-content:center;
       text-align:center;
     }
-    .shop-modal-btn:active{ transform: translateY(1px); }
+
+    .shop-modal-btn:active{
+      transform: translateY(1px);
+    }
 
     .shop-modal-btn.primary{
       border-color: rgba(255,59,59,.30);
       background: linear-gradient(180deg, rgba(255,59,59,.20), rgba(0,0,0,.16));
       box-shadow: 0 14px 30px rgba(0,0,0,.30);
     }
-    .shop-modal-btn[disabled]{ opacity:.6; cursor:not-allowed; }
+
+    .shop-modal-btn[disabled]{
+      opacity:.6;
+      cursor:not-allowed;
+    }
   </style>
 </head>
 
@@ -516,18 +564,24 @@
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="index.html" aria-label="" data-i18n-aria="ui.aria_back">
-        <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path fill="white" d="M14.7 6.3a1 1 0 0 1 0 1.4L11.4 11H20a1 1 0 1 1 0 2h-8.6l3.3 3.3a1 1 0 1 1-1.4 1.4l-5-5a1 1 0 0 1 0-1.4l5-5a1 1 0 0 1 1.4 0Z"/>
+        <svg class="vc-head-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="white" d="M13.91 6.41a1 1 0 0 1 0 1.41L10.73 11H18a1 1 0 1 1 0 2h-7.27l3.18 3.18a1 1 0 1 1-1.41 1.41l-4.89-4.88a1 1 0 0 1 0-1.42l4.89-4.88a1 1 0 0 1 1.41 0Z"/>
         </svg>
       </a>
     </div>
 
-    <div class="vc-top-slot vc-top-center"></div>
+    <div class="vc-top-slot vc-top-center">
+      <a class="vc-icon-button" href="settings.html" aria-label="" data-i18n-aria="ui.aria_settings">
+        <svg class="vc-head-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="white" d="M19.14 12.94c.04-.31.06-.62.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.6-.22l-2.39.96a7.2 7.2 0 0 0-1.63-.94l-.36-2.54a.5.5 0 0 0-.49-.42h-3.84a.5.5 0 0 0-.49.42l-.36 2.54c-.58.22-1.12.53-1.63.94l-2.39-.96a.5.5 0 0 0-.6.22L2.71 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.62-.06.94s.02.63.06.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32a.5.5 0 0 0 .6.22l2.39-.96c.5.4 1.05.72 1.63.94l.36 2.54a.5.5 0 0 0 .49.42h3.84a.5.5 0 0 0 .49-.42l.36-2.54c.58-.22 1.12-.53 1.63-.94l2.39.96a.5.5 0 0 0 .6-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58ZM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7Z"/>
+        </svg>
+      </a>
+    </div>
 
     <div class="vc-top-slot vc-top-right">
-  <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.aria_profile">
-  <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
-</a>
+      <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.aria_profile">
+        <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
+      </a>
     </div>
   </div>
 
@@ -554,7 +608,6 @@
       </div>
     </section>
 
-    <!-- ✅ Séparateur + titre i18n "Store" -->
     <div class="shop-divider">
       <div class="shop-divider-line"></div>
       <h2 class="shop-divider-title" data-i18n="ui.shop_store_title"></h2>
