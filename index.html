@@ -65,7 +65,11 @@
       background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
     }
 
-    .page{ position:relative; z-index:1; padding-bottom:132px; }
+   .page{
+  position: relative;
+  z-index: 1;
+  padding-bottom: max(18px, env(safe-area-inset-bottom));
+}
 
     .vc-top-actions{
       position: relative;
