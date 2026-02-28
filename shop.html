@@ -7,11 +7,6 @@
   <link rel="stylesheet" href="css/app.css" />
 
   <style>
-    html,
-    body{
-      height:100%;
-    }
-
     .topbar{ display:none !important; }
 
     :root{
@@ -33,27 +28,21 @@
       --vc-soft: 0 10px 24px rgba(0,0,0,.25);
     }
 
-    html.shop-modal-open,
-    body.shop-modal-open{
+    html.shop-modal-open, body.shop-modal-open{
       overflow: hidden;
       touch-action: none;
     }
 
-    body[data-page="shop"]{
+    body{
       background:
         radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
         radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
         radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
         linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
-      margin:0;
-      width:100%;
-      height:100dvh;
-      min-height:100dvh;
-      overflow:hidden;
-      overscroll-behavior:none;
+      min-height: 100vh;
       position: relative;
-      display:flex;
-      flex-direction:column;
+      overflow-x: hidden;
+      margin:0;
     }
 
     body::before{
@@ -77,17 +66,21 @@
       background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
     }
 
+    .page{
+      position:relative;
+      z-index:1;
+      padding: 12px 14px 26px;
+    }
+
     .vc-top-actions{
       position: relative;
       z-index: 10;
       width: 100%;
-      flex: 0 0 auto;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap: 10px;
       padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
-      box-sizing:border-box;
     }
 
     .vc-top-slot{
@@ -116,7 +109,6 @@
       cursor:pointer;
       text-decoration:none;
       -webkit-tap-highlight-color: transparent;
-      flex: 0 0 auto;
     }
 
     .vc-icon-button:active{
@@ -143,40 +135,30 @@
       user-select:none;
     }
 
-    .page{
-      position:relative;
-      z-index:1;
-      flex: 1 1 auto;
-      min-height:0;
-      overflow:hidden;
-      padding: 8px 12px max(10px, env(safe-area-inset-bottom));
-      box-sizing:border-box;
-      display:grid;
-      grid-template-rows:auto auto auto 1fr;
-      row-gap:10px;
-    }
-
     .shop-head{
-      padding: 2px 2px 0;
+      padding: 6px 2px 12px;
       text-align:center;
     }
 
     .shop-title{
-      margin: 0;
-      font-size: 18px;
+      margin: 4px 0 0;
+      font-size: 20px;
       font-weight: 950;
       letter-spacing: .2px;
       color: var(--vc-text);
       text-shadow: 0 10px 28px rgba(0,0,0,.55);
-      min-height: 20px;
-      line-height: 1.1;
+      min-height: 24px;
     }
 
     .reward-grid{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin: 0;
+      gap: 12px;
+      margin: 10px 0 14px;
+    }
+
+    @media (max-width: 360px){
+      .reward-grid{ gap: 10px; }
     }
 
     .shop-panel{
@@ -186,11 +168,10 @@
       box-shadow: var(--vc-glow);
       overflow:hidden;
       position: relative;
-      min-height:0;
     }
 
     .reward-card{
-      padding: 10px;
+      padding: 12px 12px 12px;
       cursor: default;
       -webkit-tap-highlight-color: transparent;
     }
@@ -212,16 +193,16 @@
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 8px;
-      margin-bottom: 8px;
-      min-height: 56px;
+      gap: 10px;
+      margin-bottom: 10px;
+      min-height: 74px;
     }
 
     .reward-ico{
-      width: 56px;
-      height: 56px;
+      width: 72px;
+      height: 72px;
       object-fit: contain;
-      filter: drop-shadow(0 14px 24px rgba(0,0,0,.55));
+      filter: drop-shadow(0 16px 30px rgba(0,0,0,.55));
       flex: 0 0 auto;
       user-select:none;
       pointer-events:none;
@@ -233,7 +214,7 @@
       align-items:center;
       justify-content:center;
       font-weight: 950;
-      font-size: 17px;
+      font-size: 20px;
       letter-spacing: .2px;
       color: var(--vc-text);
       opacity: .98;
@@ -241,22 +222,20 @@
       line-height: 1;
       text-align:center;
       padding-right: 0;
-      min-width:0;
     }
 
     .reward-btn{
       position:relative;
       width:100%;
       border-radius: 14px;
-      padding: 9px 8px;
+      padding: 11px 10px;
       font-weight: 950;
-      font-size: 14px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.28);
       color: var(--vc-text);
       cursor:pointer;
       box-shadow: 0 10px 20px rgba(0,0,0,.22);
-      min-height: 38px;
+      min-height: 42px;
     }
 
     .reward-btn:active{
@@ -269,13 +248,12 @@
     }
 
     .shop-divider{
-      margin: 0;
+      margin: 26px 2px 20px;
       display:flex;
       align-items:center;
       justify-content:center;
-      gap: 8px;
+      gap: 10px;
       opacity: .95;
-      min-height: 20px;
     }
 
     .shop-divider-line{
@@ -286,39 +264,31 @@
 
     .shop-divider-title{
       margin: 0;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 900;
-      letter-spacing: .16em;
+      letter-spacing: .18em;
       text-transform: uppercase;
       color: rgba(255,255,255,.78);
       text-shadow: 0 10px 22px rgba(0,0,0,.55);
       white-space: nowrap;
-      line-height: 1;
     }
 
     .shop-section{
       margin-top: 0;
-      min-height:0;
-      overflow:hidden;
     }
 
     .shop-grid{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-rows: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      height:100%;
-      min-height:0;
+      gap: 12px;
     }
 
     .prod-card{
-      padding: 9px 10px;
+      padding: 12px 12px 12px;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
       position:relative;
       transition: transform .12s ease;
-      min-height:0;
-      overflow:hidden;
     }
 
     .prod-card:active{
@@ -343,26 +313,24 @@
       flex-direction:column;
       align-items:stretch;
       justify-content:space-between;
-      gap: 8px;
-      min-height: 100%;
-      height:100%;
+      gap: 10px;
+      min-height: 0;
     }
 
     .prod-top{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 8px;
-      min-height: 0;
+      gap: 10px;
+      min-height: 74px;
       width:100%;
-      flex: 1 1 auto;
     }
 
     .prod-ico{
-      width: 52px;
-      height: 52px;
+      width: 72px;
+      height: 72px;
       object-fit: contain;
-      filter: drop-shadow(0 16px 28px rgba(0,0,0,.60));
+      filter: drop-shadow(0 18px 34px rgba(0,0,0,.60));
       user-select:none;
       pointer-events:none;
       flex: 0 0 auto;
@@ -374,14 +342,13 @@
       align-items:center;
       justify-content:center;
       font-weight: 950;
-      font-size: 17px;
+      font-size: 20px;
       color: var(--vc-text);
       text-shadow: 0 10px 24px rgba(0,0,0,.5);
-      line-height: 1.05;
-      min-height: 18px;
+      line-height: 1.1;
+      min-height: 22px;
       text-align:center;
       padding-right: 0;
-      min-width:0;
     }
 
     .prod-card[data-product="vchoice_no_ads"] .prod-top,
@@ -405,18 +372,16 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 8px 8px;
+      padding: 11px 10px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.14);
       background: rgba(0,0,0,.22);
       font-weight: 950;
-      font-size: 13px;
-      letter-spacing: .15px;
+      font-size: 15px;
+      letter-spacing: .2px;
       box-shadow: 0 10px 20px rgba(0,0,0,.20);
       color: var(--vc-text);
-      min-height: 36px;
-      text-align:center;
-      line-height:1.1;
+      min-height: 42px;
     }
 
     .prod-card.is-owned .prod-price{
@@ -426,68 +391,28 @@
 
     .owned-badge{
       position:absolute;
-      top: 8px;
-      right: 8px;
-      padding: 4px 8px;
+      top: 10px;
+      right: 10px;
+      padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid rgba(80,220,140,.30);
       background: rgba(10,40,22,.35);
       color: rgba(235,255,244,.95);
       font-weight: 950;
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: .02em;
       box-shadow: 0 12px 24px rgba(0,0,0,.25);
       display:none;
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
-      min-height: 22px;
+      min-height: 24px;
       align-items:center;
       justify-content:center;
       text-align:center;
-      z-index:2;
     }
 
     .prod-card.is-owned .owned-badge{
       display:inline-flex;
-    }
-
-    @media (max-width: 360px){
-      .page{
-        padding: 6px 10px max(8px, env(safe-area-inset-bottom));
-        row-gap:8px;
-      }
-
-      .reward-grid,
-      .shop-grid{
-        gap:8px;
-      }
-
-      .reward-card,
-      .prod-card{
-        padding:8px;
-      }
-
-      .reward-ico,
-      .prod-ico{
-        width:48px;
-        height:48px;
-      }
-
-      .reward-x,
-      .prod-amount{
-        font-size:15px;
-      }
-
-      .reward-btn,
-      .prod-price{
-        min-height:34px;
-        font-size:12px;
-        padding:7px 6px;
-      }
-
-      .shop-title{
-        font-size:17px;
-      }
     }
 
     .shop-modal{
