@@ -1,4 +1,3 @@
-
 {
   "meta": {
     "lang": "fr",
@@ -11,31 +10,31 @@
     "br.s01.title": "La colline muette",
     "br.s01.body": "La pente paraît normale, mais l’air est plus froid ici. Entre deux racines, un métal affleure… comme si la terre cachait une porte.",
     "br.s01.c1": "Suivre la clôture et chercher une ouverture",
-    "br.s01.c2": "s'approcher et toucher le métal",
-    "br.s01.c3": "Contourner et observer les traces au sol",
+    "br.s01.c2": "S’approcher et toucher le métal",
+    "br.s01.c3": "Écarter les racines et forcer l’accès",
 
     "br.s02.title": "Clôture neuve",
     "br.s02.body": "La clôture est vieille, mais le cadenas est neuf. Trop neuf. Au sol, la boue porte des marques nettes qui vont toutes dans la même direction : la colline.",
     "br.s02.c1": "Suivre les traces jusqu’à la colline",
     "br.s02.c2": "Revenir en arrière",
-    "br.s02.c3": "Chercher un autre passage le long de la clôture",
+    "br.s02.c3": "Suivre les traces jusqu’à une entrée discrète",
 
     "br.s03.title": "Métal froid",
     "br.s03.body": "Sous tes doigts, la trappe est glacée. Une goutte sombre a séché sur le métal, comme si le temps s’était arrêté ici. La poignée ne fait aucun bruit.",
     "br.s03.c1": "Tirer la poignée doucement",
     "br.s03.c2": "Reculer et écouter longtemps",
-    "br.s03.c3": "Soulever juste assez pour regarder",
+    "br.s03.c3": "Soulever juste assez pour passer",
 
     "br.s04.title": "Descendre, longtemps",
     "br.s04.body": "Tu t’enfonces. L’odeur de terre disparaît. Le béton humide prend sa place, puis une odeur sèche, presque propre. Ton souffle résonne trop bien.",
     "br.s04.c1": "Continuer la descente",
     "br.s04.c2": "Remonter",
-    "br.s04.c3": "Éteindre ta lumière un instant",
+    "br.s04.c3": "Couper la lumière et avancer au son",
 
     "br.s05.title": "Le sas",
-    "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement.",
+    "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement. Le panneau du sas semble attendre une main pour révéler où mène l’accès.",
     "br.s05.c1": "Passer la première porte",
-    "br.s05.c2": "Tester le panneau",
+    "br.s05.c2": "Réveiller le panneau pour lire l’accès",
     "br.s05.c3": "Revenir vers l’escalier",
 
     "br.s06.title": "Couloir principal",
@@ -171,7 +170,7 @@
     "br.s27.c3": "Fuir",
 
     "br.s28.title": "Une seconde de trop",
-    "br.s28.body": "Sur l’écran, le couloir est vide. Puis, une seconde plus tard, une ombre passe. L’ombre n’a pas de source. Le bunker “arrondit” la réalité.",
+    "br.s28.body": "Sur l’écran, le couloir est vide. Puis, une seconde plus tard, une ombre passe. L’ombre n’a pas de source. Le bunker arrondit la réalité.",
     "br.s28.c1": "Lancer l’enregistrement",
     "br.s28.c2": "Revenir à la salle sécurité",
     "br.s28.c3": "Partir avant que ça recommence",
@@ -192,10 +191,10 @@
     "br.s31.body": "La lumière rouge ne hurle pas. Elle pulse doucement, comme un cœur artificiel. Les portes au loin se ferment une à une, sans claquer. Le bunker isole. Le bunker range.",
     "br.s31.c1": "Rester calme et marcher",
     "br.s31.c2": "Suivre la pulsation vers le fond",
-    "br.s31.c3": "Prendre le long couloir jusqu’au dernier choix",
+    "br.s31.c3": "Prendre le couloir qui mène aux trois portes",
 
     "br.s32.title": "Retour au calme",
-    "br.s32.body": "Le rouge s’éteint. Le silence revient. Mais tu sens que le bunker t’a “enregistré”. Chaque pas semble archivé. Tu dois choisir une voie utile, pas seulement rassurante.",
+    "br.s32.body": "Le rouge s’éteint. Le silence revient. Mais tu sens que le bunker t’a enregistré. Chaque pas semble archivé. Tu dois choisir une voie utile, pas seulement rassurante.",
     "br.s32.c1": "Ouvrir la porte service",
     "br.s32.c2": "Explorer plus loin dans les couloirs",
     "br.s32.c3": "Retourner aux réserves",
@@ -219,7 +218,7 @@
     "br.s35.c3": "Forcer le rythme",
 
     "br.s36.title": "La marque",
-    "br.s36.body": "Une marque sombre, répétée, comme un symbole sans mots. Elle ne te dit pas “où aller”. Elle te dit “où ne pas faire de bruit”. C’est une règle d’occupant.",
+    "br.s36.body": "Une marque sombre, répétée, comme un symbole sans mots. Elle ne te dit pas où aller. Elle te dit où ne pas faire de bruit. C’est une règle d’occupant.",
     "br.s36.c1": "Continuer vers la marque suivante",
     "br.s36.c2": "Chercher la source",
     "br.s36.c3": "Revenir au couloir précédent",
@@ -233,7 +232,7 @@
     "br.s38.title": "Pièce habitée",
     "br.s38.body": "Un fauteuil. Un drap occultant. Un verre vide, sans poussière. La pièce n’est pas un décor : elle est entretenue. Ici, quelqu’un vit… mais seulement quand tu ne le vois pas.",
     "br.s38.c1": "Approcher le drap occultant",
-    "br.s38.c2": "Chercher une cache",
+    "br.s38.c2": "Observer la pièce sans te montrer",
     "br.s38.c3": "Partir",
 
     "br.s39.title": "L’air manque",
@@ -257,13 +256,13 @@
     "br.s42.title": "Console centrale",
     "br.s42.body": "La console est verrouillée, mais tu vois un langage simple : veille, test, isolement. Le bunker n’est pas un lieu : c’est un protocole. Et tu viens d’en comprendre le début.",
     "br.s42.c1": "Lire les lignes et comprendre le protocole",
-    "br.s42.c2": "Se poser et réfléchir",
+    "br.s42.c2": "Revenir à l’atelier vérifier la séquence",
     "br.s42.c3": "Quitter",
 
     "br.s43.title": "Double clé",
     "br.s43.body": "Deux verrous : badge et séquence. Sans les deux, le bunker te garde dans les couloirs. Avec les deux… tu peux lui parler. La question : faut-il lui parler ?",
     "br.s43.c1": "Déverrouiller",
-    "br.s43.c2": "Revenir à l’atelier et tenter de communiquer",
+    "br.s43.c2": "Revenir à l’atelier chercher une autre piste",
     "br.s43.c3": "Fuir",
 
     "br.s44.title": "Accès accordé",
@@ -294,23 +293,23 @@
     "br.s48.body": "Le rouge est doux. Trop doux. Tu te rends compte que le bunker veut que tu te calmes. Qu’un corps calme est plus simple à ranger. Un souffle froid traverse la pièce.",
     "br.s48.c1": "Continuer vers le fond",
     "br.s48.c2": "Remonter vers la surface",
-    "br.s48.c3": "Aller au dernier choix",
+    "br.s48.c3": "Aller vers les trois portes",
 
     "br.s49.title": "Couloir de l’écho",
     "br.s49.body": "Le couloir normal est pire : aucun signal. Tu te sens seul. Puis tu remarques : ton pas n’a pas le même rythme que ton écho. L’écho hésite. Comme s’il attendait une autre marche.",
     "br.s49.c1": "Retourner au sanctuaire",
     "br.s49.c2": "Remonter vers la surface",
-    "br.s49.c3": "Aller au dernier choix",
+    "br.s49.c3": "Aller vers les trois portes",
 
     "br.s50.title": "Ombre sans corps",
     "br.s50.body": "Tu vois une ombre bouger sur le drap. Mais personne ne passe. Pas de silhouette, pas de source. Le bunker n’offre pas un vampire… il offre ses effets.",
     "br.s50.c1": "Chercher une cache proche",
     "br.s50.c2": "Activer la séquence finale",
-    "br.s50.c3": "Aller au dernier choix",
+    "br.s50.c3": "Aller vers les trois portes",
 
     "br.s51.title": "Le couloir trop long",
     "br.s51.body": "Le couloir rouge s’allonge. Tu sais que c’est impossible, mais ton cerveau accepte l’impossible quand l’air est trop froid. La sortie est là… et pourtant elle recule.",
-    "br.s51.c1": "Aller au dernier choix",
+    "br.s51.c1": "Aller vers les trois portes",
     "br.s51.c2": "Remonter vers la surface",
     "br.s51.c3": "Revenir au couloir",
 
@@ -318,27 +317,27 @@
     "br.s52.body": "L’air de la surface est proche, mais pas encore. Tu entends un bruit faible derrière toi : pas un pas. Le frottement d’un tissu sur du béton. Une présence qui refuse la lumière.",
     "br.s52.c1": "Remonter maintenant",
     "br.s52.c2": "Revenir dans le bunker pour fouiller encore",
-    "br.s52.c3": "Aller au dernier choix",
+    "br.s52.c3": "Aller vers les trois portes",
 
     "br.s53.title": "La règle de nuit",
     "br.s53.body": "Dans le sanctuaire, tu comprends : ici, tout est organisé pour la nuit. Pas pour survivre. Pour durer. Le bunker est un garde-manger… et tu es la seule chose chaude dedans.",
     "br.s53.c1": "Lancer la séquence finale",
     "br.s53.c2": "Revenir au drap",
-    "br.s53.c3": "Aller au dernier choix",
+    "br.s53.c3": "Aller vers les trois portes",
 
     "br.s54.title": "Protocole complet",
     "br.s54.body": "Le bunker te propose une inversion : isoler le sanctuaire, couper les accès, forcer une ‘veille’ qui n’avantage plus l’occupant. Ce n’est pas héroïque. C’est mécanique.",
-    "br.s54.c1": "Retourner au dernier choix",
+    "br.s54.c1": "Retourner vers les trois portes",
     "br.s54.c2": "Quitter en courant",
     "br.s54.c3": "Remonter vers la surface",
 
     "br.s55.title": "Le dernier air",
     "br.s55.body": "Tu as presque la sortie. Mais tu sens une évidence : si tu pars sans preuve, tu douteras toute ta vie. Si tu pars avec preuve… le bunker ne pourra pas te garder dans ta tête.",
-    "br.s55.c1": "Retourner au dernier choix",
+    "br.s55.c1": "Retourner vers les trois portes",
     "br.s55.c2": "Remonter immédiatement",
     "br.s55.c3": "Revenir au couloir rouge",
 
-    "br.s56.title": "Dernier choix",
+    "br.s56.title": "Les trois portes",
     "br.s56.body": "Le bunker te donne trois portes. Aucune n’est marquée. Mais tu sais ce qu’elles veulent dire : sortir, se faire ranger, ou inverser la règle. Ce n’est pas un lieu qui te juge. C’est un système qui te classe.",
     "br.s56.c1": "Sortir du bunker",
     "br.s56.c2": "Rester et voir ce que veut le bunker",
@@ -349,8 +348,7 @@
     "br.end_bad.title": "FIN — Réserve",
     "br.end_bad.body": "L’alarme n’appelle personne. Elle réveille. Le couloir rouge se ferme derrière toi, doucement, sans panique. Le bunker reprend sa fonction : conserver. Cette fois, c’est toi.",
     "br.end_secret.title": "FIN SECRÈTE — Protocole inversé",
-    "br.end_secret.body": "Tu n’affrontes pas l’occupant. Tu retournes la logique du lieu. L’override aligne les voyants, l’isolement change de cible, et tu enfemres a jamais ce qui se trouve dans le bunker",
-
+    "br.end_secret.body": "Tu n’affrontes pas l’occupant. Tu retournes la logique du lieu. L’override aligne les voyants, l’isolement change de cible, et tu enfermes à jamais ce qui se trouve dans le bunker.",
 
     "br.h.s02.soft": "Le cadenas neuf est une anomalie : quelqu’un vient encore ici.",
     "br.h.s02.strong": "Suis les traces : elles mènent directement à l’accès du bunker.",
@@ -359,10 +357,10 @@
     "br.h.s07.strong": "Inspecte le coin arraché : ça mène au fragment utile.",
 
     "br.h.s08.soft": "Le fragment n’est pas un objet : c’est une direction mémorisée.",
-    "br.h.s08.strong": "Choisis l’option qui confirme le tracé : elle déclenche has_map_fragment.",
+    "br.h.s08.strong": "Choisis l’option qui confirme le tracé : elle ouvre l’accès secondaire.",
 
     "br.h.s11.soft": "La rayure fraîche n’existe que si la porte sert souvent.",
-    "br.h.s11.strong": "Passe par le vestiaire pour obtenir l’accès (badge).",
+    "br.h.s11.strong": "Passe par le vestiaire pour obtenir le badge d’accès.",
 
     "br.h.s12.soft": "Un objet trop bien posé est rarement innocent.",
     "br.h.s12.strong": "Prends le badge : sans lui, tu rates la sécurité.",
@@ -371,10 +369,10 @@
     "br.h.s15.strong": "Suis-la vers la porte scellée : c’est un objectif majeur.",
 
     "br.h.s17.soft": "Un tiroir entrouvert est un message discret.",
-    "br.h.s17.strong": "Ouvre le tiroir : la clé y est liée (master_key).",
+    "br.h.s17.strong": "Ouvre le tiroir : la clé s’y trouve.",
 
     "br.h.s18.soft": "Le froid de la clé indique qu’elle vient d’un usage nocturne.",
-    "br.h.s18.strong": "Prends la clé : elle débloque la porte service (s33).",
+    "br.h.s18.strong": "Prends la clé : elle débloque la porte de service.",
 
     "br.h.s20.soft": "La vibration régulière sert de fil d’Ariane.",
     "br.h.s20.strong": "Va vers la ventilation : ça mène à la sécurité.",
@@ -386,16 +384,16 @@
     "br.h.s26.strong": "Avec la clé, prends la porte service pour progresser sans tourner.",
 
     "br.h.s27.soft": "Le retard d’une seconde signifie : surveillance active, pas abandonnée.",
-    "br.h.s27.strong": "Cherche l’enregistrement : la preuve est nécessaire pour la bonne fin.",
+    "br.h.s27.strong": "Cherche l’enregistrement : la preuve reste utile même sans bloquer la sortie.",
 
     "br.h.s30.soft": "La preuve stabilise la réalité : tu ne douteras plus.",
-    "br.h.s30.strong": "Enregistre : has_recording est requis pour end_good et end_secret.",
+    "br.h.s30.strong": "Enregistre : la preuve ne bloque plus la bonne fin, mais elle renforce ce que tu emportes avec toi.",
 
     "br.h.s33.soft": "La poussière cassée trahit une routine, pas une panique.",
     "br.h.s33.strong": "Explore le local : il mène à la marque du sanctuaire.",
 
     "br.h.s37.soft": "La marque répétée est un repère de territoire.",
-    "br.h.s37.strong": "Touche/mémorise la marque : has_sanctuary_mark pour la fin secrète.",
+    "br.h.s37.strong": "Touche la marque : elle compte pour la fin secrète.",
 
     "br.h.s42.soft": "Le bunker est un protocole : comprendre vaut parfois mieux que fuir.",
     "br.h.s42.strong": "Choisis la lecture du protocole : ça déclenche has_protocol_truth.",
@@ -407,14 +405,14 @@
     "br.h.s46.strong": "Active l’override : has_override est requis pour la fin secrète.",
 
     "br.h.s56.soft": "Le dernier choix dépend des preuves accumulées.",
-    "br.h.s56.strong": "Bonne fin : has_recording. Secrète : has_override + has_protocol_truth + has_recording + has_sanctuary_mark.",
+    "br.h.s56.strong": "Bonne fin et mauvaise fin sans condition. Secrète : has_override + has_protocol_truth + has_sanctuary_mark.",
 
     "br.clue.has_badge.title": "Badge",
     "br.clue.has_code.title": "Code",
     "br.clue.has_map_fragment.title": "Fragment de plan",
     "br.clue.has_master_key.title": "Clé maître",
     "br.clue.has_override.title": "Override",
-    "br.clue.has_protocol_truth.title": "Protocole (vérité)",
+    "br.clue.has_protocol_truth.title": "Vérité du protocole",
     "br.clue.has_recording.title": "Enregistrement",
     "br.clue.has_sanctuary_mark.title": "Marque du sanctuaire"
   }

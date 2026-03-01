@@ -1,6 +1,6 @@
 {
   "scenario_id": "bunker_reserve",
-  "version": 3,
+  "version": 4,
   "start_scene": "s01",
   "images": {
     "s01": { "file": "assets/scenarios/bunker_reserve/img/s01.webp" },
@@ -88,7 +88,7 @@
       "choices": [
         { "choice_key": "br.s01.c1", "next": "s02" },
         { "choice_key": "br.s01.c2", "next": "s03" },
-        { "choice_key": "br.s01.c3", "next": "s02" }
+        { "choice_key": "br.s01.c3", "next": "s04" }
       ]
     },
     "s02": {
@@ -98,7 +98,7 @@
       "choices": [
         { "choice_key": "br.s02.c1", "next": "s03" },
         { "choice_key": "br.s02.c2", "next": "s01" },
-        { "choice_key": "br.s02.c3", "next": "s03" }
+        { "choice_key": "br.s02.c3", "next": "s04" }
       ]
     },
     "s03": {
@@ -108,7 +108,7 @@
       "choices": [
         { "choice_key": "br.s03.c1", "next": "s04" },
         { "choice_key": "br.s03.c2", "next": "s02" },
-        { "choice_key": "br.s03.c3", "next": "s04" }
+        { "choice_key": "br.s03.c3", "next": "s05" }
       ]
     },
     "s04": {
@@ -118,7 +118,7 @@
       "choices": [
         { "choice_key": "br.s04.c1", "next": "s05" },
         { "choice_key": "br.s04.c2", "next": "s03" },
-        { "choice_key": "br.s04.c3", "next": "s05" }
+        { "choice_key": "br.s04.c3", "next": "s06" }
       ]
     },
     "s05": {
@@ -127,7 +127,7 @@
       "body_key": "br.s05.body",
       "choices": [
         { "choice_key": "br.s05.c1", "next": "s06" },
-        { "choice_key": "br.s05.c2", "next": "s06" },
+        { "choice_key": "br.s05.c2", "next": "s07" },
         { "choice_key": "br.s05.c3", "next": "s04" }
       ]
     },
@@ -497,7 +497,7 @@
       "body_key": "br.s42.body",
       "choices": [
         { "choice_key": "br.s42.c1", "next": "s43", "set_flags": ["has_protocol_truth"] },
-        { "choice_key": "br.s42.c2", "next": "s43" },
+        { "choice_key": "br.s42.c2", "next": "s23" },
         { "choice_key": "br.s42.c3", "next": "s31" }
       ]
     },
@@ -596,7 +596,7 @@
       "title_key": "br.s52.title",
       "body_key": "br.s52.body",
       "choices": [
-        { "choice_key": "br.s52.c1", "next": "end_good", "requires_any_flags": ["has_recording"] },
+        { "choice_key": "br.s52.c1", "next": "end_good" },
         { "choice_key": "br.s52.c2", "next": "s49" },
         { "choice_key": "br.s52.c3", "next": "s56" }
       ]
@@ -636,9 +636,9 @@
       "title_key": "br.s56.title",
       "body_key": "br.s56.body",
       "choices": [
-        { "choice_key": "br.s56.c1", "next": "end_good", "requires_any_flags": ["has_recording"] },
+        { "choice_key": "br.s56.c1", "next": "end_good" },
         { "choice_key": "br.s56.c2", "next": "end_bad" },
-        { "choice_key": "br.s56.c3", "next": "end_secret", "requires_all_flags": ["has_override", "has_protocol_truth", "has_recording", "has_sanctuary_mark"] }
+        { "choice_key": "br.s56.c3", "next": "end_secret", "requires_all_flags": ["has_override", "has_protocol_truth", "has_sanctuary_mark"] }
       ]
     }
   }
