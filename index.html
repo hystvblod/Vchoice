@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -65,11 +65,11 @@
       background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
     }
 
-   .page{
-  position: relative;
-  z-index: 1;
-  padding-bottom: max(18px, env(safe-area-inset-bottom));
-}
+    .page{
+      position: relative;
+      z-index: 1;
+      padding-bottom: max(18px, env(safe-area-inset-bottom));
+    }
 
     .vc-top-actions{
       position: relative;
@@ -565,6 +565,7 @@
     <div class="app-transition__veil"></div>
     <div class="app-transition__spinner"></div>
   </div>
+
   <div class="vc-top-actions">
     <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.profile_title">
@@ -592,7 +593,7 @@
   <main class="page">
     <section class="hero">
       <h1 class="hero__title" id="ui_index_title" data-i18n="ui.index_title"></h1>
-      <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle_short"></p>
+      <p class="hero__text" id="ui_index_subtitle" data-i18n="ui.index_subtitle"></p>
     </section>
 
     <section class="menu" aria-label="" data-i18n-aria="ui.index_menu_aria">
@@ -1327,16 +1328,22 @@
       } catch(_) {}
 
       (async () => {
+        let earlyLang = "en";
+
         try {
-          const langEarly = window.VRI18n?.getLang?.() || "fr";
+          earlyLang = window.VRI18n?.getLang?.() || "en";
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
-            await window.VRI18n.initI18n(langEarly);
+            await window.VRI18n.initI18n(earlyLang);
           }
         } catch(e){
           console.error("[i18n early]", e);
         }
 
-        try { await window.bootstrapAuthAndProfile?.(); } catch(e){ console.error("[bootstrapAuthAndProfile]", e); }
+        try {
+          await window.bootstrapAuthAndProfile?.();
+        } catch(e){
+          console.error("[bootstrapAuthAndProfile]", e);
+        }
 
         try {
           const p = window.VUserData?.init?.();
@@ -1351,9 +1358,14 @@
         }
 
         try {
-          const lang = window.VUserData?.getLang?.() || (window.VRI18n?.getLang?.() || "fr");
+          const finalLang = window.VUserData?.getLang?.() || earlyLang || "en";
+
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
-            await window.VRI18n.initI18n(lang);
+            if (finalLang !== earlyLang) {
+              await window.VRI18n.initI18n(finalLang);
+            } else if (typeof window.VRI18n.applyI18n === "function") {
+              window.VRI18n.applyI18n(document);
+            }
           }
         } catch(e){
           console.error("[i18n boot]", e);

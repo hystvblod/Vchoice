@@ -1,16 +1,58 @@
 // js/i18n.js — loader i18n + compat VRI18n + i18nGet + auto-apply [data-i18n]
 // ✅ Supporte JSON imbriqué (ui: { page_title: ... }) ET JSON à clés plates ("ui.page_title": "...").
-// ✅ Compatible avec ton index.html actuel (helper _t() qui cherche VRI18n._t / VRI18n.t / i18nGet)
+// ✅ Priorité langue : localStorage > langue device > EN
+// ✅ Fallback fichier : si ui_xx.json absent => ui_en.json
 
 (function () {
   "use strict";
 
   const UI_PATH = "data/ui";
+  const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja","id"];
+
   let _dict = {};
-  let _lang = "fr";
+  let _lang = "en";
+
+  function _normalizeLang(raw){
+    const s = String(raw || "").trim().toLowerCase();
+    if (!s) return "";
+
+    const map = {
+      "pt-br":"ptbr",
+      "pt_br":"ptbr",
+      "pt-pt":"pt",
+      "pt_pt":"pt",
+      "ja-jp":"ja",
+      "ko-kr":"ko",
+      "jp":"ja",
+      "kr":"ko",
+      "in":"id",
+      "id-id":"id"
+    };
+
+    const exact = map[s] || s;
+    const base = exact.split(/[-_]/)[0] || "";
+
+    if (SUPPORTED_LANGS.includes(exact)) return exact;
+    if (SUPPORTED_LANGS.includes(base)) return base;
+    return "";
+  }
+
+  function _detectDeviceLang(){
+    try{
+      const list = Array.isArray(navigator.languages) && navigator.languages.length
+        ? navigator.languages
+        : [navigator.language || ""];
+
+      for (const raw of list){
+        const n = _normalizeLang(raw);
+        if (n) return n;
+      }
+    }catch(_){}
+    return "en";
+  }
 
   function _safeLang(lang) {
-    return String(lang || "").toLowerCase() === "en" ? "en" : "fr";
+    return _normalizeLang(lang) || "en";
   }
 
   // Récupération style "a.b.c" dans un objet imbriqué
@@ -39,10 +81,8 @@
     const k = String(key || "");
     if (!k) return fallback || "";
 
-    // 1) Tentative objet imbriqué
     let v = _getPath(_dict, k);
 
-    // 2) Fallback clés plates : { "ui.page_title": "...", "scenarios.xxx.desc": "..." }
     if (v === undefined && _dict && typeof _dict === "object") {
       v = _dict[k];
     }
@@ -54,7 +94,6 @@
   function apply(root) {
     const r = root || document;
 
-    // Texte
     r.querySelectorAll("[data-i18n]").forEach((el) => {
       const key = el.getAttribute("data-i18n");
       if (!key) return;
@@ -62,7 +101,6 @@
       if (val) el.textContent = val;
     });
 
-    // Aria-label
     r.querySelectorAll("[data-i18n-aria]").forEach((el) => {
       const key = el.getAttribute("data-i18n-aria");
       if (!key) return;
@@ -70,7 +108,6 @@
       if (val) el.setAttribute("aria-label", val);
     });
 
-    // Title attribute (optionnel)
     r.querySelectorAll("[data-i18n-title]").forEach((el) => {
       const key = el.getAttribute("data-i18n-title");
       if (!key) return;
@@ -78,7 +115,6 @@
       if (val) el.setAttribute("title", val);
     });
 
-    // Placeholder (si tu l’utilises)
     r.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
       const key = el.getAttribute("data-i18n-placeholder");
       if (!key) return;
@@ -88,57 +124,65 @@
   }
 
   async function load(lang) {
-    _lang = _safeLang(lang);
+    const requestedLang = _safeLang(lang);
+    let loadedLang = requestedLang;
 
-    const url = `${UI_PATH}/ui_${_lang}.json`;
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`i18n not found: ${url} (HTTP ${res.status})`);
+    let res = await fetch(`${UI_PATH}/ui_${requestedLang}.json`, { cache: "no-store" });
+
+    if (!res.ok && requestedLang !== "en") {
+      loadedLang = "en";
+      res = await fetch(`${UI_PATH}/ui_en.json`, { cache: "no-store" });
+    }
+
+    if (!res.ok) {
+      throw new Error(`i18n not found for lang=${requestedLang}`);
+    }
+
+    _lang = loadedLang;
     _dict = await res.json();
 
-    // html lang + <title> si la clé existe
-    document.documentElement.lang = _lang;
+    document.documentElement.lang = requestedLang;
+
     const pageTitle = t("ui.page_title", "");
     if (pageTitle) document.title = pageTitle;
 
-    // Applique tout de suite
     apply(document);
     return true;
   }
 
   async function initI18n(lang) {
-    // alias pratique (ton index appelle VRI18n.initI18n)
     return load(lang);
   }
 
-  // =========================
-  // Expose globals COMPAT
-  // =========================
-
-  // ✅ Compat maximale : certains endroits appellent VRI18n._t, d'autres VRI18n.t
   window.VRI18n = {
     initI18n,
     load,
 
-    // API “officielle”
     t: (key, fallback, vars) => t(key, fallback, vars),
-
-    // ✅ alias legacy (c’est ça qui te cassait le modal "?")
     _t: (key, fallback, vars) => t(key, fallback, vars),
 
-    // apply
     applyI18n: apply,
 
-    // lang storage
-    getLang: () => localStorage.getItem("vchoice_lang") || "fr",
-    setLang: (lang) => localStorage.setItem("vchoice_lang", _safeLang(lang)),
+    getLang: () => {
+      try{
+        const local = _safeLang(localStorage.getItem("vchoice_lang"));
+        return local || _detectDeviceLang() || "en";
+      }catch(_){
+        return _detectDeviceLang() || "en";
+      }
+    },
+
+    setLang: (lang) => {
+      try{
+        localStorage.setItem("vchoice_lang", _safeLang(lang));
+      }catch(_){}
+    },
   };
 
-  // ✅ ton helper _t() accepte aussi i18nGet()
   window.i18nGet = function (key) {
     return t(key, "");
   };
 
-  // (Optionnel) garder un ancien namespace si tu l’utilises ailleurs
   window.VCI18N = {
     load,
     t: (key, fallback, vars) => t(key, fallback, vars),

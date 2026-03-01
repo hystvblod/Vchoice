@@ -1,13 +1,13 @@
 // js/userData.js
-// js/userData.js — VERSION COMPLETE À JOUR (lang device early + sync Supabase + local unlock cache "pour toujours")
+// js/userData.js — VERSION COMPLETE À JOUR
 // VChoice — Local cache + Supabase RPCs (source of truth)
+// - Priorité langue : settings(localStorage) > profil distant > device > en
 // - Profil via RPC secure_get_me
 // - Solde via RPC: secure_add_vcoins / secure_add_jetons / secure_spend_jetons / secure_reduce_vcoins_to
 // - Username via secure_set_username
 // - Lang via secure_set_lang
 // - Déblocage scénario via secure_unlock_scenario
 // - Fin scénario: secure_complete_scenario (reward + log ending)
-
 
 (function () {
   "use strict";
@@ -22,7 +22,7 @@
   const UNLOCKED_CACHE_KEY = "vchoice_unlocked_cache_v1";
 
   // ✅ Langs supportées côté app (device -> local -> supabase)
-  const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
+  const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja","id"];
 
   let _uiPaused = true;
   let _pendingEmit = false;
@@ -49,6 +49,31 @@
 
   function _safeLower(s){
     try{ return String(s||"").trim().toLowerCase(); }catch{ return ""; }
+  }
+
+  function _normalizeLangCode(raw){
+    const s = _safeLower(raw);
+    if (!s) return "";
+
+    const map = {
+      "pt-br":"ptbr",
+      "pt_br":"ptbr",
+      "pt-pt":"pt",
+      "pt_pt":"pt",
+      "ja-jp":"ja",
+      "ko-kr":"ko",
+      "jp":"ja",
+      "kr":"ko",
+      "in":"id",
+      "id-id":"id"
+    };
+
+    const exact = map[s] || s;
+    const base = exact.split(/[-_]/)[0] || "";
+
+    if (SUPPORTED_LANGS.includes(exact)) return exact;
+    if (SUPPORTED_LANGS.includes(base)) return base;
+    return "";
   }
 
   // ✅ Supabase RPC peut renvoyer un ARRAY (setof) ou un objet (row/json). On unifie ici.
@@ -264,32 +289,42 @@
   // ======= lang helpers =======
   function _getDeviceLang(){
     try{
-      const nav = (navigator.languages && navigator.languages[0]) ? navigator.languages[0] : (navigator.language || "");
-      const l = String(nav || "").toLowerCase();
-      const base = l.split("-")[0] || "";
-      if (SUPPORTED_LANGS.includes(l)) return l;
-      if (SUPPORTED_LANGS.includes(base)) return base;
+      const list = Array.isArray(navigator.languages) && navigator.languages.length
+        ? navigator.languages
+        : [navigator.language || ""];
+
+      for (const raw of list){
+        const normalized = _normalizeLangCode(raw);
+        if (normalized) return normalized;
+      }
+
       return "en";
-    }catch{ return "en"; }
+    }catch{
+      return "en";
+    }
   }
 
   function _readLangLocal(){
     try{
-      const v = String(localStorage.getItem(LangStorageKey) || "").trim().toLowerCase();
-      if (!v) return "";
-      return SUPPORTED_LANGS.includes(v) ? v : "";
-    }catch{ return ""; }
+      const v = _normalizeLangCode(localStorage.getItem(LangStorageKey) || "");
+      return v || "";
+    }catch{
+      return "";
+    }
   }
 
   function _writeLangLocal(lang){
-    try{ localStorage.setItem(LangStorageKey, String(lang || "")); }catch(_){}
+    try{
+      const normalized = _normalizeLangCode(lang);
+      if (!normalized) return;
+      localStorage.setItem(LangStorageKey, normalized);
+    }catch(_){}
   }
 
   function _normalizeRow(row){
     if (!row || typeof row !== "object") return null;
     const out = { ...row };
 
-    // normalize arrays (unlocked scenarios may come as {scenarios:[...]} or array)
     if (out.unlocked_scenarios && out.unlocked_scenarios.scenarios && Array.isArray(out.unlocked_scenarios.scenarios)){
       out.unlocked_scenarios = out.unlocked_scenarios.scenarios;
     }
@@ -297,12 +332,11 @@
 
     out.user_id = String(out.user_id || out.id || "").trim();
     out.username = String(out.username || "").trim();
-    out.lang = String(out.lang || "").trim().toLowerCase();
+    out.lang = _normalizeLangCode(out.lang || "");
 
     out.vcoins = (typeof out.vcoins === "number") ? out.vcoins : Number(out.vcoins || 0) || 0;
     out.jetons = (typeof out.jetons === "number") ? out.jetons : Number(out.jetons || 0) || 0;
 
-    // ✅ entitlements (colonnes OU jsonb "entitlements")
     let prem = !!out.premium;
     let dia = !!out.diamond;
     let noads = !!out.no_ads;
@@ -317,12 +351,8 @@
 
     out.premium = !!prem;
     out.diamond = !!dia;
-    // no_ads peut être un flag dédié, mais premium/diamond impliquent aussi "no ads interstitial"
     out.no_ads = !!(noads || prem || dia);
 
-    if (!SUPPORTED_LANGS.includes(out.lang)) out.lang = "";
-
-    // normalize scenario ids
     out.unlocked_scenarios = out.unlocked_scenarios.map(_normScenarioId).filter(Boolean);
 
     return out;
@@ -336,7 +366,6 @@
     jetons: 0,
     lang: "",
     unlocked_scenarios: [],
-    // ✅ entitlements (premium/diamond/no_ads interstitial)
     premium: false,
     diamond: false,
     no_ads: false,
@@ -357,7 +386,6 @@
         no_ads: !!_memState.no_ads
       });
     }catch(_){}
-    // ✅ en plus, on sync le cache "pour toujours" si on a un uid
     _syncUnlockedCacheFromMem();
   }
 
@@ -459,17 +487,16 @@
       const uid = await this.ensureAuth();
       if (!uid) return null;
 
-      const l = String(lang || "").trim().toLowerCase();
-      if (!SUPPORTED_LANGS.includes(l)) return null;
+      const l = _normalizeLangCode(lang);
+      if (!l) return null;
 
       const r = await _tryRpc("secure_set_lang", { p_lang: l });
       if (r?.error) return null;
       const d = _unwrapRpcData(r?.data);
       const v = (d && typeof d === "object" && d.lang) ? d.lang : d;
-      return (v !== null && v !== undefined && v !== "") ? String(v).toLowerCase() : null;
+      return (v !== null && v !== undefined && v !== "") ? _normalizeLangCode(v) : null;
     },
 
-    // ✅ Entitlements (no_ads / diamond) — write-through DB
     async grantEntitlement(entitlement){
       const sb = window.sb;
       if (!sbReady()) return null;
@@ -480,7 +507,6 @@
       const e = String(entitlement || "").trim().toLowerCase();
       if (!e) return null;
 
-      // ✅ Allow list (on reste strict)
       if (!["no_ads","diamond","premium"].includes(e)) return null;
 
       const r = await _tryRpc("secure_grant_entitlement", { p_entitlement: e }, "rpc.secure_grant_entitlement");
@@ -510,7 +536,6 @@
       }
     },
 
-    // ✅ NEW : unionne les scénarios débloqués dans la base sans casser le système actuel
     async syncUnlockedScenarios(list){
       const sb = window.sb;
       if (!sbReady()) return null;
@@ -620,12 +645,24 @@
     }
   };
 
+  const _memState = {
+    user_id: "",
+    username: "",
+    vcoins: 0,
+    jetons: 0,
+    lang: "",
+    unlocked_scenarios: [],
+    premium: false,
+    diamond: false,
+    no_ads: false,
+    _remote_lang_missing: false
+  };
+
   const VUserData = {
     async init(){
       if (_initPromise) return _initPromise;
 
       _initPromise = (async () => {
-        // ✅ PRIME local immédiatement (avant tout refresh remote)
         if (!_primedLocal){
           _primedLocal = true;
           const cached = _readLocal();
@@ -633,7 +670,6 @@
           else this.save(this.load(), { silent:true });
         }
 
-        // ✅ Si on a un uid local, on merge le cache "pour toujours"
         try{
           const uid = String(_memState.user_id || "");
           if (uid){
@@ -645,11 +681,9 @@
           }
         }catch(_){}
 
-        // ✅ Refresh (background) : ajoute seulement, ne retire jamais
         if (window.VCRemoteStore?.enabled?.()){
           await this.refresh().catch((e) => { _reportRemoteError("VUserData.init.refresh", e); return false; });
 
-          // ✅ si remote n'a pas de lang, push la locale/device (EN fallback)
           try{
             if (_memState._remote_lang_missing){
               await this.setLang(_memState.lang);
@@ -677,16 +711,22 @@
         const uidChanged = !!(prevUid && nextUid && prevUid !== nextUid);
 
         const prevLang = String(_memState.lang || "");
-        const nextLang = String(me.lang || "");
-        _memState._remote_lang_missing = !nextLang;
+        const nextLang = _normalizeLangCode(me.lang || "");
 
-        // ✅ lang: device/local prioritaire si remote vide
-        const localLang = _readLangLocal() || _getDeviceLang();
-        if (!nextLang){
-          _memState.lang = localLang;
+        const chosenLocalLang = _readLangLocal();
+        const deviceLang = _getDeviceLang();
+        const remoteLang = nextLang || "";
+
+        _memState._remote_lang_missing = !remoteLang || (!!chosenLocalLang && remoteLang !== chosenLocalLang);
+
+        if (chosenLocalLang){
+          _memState.lang = chosenLocalLang;
+        } else if (remoteLang){
+          _memState.lang = remoteLang;
+          _writeLangLocal(remoteLang);
         } else {
-          _memState.lang = nextLang;
-          _writeLangLocal(nextLang);
+          _memState.lang = deviceLang || "en";
+          _writeLangLocal(_memState.lang);
         }
 
         _memState.user_id = nextUid;
@@ -694,7 +734,6 @@
         _memState.vcoins = Number(me.vcoins || 0) || 0;
         _memState.jetons = Number(me.jetons || 0) || 0;
 
-        // ✅ MERGE entitlements (local OR remote, jamais shrink)
         try{
           const localPrem = uidChanged ? false : !!_memState.premium;
           const localDia  = uidChanged ? false : !!_memState.diamond;
@@ -709,27 +748,21 @@
           _memState.no_ads  = !!(localNo || remoteNo || _memState.premium || _memState.diamond);
         }catch(_){}
 
-        // ✅ SYNC entitlements vers la DB si on les a en local mais pas en remote
-        // - utile après un achat IAP quand l'app est offline au moment du refresh
-        // - l'RPC doit être idempotent (si déjà true => ne pas re-créditer)
         try{
           const remotePrem = !!me.premium;
           const remoteDia  = !!me.diamond;
           const remoteNo   = !!me.no_ads;
 
-          // Cooldown anti-boucle (30s)
           const SYNC_TS_KEY = "vchoice_ent_sync_ts_v1";
           const lastTs = Number(localStorage.getItem(SYNC_TS_KEY) || 0) || 0;
           const canTry = (_now() - lastTs) > 30_000;
 
           if (canTry && window.VCRemoteStore?.enabled?.() && typeof window.VCRemoteStore.grantEntitlement === "function"){
-            // diamond => implique no_ads + unlock future (côté app)
             if (_memState.diamond && !remoteDia){
               localStorage.setItem(SYNC_TS_KEY, String(_now()));
               const row = await window.VCRemoteStore.grantEntitlement("diamond");
               if (row) this.save(row, { silent:true });
             }
-            // no_ads seul (si pas diamond)
             else if (_memState.no_ads && !_memState.diamond && !remoteNo){
               localStorage.setItem(SYNC_TS_KEY, String(_now()));
               const row = await window.VCRemoteStore.grantEntitlement("no_ads");
@@ -738,19 +771,15 @@
           }
         }catch(_){ }
 
-        // ✅ MERGE unlocked_scenarios (local "pour toujours" + cache user + remote)
         const remoteList = Array.isArray(me.unlocked_scenarios) ? me.unlocked_scenarios.slice() : [];
         const cacheList = nextUid ? _getUnlockedCacheFor(nextUid) : [];
         const localList = uidChanged ? [] : (Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : []);
         const mergedList = _mergeScenarioLists(cacheList, localList, remoteList);
 
-        // ⚠️ si uid change, on évite de garder les unlocks de l'ancien user
         _memState.unlocked_scenarios = mergedList;
 
         _persistLocal();
 
-        // ✅ WRITE-BACK best effort :
-        // si le local/cache a plus que la base, on pousse dans la table
         try{
           const needsWriteBack = !!nextUid && _hasScenariosMissingFromBase(mergedList, remoteList);
           if (needsWriteBack && window.VCRemoteStore?.enabled?.() && typeof window.VCRemoteStore.syncUnlockedScenarios === "function"){
@@ -768,7 +797,6 @@
           }
         }catch(_){}
 
-        // ✅ si la lang change, on peut prévenir (engine.js gère UI)
         if (prevLang && prevLang !== _memState.lang){
           try{ window.dispatchEvent(new CustomEvent("vc:lang", { detail: { lang: _memState.lang } })); }catch(_){}
         }
@@ -802,7 +830,6 @@
 
       const incomingUid = String(o.user_id || "").trim();
       if (incomingUid){
-        // ⚠️ si uid change via save, on ne mélange pas les unlocks
         const prevUid = String(_memState.user_id || "");
         if (prevUid && prevUid !== incomingUid){
           _memState.unlocked_scenarios = [];
@@ -819,14 +846,12 @@
       _memState.vcoins = Number((o.vcoins ?? _memState.vcoins ?? 0)) || 0;
       _memState.jetons = Number((o.jetons ?? _memState.jetons ?? 0)) || 0;
 
-      const langIn = String(o.lang || _memState.lang || "").toLowerCase();
-      if (SUPPORTED_LANGS.includes(langIn)) _memState.lang = langIn;
+      const langIn = _normalizeLangCode(o.lang || _memState.lang || "");
+      if (langIn) _memState.lang = langIn;
       else _memState.lang = desiredLang;
 
       _writeLangLocal(_memState.lang);
 
-      // ✅ IMPORTANT: entitlements ne doivent JAMAIS "shrink"
-      //    - UX: local OR remote pour éviter re-bloquage en offline/latence
       try{
         const ent = (o && typeof o === "object") ? (o.entitlements || null) : null;
 
@@ -839,7 +864,6 @@
         _memState.no_ads = !!(_memState.no_ads || noadsIn || _memState.premium || _memState.diamond);
       }catch(_){}
 
-      // ✅ IMPORTANT: unlocked_scenarios ne doit JAMAIS "shrink"
       const incomingList = Array.isArray(o.unlocked_scenarios) ? o.unlocked_scenarios.slice() : null;
       const uid = String(_memState.user_id || "");
       const cacheList = uid ? _getUnlockedCacheFor(uid) : [];
@@ -854,7 +878,6 @@
       if (!silent) _emitProfileSoon();
     },
 
-    // ✅ getters jetons/vcoins (évite bugs popup jetons si init pas fini)
     getJetons(){
       try{
         const v = Number(_memState.jetons || 0);
@@ -881,14 +904,16 @@
       return 0;
     },
 
-    // ✅ helper utilisé par index.html chez toi
     getLang(){
-      const l = String(_memState.lang || "").toLowerCase();
-      if (SUPPORTED_LANGS.includes(l)) return l;
-      return _readLangLocal() || _getDeviceLang() || "en";
+      const local = _readLangLocal();
+      if (local) return local;
+
+      const l = _normalizeLangCode(_memState.lang || "");
+      if (l) return l;
+
+      return _getDeviceLang() || "en";
     },
 
-    // ✅ entitlements helpers (utilisé par index + ads.js)
     hasPremium(){
       if (_memState.premium) return true;
       const ent = _readEntitlementsLocal();
@@ -900,13 +925,11 @@
       return !!ent.diamond;
     },
     hasNoAds(){
-      // "no_ads" = on coupe uniquement les interstitials. Rewarded reste volontaire.
       if (_memState.no_ads || _memState.premium || _memState.diamond) return true;
       const ent = _readEntitlementsLocal();
       return !!ent.no_ads;
     },
 
-    // ✅ Entitlements: local-first, remote best-effort (sync au refresh)
     async grantEntitlement(entitlement, opts){
       const e = String(entitlement || "").trim().toLowerCase();
       const requireRemote = !!(opts && opts.requireRemote);
@@ -915,7 +938,6 @@
         return { ok:false, reason:"invalid_entitlement", local_ok:false, remote_ok:false, data:null };
       }
 
-      // ✅ local
       const cur = this.load();
       if (e === "no_ads"){
         this.save({ ...cur, no_ads:true });
@@ -925,12 +947,10 @@
         this.save({ ...cur, premium:true, no_ads:true });
       }
 
-      // ✅ remote (best effort)
       if (window.VCRemoteStore?.enabled?.() && typeof window.VCRemoteStore.grantEntitlement === "function"){
         try{
           const row = await window.VCRemoteStore.grantEntitlement(e);
           if (row){
-            // merge (jamais shrink)
             this.save(row, { silent:true });
             return { ok:true, reason:"ok", local_ok:true, remote_ok:true, data: row };
           }
@@ -945,7 +965,6 @@
     },
 
     getUnlockedScenarios(){
-      // ✅ fallback localStorage même si init pas fini
       const mem = Array.isArray(_memState.unlocked_scenarios) ? _memState.unlocked_scenarios.slice() : [];
       if (mem.length) return mem;
 
@@ -964,8 +983,6 @@
 
       const pack = String(requiredPack || "").trim().toLowerCase();
 
-      // ✅ Premium/Diamond = accès automatique (débloque aussi les futurs scénarios)
-      // - Si un scénario est "diamond-only", premium ne suffit pas.
       if (pack === "diamond"){
         if (this.hasDiamond()) return true;
       } else {
@@ -975,7 +992,6 @@
       const arr = this.getUnlockedScenarios();
       if (arr.includes(s)) return true;
 
-      // ✅ si on a un uid, check aussi le cache "pour toujours"
       try{
         const uid = String(_memState.user_id || "") || String(_readLocal()?.user_id || "");
         if (uid){
@@ -987,7 +1003,6 @@
       return false;
     },
 
-    // ✅ NEW : push explicite d'une liste d'unlocks vers la base
     async syncUnlockedScenarios(list){
       try{ await this.init(); }catch(_){}
 
@@ -996,7 +1011,6 @@
         return { ok:false, reason:"empty_list", local_ok:false, remote_ok:false, data:null };
       }
 
-      // local d'abord
       try{
         this.save({ ...this.load(), unlocked_scenarios: arr }, { silent:true });
       }catch(_){}
@@ -1015,7 +1029,6 @@
     },
 
     async unlockScenario(scenarioId){
-      // ✅ sécurité: si init pas fait, on le fait ici
       try{ await this.init(); }catch(_){}
 
       const s = _normScenarioId(scenarioId);
@@ -1094,13 +1107,11 @@
     },
 
     async setLang(lang){
-      const l = String(lang || "").trim().toLowerCase();
-      if (!SUPPORTED_LANGS.includes(l)) return { ok:false, reason:"invalid_lang" };
+      const l = _normalizeLangCode(lang);
+      if (!l) return { ok:false, reason:"invalid_lang" };
 
-      // ✅ local
       this.save({ ...this.load(), lang: l });
 
-      // ✅ signal app
       try{ window.dispatchEvent(new CustomEvent("vc:lang", { detail: { lang: l } })); }catch(_){}
 
       if (!window.VCRemoteStore?.enabled?.()){
@@ -1243,7 +1254,6 @@
       if (!s) return { ok:false, reason:"invalid_scenario" };
       if (!["good","bad","secret"].includes(e)) return { ok:false, reason:"invalid_ending" };
 
-      // ✅ LOCAL-FIRST : on marque le badge en local immédiatement
       let localOk = false;
       try{
         let uid = String(_memState.user_id || "");
@@ -1289,7 +1299,6 @@
 
   window.VUserData = VUserData;
 
-  // ✅ AUTO INIT : toutes les pages sont safe (index/game/profile/settings/shop…)
   (function autoInit(){
     const run = async () => {
       try{ await window.VUserData.init(); }catch(_){}
@@ -1301,9 +1310,6 @@
     }
   })();
 
-  // ✅ AUTO REFRESH depuis la base quand l'app/onglet revient au premier plan
-  // - utile si tu débloques un scénario directement dans la table profiles.unlocked_scenarios
-  // - le local se resynchronise tout seul au retour sur l'app
   (function autoRefreshOnResume(){
     let timer = null;
     let lastRun = 0;
@@ -1331,12 +1337,10 @@
       });
     }catch(_){}
 
-    // Cordova / anciens wrappers
     try{
       document.addEventListener("resume", kick, false);
     }catch(_){}
 
-    // Capacitor App plugin
     try{
       const capApp =
         window.Capacitor?.Plugins?.App ||
