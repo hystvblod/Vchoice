@@ -137,7 +137,7 @@
     "br.s22.body": "Cadenas. Métal épais. Sur le cadre, une trace de chaleur… comme une fièvre contenue. Le bunker semble retenir quelque chose derrière, par discipline, pas par sécurité.",
     "br.s22.c1": "Chercher un autre accès",
     "br.s22.c2": "Revenir à la travée vide",
-    "br.s22.c3": "Insister",
+    "br.s22.c3": "Insister jusqu’à déclencher une réaction du bunker",
 
     "br.s23.title": "Atelier",
     "br.s23.body": "Outils alignés au millimètre. Une lame manque. La poussière est coupée net, comme si quelqu’un avait posé une main, puis retiré la main sans laisser de chaos.",
@@ -232,7 +232,7 @@
     "br.s38.title": "Pièce habitée",
     "br.s38.body": "Un fauteuil. Un drap occultant. Un verre vide, sans poussière. La pièce n’est pas un décor : elle est entretenue. Ici, quelqu’un vit… mais seulement quand tu ne le vois pas.",
     "br.s38.c1": "Approcher le drap occultant",
-    "br.s38.c2": "Observer la pièce sans te montrer",
+    "br.s38.c2": "Observer assez longtemps pour comprendre la logique du lieu",
     "br.s38.c3": "Partir",
 
     "br.s39.title": "L’air manque",
@@ -266,7 +266,7 @@
     "br.s43.c3": "Fuir",
 
     "br.s44.title": "Accès accordé",
-    "br.s44.body": "La console répond sans son. Voyants alignés. Une option apparaît : ‘MODE VEILLE’ ou ‘MODE TEST’. Tu comprends : veille = confort de l’occupant. Test = danger… mais vérité.",
+    "br.s44.body": "La console répond sans son. Voyants alignés. Une option apparaît : ‘MODE TEST’. Tu comprends : veille = confort de l’occupant. Test = danger… mais vérité.",
     "br.s44.c1": "Passer à l’étape suivante",
     "br.s44.c2": "Revenir en arrière",
     "br.s44.c3": "Quitter",
