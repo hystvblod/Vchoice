@@ -136,17 +136,35 @@
     }
 
     .shop-head{
-      padding: 6px 2px 12px;
+      padding: 8px 2px 12px;
       text-align:center;
     }
 
+    .shop-title-row{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      width:100%;
+    }
+
+    .shop-title-line{
+      height: 1px;
+      flex: 1 1 auto;
+      max-width: 78px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+      opacity: .95;
+    }
+
     .shop-title{
-      margin: 4px 0 0;
+      margin: 0;
       font-size: 20px;
       font-weight: 950;
-      letter-spacing: .2px;
+      letter-spacing: .02em;
       color: var(--vc-text);
       text-shadow: 0 10px 28px rgba(0,0,0,.55);
+      white-space: nowrap;
+      line-height: 1.1;
       min-height: 24px;
     }
 
@@ -159,6 +177,8 @@
 
     @media (max-width: 360px){
       .reward-grid{ gap: 10px; }
+      .shop-title-line{ max-width: 54px; }
+      .shop-title{ font-size: 18px; }
     }
 
     .shop-panel{
@@ -581,7 +601,11 @@
 
   <main class="page">
     <header class="shop-head">
-      <h1 class="shop-title" data-i18n="ui.shop_title"></h1>
+      <div class="shop-title-row">
+        <div class="shop-title-line"></div>
+        <h1 class="shop-title" data-i18n="ui.shop_title"></h1>
+        <div class="shop-title-line"></div>
+      </div>
     </header>
 
     <section class="reward-grid" aria-label="">
