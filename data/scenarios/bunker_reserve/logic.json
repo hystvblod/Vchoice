@@ -367,7 +367,7 @@
       "body_key": "br.s29.body",
       "choices": [
         { "choice_key": "br.s29.c1", "next": "s30" },
-        { "choice_key": "br.s29.c2", "next": "s28" },
+        { "choice_key": "br.s29.c2", "next": "s27" },
         { "choice_key": "br.s29.c3", "next": "s31" }
       ]
     },
@@ -377,7 +377,7 @@
       "body_key": "br.s30.body",
       "choices": [
         { "choice_key": "br.s30.c1", "next": "s32", "set_flags": ["has_recording"] },
-        { "choice_key": "br.s30.c2", "next": "s27" },
+        { "choice_key": "br.s30.c2", "next": "s26" },
         { "choice_key": "br.s30.c3", "next": "s31" }
       ]
     },
@@ -487,7 +487,7 @@
       "body_key": "br.s41.body",
       "choices": [
         { "choice_key": "br.s41.c1", "next": "s42" },
-        { "choice_key": "br.s41.c2", "next": "s40" },
+        { "choice_key": "br.s41.c2", "next": "s35" },
         { "choice_key": "br.s41.c3", "next": "s31" }
       ]
     },
@@ -588,7 +588,7 @@
       "choices": [
         { "choice_key": "br.s51.c1", "next": "s56" },
         { "choice_key": "br.s51.c2", "next": "s52" },
-        { "choice_key": "br.s51.c3", "next": "s31" }
+        { "choice_key": "br.s51.c3", "next": "s48" }
       ]
     },
     "s52": {
@@ -628,7 +628,7 @@
       "choices": [
         { "choice_key": "br.s55.c1", "next": "s56" },
         { "choice_key": "br.s55.c2", "next": "s52" },
-        { "choice_key": "br.s55.c3", "next": "s31" }
+        { "choice_key": "br.s55.c3", "next": "s48" }
       ]
     },
     "s56": {

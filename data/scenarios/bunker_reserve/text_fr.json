@@ -170,25 +170,25 @@
     "br.s27.c3": "Fuir",
 
     "br.s28.title": "Une seconde de trop",
-    "br.s28.body": "Sur l’écran, le couloir est vide. Puis, une seconde plus tard, une ombre passe. L’ombre n’a pas de source. Le bunker arrondit la réalité.",
+    "br.s28.body": "Sur l’écran, le couloir est vide. Une seconde plus tard, une ombre traverse l’image. Tu ne vois personne dans le vrai couloir. L’écran montre donc quelque chose avant toi, ou à côté du réel.",
     "br.s28.c1": "Lancer l’enregistrement",
     "br.s28.c2": "Revenir à la salle sécurité",
     "br.s28.c3": "Partir avant que ça recommence",
 
     "br.s29.title": "Le curseur bouge",
-    "br.s29.body": "Un curseur se déplace tout seul sur l’interface muette. Comme une main invisible qui te montre où appuyer. Ce n’est pas un fantôme. C’est une habitude du lieu.",
+    "br.s29.body": "Le curseur bouge seul sur l’interface. Il s’arrête exactement sur une commande utile, comme si le bunker t’indiquait où appuyer. Ce n’est pas un bug. Quelque chose ici répète toujours les mêmes gestes.",
     "br.s29.c1": "Appuyer là où on te guide",
-    "br.s29.c2": "Refuser et revenir à l’écran",
+    "br.s29.c2": "Couper l’interface et revenir à la salle sécurité",
     "br.s29.c3": "Fuir",
 
     "br.s30.title": "Preuve",
     "br.s30.body": "Tu captures l’image. Sur la vidéo, le couloir se répète… puis un mouvement apparaît dans l’angle, trop lent pour être humain, trop précis pour être hasard. Tu as une preuve.",
     "br.s30.c1": "Quitter la sécurité calmement",
-    "br.s30.c2": "Revenir au début de la salle sécurité",
+    "br.s30.c2": "Ressortir par le conduit",
     "br.s30.c3": "Partir en courant",
 
     "br.s31.title": "Lumière rouge",
-    "br.s31.body": "La lumière rouge ne hurle pas. Elle pulse doucement, comme un cœur artificiel. Les portes au loin se ferment une à une, sans claquer. Le bunker isole. Le bunker range.",
+    "br.s31.body": "La lumière rouge clignote lentement. Au loin, plusieurs portes se ferment l’une après l’autre, sans bruit. Le bunker n’entre pas en panique : il réorganise les accès et te pousse vers une zone précise.",
     "br.s31.c1": "Rester calme et marcher",
     "br.s31.c2": "Suivre la pulsation vers le fond",
     "br.s31.c3": "Prendre le couloir qui mène aux trois portes",
@@ -250,7 +250,7 @@
     "br.s41.title": "Zone absente",
     "br.s41.body": "Une zone est effacée du plan. Pas arrachée : effacée. Comme si quelqu’un avait voulu faire disparaître une pièce. Ce genre de geste n’appartient pas à un bunker… mais à un occupant.",
     "br.s41.c1": "Retourner à la console avec cette vérité",
-    "br.s41.c2": "Revenir au plan",
+    "br.s41.c2": "Quitter cette zone et revenir au couloir",
     "br.s41.c3": "Fuir",
 
     "br.s42.title": "Console centrale",
@@ -260,16 +260,16 @@
     "br.s42.c3": "Quitter",
 
     "br.s43.title": "Double clé",
-    "br.s43.body": "Deux verrous : badge et séquence. Sans les deux, le bunker te garde dans les couloirs. Avec les deux… tu peux lui parler. La question : faut-il lui parler ?",
+    "br.s43.body": "Deux validations sont nécessaires : le badge et la bonne séquence. Sans elles, la console refuse l’accès profond. Avec les deux, tu peux enfin agir sur le protocole central. La vraie question est simple : dois-tu aller plus loin ?",
     "br.s43.c1": "Déverrouiller",
     "br.s43.c2": "Revenir à l’atelier chercher une autre piste",
     "br.s43.c3": "Fuir",
 
     "br.s44.title": "Accès accordé",
     "br.s44.body": "La console répond sans son. Voyants alignés. Une option apparaît : ‘MODE TEST’. Tu comprends : veille = confort de l’occupant. Test = danger… mais vérité.",
-    "br.s44.c1": "Passer à l’étape suivante",
-    "br.s44.c2": "Revenir en arrière",
-    "br.s44.c3": "Quitter",
+    "br.s44.c1": "Activer le mode test",
+    "br.s44.c2": "Revenir à la console verrouillée",
+    "br.s44.c3": "Quitter la zone",
 
     "br.s45.title": "Mode test",
     "br.s45.body": "Le bunker te demande une décision : activer une séquence qui isole une zone. La porte scellée chauffe légèrement. Comme si quelque chose derrière s’éveillait… ou s’agaçait.",
@@ -302,7 +302,7 @@
     "br.s49.c3": "Aller vers les trois portes",
 
     "br.s50.title": "Ombre sans corps",
-    "br.s50.body": "Tu vois une ombre bouger sur le drap. Mais personne ne passe. Pas de silhouette, pas de source. Le bunker n’offre pas un vampire… il offre ses effets.",
+    "br.s50.body": "Une ombre glisse sur le drap, mais personne ne traverse la pièce. Tu ne vois ni corps, ni source, ni reflet logique. Le bunker ne te montre peut-être pas l’occupant lui-même. Il te montre seulement les traces de son passage.",
     "br.s50.c1": "Chercher une cache proche",
     "br.s50.c2": "Activer la séquence finale",
     "br.s50.c3": "Aller vers les trois portes",
@@ -311,7 +311,7 @@
     "br.s51.body": "Le couloir rouge s’allonge. Tu sais que c’est impossible, mais ton cerveau accepte l’impossible quand l’air est trop froid. La sortie est là… et pourtant elle recule.",
     "br.s51.c1": "Aller vers les trois portes",
     "br.s51.c2": "Remonter vers la surface",
-    "br.s51.c3": "Revenir au couloir",
+    "br.s51.c3": "Revenir à l’antichambre rouge",
 
     "br.s52.title": "Retour à la trappe",
     "br.s52.body": "L’air de la surface est proche, mais pas encore. Tu entends un bruit faible derrière toi : pas un pas. Le frottement d’un tissu sur du béton. Une présence qui refuse la lumière.",
@@ -335,7 +335,7 @@
     "br.s55.body": "Tu as presque la sortie. Mais tu sens une évidence : si tu pars sans preuve, tu douteras toute ta vie. Si tu pars avec preuve… le bunker ne pourra pas te garder dans ta tête.",
     "br.s55.c1": "Retourner vers les trois portes",
     "br.s55.c2": "Remonter immédiatement",
-    "br.s55.c3": "Revenir au couloir rouge",
+    "br.s55.c3": "Revenir vers l’antichambre rouge",
 
     "br.s56.title": "Les trois portes",
     "br.s56.body": "Le bunker te donne trois portes. Aucune n’est marquée. Mais tu sais ce qu’elles veulent dire : sortir, se faire ranger, ou inverser la règle. Ce n’est pas un lieu qui te juge. C’est un système qui te classe.",
