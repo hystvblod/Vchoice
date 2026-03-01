@@ -7,37 +7,7 @@
 // - Lang via secure_set_lang
 // - Déblocage scénario via secure_unlock_scenario
 // - Fin scénario: secure_complete_scenario (reward + log ending)
-//
-// ✅ PATCH 2026-02-23:
-// - Les scénarios débloqués sont "acquis pour toujours" côté local (cache dédié)
-// - Un refresh au lancement ne peut JAMAIS re-verrouiller un scénario déjà en local (merge/union uniquement)
-// - isScenarioUnlocked() fallback localStorage même si init pas encore fini (moins de flicker cadenas)
-//
-// ✅ PATCH 2026-02-23 (suite):
-// - Support RPC Supabase qui renvoie ARRAY (setof) OU objet (json/row) -> plus de cadenas fantôme
-// - Packs premium/diamond/no_ads = local OR remote (jamais shrink) pour éviter re-blocage offline/latence
-// - no_ads coupe uniquement les interstitials (rewarded reste volontaire)
-//
-// ✅ PATCH 2026-02-23 (entitlements fallback):
-// - hasPremium/hasDiamond/hasNoAds lisent aussi le localStorage si init pas fini (évite cadenas si premium en local)
-//
-// ✅ PATCH 2026-02-23 (entitlements DB):
-// - Ajout VCRemoteStore.grantEntitlement() -> RPC secure_grant_entitlement
-// - Ajout VUserData.grantEntitlement() local-first + remote best-effort
-// - Refresh: resync auto DB si entitlement présent en local mais absent en remote (cooldown anti-boucle)
-//
-// ✅ PATCH 2026-02-26 (wallet base-first minimal):
-// - VCoins / jetons restent décidés par la base
-// - Plus de fallback local_only sur les mutations wallet
-// - Mutations wallet sérialisées via queueRemote
-// - Retry léger x3 sur les RPC wallet
-// - Refresh différé en secours si échec
-//
-// ✅ PATCH 2026-02-26 (unlock sync bidirectionnelle):
-// - Ajout VCRemoteStore.syncUnlockedScenarios() -> RPC secure_sync_unlocked_scenarios
-// - Ajout VUserData.syncUnlockedScenarios()
-// - Refresh: merge remote/local/cache puis write-back best-effort vers la base si local a plus
-// - Refresh auto quand l'app/onglet revient au premier plan pour récupérer les unlocks faits côté table/admin
+
 
 (function () {
   "use strict";
