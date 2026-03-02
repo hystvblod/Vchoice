@@ -103,9 +103,6 @@
       "has_signet",
       "has_recording",
       "knows_symbol",
-      "found_secret_passage",
-      "refused_call",
-      "touched_mirror",
       "entered_crypt"
     ]
   },
@@ -126,7 +123,7 @@
       "body_key": "ca.s02.body",
       "choices": [
         { "choice_key": "ca.s02.c1", "next": "s03" },
-        { "choice_key": "ca.s02.c2", "next": "s01", "set_flags": ["refused_call"] },
+        { "choice_key": "ca.s02.c2", "next": "s01" },
         { "choice_key": "ca.s02.c3", "next": "s04" }
       ]
     },
@@ -216,7 +213,7 @@
       "body_key": "ca.s11.body",
       "choices": [
         { "choice_key": "ca.s11.c1", "next": "s12" },
-        { "choice_key": "ca.s11.c2", "next": "s12" },
+        { "choice_key": "ca.s11.c2", "next": "s49" },
         { "choice_key": "ca.s11.c3", "next": "s09" }
       ]
     },
@@ -425,7 +422,7 @@
       "title_key": "ca.s32.title",
       "body_key": "ca.s32.body",
       "choices": [
-        { "choice_key": "ca.s32.c1", "next": "s33", "set_flags": ["touched_mirror"] },
+        { "choice_key": "ca.s32.c1", "next": "s33" },
         { "choice_key": "ca.s32.c2", "next": "s30" },
         { "choice_key": "ca.s32.c3", "next": "s10" }
       ]
@@ -545,7 +542,7 @@
       "title_key": "ca.s44.title",
       "body_key": "ca.s44.body",
       "choices": [
-        { "choice_key": "ca.s44.c1", "next": "s45", "requires_any_flags": ["has_chapel_key"] },
+        { "choice_key": "ca.s44.c1", "next": "s45", "requires_all_flags": ["has_chapel_key"] },
         { "choice_key": "ca.s44.c2", "next": "s10" },
         { "choice_key": "ca.s44.c3", "next": "s46" }
       ]
@@ -665,7 +662,7 @@
       "title_key": "ca.s56.title",
       "body_key": "ca.s56.body",
       "choices": [
-        { "choice_key": "ca.s56.c1", "next": "s57", "requires_all_flags": ["has_map_fragment", "knows_symbol"] },
+        { "choice_key": "ca.s56.c1", "next": "s57", "requires_all_flags": ["knows_symbol"] },
         { "choice_key": "ca.s56.c2", "next": "s21" },
         { "choice_key": "ca.s56.c3", "next": "s65" }
       ]
@@ -675,7 +672,7 @@
       "title_key": "ca.s57.title",
       "body_key": "ca.s57.body",
       "choices": [
-        { "choice_key": "ca.s57.c1", "next": "s58", "set_flags": ["found_secret_passage"] },
+        { "choice_key": "ca.s57.c1", "next": "s58" },
         { "choice_key": "ca.s57.c2", "next": "s56" },
         { "choice_key": "ca.s57.c3", "next": "s59" }
       ]
@@ -745,9 +742,7 @@
       "title_key": "ca.s64.title",
       "body_key": "ca.s64.body",
       "choices": [
-        {
-          "choice_key": "ca.s64.c1",
-          "next": "end_good"},
+        { "choice_key": "ca.s64.c1", "next": "end_good" },
         { "choice_key": "ca.s64.c2", "next": "s77" },
         { "choice_key": "ca.s64.c3", "next": "s65" }
       ]
@@ -827,7 +822,7 @@
       "title_key": "ca.s72.title",
       "body_key": "ca.s72.body",
       "choices": [
-        { "choice_key": "ca.s72.c1", "next": "s73", "requires_all_flags": ["entered_crypt", "knows_symbol", "has_map_fragment"] },
+        { "choice_key": "ca.s72.c1", "next": "s73", "requires_all_flags": ["entered_crypt", "knows_symbol"] },
         { "choice_key": "ca.s72.c2", "next": "s61" },
         { "choice_key": "ca.s72.c3", "next": "s57" }
       ]
@@ -837,7 +832,7 @@
       "title_key": "ca.s73.title",
       "body_key": "ca.s73.body",
       "choices": [
-        { "choice_key": "ca.s73.c1", "next": "s74", "requires_all_flags": ["has_signet", "has_chapel_key", "has_diary_page", "has_recording", "has_map_fragment"] },
+        { "choice_key": "ca.s73.c1", "next": "s74", "requires_all_flags": ["has_chapel_key", "knows_symbol", "entered_crypt"] },
         { "choice_key": "ca.s73.c2", "next": "s61" },
         { "choice_key": "ca.s73.c3", "next": "s57" }
       ]
