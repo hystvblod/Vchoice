@@ -181,8 +181,8 @@
     "br.s29.c2": "Couper l’interface et revenir à la salle sécurité",
     "br.s29.c3": "Fuir",
 
-    "br.s30.title": "Preuve",
-    "br.s30.body": "Tu captures l’image. Sur la vidéo, le couloir se répète… puis un mouvement apparaît dans l’angle, trop lent pour être humain, trop précis pour être hasard. Tu as une preuve.",
+    "br.s30.title": "Observation",
+    "br.s30.body": "Tu filmes quelques secondes. Sur l’écran, le couloir se répète… puis un mouvement apparaît dans l’angle, trop lent pour être humain, trop précis pour être un simple défaut. Ce que tu vois suffit à te faire comprendre que tu n’as rien imaginé.",
     "br.s30.c1": "Quitter la sécurité calmement",
     "br.s30.c2": "Ressortir par le conduit",
     "br.s30.c3": "Partir en courant",
@@ -191,7 +191,7 @@
     "br.s31.body": "La lumière rouge clignote lentement. Au loin, plusieurs portes se ferment l’une après l’autre, sans bruit. Le bunker n’entre pas en panique : il réorganise les accès et te pousse vers une zone précise.",
     "br.s31.c1": "Rester calme et marcher",
     "br.s31.c2": "Suivre la pulsation vers le fond",
-    "br.s31.c3": "Prendre le couloir qui mène aux trois portes",
+    "br.s31.c3": "Prendre le couloir qui semble mener plus loin",
 
     "br.s32.title": "Retour au calme",
     "br.s32.body": "Le rouge s’éteint. Le silence revient. Mais tu sens que le bunker t’a enregistré. Chaque pas semble archivé. Tu dois choisir une voie utile, pas seulement rassurante.",
@@ -239,7 +239,7 @@
     "br.s39.body": "Ton souffle devient trop fort, trop chaud. Tu sens que le lieu n’aime pas la chaleur humaine. C’est un frigo, oui… mais un frigo avec des règles. Et tu es dedans.",
     "br.s39.c1": "Revenir à la console",
     "br.s39.c2": "Rester et écouter longtemps",
-    "br.s39.c3": "Fuir vers l’alarme",
+    "br.s39.c3": "Revenir vers la pièce habitée",
 
     "br.s40.title": "Le plan “répond”",
     "br.s40.body": "Le plan, même flou, prend un sens : le fragment correspond à un accès qui n’existe pas sur le reste. Comme si on t’avait donné la seule partie utile, le reste servant à te perdre.",
@@ -287,7 +287,7 @@
     "br.s47.body": "La porte scellée n’est plus froide. Elle est tiède, presque vivante. Les cadenas semblent plus décoratifs que réels. Le bunker n’empêche pas l’accès. Il contrôle le moment.",
     "br.s47.c1": "Avancer dans le couloir rouge",
     "br.s47.c2": "Passer par le couloir normal",
-    "br.s47.c3": "Revenir",
+    "br.s47.c3": "Revenir vers la console",
 
     "br.s48.title": "Antichambre rouge",
     "br.s48.body": "Le rouge est doux. Trop doux. Tu te rends compte que le bunker veut que tu te calmes. Qu’un corps calme est plus simple à ranger. Un souffle froid traverse la pièce.",
@@ -332,7 +332,7 @@
     "br.s54.c3": "Remonter vers la surface",
 
     "br.s55.title": "Le dernier air",
-    "br.s55.body": "Tu as presque la sortie. Mais tu sens une évidence : si tu pars sans preuve, tu douteras toute ta vie. Si tu pars avec preuve… le bunker ne pourra pas te garder dans ta tête.",
+    "br.s55.body": "Tu as presque la sortie. Mais tu sens une évidence : si tu pars trop vite, tu laisseras ce lieu t’habiter encore. Tu peux remonter maintenant, ou revenir une dernière fois pour comprendre ce que le bunker essaye vraiment de faire de toi.",
     "br.s55.c1": "Retourner vers les trois portes",
     "br.s55.c2": "Remonter immédiatement",
     "br.s55.c3": "Revenir vers l’antichambre rouge",
@@ -384,10 +384,10 @@
     "br.h.s26.strong": "Avec la clé, prends la porte service pour progresser sans tourner.",
 
     "br.h.s27.soft": "Le retard d’une seconde signifie : surveillance active, pas abandonnée.",
-    "br.h.s27.strong": "Cherche l’enregistrement : la preuve reste utile même sans bloquer la sortie.",
+    "br.h.s27.strong": "Cherche surtout à comprendre ce que le bunker montre : l’image confirme que tu n’inventes rien.",
 
-    "br.h.s30.soft": "La preuve stabilise la réalité : tu ne douteras plus.",
-    "br.h.s30.strong": "Enregistre : la preuve ne bloque plus la bonne fin, mais elle renforce ce que tu emportes avec toi.",
+    "br.h.s30.soft": "Ce que tu vois suffit à ancrer la réalité : le lieu te ment moins que ton propre doute.",
+    "br.h.s30.strong": "Filmer n’ajoute aucun verrou. Cela renforce seulement ta compréhension de ce que cache le bunker.",
 
     "br.h.s33.soft": "La poussière cassée trahit une routine, pas une panique.",
     "br.h.s33.strong": "Explore le local : il mène à la marque du sanctuaire.",
@@ -404,7 +404,7 @@
     "br.h.s46.soft": "Override = inversion : dangereux, mais décisif.",
     "br.h.s46.strong": "Active l’override : has_override est requis pour la fin secrète.",
 
-    "br.h.s56.soft": "Le dernier choix dépend des preuves accumulées.",
+    "br.h.s56.soft": "Le dernier choix dépend surtout de ce que tu as compris et déclenché plus tôt.",
     "br.h.s56.strong": "Bonne fin et mauvaise fin sans condition. Secrète : has_override + has_protocol_truth + has_sanctuary_mark.",
 
     "br.clue.has_badge.title": "Badge",
@@ -413,7 +413,6 @@
     "br.clue.has_master_key.title": "Clé maître",
     "br.clue.has_override.title": "Override",
     "br.clue.has_protocol_truth.title": "Vérité du protocole",
-    "br.clue.has_recording.title": "Enregistrement",
     "br.clue.has_sanctuary_mark.title": "Marque du sanctuaire"
   }
 }

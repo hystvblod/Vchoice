@@ -70,7 +70,6 @@
       "has_badge",
       "has_master_key",
       "has_code",
-      "has_recording",
       "has_sanctuary_mark",
       "has_protocol_truth",
       "has_override"
@@ -376,7 +375,7 @@
       "title_key": "br.s30.title",
       "body_key": "br.s30.body",
       "choices": [
-        { "choice_key": "br.s30.c1", "next": "s32", "set_flags": ["has_recording"] },
+        { "choice_key": "br.s30.c1", "next": "s32" },
         { "choice_key": "br.s30.c2", "next": "s26" },
         { "choice_key": "br.s30.c3", "next": "s31" }
       ]
@@ -388,7 +387,7 @@
       "choices": [
         { "choice_key": "br.s31.c1", "next": "s32" },
         { "choice_key": "br.s31.c2", "next": "s48" },
-        { "choice_key": "br.s31.c3", "next": "s56" }
+        { "choice_key": "br.s31.c3", "next": "s47" }
       ]
     },
     "s32": {
@@ -468,7 +467,7 @@
       "choices": [
         { "choice_key": "br.s39.c1", "next": "s42" },
         { "choice_key": "br.s39.c2", "next": "s50" },
-        { "choice_key": "br.s39.c3", "next": "s31" }
+        { "choice_key": "br.s39.c3", "next": "s38" }
       ]
     },
     "s40": {
@@ -548,7 +547,7 @@
       "choices": [
         { "choice_key": "br.s47.c1", "next": "s48" },
         { "choice_key": "br.s47.c2", "next": "s49" },
-        { "choice_key": "br.s47.c3", "next": "s31" }
+        { "choice_key": "br.s47.c3", "next": "s45" }
       ]
     },
     "s48": {
