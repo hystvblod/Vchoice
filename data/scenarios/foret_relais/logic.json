@@ -193,7 +193,7 @@
       "title_key": "frt.s07.title",
       "body_key": "frt.s07.body",
       "choices": [
-        { "choice_key": "frt.s07.c1", "next": "s12" },
+        { "choice_key": "frt.s07.c1", "next": "s17" },
         { "choice_key": "frt.s07.c2", "next": "s13" },
         { "choice_key": "frt.s07.c3", "next": "s05" }
       ]
@@ -205,7 +205,7 @@
       "choices": [
         { "choice_key": "frt.s08.c1", "next": "s14" },
         { "choice_key": "frt.s08.c2", "next": "s10" },
-        { "choice_key": "frt.s08.c3", "next": "s05" }
+        { "choice_key": "frt.s08.c3", "next": "s09" }
       ]
     },
     "s09": {
@@ -214,8 +214,8 @@
       "body_key": "frt.s09.body",
       "choices": [
         { "choice_key": "frt.s09.c1", "next": "s10" },
-        { "choice_key": "frt.s09.c2", "next": "s15" },
-        { "choice_key": "frt.s09.c3", "next": "s04", "set_flags": ["knows_name_is_used"] }
+        { "choice_key": "frt.s09.c2", "next": "s05" },
+        { "choice_key": "frt.s09.c3", "next": "s15", "set_flags": ["knows_name_is_used"] }
       ]
     },
     "s10": {
@@ -224,7 +224,7 @@
       "body_key": "frt.s10.body",
       "choices": [
         { "choice_key": "frt.s10.c1", "next": "s16", "set_flags": ["has_map"] },
-        { "choice_key": "frt.s10.c2", "next": "s17" },
+        { "choice_key": "frt.s10.c2", "next": "s24" },
         { "choice_key": "frt.s10.c3", "next": "s05" }
       ]
     },
@@ -324,11 +324,10 @@
       "body_key": "frt.s20.body",
       "choices": [
         { "choice_key": "frt.s20.c1", "next": "s19" },
-        { "choice_key": "frt.s20.c2", "next": "s29" },
-        { "choice_key": "frt.s20.c3", "next": "s30" }
+        { "choice_key": "frt.s20.c2", "next": "s30" },
+        { "choice_key": "frt.s20.c3", "next": "s29" }
       ]
     },
-
     "s21": {
       "image_id": "s21",
       "title_key": "frt.s21.title",
@@ -429,7 +428,6 @@
         { "choice_key": "frt.s30.c3", "next": "s05" }
       ]
     },
-
     "s31": {
       "image_id": "s31",
       "title_key": "frt.s31.title",
@@ -540,7 +538,6 @@
         { "choice_key": "frt.s41.c3", "next": "s58" }
       ]
     },
-
     "s42": {
       "image_id": "s42",
       "title_key": "frt.s42.title",
@@ -568,7 +565,7 @@
       "choices": [
         { "choice_key": "frt.s44.c1", "next": "s37", "requires_any_flags": ["has_ribbon"] },
         { "choice_key": "frt.s44.c2", "next": "s12" },
-        { "choice_key": "frt.s44.c3", "next": "s29" }
+        { "choice_key": "frt.s44.c3", "next": "s45" }
       ]
     },
     "s45": {
@@ -587,7 +584,7 @@
       "body_key": "frt.s46.body",
       "choices": [
         { "choice_key": "frt.s46.c1", "next": "s48", "set_flags": ["found_cabin_note"] },
-        { "choice_key": "frt.s46.c2", "next": "s63" },
+        { "choice_key": "frt.s46.c2", "next": "s49" },
         { "choice_key": "frt.s46.c3", "next": "s31" }
       ]
     },
@@ -631,7 +628,6 @@
         { "choice_key": "frt.s50.c3", "next": "s69" }
       ]
     },
-
     "s51": {
       "image_id": "s51",
       "title_key": "frt.s51.title",
@@ -639,7 +635,7 @@
       "choices": [
         { "choice_key": "frt.s51.c1", "next": "s28" },
         { "choice_key": "frt.s51.c2", "next": "s36" },
-        { "choice_key": "frt.s51.c3", "next": "s12" }
+        { "choice_key": "frt.s51.c3", "next": "s10" }
       ]
     },
     "s52": {
@@ -688,7 +684,7 @@
       "body_key": "frt.s56.body",
       "choices": [
         { "choice_key": "frt.s56.c1", "next": "s25" },
-        { "choice_key": "frt.s56.c2", "next": "s75", "requires_any_flags": ["has_frequency"] },
+        { "choice_key": "frt.s56.c2", "next": "s07" },
         { "choice_key": "frt.s56.c3", "next": "s40" }
       ]
     },
@@ -937,7 +933,7 @@
         {
           "choice_key": "frt.s80.c3",
           "next": "end_secret",
-          "requires_all_flags": ["truth_unlocked", "met_operator", "has_frequency", "has_code", "has_tape", "made_recording", "opened_bunker"]
+          "requires_all_flags": ["truth_unlocked"]
         }
       ]
     },
@@ -949,7 +945,7 @@
         {
           "choice_key": "frt.s81.c1",
           "next": "end_secret",
-          "requires_all_flags": ["truth_unlocked", "met_operator", "has_frequency", "has_code", "has_tape", "made_recording", "opened_bunker"]
+          "requires_all_flags": ["truth_unlocked"]
         },
         { "choice_key": "frt.s81.c2", "next": "end_bad" },
         { "choice_key": "frt.s81.c3", "next": "s80" }

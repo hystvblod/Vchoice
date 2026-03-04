@@ -48,7 +48,7 @@
     "d14.s07.title": "Dans le petit trou",
     "d14.s07.body": "Tu vois une forme au bout du couloir. Elle ne bouge pas.",
     "d14.s07.c1": "Ouvrir un tout petit peu",
-    "d14.s07.c2": "Éteindre la lumière chez toi",
+    "d14.s07.c2": "Éteindre la lumière chez toi et reculer",
     "d14.s07.c3": "Partir vers l’escalier",
 
     "d14.s08.title": "Fenêtre d’en face",
@@ -142,7 +142,7 @@
     "d14.s22.c3": "Revenir à l’espace béton",
 
     "d14.s23.title": "Clé sur la table",
-    "d14.s23.body": "Dans la pièce, une clé est posée sur une table. Et plus loin, la petite porte au sol est déjà ouverte.",
+    "d14.s23.body": "Dans la pièce, une clé est posée sur une table. Plus loin, la petite porte au sol est là.",
     "d14.s23.c1": "Prendre la clé",
     "d14.s23.c2": "Descendre par la petite porte",
     "d14.s23.c3": "Revenir en arrière",
@@ -216,7 +216,7 @@
     "d14.s35.title": "Trou noir",
     "d14.s35.body": "La petite porte descend dans le noir. L’air est glacé.",
     "d14.s35.c1": "Descendre",
-    "d14.s35.c2": "Revenir au couloir",
+    "d14.s35.c2": "Aller au couloir",
     "d14.s35.c3": "Suivre le passage étroit",
 
     "d14.s36.title": "Plans déchirés",
