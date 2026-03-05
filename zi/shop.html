@@ -1,4 +1,3 @@
-<!-- shop.html -->
 <!doctype html>
 <html lang="fr">
 <head>
@@ -83,7 +82,13 @@
       gap: 10px;
       padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
     }
-    .vc-top-slot{ flex: 1 1 0; display:flex; align-items:center; }
+
+    .vc-top-slot{
+      flex: 1 1 0;
+      display:flex;
+      align-items:center;
+    }
+
     .vc-top-left{ justify-content:flex-start; }
     .vc-top-center{ justify-content:center; }
     .vc-top-right{ justify-content:flex-end; }
@@ -105,7 +110,10 @@
       text-decoration:none;
       -webkit-tap-highlight-color: transparent;
     }
-    .vc-icon-button:active{ transform: scale(.98); }
+
+    .vc-icon-button:active{
+      transform: scale(.98);
+    }
 
     .vc-icon-button img{
       width:30px;
@@ -118,28 +126,48 @@
     }
 
     .vc-back-ico{
-      width:24px;
-      height:24px;
+      width:22px;
+      height:22px;
       display:block;
       opacity:.98;
       filter: drop-shadow(0 2px 10px rgba(0,0,0,0.75));
+      pointer-events:none;
+      user-select:none;
     }
 
-    .shop-head{
-      padding: 6px 2px 12px;
-      text-align:center;
-    }
-    .shop-title{
-      margin: 4px 0 0;
-      font-size: 20px;
-      font-weight: 950;
-      letter-spacing: .2px;
-      color: var(--vc-text);
-      text-shadow: 0 10px 28px rgba(0,0,0,.55);
-      min-height: 24px;
-    }
+.shop-head{
+  padding: 16px 2px 10px;
+  text-align:center;
+}
 
-    /* ===== Top rewarded offers (2 cards) ===== */
+.shop-title-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 10px;
+  width:100%;
+  opacity: .95;
+}
+
+.shop-title-line{
+  height: 1px;
+  flex: 1 1 auto;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+}
+
+.shop-title{
+  margin: 0;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.78);
+  text-shadow: 0 10px 22px rgba(0,0,0,.55);
+  white-space: nowrap;
+  line-height: 1;
+  min-height: auto;
+}
+
     .reward-grid{
       display:grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -149,6 +177,8 @@
 
     @media (max-width: 360px){
       .reward-grid{ gap: 10px; }
+      .shop-title-line{ max-width: 54px; }
+      .shop-title{ font-size: 18px; }
     }
 
     .shop-panel{
@@ -199,6 +229,10 @@
     }
 
     .reward-x{
+      flex: 1 1 auto;
+      display:flex;
+      align-items:center;
+      justify-content:center;
       font-weight: 950;
       font-size: 20px;
       letter-spacing: .2px;
@@ -206,7 +240,8 @@
       opacity: .98;
       text-shadow: 0 10px 22px rgba(0,0,0,.45);
       line-height: 1;
-      text-align:right;
+      text-align:center;
+      padding-right: 0;
     }
 
     .reward-btn{
@@ -222,12 +257,18 @@
       box-shadow: 0 10px 20px rgba(0,0,0,.22);
       min-height: 42px;
     }
-    .reward-btn:active{ transform: translateY(1px); }
-    .reward-btn.is-busy{ opacity:.7; cursor:not-allowed; }
 
-    /* ===== Divider "Store" ===== */
+    .reward-btn:active{
+      transform: translateY(1px);
+    }
+
+    .reward-btn.is-busy{
+      opacity:.7;
+      cursor:not-allowed;
+    }
+
     .shop-divider{
-      margin: 26px 2px 20px; /* ✅ espace sous les 2 cards gratuites + avant le store */
+      margin: 26px 2px 20px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -252,9 +293,8 @@
       white-space: nowrap;
     }
 
-    /* ===== Product grid ===== */
     .shop-section{
-      margin-top: 0; /* ✅ on gère l’espace via le divider */
+      margin-top: 0;
     }
 
     .shop-grid{
@@ -270,7 +310,10 @@
       position:relative;
       transition: transform .12s ease;
     }
-    .prod-card:active{ transform: scale(.99); }
+
+    .prod-card:active{
+      transform: scale(.99);
+    }
 
     .prod-card::before{
       content:"";
@@ -291,10 +334,9 @@
       align-items:stretch;
       justify-content:space-between;
       gap: 10px;
-      min-height: 0; /* ✅ ne force plus une hauteur plus grande que les cards du haut */
+      min-height: 0;
     }
 
-    /* ✅ même layout que les cards du haut (image gauche, texte droite) */
     .prod-top{
       display:flex;
       align-items:center;
@@ -318,15 +360,31 @@
       flex: 1 1 auto;
       display:flex;
       align-items:center;
-      justify-content:flex-end;
+      justify-content:center;
       font-weight: 950;
       font-size: 20px;
       color: var(--vc-text);
       text-shadow: 0 10px 24px rgba(0,0,0,.5);
       line-height: 1.1;
       min-height: 22px;
-      text-align:right;
-      padding-right: 2px;
+      text-align:center;
+      padding-right: 0;
+    }
+
+    .prod-card[data-product="vchoice_no_ads"] .prod-top,
+    .prod-card[data-product="vchoice_ultra"] .prod-top{
+      justify-content: center;
+      gap: 0;
+    }
+
+    .prod-card[data-product="vchoice_no_ads"] .prod-amount,
+    .prod-card[data-product="vchoice_ultra"] .prod-amount{
+      display: none;
+    }
+
+    .prod-card[data-product="vchoice_no_ads"] .prod-ico,
+    .prod-card[data-product="vchoice_ultra"] .prod-ico{
+      margin: 0 auto;
     }
 
     .prod-price{
@@ -372,9 +430,11 @@
       justify-content:center;
       text-align:center;
     }
-    .prod-card.is-owned .owned-badge{ display:inline-flex; }
 
-    /* ===== Modal (center) ===== */
+    .prod-card.is-owned .owned-badge{
+      display:inline-flex;
+    }
+
     .shop-modal{
       position: fixed;
       inset: 0;
@@ -388,6 +448,7 @@
       pointer-events:none;
       transition: opacity .14s ease;
     }
+
     .shop-modal.is-open{
       opacity: 1;
       pointer-events:auto;
@@ -408,6 +469,7 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
+
     .shop-modal.is-open .shop-modal-card{
       transform: scale(1) translateY(0);
     }
@@ -496,14 +558,21 @@
       justify-content:center;
       text-align:center;
     }
-    .shop-modal-btn:active{ transform: translateY(1px); }
+
+    .shop-modal-btn:active{
+      transform: translateY(1px);
+    }
 
     .shop-modal-btn.primary{
       border-color: rgba(255,59,59,.30);
       background: linear-gradient(180deg, rgba(255,59,59,.20), rgba(0,0,0,.16));
       box-shadow: 0 14px 30px rgba(0,0,0,.30);
     }
-    .shop-modal-btn[disabled]{ opacity:.6; cursor:not-allowed; }
+
+    .shop-modal-btn[disabled]{
+      opacity:.6;
+      cursor:not-allowed;
+    }
   </style>
 </head>
 
@@ -512,23 +581,31 @@
     <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="index.html" aria-label="" data-i18n-aria="ui.aria_back">
         <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path fill="white" d="M14.7 6.3a1 1 0 0 1 0 1.4L11.4 11H20a1 1 0 1 1 0 2h-8.6l3.3 3.3a1 1 0 1 1-1.4 1.4l-5-5a1 1 0 0 1 0-1.4l5-5a1 1 0 0 1 1.4 0Z"/>
+          <path fill="white" d="M13.91 6.41a1 1 0 0 1 0 1.41L10.73 11H18a1 1 0 1 1 0 2h-7.27l3.18 3.18a1 1 0 1 1-1.41 1.41l-4.89-4.88a1 1 0 0 1 0-1.42l4.89-4.88a1 1 0 0 1 1.41 0Z"/>
         </svg>
       </a>
     </div>
 
-    <div class="vc-top-slot vc-top-center"></div>
+    <div class="vc-top-slot vc-top-center">
+      <a class="vc-icon-button" href="settings.html" aria-label="" data-i18n-aria="ui.aria_settings">
+        <img src="assets/img/ui/btn_settings.webp" alt="" draggable="false" />
+      </a>
+    </div>
 
     <div class="vc-top-slot vc-top-right">
-      <span class="vc-icon-button" aria-label="" data-i18n-aria="" aria-current="page" href="profile.html">
+      <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.aria_profile">
         <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
-      </span>
+      </a>
     </div>
   </div>
 
   <main class="page">
     <header class="shop-head">
-      <h1 class="shop-title" data-i18n="ui.shop_title"></h1>
+      <div class="shop-title-row">
+        <div class="shop-title-line"></div>
+        <h1 class="shop-title" data-i18n="ui.shop_title"></h1>
+        <div class="shop-title-line"></div>
+      </div>
     </header>
 
     <section class="reward-grid" aria-label="">
@@ -549,7 +626,6 @@
       </div>
     </section>
 
-    <!-- ✅ Séparateur + titre i18n "Store" -->
     <div class="shop-divider">
       <div class="shop-divider-line"></div>
       <h2 class="shop-divider-title" data-i18n="ui.shop_store_title"></h2>
@@ -580,14 +656,14 @@
           </div>
         </article>
 
-        <article class="shop-panel prod-card" data-product="vchoice_vcoins_500">
+        <article class="shop-panel prod-card" data-product="vchoice_vcoins_1200">
           <span class="owned-badge" data-i18n="ui.shop_owned_badge"></span>
           <div class="prod-inner">
             <div class="prod-top">
               <img class="prod-ico" data-product-icon src="assets/img/ui/vcoin.webp" alt="" draggable="false" />
-              <div class="prod-amount" data-i18n="ui.shop_p_vcoins500_title"></div>
+              <div class="prod-amount" data-i18n="ui.shop_p_vcoins1200_title"></div>
             </div>
-            <div class="prod-price" data-price-for="vchoice_vcoins_500" data-i18n="ui.loading"></div>
+            <div class="prod-price" data-price-for="vchoice_vcoins_1200" data-i18n="ui.loading"></div>
           </div>
         </article>
 

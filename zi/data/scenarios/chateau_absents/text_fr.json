@@ -73,7 +73,7 @@
     "ca.s11.title": "Galerie de portraits",
     "ca.s11.body": "Des visages ternis, cadres piqués. Certains regards semblent suivre ta position, mais seulement quand tu détournes les yeux.",
     "ca.s11.c1": "Approcher un portrait précis",
-    "ca.s11.c2": "Déplacer un cadre et regarder derrière",
+    "ca.s11.c2": "Déplacer un cadre accroché à l’envers",
     "ca.s11.c3": "Revenir au couloir",
 
     "ca.s12.title": "Cadre sans reflet",
@@ -259,7 +259,7 @@
     "ca.s42.title": "Lettre sans date",
     "ca.s42.body": "La lettre ne porte pas de date. Elle parle d’un chemin derrière les murs, et d’une preuve à réunir avant la crypte.",
     "ca.s42.c1": "Garder la preuve et revenir près de la malle",
-    "ca.s42.c2": "Retourner au couloir déformé",
+    "ca.s42.c2": "Revenir au grenier",
     "ca.s42.c3": "Continuer sans emporter la lettre",
 
     "ca.s43.title": "Retour brutal",
@@ -389,8 +389,8 @@
     "ca.s63.c3": "Revenir vers la salle de bal",
 
     "ca.s64.title": "Dernier seuil",
-    "ca.s64.body": "La grille t’attend comme une bouche. Si tu emportes une preuve réelle du château, tu peux tenter de la franchir. Sinon, tu risques seulement de revenir dans son jeu.",
-    "ca.s64.c1": "Franchir la grille avec une preuve",
+    "ca.s64.body": "La grille t’attend comme une bouche. Le vrai risque n’est pas dehors : c’est d’emporter encore le château avec toi. Si tu avances au bon moment, tu peux franchir le seuil.",
+    "ca.s64.c1": "Franchir la grille",
     "ca.s64.c2": "Hésiter et reculer",
     "ca.s64.c3": "Revenir au hall pour comprendre",
 
@@ -425,7 +425,7 @@
     "ca.s69.c3": "Aller vers la salle de bal",
 
     "ca.s70.title": "Tour, dernier indice",
-    "ca.s70.body": "Dans la chambre haute, tu comprends que la crypte n’accepte pas un seul objet : elle accepte une suite de preuves. Et le symbole est la clé logique.",
+    "ca.s70.body": "Dans la chambre haute, tu comprends que la crypte n’accepte pas la force. Elle accepte un chemin juste. Et le symbole est la clé logique.",
     "ca.s70.c1": "Redescendre vers l’alcôve, passage secret",
     "ca.s70.c2": "Aller au cœur de la crypte",
     "ca.s70.c3": "Revenir au palier",
@@ -443,8 +443,8 @@
     "ca.s72.c3": "Revenir au passage secret",
 
     "ca.s73.title": "La preuve complète",
-    "ca.s73.body": "Le symbole réagit. La poussière tourbillonne en spirale. Tu sens qu’il manque une chose : ton consentement final. Tout ce que tu as pris doit s’aligner.",
-    "ca.s73.c1": "Aligner les preuves et continuer",
+    "ca.s73.body": "Le symbole réagit. La poussière tourbillonne en spirale. Tu sens qu’il manque encore un dernier alignement : la clé, le signe compris, et le fait d’être vraiment entré dans la crypte.",
+    "ca.s73.c1": "Aligner ce que tu as compris et continuer",
     "ca.s73.c2": "Reculer",
     "ca.s73.c3": "Fuir vers le passage secret",
 
@@ -479,33 +479,30 @@
     "ca.end_secret.title": "Fin secrète, Rupture",
     "ca.end_secret.body": "Le symbole s’active. La poussière spirale, puis tombe d’un coup. Tu sens le lien se rompre, net. Le château devient un décor vide — enfin. Mais tu gardes en toi la certitude que tu as coupé quelque chose qui savait ton nom.",
 
-    "ca.h.s14.soft": "La page arrachée n’est pas un lore : c’est une preuve.",
-    "ca.h.s14.strong": "Prends la page au bureau. Flag : has_diary_page. Elle compte pour sortir correctement.",
+    "ca.h.s14.soft": "La page arrachée n’est pas obligatoire, mais elle reste une vraie preuve utile.",
+    "ca.h.s14.strong": "Prends la page au bureau. Flag : has_diary_page. Elle renforce la cohérence du scénario, sans être requise pour sortir.",
 
     "ca.h.s26.soft": "L’autel n’offre pas une clé pour ouvrir une porte, mais pour changer le château.",
-    "ca.h.s26.strong": "Prends la clé. Flag : has_chapel_key. Elle débloque la porte verrouillée du couloir, scène s44.",
+    "ca.h.s26.strong": "Prends la clé. Flag : has_chapel_key. Elle est requise pour la route de la fin secrète et débloque la porte verrouillée du couloir, scène s44.",
 
     "ca.h.s37.soft": "Le symbole est le seul élément stable quand tout bouge.",
-    "ca.h.s37.strong": "Récupère le fragment de plan. Flag : has_map_fragment. Mémorise le symbole. Flag : knows_symbol. C’est requis pour ouvrir l’alcôve vers le passage secret.",
+    "ca.h.s37.strong": "Le plus important ici, c’est de comprendre le symbole. Flag : knows_symbol. Le fragment de plan reste utile, mais seul le symbole est requis pour ouvrir l’alcôve vers le passage secret.",
 
     "ca.h.s47.soft": "La musique du château, c’est sa façon de te guider au mauvais endroit.",
-    "ca.h.s47.strong": "Prends l’enregistrement. Flag : has_recording. Il compte comme preuve et t’aide à viser la fin secrète.",
+    "ca.h.s47.strong": "Prends l’enregistrement. Flag : has_recording. C’est une preuve utile pour l’ambiance et la compréhension, mais ce n’est plus requis pour la fin secrète.",
 
     "ca.h.s56.soft": "Une porte secrète n’accepte pas la force. Elle accepte une règle.",
-    "ca.h.s56.strong": "Sans has_map_fragment et knows_symbol, tu ne peux pas ouvrir l’alcôve vers le passage secret.",
+    "ca.h.s56.strong": "Sans knows_symbol, tu ne peux pas ouvrir l’alcôve vers le passage secret.",
 
     "ca.h.s73.soft": "La crypte ne te juge pas sur le courage, mais sur la cohérence.",
-    "ca.h.s73.strong": "Pour continuer vers la rupture du lien, il faut tout : has_signet, has_chapel_key, has_diary_page, has_recording, has_map_fragment.",
+    "ca.h.s73.strong": "Pour continuer vers la rupture du lien, il faut trois éléments : has_chapel_key, knows_symbol et entered_crypt.",
 
     "ca.clue.entered_crypt.title": "Crypte atteinte",
-    "ca.clue.found_secret_passage.title": "Passage secret",
     "ca.clue.has_chapel_key.title": "Clé de la chapelle",
     "ca.clue.has_diary_page.title": "Page de journal",
     "ca.clue.has_map_fragment.title": "Fragment de plan",
     "ca.clue.has_recording.title": "Enregistrement",
     "ca.clue.has_signet.title": "Signet",
-    "ca.clue.knows_symbol.title": "Symbole compris",
-    "ca.clue.refused_call.title": "Appel refusé",
-    "ca.clue.touched_mirror.title": "Miroir touché"
+    "ca.clue.knows_symbol.title": "Symbole compris"
   }
 }

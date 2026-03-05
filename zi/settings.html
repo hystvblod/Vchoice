@@ -1,4 +1,3 @@
-<!-- settings.html — VERSION COMPLETE À JOUR (sans dropdown, grille seule + toggle pubs + topbar home/profil) -->
 <!doctype html>
 <html lang="fr">
 <head>
@@ -8,6 +7,22 @@
   <link rel="stylesheet" href="css/app.css" />
 
   <style>
+    html,
+    body{
+      height:100%;
+    }
+
+    body.page-settings{
+      margin:0;
+      width:100%;
+      height:100dvh;
+      min-height:100dvh;
+      overflow:hidden;
+      overscroll-behavior:none;
+      display:flex;
+      flex-direction:column;
+    }
+
     /* ===== TOPBAR (comme index, mais flèche + profil) ===== */
     .topbar{ display:none !important; }
 
@@ -15,12 +30,15 @@
       position: relative;
       z-index: 10;
       width: 100%;
+      flex: 0 0 auto;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap: 10px;
       padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
+      box-sizing:border-box;
     }
+
     .vc-top-slot{
       flex: 1 1 0;
       display:flex;
@@ -46,7 +64,9 @@
       cursor:pointer;
       text-decoration:none;
       -webkit-tap-highlight-color: transparent;
+      flex: 0 0 auto;
     }
+
     .vc-icon-button:active{ transform: scale(.98); }
 
     .vc-icon-button img{
@@ -67,6 +87,49 @@
       filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65));
     }
 
+    body.page-settings .app{
+      flex: 1 1 auto;
+      min-height: 0;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    body.page-settings .main{
+      flex: 1 1 auto;
+      min-height: 0;
+      display:flex;
+      padding: 0 12px 12px;
+      box-sizing:border-box;
+      overflow:hidden;
+    }
+
+    body.page-settings .panel{
+      flex: 1 1 auto;
+      min-height: 0;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+
+    body.page-settings .panel__head{
+      flex: 0 0 auto;
+      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-right: calc(16px + env(safe-area-inset-right));
+    }
+
+    body.page-settings .panel__body{
+      flex: 1 1 auto;
+      min-height: 0;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      overflow:hidden;
+      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-right: calc(16px + env(safe-area-inset-right));
+      box-sizing:border-box;
+    }
+
     /* ====== PANEL HEAD centré ====== */
     .panel__headCentered{
       display:flex;
@@ -77,25 +140,17 @@
       gap:6px;
       padding-top:2px;
     }
+
     .panel__headCentered .title{
       margin:0;
       text-align:center;
       width:100%;
     }
+
     .panel__headCentered .muted{
       margin:0;
       text-align:center;
       max-width: 520px;
-    }
-
-    /* ✅ marge globale : évite les textes collés au bord */
-    body.page-settings .panel__body{
-      padding-left: calc(16px + env(safe-area-inset-left));
-      padding-right: calc(16px + env(safe-area-inset-right));
-    }
-    body.page-settings .panel__head{
-      padding-left: calc(16px + env(safe-area-inset-left));
-      padding-right: calc(16px + env(safe-area-inset-right));
     }
 
     /* ====== Grille langues ======
@@ -105,22 +160,24 @@
     .langGrid{
       display:grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap:10px;
-      margin-top: 22px;     /* ✅ plus d’espace titre -> 1ère ligne */
-      margin-bottom: 22px;  /* ✅ plus d’espace dernière ligne -> textes */
+      gap:8px;
+      margin-top: 14px;
+      margin-bottom: 14px;
+      flex: 0 0 auto;
     }
+
     @media (min-width: 520px){
       .langGrid{ grid-template-columns: repeat(4, minmax(0, 1fr)); }
     }
 
-    /* ✅ BOUTONS LANGUES SANS “CARRÉ” (pas de cartouche/border/bg) */
+    /* ✅ BOUTONS LANGUES SANS “CARRÉ” */
     .langBtn{
       width:100%;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:0;
-      padding: 10px 6px;
+      padding: 8px 6px;
       border-radius: 14px;
       border: 0 !important;
       background: transparent !important;
@@ -129,7 +186,9 @@
       -webkit-tap-highlight-color: transparent;
       text-align:center;
       box-shadow: none !important;
+      min-height: 48px;
     }
+
     .langBtn:active{ transform: scale(.98); }
 
     /* ✅ état actif : pas de carré, juste un glow discret */
@@ -140,7 +199,7 @@
       border: 0 !important;
     }
 
-    /* ✅ FLAGS : SANS encadré (aucun border/box) */
+    /* ✅ FLAGS : SANS encadré */
     .flag{
       width: 46px;
       height: 32px;
@@ -152,23 +211,30 @@
       box-shadow: none !important;
       background: transparent !important;
     }
-    .flag svg{ width:100%; height:100%; display:block; }
 
-    /* ✅ on masque les textes (tu veux juste les drapeaux) */
+    .flag svg{
+      width:100%;
+      height:100%;
+      display:block;
+    }
+
+    /* ✅ on masque les textes */
     .langText{ display:none !important; }
 
     /* ====== Sections ====== */
     .settingsSection{
-      margin-top: 18px;   /* un peu plus aéré */
-      padding-top: 14px;
+      margin-top: 12px;
+      padding-top: 10px;
       border-top: 1px solid rgba(255,255,255,.10);
+      flex: 0 0 auto;
     }
+
     .settingsSectionTitle{
       font-weight: 950;
       font-size: 13px;
       letter-spacing: .2px;
       opacity: .92;
-      margin: 0 0 10px 0;
+      margin: 0 0 8px 0;
     }
 
     /* ✅ enlever les “carrés” autour du bloc pubs */
@@ -177,19 +243,22 @@
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      padding: 8px 0;
+      padding: 6px 0;
       border-radius: 0;
       border: 0;
       background: transparent;
     }
+
     .toggleText{ min-width:0; }
+
     .toggleLabel{
       font-weight: 950;
       line-height: 1.2;
       margin:0;
     }
+
     .toggleDesc{
-      margin:6px 0 0 0;
+      margin:4px 0 0 0;
       opacity: .78;
       font-size: 12px;
       line-height: 1.25;
@@ -201,6 +270,7 @@
       height: 32px;
       flex: 0 0 auto;
     }
+
     .switch input{
       position:absolute;
       inset:0;
@@ -210,6 +280,7 @@
       margin:0;
       cursor:pointer;
     }
+
     .switchUi{
       position:absolute;
       inset:0;
@@ -219,6 +290,7 @@
       box-shadow: 0 10px 22px rgba(0,0,0,0.18);
       transition: .18s ease;
     }
+
     .switchUi::after{
       content:"";
       position:absolute;
@@ -231,11 +303,13 @@
       box-shadow: 0 10px 18px rgba(0,0,0,.22);
       transition: .18s ease;
     }
+
     .switch input:checked + .switchUi{
       background: rgba(255,255,255,.14);
       border-color: rgba(255,255,255,.22);
       box-shadow: 0 10px 22px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,59,59,.12) inset;
     }
+
     .switch input:checked + .switchUi::after{
       transform: translateX(22px);
     }
@@ -244,22 +318,30 @@
        ✅ centré
        ✅ pas de carré
     */
-    #settingsHelpTitle{ text-align:center; width:100%; }
+    #settingsHelpTitle{
+      text-align:center;
+      width:100%;
+    }
 
     .helpLine{
       display:flex;
       align-items:center;
-      justify-content:center;  /* ✅ centré */
+      justify-content:center;
       gap:8px;
-      padding: 8px 0;
+      padding: 6px 0;
       border-radius: 0;
       border: 0;
       background: transparent;
-      margin-top:10px;
+      margin-top:8px;
       overflow:hidden;
       text-align:center;
     }
-    .helpLabel{ font-weight: 950; opacity:.92; }
+
+    .helpLabel{
+      font-weight: 950;
+      opacity:.92;
+    }
+
     .helpMail{
       opacity:.86;
       white-space:nowrap;
@@ -268,11 +350,17 @@
       max-width: 100%;
     }
 
-   
     #settingsAdsTitle{
-  text-align:center;
-  width:100%;
-}
+      text-align:center;
+      width:100%;
+    }
+
+    #settingsMsg{
+      flex: 0 0 auto;
+      margin-top:8px !important;
+      min-height: 18px;
+      text-align:center;
+    }
   </style>
 </head>
 
@@ -299,14 +387,12 @@
   <div class="app">
     <main class="main">
       <section class="panel">
-        <!-- ✅ Head centré (titre + desc) -->
         <div class="panel__head panel__headCentered">
           <h1 id="settingsTitle" class="title"></h1>
           <p id="settingsLangDesc" class="muted"></p>
         </div>
 
-        <div class="panel__body" style="padding-top:14px;">
-          <!-- ✅ plus de dropdown -->
+        <div class="panel__body" style="padding-top:10px;">
           <div id="settingsLangGrid" class="langGrid" aria-label=""></div>
 
           <div class="settingsSection">
@@ -334,7 +420,7 @@
             </div>
           </div>
 
-          <div id="settingsMsg" class="muted" style="margin-top:10px;"></div>
+          <div id="settingsMsg" class="muted"></div>
         </div>
       </section>
     </main>
@@ -349,7 +435,7 @@
   <script>
   (async () => {
     const LangStorageKey = "vchoice_lang";
-    const AdsPrefKey = "vchoice_ads_personalized"; // "1" / "0"
+    const AdsPrefKey = "vchoice_ads_personalized";
 
     const LANGS = [
       { code:"en",  ui:"EN",  nameKey:"ui.lang_name.en"  },
@@ -361,7 +447,7 @@
       { code:"it",  ui:"IT",  nameKey:"ui.lang_name.it"  },
       { code:"ko",  ui:"KO",  nameKey:"ui.lang_name.ko"  },
       { code:"ja",  ui:"JP",  nameKey:"ui.lang_name.ja"  },
-      { code:"id",  ui:"ID",  nameKey:"ui.lang_name.id"  }  // ✅ Indonésien
+      { code:"id",  ui:"ID",  nameKey:"ui.lang_name.id"  }
     ];
 
     function $(id){ return document.getElementById(id); }
@@ -420,7 +506,6 @@
       return fallback || "";
     }
 
-    // ====== SVG flags ======
     const FLAGS = {
       fr: `<svg viewBox="0 0 30 20" aria-hidden="true"><rect width="10" height="20" x="0" y="0" fill="#1f4fbf"/><rect width="10" height="20" x="10" y="0" fill="#ffffff"/><rect width="10" height="20" x="20" y="0" fill="#d11f2e"/></svg>`,
       en: `<svg viewBox="0 0 30 20" aria-hidden="true">
@@ -463,17 +548,14 @@
 
       document.title = t("ui.settings_title", "Settings");
 
-      // topbar aria
       const back = $("btnBackHome");
       const prof = $("btnGoProfile");
       if(back) back.setAttribute("aria-label", t("ui.settings_back_home_aria", "Back to home"));
       if(prof) prof.setAttribute("aria-label", t("ui.settings_open_profile_aria", "Open profile"));
 
-      // grid aria
       const grid = $("settingsLangGrid");
       if(grid) grid.setAttribute("aria-label", t("ui.language", "Language"));
 
-      // pubs
       const adsTitle = $("settingsAdsTitle");
       const adsLabel = $("adsLabel");
       const adsDesc  = $("adsDesc");
@@ -484,7 +566,6 @@
       if(adsDesc)  adsDesc.textContent  = t("ui.settings_ads_personalized_desc", "");
       if(adsSw)    adsSw.setAttribute("aria-label", t("ui.settings_ads_personalized_label", "Personalized ads"));
 
-      // help
       const helpTitle = $("settingsHelpTitle");
       const helpLab   = $("helpEmailLabel");
       const helpVal   = $("helpEmailValue");
@@ -512,7 +593,6 @@
         flag.className = "flag";
         flag.innerHTML = FLAGS[L.code] || FLAGS.en;
 
-        // (texts hidden by CSS, but kept for a11y)
         const txt = document.createElement("div");
         txt.className = "langText";
 
@@ -548,18 +628,15 @@
       const code = normalizeLang(raw) || "en";
       const safe = supported(code) ? code : "en";
 
-      // local first
       try{ localStorage.setItem("vchoice_lang", safe); }catch(_){}
       try{ localStorage.setItem("VREALMS_LANG", safe); }catch(_){}
 
-      // update cache local VUserData
       try{
         if(window.VUserData && typeof window.VUserData.save === "function"){
           window.VUserData.save({ lang: safe }, { silent:true });
         }
       }catch(_){}
 
-      // remote
       let remoteOk = true;
       try{
         if(window.VUserData && typeof window.VUserData.setLang === "function"){
@@ -569,7 +646,6 @@
         }
       }catch(_){ remoteOk = false; }
 
-      // i18n reload
       try{
         if(window.VRI18n && typeof window.VRI18n.initI18n === "function"){
           await window.VRI18n.initI18n(safe);
@@ -588,14 +664,12 @@
       }
     }
 
-    // ====== PUBS PERSONNALISÉES (stock + envoi au bridge) ======
     function getAdsPref(){
       try{
         const v = localStorage.getItem(AdsPrefKey);
         if(v === "1") return true;
         if(v === "0") return false;
       }catch(_){}
-      // défaut OFF (le plus safe)
       return false;
     }
 
@@ -603,7 +677,6 @@
       const on = !!value;
       try{ localStorage.setItem(AdsPrefKey, on ? "1" : "0"); }catch(_){}
 
-      // push au module ads.js (qui push ensuite au natif si dispo)
       try{ window.VAds?.setPersonalized?.(on); }catch(_){}
 
       const box = $("adsPersonalized");
@@ -615,12 +688,10 @@
       }
     }
 
-    // ==== BOOT ====
     try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
     try { await window.VUserData?.init?.(); } catch(e) {}
     try { await window.VRI18n?.initI18n?.(); } catch(e) {}
 
-    // ensure local lang exists
     try{
       const cur = getStoredLang();
       if(!cur){
@@ -633,17 +704,14 @@
     renderTexts();
     buildGrid();
 
-    // set initial lang (no msg)
     await setLanguage(getStoredLang() || detectDeviceLang(), { showMsg:false });
 
-    // init ads pref UI
     const adsBox = $("adsPersonalized");
     if(adsBox){
       adsBox.checked = getAdsPref();
       adsBox.addEventListener("change", () => setAdsPref(adsBox.checked, { showMsg:true }));
     }
 
-    // push pref now
     try{ window.VAds?.setPersonalized?.(getAdsPref()); }catch(_){}
   })();
   </script>
