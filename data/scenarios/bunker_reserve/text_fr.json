@@ -236,10 +236,10 @@
     "br.s38.c3": "Partir",
 
     "br.s39.title": "L’air manque",
-    "br.s39.body": "Quand tu avances encore, l’air change. Une chaleur très faible, humaine, semble avoir quitté la pièce juste avant toi. Sur le drap, une trace de main apparaît lentement, de l’intérieur vers l’extérieur.",
-    "br.s39.c1": "Accepter que le lieu suive des règles",
-    "br.s39.c2": "Rester et écouter encore",
-    "br.s39.c3": "Revenir dans la pièce",
+    "br.s39.body": "Ton souffle devient trop fort, trop chaud. Tu sens que le lieu n’aime pas la chaleur humaine. C’est un frigo, oui… mais un frigo avec des règles. Et tu es dedans.",
+    "br.s39.c1": "Chercher où ces règles se commandent",
+    "br.s39.c2": "Rester et écouter longtemps",
+    "br.s39.c3": "Revenir vers la pièce habitée",
 
     "br.s40.title": "Le plan répond",
     "br.s40.body": "Le fragment manquant te revient en tête. Ce couloir ne relie pas deux zones : il contourne quelque chose que le plan officiel n’assumait pas. Le bunker a été dessiné pour cacher son centre réel.",
@@ -296,10 +296,10 @@
     "br.s48.c3": "Observer les trois portes avant de choisir",
 
     "br.s49.title": "Couloir de l’écho",
-    "br.s49.body": "Chaque pas revient avec un retard trop long. Le lieu répond mal à l’espace réel. Quelque chose, ici, fausse la distance.",
-    "br.s49.c1": "Retourner vers le sanctuaire",
-    "br.s49.c2": "Chercher l’air extérieur",
-    "br.s49.c3": "Revenir aux trois portes",
+    "br.s49.body": "Le couloir normal est pire : aucun signal. Tu te sens seul. Puis tu remarques : ton pas n’a pas le même rythme que ton écho. L’écho hésite. Comme s’il attendait une autre marche.",
+    "br.s49.c1": "Suivre la présence dans le couloir",
+    "br.s49.c2": "Remonter vers la surface",
+    "br.s49.c3": "Aller vers les trois portes",
 
     "br.s50.title": "Ombre sans corps",
     "br.s50.body": "Une ombre glisse sur le drap, mais personne ne traverse la pièce. Tu ne vois ni corps, ni source, ni reflet logique. Le bunker ne te montre peut-être pas l’occupant lui-même. Il te montre seulement les traces de son passage.",
