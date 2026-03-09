@@ -177,7 +177,7 @@
       "choices": [
         { "choice_key": "br.s10.c1", "next": "s11" },
         { "choice_key": "br.s10.c2", "next": "s06" },
-        { "choice_key": "br.s10.c3", "next": "s14" }
+        { "choice_key": "br.s10.c3", "next": "s16" }
       ]
     },
     "s11": {
@@ -315,7 +315,7 @@
       "title_key": "br.s24.title",
       "body_key": "br.s24.body",
       "choices": [
-        { "choice_key": "br.s24.c1", "next": "s42", "set_flags": ["has_code"] },
+        { "choice_key": "br.s24.c1", "next": "s23", "set_flags": ["has_code"] },
         { "choice_key": "br.s24.c2", "next": "s23" },
         { "choice_key": "br.s24.c3", "next": "s31" }
       ]
@@ -506,7 +506,7 @@
       "body_key": "br.s43.body",
       "choices": [
         { "choice_key": "br.s43.c1", "next": "s44", "requires_all_flags": ["has_badge", "has_code"] },
-        { "choice_key": "br.s43.c2", "next": "s23" },
+        { "choice_key": "br.s43.c2", "next": "s42" },
         { "choice_key": "br.s43.c3", "next": "s31" }
       ]
     },
