@@ -8,7 +8,7 @@
   },
   "strings": {
     "br.s01.title": "La colline muette",
-    "br.s01.body": "La pente paraît normale, mais l’air est plus froid ici. Entre deux racines, un métal affleure… comme si la terre avait mal refermé quelque chose.",
+    "br.s01.body": "La pente paraît normale, mais l’air est plus froid ici. Entre deux racines, un métal dépasse un peu… comme si la terre avait mal refermé quelque chose.",
     "br.s01.c1": "Chercher une ouverture le long de la clôture",
     "br.s01.c2": "Toucher le métal",
     "br.s01.c3": "Forcer l’accès",
@@ -34,7 +34,7 @@
     "br.s05.title": "Le sas",
     "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement. Le panneau du sas semble attendre une main pour révéler où mène l’accès.",
     "br.s05.c1": "Passer la première porte",
-    "br.s05.c2": "Réveiller le panneau pour consulter le plan",
+    "br.s05.c2": "Réveiller le panneau pour repérer le plan mural",
     "br.s05.c3": "Revenir vers l’escalier",
 
     "br.s06.title": "Couloir principal",
@@ -92,7 +92,7 @@
     "br.s14.c3": "Revenir au couloir principal",
 
     "br.s15.title": "La travée vide",
-    "br.s15.body": "Une travée entière a été vidée proprement. Pas de désordre. À sa place, au fond, une porte métallique sans marquage visible.",
+    "br.s15.body": "Une rangée entière a été vidée proprement. Pas de désordre. À sa place, au fond, une porte métallique sans marquage visible.",
     "br.s15.c1": "Aller vers la porte sans marquage",
     "br.s15.c2": "Chercher l’infirmerie",
     "br.s15.c3": "Retourner aux réserves",
@@ -137,7 +137,7 @@
     "br.s22.body": "Cadenas. Métal épais. Sur le cadre, une trace de chaleur… comme une fièvre contenue. Le bunker semble retenir quelque chose derrière, par discipline, pas par sécurité.",
     "br.s22.c1": "Chercher un autre accès",
     "br.s22.c2": "Revenir à la travée vide",
-    "br.s22.c3": "Insister",
+    "br.s22.c3": "Insister sur le cadenas",
 
     "br.s23.title": "Atelier",
     "br.s23.body": "Établi nu. Quelques outils alignés. Une note sans mots : seulement des traits, des pauses, trois séquences. Pas un message. Une procédure.",
@@ -149,7 +149,7 @@
     "br.s24.body": "Trois blocs. Deux pauses. Une répétition. Ce n’est pas un code à lire, c’est un rythme à reproduire quelque part.",
     "br.s24.c1": "Mémoriser la séquence",
     "br.s24.c2": "Revenir à l’atelier",
-    "br.s24.c3": "Tenter d’improviser malgré tout",
+    "br.s24.c3": "Essayer la séquence au hasard",
 
     "br.s25.title": "Grille ouverte",
     "br.s25.body": "Les vis ont déjà été retirées. La grille repose juste à côté, comme si quelqu’un passait souvent par là sans vouloir laisser de trace visible.",
@@ -199,7 +199,7 @@
     "br.s32.c2": "Suivre les traces discrètes dans le couloir",
     "br.s32.c3": "Retourner aux réserves",
 
-    "br.s33.title": "Local maintenance",
+    "br.s33.title": "Local de maintenance",
     "br.s33.body": "Produits d’entretien, outils, gants, et au mur une feuille de suivi. Certaines lignes sont remplies très récemment, avec une écriture serrée, presque timide.",
     "br.s33.c1": "Lire les dernières lignes",
     "br.s33.c2": "Retourner dans le conduit",
@@ -215,7 +215,7 @@
     "br.s35.body": "Le couloir a des micro-traces : frottements, condensation déplacée, un angle plus propre que les autres. Avec le plan en tête, tu comprends qu’un détour existe… mais seulement si tu l’acceptes.",
     "br.s35.c1": "Suivre l’angle trop propre",
     "br.s35.c2": "Comparer le couloir au fragment du plan",
-    "br.s35.c3": "Forcer le rythme",
+    "br.s35.c3": "Forcer le passage",
 
     "br.s36.title": "La marque",
     "br.s36.body": "Sur le mur, au ras des doigts, une marque de frottement revient à intervalles réguliers. Quelqu’un passe ici souvent, en touchant toujours le même point pour se guider.",
@@ -248,7 +248,7 @@
     "br.s40.c3": "Déclencher une nouvelle alerte",
 
     "br.s41.title": "Zone absente",
-    "br.s41.body": "Les dimensions ne collent plus. Derrière ce mur, il manque un volume entier. Pas vide : soustrait.",
+    "br.s41.body": "Les dimensions ne collent plus. Derrière ce mur, il manque un volume entier. Pas vide : caché.",
     "br.s41.c1": "Chercher une console liée à cette zone",
     "br.s41.c2": "Revenir sur tes pas",
     "br.s41.c3": "Forcer le bunker à rouvrir ses accès",
@@ -271,13 +271,13 @@
     "br.s44.c2": "Rester à la console",
     "br.s44.c3": "Provoquer une alerte",
 
-    "br.s45.title": "Mode test",
-    "br.s45.body": "Une section cachée apparaît. Paramètres de veille. Isolement. Override. Le bunker n’a pas été conçu pour protéger quelqu’un. Il a été conçu pour le contenir sans jamais l’affronter.",
-    "br.s45.c1": "Lire l’override",
+    "br.s45.title": "Mode de test",
+    "br.s45.body": "Une section cachée apparaît. Paramètres de veille. Isolement. Procédure prioritaire. Le bunker n’a pas été conçu pour protéger quelqu’un. Il a été conçu pour le contenir sans jamais l’affronter.",
+    "br.s45.c1": "Lire la procédure prioritaire",
     "br.s45.c2": "Chercher la porte du sanctuaire",
     "br.s45.c3": "Couper l’écran",
 
-    "br.s46.title": "Override",
+    "br.s46.title": "Procédure prioritaire",
     "br.s46.body": "Une procédure sèche s’affiche. Tu comprends comment inverser temporairement la logique du lieu : ralentir les accès du sanctuaire, verrouiller certains circuits, et reprendre un peu d’avance.",
     "br.s46.c1": "Mémoriser la procédure",
     "br.s46.c2": "Revenir au mode test",
@@ -413,7 +413,7 @@
     "br.clue.has_code.title": "Séquence mémorisée",
     "br.clue.has_map_fragment.title": "Fragment de plan compris",
     "br.clue.has_master_key.title": "Clé maître récupérée",
-    "br.clue.has_override.title": "Override mémorisé",
+    "br.clue.has_override.title": "Procédure prioritaire mémorisée",
     "br.clue.has_protocol_truth.title": "Vérité du protocole comprise",
     "br.clue.has_sanctuary_mark.title": "Marque du sanctuaire trouvée"
   }

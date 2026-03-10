@@ -8,7 +8,7 @@
   },
   "strings": {
     "br.s01.title": "La colline muette",
-    "br.s01.body": "La pente paraît normale, mais l’air est plus froid ici. Entre deux racines, un métal affleure… comme si la terre cachait une porte.",
+    "br.s01.body": "La pente paraît normale, mais l’air est plus froid ici. Entre deux racines, un métal dépasse un peu… comme si la terre cachait une porte.",
     "br.s01.c1": "Suivre la clôture et chercher une ouverture",
     "br.s01.c2": "S’approcher et toucher le métal",
     "br.s01.c3": "Écarter les racines et forcer l’accès",
@@ -34,7 +34,7 @@
     "br.s05.title": "Le sas",
     "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement. Le panneau du sas semble attendre une main pour révéler où mène l’accès.",
     "br.s05.c1": "Passer la première porte",
-    "br.s05.c2": "Réveiller le panneau pour lire l’accès",
+    "br.s05.c2": "Réveiller le panneau pour repérer le plan mural",
     "br.s05.c3": "Revenir vers l’escalier",
 
     "br.s06.title": "Couloir principal",
@@ -92,7 +92,7 @@
     "br.s14.c3": "Revenir au couloir principal",
 
     "br.s15.title": "La travée vide",
-    "br.s15.body": "Au milieu des stocks, une travée entière est vide. Pas de poussière accumulée. Plutôt… un passage entretenu. Tu as la sensation d’être dans un frigo qu’on ouvre la nuit.",
+    "br.s15.body": "Au milieu des stocks, une rangée entière est vide. Pas de poussière accumulée. Plutôt… un passage entretenu. Tu as la sensation d’être dans un frigo qu’on ouvre la nuit.",
     "br.s15.c1": "Suivre la travée jusqu’à une porte scellée",
     "br.s15.c2": "Aller à l’infirmerie",
     "br.s15.c3": "Revenir aux réserves",
@@ -137,7 +137,7 @@
     "br.s22.body": "Cadenas. Métal épais. Sur le cadre, une trace de chaleur… comme une fièvre contenue. Le bunker semble retenir quelque chose derrière, par discipline, pas par sécurité.",
     "br.s22.c1": "Chercher un autre accès",
     "br.s22.c2": "Revenir à la travée vide",
-    "br.s22.c3": "Insister jusqu’à déclencher une réaction du bunker",
+    "br.s22.c3": "Insister sur le cadenas",
 
     "br.s23.title": "Atelier",
     "br.s23.body": "Outils alignés au millimètre. Une lame manque. La poussière est coupée net, comme si quelqu’un avait posé une main, puis retiré la main sans laisser de chaos.",
@@ -149,7 +149,7 @@
     "br.s24.body": "Sous une plaque, un symbole gravé. Pas un mot : une logique. Trois gestes, une séquence. Tu la comprends sans savoir pourquoi, comme si on t’avait déjà appris la réponse.",
     "br.s24.c1": "Mémoriser la séquence et aller à la console",
     "br.s24.c2": "Revenir à l’atelier",
-    "br.s24.c3": "Forcer le rythme",
+    "br.s24.c3": "Essayer la séquence au hasard",
 
     "br.s25.title": "Grille ouverte",
     "br.s25.body": "La grille est déposée, vis au sol. Les bords du métal sont frottés, récents. Un souffle froid vient du conduit, pas de l’air… quelque chose d’autre : l’absence de chaleur.",
@@ -199,7 +199,7 @@
     "br.s32.c2": "Explorer plus loin dans les couloirs",
     "br.s32.c3": "Retourner aux réserves",
 
-    "br.s33.title": "Local maintenance",
+    "br.s33.title": "Local de maintenance",
     "br.s33.body": "La clé tourne sans résistance, comme si la serrure t’attendait. À l’intérieur : poussière cassée par des pas récents. Pas des pas pressés. Des pas sûrs, réguliers.",
     "br.s33.c1": "Entrer et chercher un passage",
     "br.s33.c2": "Revenir au conduit",
@@ -215,7 +215,7 @@
     "br.s35.body": "Le couloir a des micro-traces : frottements, condensation déplacée, un angle plus propre que les autres. Avec le plan en tête, tu comprends qu’un détour existe… mais seulement si tu l’acceptes.",
     "br.s35.c1": "Suivre l’angle trop propre",
     "br.s35.c2": "Revenir au plan",
-    "br.s35.c3": "Forcer le rythme",
+    "br.s35.c3": "Forcer le passage",
 
     "br.s36.title": "La marque",
     "br.s36.body": "Une marque sombre, répétée, comme un symbole sans mots. Elle ne te dit pas où aller. Elle te dit où ne pas faire de bruit. C’est une règle d’occupant.",
@@ -227,7 +227,7 @@
     "br.s37.body": "La marque est là encore. Plus proche. Et l’air change : plus sec, plus froid, comme si la chaleur était interdite. Tu comprends : c’est un sanctuaire.",
     "br.s37.c1": "Toucher la marque",
     "br.s37.c2": "Reculer doucement",
-    "br.s37.c3": "Fuir",
+    "br.s37.c3": "Abandonner cette piste",
 
     "br.s38.title": "Pièce habitée",
     "br.s38.body": "Un fauteuil. Un drap occultant. Un verre vide, sans poussière. La pièce n’est pas un décor : elle est entretenue. Ici, quelqu’un vit… mais seulement quand tu ne le vois pas.",
@@ -268,16 +268,16 @@
     "br.s44.title": "Accès accordé",
     "br.s44.body": "La console répond sans son. Voyants alignés. Une option apparaît : ‘MODE TEST’. Tu comprends : veille = confort de l’occupant. Test = danger… mais vérité.",
     "br.s44.c1": "Activer le mode test",
-    "br.s44.c2": "Revenir à l’étape de déverrouillage",
+    "br.s44.c2": "Rester à la console",
     "br.s44.c3": "Quitter la zone",
 
-    "br.s45.title": "Mode test",
+    "br.s45.title": "Mode de test",
     "br.s45.body": "Le bunker te demande une décision : activer une séquence qui isole une zone. La porte scellée chauffe légèrement. Comme si quelque chose derrière s’éveillait… ou s’agaçait.",
-    "br.s45.c1": "Ouvrir la voie",
+    "br.s45.c1": "Lire la procédure prioritaire",
     "br.s45.c2": "Aller à la porte scellée",
     "br.s45.c3": "Quitter",
 
-    "br.s46.title": "Override",
+    "br.s46.title": "Procédure prioritaire",
     "br.s46.body": "Un mot que tu n’aimes pas : override. Contourner. Inverser. Le bunker te laisse toucher ce bouton comme un animal qui laisse un inconnu approcher son collier.",
     "br.s46.c1": "Activer l’override",
     "br.s46.c2": "Revenir au mode test",
@@ -411,7 +411,7 @@
     "br.clue.has_code.title": "Code",
     "br.clue.has_map_fragment.title": "Fragment de plan",
     "br.clue.has_master_key.title": "Clé maître",
-    "br.clue.has_override.title": "Override",
+    "br.clue.has_override.title": "Procédure prioritaire mémorisée",
     "br.clue.has_protocol_truth.title": "Vérité du protocole",
     "br.clue.has_sanctuary_mark.title": "Marque du sanctuaire"
   }

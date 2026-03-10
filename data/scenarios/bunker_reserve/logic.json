@@ -446,7 +446,7 @@
       "choices": [
         { "choice_key": "br.s37.c1", "next": "s38", "set_flags": ["has_sanctuary_mark"] },
         { "choice_key": "br.s37.c2", "next": "s36" },
-        { "choice_key": "br.s37.c3", "next": "s31" }
+        { "choice_key": "br.s37.c3", "next": "s36" }
       ]
     },
     "s38": {
@@ -515,7 +515,7 @@
       "body_key": "br.s44.body",
       "choices": [
         { "choice_key": "br.s44.c1", "next": "s45" },
-        { "choice_key": "br.s44.c2", "next": "s43" },
+        { "choice_key": "br.s44.c2", "next": "s45" },
         { "choice_key": "br.s44.c3", "next": "s31" }
       ]
     },
