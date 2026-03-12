@@ -126,7 +126,7 @@
       "body_key": "br.s05.body",
       "choices": [
         { "choice_key": "br.s05.c1", "next": "s06" },
-        { "choice_key": "br.s05.c2", "next": "s07" },
+        { "choice_key": "br.s05.c2", "next": "s06" },
         { "choice_key": "br.s05.c3", "next": "s04" }
       ]
     },
