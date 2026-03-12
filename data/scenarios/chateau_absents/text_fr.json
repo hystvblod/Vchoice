@@ -89,7 +89,7 @@
     "ca.s13.c3": "Revenir au couloir",
 
     "ca.s14.title": "Bureau d’écriture",
-    "ca.s14.body": "Un carnet est ouvert. Une page a été arrachée proprement. L’encre du dernier mot n’est pas totalement sèche.",
+    "ca.s14.body": "Un carnet est ouvert. Une page arrachée est posée juste à côté, comme laissée exprès. L’encre du dernier mot n’est pas totalement sèche.",
     "ca.s14.c1": "Prendre la page arrachée",
     "ca.s14.c2": "Reculer",
     "ca.s14.c3": "Partir vers la salle de bal",
@@ -240,7 +240,7 @@
 
     "ca.s39.title": "Marque de craie",
     "ca.s39.body": "Une marque au sol : une flèche vers « dessous ». Le château te parle par gestes, pas par mots. Tu comprends où chercher un passage.",
-    "ca.s39.c1": "Comprendre où chercher sous le château",
+    "ca.s39.c1": "Suivre l’indice vers le dessous du château",
     "ca.s39.c2": "Revenir vers l’escalier",
     "ca.s39.c3": "Retourner au couloir déformé",
 
@@ -283,7 +283,7 @@
     "ca.s46.title": "Rayonnages déplacés",
     "ca.s46.body": "Un espace entre deux étagères est trop propre. La poussière forme une ligne nette, comme si un meuble glissait parfois.",
     "ca.s46.c1": "Chercher sous le bureau",
-    "ca.s46.c2": "Retourner à la page arrachée",
+    "ca.s46.c2": "Retourner au carnet",
     "ca.s46.c3": "Rejoindre la galerie de portraits",
 
     "ca.s47.title": "Sous le bureau",
