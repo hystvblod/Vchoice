@@ -151,7 +151,7 @@
     "ca.s24.title": "Porte qui n’était pas là",
     "ca.s24.body": "La porte apparue dans le couloir déformé te donne un choix simple : avancer ou être recraché ailleurs. L’air derrière elle sent l’encens froid.",
     "ca.s24.c1": "Passer la porte",
-    "ca.s24.c2": "Reculer vers le couloir normal",
+   "ca.s24.c2": "Reculer vers le couloir déformé",
     "ca.s24.c3": "Retourner vers la salle de bal",
 
     "ca.s25.title": "Chapelle privée",
