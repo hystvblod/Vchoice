@@ -32,9 +32,9 @@
     "br.s04.c3": "Couper la lumière et avancer au son",
 
     "br.s05.title": "Le sas",
-    "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement. Le panneau du sas semble attendre une main pour révéler où mène l’accès.",
+    "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement. À droite, un petit boîtier de contrôle semble encore pouvoir ouvrir l’accès intérieur.",
     "br.s05.c1": "Passer la première porte",
-    "br.s05.c2": "Réveiller le panneau pour repérer le plan mural",
+    "br.s05.c2": "Activer le boîtier du sas",
     "br.s05.c3": "Revenir vers l’escalier",
 
     "br.s06.title": "Couloir principal",
@@ -145,11 +145,11 @@
     "br.s23.c2": "Aller vers la ventilation",
     "br.s23.c3": "Revenir à la porte scellée",
 
-    "br.s24.title": "Note sans mots",
-    "br.s24.body": "Sous une plaque, un symbole gravé. Pas un mot : une logique. Trois gestes, une séquence. Tu la comprends sans savoir pourquoi, comme si on t’avait déjà appris la réponse.",
-    "br.s24.c1": "Mémoriser la séquence et aller à la console",
+    "br.s24.title": "La séquence",
+    "br.s24.body": "Sur le papier, trois blocs reviennent avec deux pauses. Ce n’est pas un message. C’est un rythme précis à reproduire sur une interface.",
+    "br.s24.c1": "Mémoriser la séquence",
     "br.s24.c2": "Revenir à l’atelier",
-    "br.s24.c3": "Essayer la séquence au hasard",
+    "br.s24.c3": "Tester la séquence au hasard",
 
     "br.s25.title": "Grille ouverte",
     "br.s25.body": "La grille est déposée, vis au sol. Les bords du métal sont frottés, récents. Un souffle froid vient du conduit, pas de l’air… quelque chose d’autre : l’absence de chaleur.",
@@ -266,10 +266,10 @@
     "br.s43.c3": "Fuir",
 
     "br.s44.title": "Accès accordé",
-    "br.s44.body": "La console répond sans son. Voyants alignés. Une option apparaît : ‘MODE TEST’. Tu comprends : veille = confort de l’occupant. Test = danger… mais vérité.",
-    "br.s44.c1": "Activer le mode test",
-    "br.s44.c2": "Rester à la console",
-    "br.s44.c3": "Quitter la zone",
+    "br.s44.body": "La console valide le rythme, puis le badge. Un voyant passe au vert. Plus loin, un passage jusque-là invisible se déverrouille lentement. Pour la première fois, le bunker te laisse avancer.",
+    "br.s44.c1": "Suivre le passage qui s’ouvre",
+    "br.s44.c2": "Vérifier une dernière fois la console",
+    "br.s44.c3": "Provoquer une alerte",
 
     "br.s45.title": "Mode de test",
     "br.s45.body": "Le bunker te demande une décision : activer une séquence qui isole une zone. La porte scellée chauffe légèrement. Comme si quelque chose derrière s’éveillait… ou s’agaçait.",
@@ -284,10 +284,10 @@
     "br.s46.c3": "Quitter",
 
     "br.s47.title": "La porte respire",
-    "br.s47.body": "La porte scellée n’est plus froide. Elle est tiède, presque vivante. Les cadenas semblent plus décoratifs que réels. Le bunker n’empêche pas l’accès. Il contrôle le moment.",
-    "br.s47.c1": "Avancer dans le couloir rouge",
-    "br.s47.c2": "Passer par le couloir normal",
-    "br.s47.c3": "Revenir vers la console",
+    "br.s47.body": "Devant toi, la porte du sanctuaire reste fermée, mais elle n’est plus inerte. Une chaleur sourde passe par les joints. L’air autour est plus lourd. Le bunker ne bloque pas ce lieu. Il le maintient endormi.",
+    "br.s47.c1": "Entrer",
+    "br.s47.c2": "Chercher encore un détour",
+    "br.s47.c3": "Retourner à la console",
 
     "br.s48.title": "Antichambre rouge",
     "br.s48.body": "Le rouge est doux. Trop doux. Tu te rends compte que le bunker veut que tu te calmes. Qu’un corps calme est plus simple à ranger. Un souffle froid traverse la pièce.",
@@ -320,7 +320,7 @@
     "br.s52.c3": "Aller vers les trois portes",
 
     "br.s53.title": "La règle de nuit",
-    "br.s53.body": "Dans le sanctuaire, tu comprends : ici, tout est organisé pour la nuit. Pas pour survivre. Pour durer. Le bunker est un garde-manger… et tu es la seule chose chaude dedans.",
+    "br.s53.body": "Tu comprends enfin la règle du lieu. Le bunker ne réagit pas au hasard. Il change selon les phases de présence, de veille et de repos. Ici, tout a été organisé autour d’un occupant qu’on ne voit presque jamais.",
     "br.s53.c1": "Lancer la séquence finale",
     "br.s53.c2": "Revenir au drap",
     "br.s53.c3": "Aller vers les trois portes",

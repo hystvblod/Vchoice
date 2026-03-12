@@ -32,9 +32,9 @@
     "br.s04.c3": "Éteindre la lumière et rejoindre le sas au son",
 
     "br.s05.title": "Le sas",
-    "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement. Le panneau du sas semble attendre une main pour révéler où mène l’accès.",
+    "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement. À droite, un petit boîtier de contrôle semble encore pouvoir ouvrir l’accès intérieur.",
     "br.s05.c1": "Passer la première porte",
-    "br.s05.c2": "Réveiller le panneau pour repérer le plan mural",
+    "br.s05.c2": "Activer le boîtier du sas",
     "br.s05.c3": "Revenir vers l’escalier",
 
     "br.s06.title": "Couloir principal",
@@ -145,11 +145,11 @@
     "br.s23.c2": "Chercher une issue de maintenance",
     "br.s23.c3": "Retourner à la porte scellée",
 
-    "br.s24.title": "Note sans mots",
-    "br.s24.body": "Trois blocs. Deux pauses. Une répétition. Ce n’est pas un code à lire, c’est un rythme à reproduire quelque part.",
+    "br.s24.title": "La séquence",
+    "br.s24.body": "Sur le papier, trois blocs reviennent avec deux pauses. Ce n’est pas un message. C’est un rythme précis à reproduire sur une interface.",
     "br.s24.c1": "Mémoriser la séquence",
     "br.s24.c2": "Revenir à l’atelier",
-    "br.s24.c3": "Essayer la séquence au hasard",
+    "br.s24.c3": "Tester la séquence au hasard",
 
     "br.s25.title": "Grille ouverte",
     "br.s25.body": "Les vis ont déjà été retirées. La grille repose juste à côté, comme si quelqu’un passait souvent par là sans vouloir laisser de trace visible.",
@@ -266,9 +266,9 @@
     "br.s43.c3": "Forcer la suite",
 
     "br.s44.title": "Accès accordé",
-    "br.s44.body": "Le terminal accepte, puis affiche un mot que le bunker n’utilisait nulle part ailleurs : ‘sanctuaire’. Une voie s’ouvre lentement plus loin.",
-    "br.s44.c1": "Suivre l’ouverture",
-    "br.s44.c2": "Rester à la console",
+    "br.s44.body": "La console valide le rythme, puis le badge. Un voyant passe au vert. Plus loin, un passage jusque-là invisible se déverrouille lentement. Pour la première fois, le bunker te laisse avancer.",
+    "br.s44.c1": "Suivre le passage qui s’ouvre",
+    "br.s44.c2": "Vérifier une dernière fois la console",
     "br.s44.c3": "Provoquer une alerte",
 
     "br.s45.title": "Mode de test",
@@ -284,9 +284,9 @@
     "br.s46.c3": "Déclencher une alerte pour ouvrir plus loin",
 
     "br.s47.title": "La porte respire",
-    "br.s47.body": "La porte du sanctuaire n’est plus froide. Une chaleur sourde la traverse comme si quelque chose respirait juste derrière. Le bunker ne la garde pas fermée : il l’endort.",
+    "br.s47.body": "Devant toi, la porte du sanctuaire reste fermée, mais elle n’est plus inerte. Une chaleur sourde passe par les joints. L’air autour est plus lourd. Le bunker ne bloque pas ce lieu. Il le maintient endormi.",
     "br.s47.c1": "Entrer",
-    "br.s47.c2": "Contourner encore",
+    "br.s47.c2": "Chercher encore un détour",
     "br.s47.c3": "Retourner à la console",
 
     "br.s48.title": "Antichambre rouge",
@@ -320,7 +320,7 @@
     "br.s52.c3": "Redescendre vers la zone des trois portes",
 
     "br.s53.title": "La règle de nuit",
-    "br.s53.body": "Tu comprends enfin : le bunker vit selon des phases. Certaines zones s’ouvrent quand la présence se déplace. D’autres quand elle dort. Ce lieu n’est pas hanté. Il est organisé autour d’elle.",
+    "br.s53.body": "Tu comprends enfin la règle du lieu. Le bunker ne réagit pas au hasard. Il change selon les phases de présence, de veille et de repos. Ici, tout a été organisé autour d’un occupant qu’on ne voit presque jamais.",
     "br.s53.c1": "Lancer le protocole complet",
     "br.s53.c2": "Revenir dans la pièce habitée",
     "br.s53.c3": "Aller aux trois portes",
