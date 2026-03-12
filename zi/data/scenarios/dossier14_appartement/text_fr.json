@@ -31,7 +31,7 @@
     "d14.s04.body": "Ton téléphone ne capte rien. Tu entends des pas… puis plus rien.",
     "d14.s04.c1": "Allumer la lampe",
     "d14.s04.c2": "Revenir à la porte",
-    "d14.s04.c3": "Ouvrir un tout petit peu",
+    "d14.s04.c3": "Observer la serrure de près",
 
     "d14.s05.title": "Traces de pas",
     "d14.s05.body": "Au sol, tu vois des traces mouillées. Elles vont vers l’escalier.",
@@ -83,7 +83,7 @@
 
     "d14.s13.title": "Hall",
     "d14.s13.body": "Interphone cassé. Boîtes abîmées. Tout est vieux. Tu as l’impression qu’on t’écoute.",
-    "d14.s13.c1": "Explorer les portes du hall",
+    "d14.s13.c1": "Pousser une porte du hall",
     "d14.s13.c2": "Regarder les boîtes",
     "d14.s13.c3": "Suivre le panneau SERVICE",
 
@@ -91,7 +91,7 @@
     "d14.s14.body": "Au bout du couloir, une porte sombre. Tu sens que ce n’est pas bon signe.",
     "d14.s14.c1": "Revenir au hall",
     "d14.s14.c2": "Continuer quand même",
-    "d14.s14.c3": "Éclairer le sol",
+    "d14.s14.c3": "Allumer la lampe pour mieux voir",
 
     "d14.s15.title": "Zone SERVICE",
     "d14.s15.body": "Un panneau SERVICE pend de travers. Ici, ça ne ressemble plus à un endroit normal.",
@@ -173,7 +173,7 @@
 
     "d14.s28.title": "Clavier à code",
     "d14.s28.body": "Un clavier à code. La lumière est rouge. Le badge ne suffit pas. Il faut une clé.",
-    "d14.s28.c1": "Revenir chercher une clé",
+    "d14.s28.c1": "Revenir sur tes pas",
     "d14.s28.c2": "Prendre l’autre chemin",
     "d14.s28.c3": "Mettre la clé",
 
