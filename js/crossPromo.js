@@ -4,7 +4,7 @@
   const STORAGE_KEY = "vchoice_crosspromo_state";
   const SESSION_POPUP_KEY = "vchoice_crosspromo_session_shown";
   const CONTEXT_KEY = "vc_crosspromo_context";
-  const REWARD_AMOUNT = 400;
+  const REWARD_AMOUNT = 600;
   const MAX_DISMISS_PER_GAME = 2;
 
   const APPS = {
@@ -293,31 +293,34 @@
     }
   }
 
-  async function claimRewardIfEligible(appId) {
-    const state = readState();
-    const row = state.apps[appId];
-    if (!row) return false;
-    if (row.rewardClaimed) return false;
-    if (!row.pendingInstallCheck) return false;
-    if (!row.installedDetected) return false;
+async function claimRewardIfEligible(appId) {
+  const state = readState();
+  const row = state.apps[appId];
+  if (!row) return false;
+  if (row.rewardClaimed) return false;
+  if (!row.pendingInstallCheck) return false;
+  if (!row.installedDetected) return false;
+
+  try {
+    if (!window.VUserData?.addVCoins) return false;
+
+    await window.VUserData.addVCoins(REWARD_AMOUNT);
+
+    if (window.VUserData?.refresh) {
+      await window.VUserData.refresh();
+    }
 
     row.rewardClaimed = true;
     row.pendingInstallCheck = false;
     row.clickedStore = false;
     writeState(state);
 
-    try {
-      if (window.VUserData?.addVCoins) {
-        await window.VUserData.addVCoins(REWARD_AMOUNT);
-      }
-      if (window.VUserData?.refresh) {
-        await window.VUserData.refresh();
-      }
-    } catch (_) {}
-
     showRewardToast(appId);
     return true;
+  } catch (_) {
+    return false;
   }
+}
 
   function showRewardToast(appId) {
     const app = APPS[appId];
