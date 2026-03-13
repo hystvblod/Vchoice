@@ -1,68 +1,67 @@
 {
   "scenario_id": "bunker_reserve",
-  "version": 4,
+  "version": 1,
   "start_scene": "s01",
   "images": {
-    "s01": { "file": "assets/scenarios/bunker_reserve/img/s01.webp" },
-    "s02": { "file": "assets/scenarios/bunker_reserve/img/s02.webp" },
-    "s03": { "file": "assets/scenarios/bunker_reserve/img/s03.webp" },
-    "s04": { "file": "assets/scenarios/bunker_reserve/img/s04.webp" },
-    "s05": { "file": "assets/scenarios/bunker_reserve/img/s05.webp" },
-    "s06": { "file": "assets/scenarios/bunker_reserve/img/s06.webp" },
-    "s07": { "file": "assets/scenarios/bunker_reserve/img/s07.webp" },
-    "s08": { "file": "assets/scenarios/bunker_reserve/img/s08.webp" },
-    "s09": { "file": "assets/scenarios/bunker_reserve/img/s09.webp" },
-    "s10": { "file": "assets/scenarios/bunker_reserve/img/s10.webp" },
-    "s11": { "file": "assets/scenarios/bunker_reserve/img/s11.webp" },
-    "s12": { "file": "assets/scenarios/bunker_reserve/img/s12.webp" },
-    "s13": { "file": "assets/scenarios/bunker_reserve/img/s13.webp" },
-    "s14": { "file": "assets/scenarios/bunker_reserve/img/s14.webp" },
-    "s15": { "file": "assets/scenarios/bunker_reserve/img/s15.webp" },
-    "s16": { "file": "assets/scenarios/bunker_reserve/img/s16.webp" },
-    "s17": { "file": "assets/scenarios/bunker_reserve/img/s17.webp" },
-    "s18": { "file": "assets/scenarios/bunker_reserve/img/s18.webp" },
-    "s19": { "file": "assets/scenarios/bunker_reserve/img/s19.webp" },
-    "s20": { "file": "assets/scenarios/bunker_reserve/img/s20.webp" },
-    "s21": { "file": "assets/scenarios/bunker_reserve/img/s21.webp" },
-    "s22": { "file": "assets/scenarios/bunker_reserve/img/s22.webp" },
-    "s23": { "file": "assets/scenarios/bunker_reserve/img/s23.webp" },
-    "s24": { "file": "assets/scenarios/bunker_reserve/img/s24.webp" },
-    "s25": { "file": "assets/scenarios/bunker_reserve/img/s25.webp" },
-    "s26": { "file": "assets/scenarios/bunker_reserve/img/s26.webp" },
-    "s27": { "file": "assets/scenarios/bunker_reserve/img/s27.webp" },
-    "s28": { "file": "assets/scenarios/bunker_reserve/img/s28.webp" },
-    "s29": { "file": "assets/scenarios/bunker_reserve/img/s29.webp" },
-    "s30": { "file": "assets/scenarios/bunker_reserve/img/s30.webp" },
-    "s31": { "file": "assets/scenarios/bunker_reserve/img/s31.webp" },
-    "s32": { "file": "assets/scenarios/bunker_reserve/img/s32.webp" },
-    "s33": { "file": "assets/scenarios/bunker_reserve/img/s33.webp" },
-    "s34": { "file": "assets/scenarios/bunker_reserve/img/s34.webp" },
-    "s35": { "file": "assets/scenarios/bunker_reserve/img/s35.webp" },
-    "s36": { "file": "assets/scenarios/bunker_reserve/img/s36.webp" },
-    "s37": { "file": "assets/scenarios/bunker_reserve/img/s37.webp" },
-    "s38": { "file": "assets/scenarios/bunker_reserve/img/s38.webp" },
-    "s39": { "file": "assets/scenarios/bunker_reserve/img/s39.webp" },
-    "s40": { "file": "assets/scenarios/bunker_reserve/img/s40.webp" },
-    "s41": { "file": "assets/scenarios/bunker_reserve/img/s41.webp" },
-    "s42": { "file": "assets/scenarios/bunker_reserve/img/s42.webp" },
-    "s43": { "file": "assets/scenarios/bunker_reserve/img/s43.webp" },
-    "s44": { "file": "assets/scenarios/bunker_reserve/img/s44.webp" },
-    "s45": { "file": "assets/scenarios/bunker_reserve/img/s45.webp" },
-    "s46": { "file": "assets/scenarios/bunker_reserve/img/s46.webp" },
-    "s47": { "file": "assets/scenarios/bunker_reserve/img/s47.webp" },
-    "s48": { "file": "assets/scenarios/bunker_reserve/img/s48.webp" },
-    "s49": { "file": "assets/scenarios/bunker_reserve/img/s49.webp" },
-    "s50": { "file": "assets/scenarios/bunker_reserve/img/s50.webp" },
-    "s51": { "file": "assets/scenarios/bunker_reserve/img/s51.webp" },
-    "s52": { "file": "assets/scenarios/bunker_reserve/img/s52.webp" },
-    "s53": { "file": "assets/scenarios/bunker_reserve/img/s53.webp" },
-    "s54": { "file": "assets/scenarios/bunker_reserve/img/s54.webp" },
-    "s55": { "file": "assets/scenarios/bunker_reserve/img/s55.webp" },
-    "s56": { "file": "assets/scenarios/bunker_reserve/img/s56.webp" },
-
-    "final_good": { "file": "assets/scenarios/bunker_reserve/img/final_good.webp" },
-    "final_bad": { "file": "assets/scenarios/bunker_reserve/img/final_bad.webp" },
-    "final_secret": { "file": "assets/scenarios/bunker_reserve/img/final_secret.webp" }
+    "s01": "s01.webp",
+    "s02": "s02.webp",
+    "s03": "s03.webp",
+    "s04": "s04.webp",
+    "s05": "s05.webp",
+    "s06": "s06.webp",
+    "s07": "s07.webp",
+    "s08": "s08.webp",
+    "s09": "s09.webp",
+    "s10": "s10.webp",
+    "s11": "s11.webp",
+    "s12": "s12.webp",
+    "s13": "s13.webp",
+    "s14": "s14.webp",
+    "s15": "s15.webp",
+    "s16": "s16.webp",
+    "s17": "s17.webp",
+    "s18": "s18.webp",
+    "s19": "s19.webp",
+    "s20": "s20.webp",
+    "s21": "s21.webp",
+    "s22": "s22.webp",
+    "s23": "s23.webp",
+    "s24": "s24.webp",
+    "s25": "s25.webp",
+    "s26": "s26.webp",
+    "s27": "s27.webp",
+    "s28": "s28.webp",
+    "s29": "s29.webp",
+    "s30": "s30.webp",
+    "s31": "s31.webp",
+    "s32": "s32.webp",
+    "s33": "s33.webp",
+    "s34": "s34.webp",
+    "s35": "s35.webp",
+    "s36": "s36.webp",
+    "s37": "s37.webp",
+    "s38": "s38.webp",
+    "s39": "s39.webp",
+    "s40": "s40.webp",
+    "s41": "s41.webp",
+    "s42": "s42.webp",
+    "s43": "s43.webp",
+    "s44": "s44.webp",
+    "s45": "s45.webp",
+    "s46": "s46.webp",
+    "s47": "s47.webp",
+    "s48": "s48.webp",
+    "s49": "s49.webp",
+    "s50": "s50.webp",
+    "s51": "s51.webp",
+    "s52": "s52.webp",
+    "s53": "s53.webp",
+    "s54": "s54.webp",
+    "s55": "s55.webp",
+    "s56": "s56.webp",
+    "final_good": "good_end.webp",
+    "final_bad": "bad_end.webp",
+    "final_secret": "secret_end.webp"
   },
   "state_model": {
     "flags": [
@@ -117,7 +116,7 @@
       "choices": [
         { "choice_key": "br.s04.c1", "next": "s05" },
         { "choice_key": "br.s04.c2", "next": "s03" },
-        { "choice_key": "br.s04.c3", "next": "s06" }
+        { "choice_key": "br.s04.c3", "next": "s05" }
       ]
     },
     "s05": {
@@ -145,7 +144,7 @@
       "title_key": "br.s07.title",
       "body_key": "br.s07.body",
       "choices": [
-        { "choice_key": "br.s07.c1", "next": "s08" },
+        { "choice_key": "br.s07.c1", "next": "s08", "set_flags": ["has_map_fragment"] },
         { "choice_key": "br.s07.c2", "next": "s06" },
         { "choice_key": "br.s07.c3", "next": "s09" }
       ]
@@ -336,7 +335,7 @@
       "body_key": "br.s26.body",
       "choices": [
         { "choice_key": "br.s26.c1", "next": "s27" },
-        { "choice_key": "br.s26.c2", "next": "s33", "requires_any_flags": ["has_master_key"] },
+        { "choice_key": "br.s26.c2", "next": "s33" },
         { "choice_key": "br.s26.c3", "next": "s25" }
       ]
     },
@@ -495,7 +494,7 @@
       "title_key": "br.s42.title",
       "body_key": "br.s42.body",
       "choices": [
-        { "choice_key": "br.s42.c1", "next": "s43", "set_flags": ["has_protocol_truth"] },
+        { "choice_key": "br.s42.c1", "next": "s43", "requires_any_flags": ["has_code"] },
         { "choice_key": "br.s42.c2", "next": "s23" },
         { "choice_key": "br.s42.c3", "next": "s31" }
       ]
@@ -605,7 +604,7 @@
       "title_key": "br.s53.title",
       "body_key": "br.s53.body",
       "choices": [
-        { "choice_key": "br.s53.c1", "next": "s54", "requires_all_flags": ["has_override", "has_protocol_truth"] },
+        { "choice_key": "br.s53.c1", "next": "s54", "set_flags": ["has_protocol_truth"] },
         { "choice_key": "br.s53.c2", "next": "s50" },
         { "choice_key": "br.s53.c3", "next": "s56" }
       ]
@@ -637,7 +636,7 @@
       "choices": [
         { "choice_key": "br.s56.c1", "next": "end_good" },
         { "choice_key": "br.s56.c2", "next": "end_bad" },
-        { "choice_key": "br.s56.c3", "next": "end_secret", "requires_all_flags": ["has_override", "has_protocol_truth", "has_sanctuary_mark"] }
+        { "choice_key": "br.s56.c3", "next": "end_secret", "requires_all_flags": ["has_sanctuary_mark", "has_protocol_truth"] }
       ]
     }
   }

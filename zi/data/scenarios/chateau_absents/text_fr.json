@@ -122,7 +122,7 @@
     "ca.s19.body": "Des placards vides. Un crochet au mur porte encore une étiquette, illisible. Au sol, des traces de pas s’arrêtent net devant un mur.",
     "ca.s19.c1": "Descendre vers la cave",
     "ca.s19.c2": "Revenir au couloir",
-    "ca.s19.c3": "Repasser par le couloir déformé",
+    "ca.s19.c3": "Repasser par la porte apparue du couloir déformé",
 
     "ca.s20.title": "Escalier de pierre",
     "ca.s20.body": "L’escalier descend dans une obscurité dense. L’air devient humide, presque tiède. Tu as l’impression de descendre dans la mémoire du lieu.",
@@ -151,14 +151,14 @@
     "ca.s24.title": "Porte qui n’était pas là",
     "ca.s24.body": "La porte apparue dans le couloir déformé te donne un choix simple : avancer ou être recraché ailleurs. L’air derrière elle sent l’encens froid.",
     "ca.s24.c1": "Passer la porte",
-    "ca.s24.c2": "Reculer vers le couloir normal",
+   "ca.s24.c2": "Reculer vers le couloir déformé",
     "ca.s24.c3": "Retourner vers la salle de bal",
 
     "ca.s25.title": "Chapelle privée",
     "ca.s25.body": "Vitrail fendu, poussière… et une bougie récente. La flamme ne vacille pas. Quelqu’un est venu ici, pas il y a cent ans.",
     "ca.s25.c1": "Approcher l’autel",
     "ca.s25.c2": "Explorer le fond de la chapelle",
-    "ca.s25.c3": "Revenir au couloir déformé",
+    "ca.s25.c3": "Revenir vers la porte apparue",
 
     "ca.s26.title": "Autel",
     "ca.s26.body": "Un livre de prières est ouvert. Une clé ancienne repose dessus, comme une offrande. Les pages ont été tournées récemment.",
@@ -425,7 +425,7 @@
     "ca.s69.c3": "Aller vers la salle de bal",
 
     "ca.s70.title": "Tour, dernier indice",
-    "ca.s70.body": "Dans la chambre haute, tu comprends que la crypte n’accepte pas la force. Elle accepte un chemin juste. Et le symbole est la clé logique.",
+    "ca.s70.body": "En quittant la chambre haute, tu comprends que la crypte n’accepte pas la force. Elle accepte un chemin juste. Et le symbole est la clé logique.",
     "ca.s70.c1": "Redescendre vers l’alcôve, passage secret",
     "ca.s70.c2": "Aller au cœur de la crypte",
     "ca.s70.c3": "Revenir au palier",

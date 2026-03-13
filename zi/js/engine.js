@@ -9,6 +9,7 @@
    + ✅ iOS ONLY: mini popup “Entrer” au tout début du scénario -> autorise la musique, puis lance VCAudio.play()
    + ✅ FINS NORMALES: plus de popup fin ; image de fin conservée, texte final inline, bonus pub = +200 avec icône vcoin
    + ✅ 0 texte visible utilisateur en dur dans le JS : tout passe par i18n
+   + ✅ Détection iOS limitée à Capacitor natif iOS seulement
 */
 
 (function(){
@@ -285,7 +286,8 @@ function setLabelWithTrailingIcon(el, labelText, iconSrc){
 }
 
 function tUI(key, params){
-  const v = deepGet(UI, `ui.${key}`) ?? `[ui.${key}]`;
+  let v = deepGet(UI, `ui.${key}`);
+  if(v == null) v = "";
   return params ? format(v, params) : v;
 }
 
@@ -298,7 +300,7 @@ function tS(key, params){
     v = deepGet(TEXT, key);
   }
 
-  if(v == null) v = `[${key}]`;
+  if(v == null) v = "";
   return params ? format(v, params) : v;
 }
 
@@ -421,15 +423,19 @@ let _iosGateDone = false;
 
 function isIOS(){
   try{
-    if (window.Capacitor && typeof window.Capacitor.getPlatform === "function"){
-      return window.Capacitor.getPlatform() === "ios";
+    if(!window.Capacitor || typeof window.Capacitor.getPlatform !== "function"){
+      return false;
     }
-  }catch(_){}
 
-  const ua = String(navigator.userAgent || "");
-  const isAppleMobile = /iPad|iPhone|iPod/.test(ua);
-  const isIPadOS13Plus = ua.includes("Macintosh") && ("ontouchend" in document);
-  return isAppleMobile || isIPadOS13Plus;
+    const isNative =
+      typeof window.Capacitor.isNativePlatform === "function"
+        ? window.Capacitor.isNativePlatform()
+        : false;
+
+    return isNative && window.Capacitor.getPlatform() === "ios";
+  }catch(_){
+    return false;
+  }
 }
 
 function showIOSAudioGate(){
@@ -942,7 +948,7 @@ async function renderMenu(){
     const scenarioId = entry.id;
 
     const meta = entry.meta || await loadScenarioMeta(scenarioId);
-    const titleText = meta.title || scenarioId;
+    const titleText = (typeof meta.title === "string") ? meta.title : "";
     const subText = meta.tagline || "";
 
     const card = document.createElement("button");
@@ -975,7 +981,7 @@ async function renderMenu(){
       const help = document.createElement("button");
       help.type = "button";
       help.className = "menu_help";
-      help.textContent = "?";
+      help.textContent = tUI("symbol_help");
       help.title = tUI("hint_title");
       help.addEventListener("click", (e) => {
         e.preventDefault();
@@ -1469,7 +1475,7 @@ function prettyFlagTitle(flag){
     if (v) return v;
   }
 
-  return flag;
+  return "";
 }
 
 async function executeChoice(ch){
@@ -1691,7 +1697,8 @@ function showLockedChoiceModal(choice){
     lines.push("");
     lines.push(tUI("locked_missing"));
     for(const f of missingAll){
-      lines.push(`• ${prettyFlagTitle(f)}`);
+      const label = prettyFlagTitle(f);
+      if(label) lines.push(`• ${label}`);
     }
   }
 
@@ -1699,7 +1706,8 @@ function showLockedChoiceModal(choice){
     lines.push("");
     lines.push(tUI("locked_missing_any"));
     for(const f of missingAny){
-      lines.push(`• ${prettyFlagTitle(f)}`);
+      const label = prettyFlagTitle(f);
+      if(label) lines.push(`• ${label}`);
     }
   }
 
