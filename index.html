@@ -549,6 +549,21 @@
       transform: scale(.985);
     }
 
+    .vc-top-actions-4{
+      display:flex !important;
+      align-items:center !important;
+      justify-content:space-between !important;
+      gap:12px !important;
+      width:100% !important;
+    }
+
+    .vc-top-slot-4{
+      flex:1 1 0 !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+    }
+
     @media (max-width: 520px){
       .vc-update-actions{
         flex-direction:column;
@@ -566,22 +581,28 @@
     <div class="app-transition__spinner"></div>
   </div>
 
-  <div class="vc-top-actions">
-    <div class="vc-top-slot vc-top-left">
+  <div class="vc-top-actions vc-top-actions-4">
+    <div class="vc-top-slot vc-top-slot-4">
       <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.profile_title">
         <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
       </a>
     </div>
 
-    <div class="vc-top-slot vc-top-center">
+    <div class="vc-top-slot vc-top-slot-4">
       <a class="vc-icon-button" href="settings.html" aria-label="" data-i18n-aria="ui.settings_title">
         <img src="assets/img/ui/btn_settings.webp" alt="" draggable="false" />
       </a>
     </div>
 
-    <div class="vc-top-slot vc-top-right">
+    <div class="vc-top-slot vc-top-slot-4">
       <a class="vc-icon-button" href="shop.html" aria-label="" data-i18n-aria="ui.shop_title">
         <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
+      </a>
+    </div>
+
+    <div class="vc-top-slot vc-top-slot-4">
+      <a class="vc-icon-button" href="cross-promo.html" aria-label="" data-i18n-aria="crosspromo.open_page_aria">
+        <img src="assets/img/ui/btn_crosspromo.webp" alt="" draggable="false" />
       </a>
     </div>
   </div>
@@ -750,6 +771,7 @@
   <script src="js/purchases.js"></script>
   <script src="js/shop.js"></script>
   <script src="js/i18n.js"></script>
+  <script src="js/crossPromo.js"></script>
 
   <script>
     function _t(key, fallback, vars) {
