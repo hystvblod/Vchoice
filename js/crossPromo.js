@@ -21,21 +21,13 @@
         "assets/img/crosspromo/vblocks_03.webp"
       ],
       titleKey: "crosspromo.apps.vblocks.name",
-      titleFallback: "VBlocks",
       descKey: "crosspromo.apps.vblocks.store_desc",
-      descFallback: "Un jeu rapide, nerveux et satisfaisant. Installe-le et gagne ta récompense.",
       popup1TitleKey: "crosspromo.apps.vblocks.popup1.title",
-      popup1TitleFallback: "Envie d’un autre défi",
       popup1BodyKey: "crosspromo.apps.vblocks.popup1.body",
-      popup1BodyFallback: "Installe VBlocks et récupère tes VCoins bonus dans VChronicles.",
       popup2TitleKey: "crosspromo.apps.vblocks.popup2.title",
-      popup2TitleFallback: "Tu peux tenter autre chose",
       popup2BodyKey: "crosspromo.apps.vblocks.popup2.body",
-      popup2BodyFallback: "Change d’ambiance avec VBlocks et débloque ta récompense.",
       popup3TitleKey: "crosspromo.apps.vblocks.popup3.title",
-      popup3TitleFallback: "Une récompense t’attend",
-      popup3BodyKey: "crosspromo.apps.vblocks.popup3.body",
-      popup3BodyFallback: "Installe VBlocks puis reviens dans l’app pour récupérer tes VCoins."
+      popup3BodyKey: "crosspromo.apps.vblocks.popup3.body"
     },
 
     vuniverse: {
@@ -51,33 +43,23 @@
         "assets/img/crosspromo/vuniverse_03.webp"
       ],
       titleKey: "crosspromo.apps.vuniverse.name",
-      titleFallback: "VUniverse",
       descKey: "crosspromo.apps.vuniverse.store_desc",
-      descFallback: "Entre dans un autre univers du studio et récupère ta récompense dans VChronicles.",
       popup1TitleKey: "crosspromo.apps.vuniverse.popup1.title",
-      popup1TitleFallback: "Découvre VUniverse",
       popup1BodyKey: "crosspromo.apps.vuniverse.popup1.body",
-      popup1BodyFallback: "Installe VUniverse puis reviens ici pour récupérer tes VCoins bonus.",
       popup2TitleKey: "crosspromo.apps.vuniverse.popup2.title",
-      popup2TitleFallback: "Une autre aventure t’attend",
       popup2BodyKey: "crosspromo.apps.vuniverse.popup2.body",
-      popup2BodyFallback: "Passe sur VUniverse et récupère ta récompense dans VChronicles.",
       popup3TitleKey: "crosspromo.apps.vuniverse.popup3.title",
-      popup3TitleFallback: "Bonus disponible",
-      popup3BodyKey: "crosspromo.apps.vuniverse.popup3.body",
-      popup3BodyFallback: "Installe VUniverse, rouvre VChronicles et tes VCoins seront crédités."
+      popup3BodyKey: "crosspromo.apps.vuniverse.popup3.body"
     }
   };
 
-  function t(key, fallback, vars) {
+  function t(key, vars) {
     let out = "";
     try {
       if (window.VRI18n && typeof window.VRI18n.t === "function") {
         out = window.VRI18n.t(key) || "";
       }
     } catch (_) {}
-
-    if (!out) out = fallback || "";
 
     if (vars && out) {
       Object.keys(vars).forEach((k) => {
@@ -293,43 +275,42 @@
     }
   }
 
-async function claimRewardIfEligible(appId) {
-  const state = readState();
-  const row = state.apps[appId];
-  if (!row) return false;
-  if (row.rewardClaimed) return false;
-  if (!row.pendingInstallCheck) return false;
-  if (!row.installedDetected) return false;
+  async function claimRewardIfEligible(appId) {
+    const state = readState();
+    const row = state.apps[appId];
+    if (!row) return false;
+    if (row.rewardClaimed) return false;
+    if (!row.pendingInstallCheck) return false;
+    if (!row.installedDetected) return false;
 
-  try {
-    if (!window.VUserData?.addVCoins) return false;
+    try {
+      if (!window.VUserData?.addVCoins) return false;
 
-    await window.VUserData.addVCoins(REWARD_AMOUNT);
+      await window.VUserData.addVCoins(REWARD_AMOUNT);
 
-    if (window.VUserData?.refresh) {
-      await window.VUserData.refresh();
+      if (window.VUserData?.refresh) {
+        await window.VUserData.refresh();
+      }
+
+      row.rewardClaimed = true;
+      row.pendingInstallCheck = false;
+      row.clickedStore = false;
+      writeState(state);
+
+      showRewardToast(appId);
+      return true;
+    } catch (_) {
+      return false;
     }
-
-    row.rewardClaimed = true;
-    row.pendingInstallCheck = false;
-    row.clickedStore = false;
-    writeState(state);
-
-    showRewardToast(appId);
-    return true;
-  } catch (_) {
-    return false;
   }
-}
 
   function showRewardToast(appId) {
     const app = APPS[appId];
-    const appName = t(app.titleKey, app.titleFallback);
-    const msg = t(
-      "crosspromo.reward_granted",
-      "Récompense reçue : {amount} VCoins pour l’installation de {app}.",
-      { app: appName, amount: REWARD_AMOUNT }
-    );
+    const appName = t(app.titleKey);
+    const msg = t("crosspromo.reward_granted", {
+      app: appName,
+      amount: REWARD_AMOUNT
+    });
 
     const el = document.createElement("div");
     el.style.cssText = [
@@ -406,8 +387,10 @@ async function claimRewardIfEligible(appId) {
 
   function buildShotsHtml(app) {
     const shots = getValidShots(app);
+    const openAria = escapeHtml(t("crosspromo.shot_open_aria"));
+
     return shots.map((src) => {
-      return '<button class="vc-crosspromo-shot" type="button" data-shot-open="' + escapeHtml(src) + '" aria-label="Ouvrir l’image"><img src="' + escapeHtml(src) + '" alt="" draggable="false" /></button>';
+      return '<button class="vc-crosspromo-shot" type="button" data-shot-open="' + escapeHtml(src) + '" aria-label="' + openAria + '"><img src="' + escapeHtml(src) + '" alt="" draggable="false" /></button>';
     }).join("");
   }
 
@@ -432,47 +415,56 @@ async function claimRewardIfEligible(appId) {
 
     root.innerHTML = [
       '<div style="position:relative;width:min(520px, calc(100vw - 32px));padding:16px;border-radius:22px;background:rgba(10,16,28,.96);border:1px solid rgba(255,255,255,.12);box-shadow:0 16px 40px rgba(0,0,0,.3);">',
-      '  <button id="vc-crosspromo-close" type="button" style="position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:20px;font-weight:900;" aria-label="close">×</button>',
+      '  <button id="vc-crosspromo-close" type="button" style="position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-size:20px;font-weight:900;" aria-label=""></button>',
       '  <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">',
       '    <img id="vc-crosspromo-cover" src="" alt="" style="width:72px;height:72px;border-radius:18px;object-fit:cover;border:1px solid rgba(255,255,255,.14);" />',
       '    <div>',
       '      <div id="vc-crosspromo-appname" style="font-size:13px;font-weight:900;opacity:.86;color:#fff;"></div>',
       '      <div id="vc-crosspromo-title" style="margin-top:4px;font-size:20px;line-height:1.1;font-weight:950;color:#fff;"></div>',
-      '    </div>',
-      '  </div>',
+      "    </div>",
+      "  </div>",
       '  <div id="vc-crosspromo-body" style="font-size:14px;line-height:1.42;color:rgba(255,255,255,.92);margin-bottom:14px;"></div>',
       '  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 12px;border-radius:14px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);width:max-content;">',
       '    <span id="vc-crosspromo-reward-prefix" style="font-size:13px;font-weight:900;color:#fff;"></span>',
       '    <img src="assets/img/ui/vcoin.webp" alt="" style="width:28px;height:28px;object-fit:contain;" />',
       '    <span id="vc-crosspromo-reward-value" style="font-size:13px;font-weight:900;color:#fff;"></span>',
-      '  </div>',
+      "  </div>",
       '  <div style="display:grid;grid-template-columns:1fr;gap:10px;">',
       '    <button id="vc-crosspromo-primary" type="button" style="min-height:52px;border-radius:16px;border:1px solid rgba(255,59,59,.34);background:rgba(255,59,59,.24);color:#fff;font-weight:900;"></button>',
       '    <button id="vc-crosspromo-secondary" type="button" style="min-height:50px;border-radius:16px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;font-weight:900;"></button>',
-      '  </div>',
-      '</div>'
+      "  </div>",
+      "</div>"
     ].join("");
 
     document.body.appendChild(root);
+
+    const closeBtn = document.getElementById("vc-crosspromo-close");
+    if (closeBtn) {
+      closeBtn.textContent = "×";
+      closeBtn.setAttribute("aria-label", t("crosspromo.close_aria"));
+    }
+
     return root;
   }
 
   function getPopupText(app, popupIndex) {
     if (popupIndex === 1) {
       return {
-        title: t(app.popup1TitleKey, app.popup1TitleFallback),
-        body: t(app.popup1BodyKey, app.popup1BodyFallback)
+        title: t(app.popup1TitleKey),
+        body: t(app.popup1BodyKey)
       };
     }
+
     if (popupIndex === 2) {
       return {
-        title: t(app.popup2TitleKey, app.popup2TitleFallback),
-        body: t(app.popup2BodyKey, app.popup2BodyFallback)
+        title: t(app.popup2TitleKey),
+        body: t(app.popup2BodyKey)
       };
     }
+
     return {
-      title: t(app.popup3TitleKey, app.popup3TitleFallback),
-      body: t(app.popup3BodyKey, app.popup3BodyFallback)
+      title: t(app.popup3TitleKey),
+      body: t(app.popup3BodyKey)
     };
   }
 
@@ -504,13 +496,14 @@ async function claimRewardIfEligible(appId) {
     const closeBtn = document.getElementById("vc-crosspromo-close");
 
     cover.src = app.cover;
-    appName.textContent = t(app.titleKey, app.titleFallback);
+    appName.textContent = t(app.titleKey);
     title.textContent = popupText.title;
     body.textContent = popupText.body;
-    rewardPrefix.textContent = t("crosspromo.reward_prefix", "Récompense");
+    rewardPrefix.textContent = t("crosspromo.reward_prefix");
     rewardValue.textContent = String(REWARD_AMOUNT);
-    primary.textContent = t("crosspromo.cta_install", "Installer");
-    secondary.textContent = t("crosspromo.cta_later", "Plus tard");
+    primary.textContent = t("crosspromo.cta_install");
+    secondary.textContent = t("crosspromo.cta_later");
+    closeBtn.setAttribute("aria-label", t("crosspromo.close_aria"));
 
     function closePopup() {
       root.style.display = "none";
@@ -611,6 +604,8 @@ async function claimRewardIfEligible(appId) {
       viewerImg.src = "";
     }
 
+    viewerClose.setAttribute("aria-label", t("crosspromo.close_aria"));
+
     host.querySelectorAll("[data-shot-open]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const src = btn.getAttribute("data-shot-open") || "";
@@ -645,30 +640,32 @@ async function claimRewardIfEligible(appId) {
 
     for (const id of ids) {
       const app = APPS[id];
-      const actionLabel = t("crosspromo.cta_install", "Installer");
+      const actionLabel = t("crosspromo.cta_install");
+      const rewardLabel = t("crosspromo.reward_prefix");
+      const desc = t(app.descKey);
 
       rows.push([
         '<article class="vc-crosspromo-card">',
         '  <div class="vc-crosspromo-hero">',
         '    <img src="' + escapeHtml(app.cover) + '" alt="" draggable="false" />',
-        '  </div>',
+        "  </div>",
         '  <div class="vc-crosspromo-content">',
         '    <div class="vc-crosspromo-head">',
         '      <div class="vc-crosspromo-reward">',
-        '        <span class="vc-crosspromo-reward-label">' + escapeHtml(t("crosspromo.reward_prefix", "Récompense")) + '</span>',
+        '        <span class="vc-crosspromo-reward-label">' + escapeHtml(rewardLabel) + "</span>",
         '        <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" />',
-        '        <span class="vc-crosspromo-reward-value">' + escapeHtml(String(REWARD_AMOUNT)) + '</span>',
-        '      </div>',
-        '    </div>',
-        '    <p class="vc-crosspromo-desc">' + escapeHtml(t(app.descKey, app.descFallback)) + '</p>',
+        '        <span class="vc-crosspromo-reward-value">' + escapeHtml(String(REWARD_AMOUNT)) + "</span>",
+        "      </div>",
+        "    </div>",
+        '    <p class="vc-crosspromo-desc">' + escapeHtml(desc) + "</p>",
         '    <div class="vc-crosspromo-gallery">',
                buildShotsHtml(app),
-        '    </div>',
+        "    </div>",
         '    <div class="vc-crosspromo-actions">',
-        '      <button class="vc-crosspromo-btn primary" type="button" data-crosspromo-action="' + escapeHtml(id) + '">' + escapeHtml(actionLabel) + '</button>',
-        '    </div>',
-        '  </div>',
-        '</article>'
+        '      <button class="vc-crosspromo-btn primary" type="button" data-crosspromo-action="' + escapeHtml(id) + '">' + escapeHtml(actionLabel) + "</button>",
+        "    </div>",
+        "  </div>",
+        "</article>"
       ].join(""));
     }
 

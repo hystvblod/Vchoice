@@ -51,6 +51,7 @@
     "profile_vcoins": "VCoins",
     "profile_username_label": "Pseudo",
     "profile_username_missing": "—",
+    "profile_auto_username_prefix": "User_",
     "profile_username_edit": "Modifier pseudo",
     "profile_username_cancel": "Annuler",
     "profile_username_placeholder": "Nouveau pseudo",
@@ -223,6 +224,49 @@
 
   "common": {
     "cancel": "Annuler"
+  },
+
+  "crosspromo": {
+    "reward_prefix": "Récompense",
+    "reward_granted": "Récompense reçue : {amount} VCoins pour l’installation de {app}.",
+    "cta_install": "Télécharger",
+    "cta_later": "Plus tard",
+    "close_aria": "Fermer",
+    "shot_open_aria": "Ouvrir l’image",
+    "apps": {
+      "vblocks": {
+        "name": "VBlocks",
+        "store_desc": "Un jeu rapide, nerveux et satisfaisant. Installe-le et gagne ta récompense.",
+        "popup1": {
+          "title": "Envie d’un autre défi",
+          "body": "Installe VBlocks et récupère tes VCoins bonus dans VChronicles."
+        },
+        "popup2": {
+          "title": "Tu peux tenter autre chose",
+          "body": "Change d’ambiance avec VBlocks et débloque ta récompense."
+        },
+        "popup3": {
+          "title": "Une récompense t’attend",
+          "body": "Installe VBlocks puis reviens dans l’app pour récupérer tes VCoins."
+        }
+      },
+      "vuniverse": {
+        "name": "VUniverse",
+        "store_desc": "Entre dans un autre univers du studio et récupère ta récompense dans VChronicles.",
+        "popup1": {
+          "title": "Découvre VUniverse",
+          "body": "Installe VUniverse puis reviens ici pour récupérer tes VCoins bonus."
+        },
+        "popup2": {
+          "title": "Une autre aventure t’attend",
+          "body": "Passe sur VUniverse et récupère ta récompense dans VChronicles."
+        },
+        "popup3": {
+          "title": "Bonus disponible",
+          "body": "Installe VUniverse, rouvre VChronicles et tes VCoins seront crédités."
+        }
+      }
+    }
   },
 
   "scenarios": {
