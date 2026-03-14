@@ -958,7 +958,7 @@
       "choices": [
         {
           "choice_key": "frt.s34.c1",
-          "next": "s46",
+          "next": "s48",
           "set_flags": [
             "found_cabin_note"
           ]
@@ -1116,7 +1116,7 @@
       "choices": [
         {
           "choice_key": "frt.s42.c1",
-          "next": "s51",
+          "next": "s59",
           "set_flags": [
             "entered_facility"
           ]
@@ -1138,18 +1138,18 @@
       "choices": [
         {
           "choice_key": "frt.s43.c1",
-          "next": "s54",
+          "next": "s60",
           "set_flags": [
             "entered_facility"
           ]
         },
         {
           "choice_key": "frt.s43.c2",
-          "next": "s42"
+          "next": "s62"
         },
         {
           "choice_key": "frt.s43.c3",
-          "next": "s28"
+          "next": "s42"
         }
       ]
     },
@@ -1183,7 +1183,7 @@
         },
         {
           "choice_key": "frt.s45.c2",
-          "next": "s46"
+          "next": "s20"
         },
         {
           "choice_key": "frt.s45.c3",
@@ -1236,7 +1236,7 @@
       "choices": [
         {
           "choice_key": "frt.s48.c1",
-          "next": "s52"
+          "next": "s68"
         },
         {
           "choice_key": "frt.s48.c2",
@@ -1285,7 +1285,7 @@
         },
         {
           "choice_key": "frt.s50.c3",
-          "next": "s39"
+          "next": "s58"
         }
       ]
     },
@@ -1315,7 +1315,7 @@
       "choices": [
         {
           "choice_key": "frt.s52.c1",
-          "next": "s62"
+          "next": "s66"
         },
         {
           "choice_key": "frt.s52.c2",
@@ -1487,7 +1487,7 @@
         },
         {
           "choice_key": "frt.s60.c3",
-          "next": "s51"
+          "next": "s59"
         }
       ]
     },
@@ -1613,7 +1613,7 @@
         },
         {
           "choice_key": "frt.s66.c3",
-          "next": "s60"
+          "next": "s10"
         }
       ]
     },
@@ -1634,11 +1634,11 @@
         },
         {
           "choice_key": "frt.s67.c2",
-          "next": "s11"
+          "next": "s51"
         },
         {
           "choice_key": "frt.s67.c3",
-          "next": "s30"
+          "next": "s46"
         }
       ]
     },
