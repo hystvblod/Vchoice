@@ -1010,7 +1010,7 @@
         },
         {
           "choice_key": "frt.s36.c3",
-          "next": "s11"
+          "next": "s24"
         }
       ]
     },
@@ -1029,7 +1029,7 @@
         },
         {
           "choice_key": "frt.s37.c3",
-          "next": "s23"
+          "next": "s44"
         }
       ]
     },
@@ -1063,7 +1063,7 @@
         },
         {
           "choice_key": "frt.s39.c2",
-          "next": "s11"
+          "next": "s20"
         },
         {
           "choice_key": "frt.s39.c3",
@@ -1319,7 +1319,7 @@
         },
         {
           "choice_key": "frt.s52.c2",
-          "next": "s53"
+          "next": "s44"
         },
         {
           "choice_key": "frt.s52.c3",
@@ -1383,7 +1383,7 @@
         },
         {
           "choice_key": "frt.s55.c3",
-          "next": "s38"
+          "next": "s20"
         }
       ]
     },
@@ -1398,7 +1398,7 @@
         },
         {
           "choice_key": "frt.s56.c2",
-          "next": "s53"
+          "next": "s40"
         },
         {
           "choice_key": "frt.s56.c3",
@@ -1561,6 +1561,9 @@
           "next": "s73",
           "requires_all_flags": [
             "has_tape"
+          ],
+          "set_flags": [
+            "heard_broadcast"
           ]
         },
         {
@@ -1569,7 +1572,7 @@
         },
         {
           "choice_key": "frt.s64.c3",
-          "next": "s53"
+          "next": "s32"
         }
       ]
     },
@@ -1624,7 +1627,7 @@
       "choices": [
         {
           "choice_key": "frt.s67.c1",
-          "next": "s70",
+          "next": "s25",
           "requires_all_flags": [
             "has_ribbon"
           ],
@@ -1653,11 +1656,11 @@
         },
         {
           "choice_key": "frt.s68.c2",
-          "next": "s69"
+          "next": "s23"
         },
         {
           "choice_key": "frt.s68.c3",
-          "next": "s28"
+          "next": "s20"
         }
       ]
     },
