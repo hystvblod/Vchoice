@@ -236,7 +236,7 @@
     "apps": {
       "vblocks": {
         "name": "VBlocks",
-        "store_desc": "Un jeu rapide, nerveux et satisfaisant. Installe-le et gagne ta récompense.",
+        "store_desc": "Un jeu de block pour se détendre. Rapide ou chill, à toi de voir.",
         "popup1": {
           "title": "Envie d’un autre défi",
           "body": "Installe VBlocks et récupère tes VCoins bonus dans VChronicles."
@@ -259,11 +259,11 @@
         },
         "popup2": {
           "title": "Une autre aventure t’attend",
-          "body": "Passe sur VUniverse et récupère ta récompense dans VChronicles."
+          "body": "Dirige des empires et fais tes choix."
         },
         "popup3": {
           "title": "Bonus disponible",
-          "body": "Installe VUniverse, rouvre VChronicles et tes VCoins seront crédités."
+          "body": "Gagne un bonus en jouant à VUniverse et en dirigieant des univers fictifs."
         }
       }
     }
