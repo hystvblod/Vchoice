@@ -227,7 +227,7 @@
   },
 
   "crosspromo": {
-    "reward_prefix": "Récompense",
+    "reward_prefix": "GAGNER",
     "reward_granted": "Récompense reçue : {amount} VCoins pour l’installation de {app}.",
     "cta_install": "Télécharger",
     "cta_later": "Plus tard",
