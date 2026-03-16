@@ -452,22 +452,50 @@
   window.VCRemoteStore = window.VCRemoteStore || {
     enabled: function(){ return sbReady(); },
 
-    ensureAuth: async function(){
-      const sb = window.sb;
-      if (!sb || !sb.auth) return null;
+ensureAuth: async function(){
+  const sb = window.sb;
+  if (!sb || !sb.auth) return null;
 
-      const uid1 = await this._getUid();
-      if (uid1) return uid1;
+  try {
+    const s1 = await sb.auth.getSession();
+    const uidSession = s1?.data?.session?.user?.id || null;
+    if (uidSession) return uidSession;
+  } catch (e) {
+    _reportRemoteError("ensureAuth.getSession", e);
+  }
 
-      try {
-        const r = await sb.auth.signInAnonymously();
-        if (r && r.data && r.data.user && r.data.user.id) return r.data.user.id;
-      } catch (e) {
-        _reportRemoteError("ensureAuth.signInAnonymously", e);
-      }
+  try {
+    const u1 = await sb.auth.getUser();
+    const uidUser = u1?.data?.user?.id || null;
+    if (uidUser) return uidUser;
+  } catch (e) {
+    _reportRemoteError("ensureAuth.getUser", e);
+  }
 
-      return await this._getUid();
-    },
+  await _sleep(250);
+
+  try {
+    const s2 = await sb.auth.getSession();
+    const uidRetry = s2?.data?.session?.user?.id || null;
+    if (uidRetry) return uidRetry;
+  } catch (e) {
+    _reportRemoteError("ensureAuth.getSession.retry", e);
+  }
+
+  try {
+    const r = await sb.auth.signInAnonymously();
+    return r?.data?.user?.id || r?.data?.session?.user?.id || null;
+  } catch (e) {
+    _reportRemoteError("ensureAuth.signInAnonymously", e);
+  }
+
+  try {
+    const s3 = await sb.auth.getSession();
+    return s3?.data?.session?.user?.id || null;
+  } catch (_) {
+    return null;
+  }
+},
 
     _getUid: async function(){
       const sb = window.sb;
