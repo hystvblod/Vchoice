@@ -145,20 +145,22 @@
       min-height: 24px;
     }
 
+    /* ===== 2 COLONNES ===== */
     .vc-grid{
       display:grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
       margin-top: 14px;
       padding: 0 12px;
+      align-items: stretch;
     }
 
     .vc-card{
       position: relative;
       overflow: hidden;
       width: 100%;
-      min-height: 64px;
-      height: 64px;
+      min-height: 88px;
+      height: 88px;
       border-radius: var(--vc-card-r);
       border: 0;
       outline: 0;
@@ -225,7 +227,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 0 56px;
+      padding: 0 44px 0 14px;
     }
 
     .vc-title{
@@ -233,26 +235,31 @@
       width:100%;
       color:#fff;
       font-weight: 950;
-      font-size: 16px;
-      letter-spacing: .3px;
-      line-height: 1.1;
+      font-size: 14px;
+      letter-spacing: .2px;
+      line-height: 1.15;
       text-align:center;
       text-shadow: 0 2px 10px rgba(0,0,0,.75);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      word-break: break-word;
     }
 
     .vc-info{
       position:absolute;
       top:50%;
-      right:14px;
+      right:10px;
       transform:translateY(-50%);
-      width:40px;
-      height:40px;
+      width:34px;
+      height:34px;
       border-radius: 999px;
       background: rgba(0,0,0,.28);
       border: 1px solid rgba(255,255,255,.16);
       color: rgba(255,255,255,.95);
       font-weight: 950;
-      font-size: 16px;
+      font-size: 14px;
       display:inline-flex;
       align-items:center;
       justify-content:center;
@@ -549,27 +556,39 @@
       transform: scale(.985);
     }
 
-    .vc-top-actions-4{
-      display:flex !important;
-      align-items:center !important;
-      justify-content:space-between !important;
-      gap:12px !important;
-      width:100% !important;
-    }
-
-    .vc-top-slot-4{
-      flex:1 1 0 !important;
-      display:flex !important;
-      align-items:center !important;
-      justify-content:center !important;
-    }
-
     @media (max-width: 520px){
       .vc-update-actions{
         flex-direction:column;
       }
       .vc-update-btn{
         width:100%;
+      }
+    }
+
+    @media (max-width: 420px){
+      .vc-grid{
+        gap: 10px;
+        padding: 0 10px;
+      }
+
+      .vc-card{
+        min-height: 82px;
+        height: 82px;
+      }
+
+      .vc-line{
+        padding: 0 40px 0 10px;
+      }
+
+      .vc-title{
+        font-size: 13px;
+      }
+
+      .vc-info{
+        width: 30px;
+        height: 30px;
+        right: 8px;
+        font-size: 13px;
       }
     }
   </style>
@@ -581,28 +600,22 @@
     <div class="app-transition__spinner"></div>
   </div>
 
-  <div class="vc-top-actions vc-top-actions-4">
-    <div class="vc-top-slot vc-top-slot-4">
+  <div class="vc-top-actions">
+    <div class="vc-top-slot vc-top-left">
       <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.profile_title">
         <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
       </a>
     </div>
 
-    <div class="vc-top-slot vc-top-slot-4">
+    <div class="vc-top-slot vc-top-center">
       <a class="vc-icon-button" href="settings.html" aria-label="" data-i18n-aria="ui.settings_title">
         <img src="assets/img/ui/btn_settings.webp" alt="" draggable="false" />
       </a>
     </div>
 
-    <div class="vc-top-slot vc-top-slot-4">
+    <div class="vc-top-slot vc-top-right">
       <a class="vc-icon-button" href="shop.html" aria-label="" data-i18n-aria="ui.shop_title">
         <img src="assets/img/ui/btn_shop.webp" alt="" draggable="false" />
-      </a>
-    </div>
-
-    <div class="vc-top-slot vc-top-slot-4">
-      <a class="vc-icon-button" href="crosspromo.html" aria-label="" data-i18n-aria="crosspromo.open_page_aria">
-        <img src="assets/img/ui/btn_crosspromo.webp" alt="" draggable="false" />
       </a>
     </div>
   </div>
@@ -762,16 +775,14 @@
     </div>
   </div>
 
-  <script src="js/supabase.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
   <script src="js/supabaseBootstrap.js"></script>
   <script src="js/userData.js"></script>
-  <script src="js/onesignal.js"></script>
   <script src="js/ads.js"></script>
   <script src="js/purchases.js"></script>
   <script src="js/shop.js"></script>
   <script src="js/i18n.js"></script>
-  <script src="js/crossPromo.js"></script>
 
   <script>
     function _t(key, fallback, vars) {
