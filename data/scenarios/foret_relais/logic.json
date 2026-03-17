@@ -271,23 +271,18 @@
   },
   "state_model": {
     "flags": [
-      "knows_name_is_used",
       "has_map",
       "has_compass",
       "has_ribbon",
       "heard_broadcast",
       "has_frequency",
-      "found_cabin_note",
-      "entered_facility",
       "has_bunker_key",
       "opened_bunker",
-      "met_operator",
       "has_tape",
       "has_code",
       "made_recording",
       "stabilized_path",
-      "truth_unlocked",
-      "has_proof"
+      "truth_unlocked"
     ]
   },
   "scenes": {
@@ -325,10 +320,7 @@
         },
         {
           "choice_key": "frt.s02.c3",
-          "next": "s04",
-          "set_flags": [
-            "knows_name_is_used"
-          ]
+          "next": "s04"
         }
       ]
     },
@@ -362,10 +354,7 @@
         },
         {
           "choice_key": "frt.s04.c2",
-          "next": "s08",
-          "set_flags": [
-            "knows_name_is_used"
-          ]
+          "next": "s08"
         },
         {
           "choice_key": "frt.s04.c3",
@@ -459,10 +448,7 @@
       "choices": [
         {
           "choice_key": "frt.s09.c1",
-          "next": "s15",
-          "set_flags": [
-            "knows_name_is_used"
-          ]
+          "next": "s15"
         },
         {
           "choice_key": "frt.s09.c2",
@@ -590,7 +576,7 @@
         },
         {
           "choice_key": "frt.s15.c3",
-          "next": "s08"
+          "next": "s30"
         }
       ]
     },
@@ -959,10 +945,7 @@
       "choices": [
         {
           "choice_key": "frt.s34.c1",
-          "next": "s48",
-          "set_flags": [
-            "found_cabin_note"
-          ]
+          "next": "s48"
         },
         {
           "choice_key": "frt.s34.c2",
@@ -1117,10 +1100,7 @@
       "choices": [
         {
           "choice_key": "frt.s42.c1",
-          "next": "s59",
-          "set_flags": [
-            "entered_facility"
-          ]
+          "next": "s59"
         },
         {
           "choice_key": "frt.s42.c2",
@@ -1139,10 +1119,7 @@
       "choices": [
         {
           "choice_key": "frt.s43.c1",
-          "next": "s60",
-          "set_flags": [
-            "entered_facility"
-          ]
+          "next": "s60"
         },
         {
           "choice_key": "frt.s43.c2",
@@ -1258,8 +1235,7 @@
           "choice_key": "frt.s49.c1",
           "next": "s67",
           "set_flags": [
-            "has_tape",
-            "has_proof"
+            "has_tape"
           ]
         },
         {
@@ -1415,10 +1391,7 @@
       "choices": [
         {
           "choice_key": "frt.s57.c1",
-          "next": "s76",
-          "set_flags": [
-            "met_operator"
-          ]
+          "next": "s76"
         },
         {
           "choice_key": "frt.s57.c2",
@@ -1757,13 +1730,12 @@
           "choice_key": "frt.s73.c1",
           "next": "s76",
           "set_flags": [
-            "made_recording",
-            "has_proof"
+            "made_recording"
           ]
         },
         {
           "choice_key": "frt.s73.c2",
-          "next": "s79"
+          "next": "s72"
         },
         {
           "choice_key": "frt.s73.c3",
@@ -1789,7 +1761,7 @@
         },
         {
           "choice_key": "frt.s74.c3",
-          "next": "s55"
+          "next": "s75"
         }
       ]
     },
@@ -1906,10 +1878,7 @@
       "choices": [
         {
           "choice_key": "frt.s80.c1",
-          "next": "final_good",
-          "requires_all_flags": [
-            "has_proof"
-          ]
+          "next": "final_good"
         },
         {
           "choice_key": "frt.s80.c2",
