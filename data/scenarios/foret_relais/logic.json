@@ -286,7 +286,8 @@
       "has_code",
       "made_recording",
       "stabilized_path",
-      "truth_unlocked"
+      "truth_unlocked",
+      "has_proof"
     ]
   },
   "scenes": {
@@ -1257,7 +1258,8 @@
           "choice_key": "frt.s49.c1",
           "next": "s67",
           "set_flags": [
-            "has_tape"
+            "has_tape",
+            "has_proof"
           ]
         },
         {
@@ -1357,7 +1359,7 @@
         },
         {
           "choice_key": "frt.s54.c2",
-          "next": "s51"
+          "next": "s72"
         },
         {
           "choice_key": "frt.s54.c3",
@@ -1630,9 +1632,6 @@
           "next": "s25",
           "requires_all_flags": [
             "has_ribbon"
-          ],
-          "set_flags": [
-            "stabilized_path"
           ]
         },
         {
@@ -1652,7 +1651,10 @@
       "choices": [
         {
           "choice_key": "frt.s68.c1",
-          "next": "s75"
+          "next": "s70",
+          "set_flags": [
+            "stabilized_path"
+          ]
         },
         {
           "choice_key": "frt.s68.c2",
@@ -1716,7 +1718,7 @@
         },
         {
           "choice_key": "frt.s71.c2",
-          "next": "s54"
+          "next": "s59"
         },
         {
           "choice_key": "frt.s71.c3",
@@ -1731,7 +1733,10 @@
       "choices": [
         {
           "choice_key": "frt.s72.c1",
-          "next": "s79"
+          "next": "s79",
+          "requires_all_flags": [
+            "opened_bunker"
+          ]
         },
         {
           "choice_key": "frt.s72.c2",
@@ -1752,7 +1757,8 @@
           "choice_key": "frt.s73.c1",
           "next": "s76",
           "set_flags": [
-            "made_recording"
+            "made_recording",
+            "has_proof"
           ]
         },
         {
@@ -1900,7 +1906,10 @@
       "choices": [
         {
           "choice_key": "frt.s80.c1",
-          "next": "final_good"
+          "next": "final_good",
+          "requires_all_flags": [
+            "has_proof"
+          ]
         },
         {
           "choice_key": "frt.s80.c2",
