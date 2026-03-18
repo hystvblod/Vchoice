@@ -133,7 +133,7 @@
     "msz.s21.title": "Toilettes",
     "msz.s21.body": "Les toilettes sont sales juste ce qu’il faut… comme si on avait essayé d’imiter l’usure. Le néon bourdonne. Le miroir est fendu.",
     "msz.s21.c1": "Regarder ton reflet",
-    "msz.s21.c2": "Sortir immédiatement",
+    "msz.s21.c2": "Sortir vers un couloir plus froid",
     "msz.s21.c3": "Retourner au couloir principal",
 
     "msz.s22.title": "Miroir en retard",
@@ -283,7 +283,7 @@
     "msz.s46.title": "Horodatage impossible",
     "msz.s46.body": "L’horodatage indique une date incohérente. Pas “fantaisiste” : presque crédible, juste assez pour semer une panique froide dans ton ventre.",
     "msz.s46.c1": "Retourner au quai",
-    "msz.s46.c2": "Retourner à la salle de contrôle pour réfléchir",
+    "msz.s46.c2": "Faire le point au contrôle",
     "msz.s46.c3": "Revenir à la salle de contrôle",
 
     "msz.s47.title": "Retour quai via caméras",
@@ -414,7 +414,7 @@
 
     "msz.s68.title": "Dernier doute",
     "msz.s68.body": "Tu vois la sortie. Tu pourrais courir. Mais une part de toi sait : si tu sors mal, la station peut réécrire ce que tu crois avoir vécu.",
-    "msz.s68.c1": "Fuir avec une preuve solide",
+    "msz.s68.c1": "Sortir maintenant",
     "msz.s68.c2": "Retourner au contrôle",
     "msz.s68.c3": "Revenir au couloir principal",
 
@@ -426,8 +426,8 @@
 
     "msz.s70.title": "Console « OPÉRATEUR »",
     "msz.s70.body": "Un poste porte un libellé discret : « OPÉRATEUR ». Le siège est parfaitement aligné. Tu comprends que cette place existe pour quelqu’un. Peut-être pour toi.",
-    "msz.s70.c1": "Continuer",
-    "msz.s70.c2": "Aller au choix sortir ou rester",
+    "msz.s70.c1": "Poser tes preuves sur la console",
+    "msz.s70.c2": "Passer à la décision",
     "msz.s70.c3": "Revenir en arrière",
 
     "msz.s71.title": "Insérer preuves",
@@ -450,18 +450,18 @@
 
     "msz.s74.title": "Le quai se vide encore plus",
     "msz.s74.body": "Tu te rends compte que même les détails disparaissent : une affiche, une tache au sol, un bruit lointain. La station simplifie le monde pour te simplifier toi.",
-    "msz.s74.c1": "Aller au choix final",
+    "msz.s74.c1": "Te décider maintenant",
     "msz.s74.c2": "Monter dans la rame",
     "msz.s74.c3": "Retourner au contrôle",
 
     "msz.s75.title": "Le choix final",
     "msz.s75.body": "Tu as assez vu pour comprendre une chose : ici, rien n’est gratuit. Sortir a un prix. Rester aussi. Et la station adore les contrats silencieux.",
-    "msz.s75.c1": "Sortir avec une preuve solide",
+    "msz.s75.c1": "Sortir maintenant",
     "msz.s75.c2": "Rester et accepter la logique",
     "msz.s75.c3": "Forcer la station et chercher la révélation",
 
     "msz.end_good.title": "Fin — Sortie réelle",
-    "msz.end_good.body": "Tu sors. L’aube est grise, froide, vraie. Et dans ta main, ta preuve existe encore — ticket, fragment, enregistrement… quelque chose que la station ne peut pas effacer. Derrière toi, l’entrée du métro paraît normale… sauf un détail impossible qui te confirme que tu ne rêves pas.",
+    "msz.end_good.body": "Tu sors. L’aube est grise, froide, vraie. Que tu gardes une preuve ou seulement un doute, une chose reste sûre : Station Zéro n’était pas un rêve. Un détail impossible près de l’entrée te le confirme. Tu es dehors. Et cette fois, la station ne te retient plus.",
 
     "msz.end_bad.title": "Fin — La descente continue",
     "msz.end_bad.body": "Tu montes. Les portes se ferment comme un soupir. La lumière du wagon avale ta dernière hésitation. Quand tu regardes par la vitre, le quai n’est déjà plus un quai. C’est un couloir. Puis une page blanche. Et tu comprends : tu n’es plus un voyageur. Tu es un dossier.",
@@ -485,7 +485,7 @@
     "msz.h.s57.strong": "Prends le badge dans le vestiaire : il ouvre SERVICE et débloque la progression.",
 
     "msz.h.s68.soft": "La sortie n’est pas seulement une porte : c’est une version de toi.",
-    "msz.h.s68.strong": "Pour une sortie réelle, garde au moins une preuve et évite la rame.",
+    "msz.h.s68.strong": "Pour sortir, évite la rame. Les preuves aident à comprendre la station, mais elles ne doivent pas être obligatoires pour la sortie.",
 
     "msz.h.s72.soft": "Le choix est une signature.",
     "msz.h.s72.strong": "La rame mène à la fin mauvaise. La voie ISSUE mène vers la sortie réelle.",
