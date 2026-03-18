@@ -34,6 +34,9 @@
 
   const LAST_REWARDED_AT_KEY = "vchoice_ads_last_rewarded_at_v1";
   const LAST_INTERSTITIAL_AT_KEY = "vchoice_ads_last_interstitial_at_v1";
+  const INTERSTITIAL_GLOBAL_TIME_KEY = "vchoice_ads_ingame_time_ms_v1";
+
+  let _weightedTimerStartedAt = 0;
 
   function _nowMs() {
     return Date.now();
@@ -54,6 +57,69 @@
     } catch (_) {}
   }
 
+  function _isGameHtmlPage() {
+    try {
+      const p = String(location.pathname || "").toLowerCase();
+      const h = String(location.href || "").toLowerCase();
+      return p.endsWith("/game.html") || p === "/game.html" || h.includes("game.html");
+    } catch (_) {}
+    return false;
+  }
+
+  function _getWeightedFactor() {
+    return _isGameHtmlPage() ? 1 : (1 / 3);
+  }
+
+  function _addWeightedElapsed(elapsedMs) {
+    const raw = Math.max(0, Number(elapsedMs || 0) || 0);
+    if (raw <= 0) return 0;
+
+    const weighted = Math.floor(raw * _getWeightedFactor());
+    if (weighted <= 0) return 0;
+
+    _writeTs(
+      INTERSTITIAL_GLOBAL_TIME_KEY,
+      _readTs(INTERSTITIAL_GLOBAL_TIME_KEY) + weighted
+    );
+
+    return weighted;
+  }
+
+  function _flushWeightedTimer() {
+    if (_weightedTimerStartedAt <= 0) return 0;
+
+    const elapsed = Math.max(0, _nowMs() - _weightedTimerStartedAt);
+    _weightedTimerStartedAt = 0;
+
+    return _addWeightedElapsed(elapsed);
+  }
+
+  function _startWeightedTimer() {
+    try {
+      if (document.hidden) return;
+    } catch (_) {}
+    if (_weightedTimerStartedAt > 0) return;
+    _weightedTimerStartedAt = _nowMs();
+  }
+
+  function syncWeightedTime() {
+    _flushWeightedTimer();
+    _startWeightedTimer();
+    return getWeightedAccumulatedMs();
+  }
+
+  function flushWeightedTime() {
+    return _flushWeightedTimer();
+  }
+
+  function getWeightedAccumulatedMs() {
+    return _readTs(INTERSTITIAL_GLOBAL_TIME_KEY);
+  }
+
+  function resetWeightedAccumulatedMs() {
+    _writeTs(INTERSTITIAL_GLOBAL_TIME_KEY, 0);
+  }
+
   function markRewardedShown() {
     _writeTs(LAST_REWARDED_AT_KEY, _nowMs());
   }
@@ -69,6 +135,18 @@
   function getLastInterstitialAt() {
     return _readTs(LAST_INTERSTITIAL_AT_KEY);
   }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      _flushWeightedTimer();
+    } else {
+      _startWeightedTimer();
+    }
+  });
+
+  window.addEventListener("pagehide", () => {
+    _flushWeightedTimer();
+  });
 
   function _readPersonalized() {
     try {
@@ -309,6 +387,10 @@
     isInterstitialAllowed,
     getLastRewardedAt,
     getLastInterstitialAt,
+    syncWeightedTime,
+    flushWeightedTime,
+    getWeightedAccumulatedMs,
+    resetWeightedAccumulatedMs,
     _debug: {
       getPlatform,
       getTestIds,
@@ -317,6 +399,10 @@
 
   try {
     setPersonalized(getPersonalized());
+  } catch (_) {}
+
+  try {
+    _startWeightedTimer();
   } catch (_) {}
 
   try {
