@@ -96,7 +96,7 @@
     "s74": { "file": "assets/scenarios/metro_station_zero/img/s74.webp", "alt": "Quai qui s’efface, détails qui disparaissent, simplification du monde" },
     "s75": { "file": "assets/scenarios/metro_station_zero/img/s75.webp", "alt": "Dernière décision sous un haut-parleur, contrats silencieux" },
 
-    "final_good": { "file": "assets/scenarios/metro_station_zero/img/final_good.webp", "alt": "Aube dehors, sortie réelle, preuve intacte, détail impossible" },
+    "final_good": { "file": "assets/scenarios/metro_station_zero/img/final_good.webp", "alt": "Aube dehors, sortie réelle, monde redevenu stable, détail troublant près de l’entrée" },
     "final_bad": { "file": "assets/scenarios/metro_station_zero/img/final_bad.webp", "alt": "Rame vide, portes fermées, monde qui devient page blanche" },
     "final_secret": { "file": "assets/scenarios/metro_station_zero/img/final_secret.webp", "alt": "Salle de contrôle, opérateur actif, chaise qui attend" }
   },
