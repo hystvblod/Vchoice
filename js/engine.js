@@ -23,7 +23,11 @@ const DEFAULT_LANG = "en";
 const ENDING_AD_BONUS_AMOUNT = 200;
 
 const INTERSTITIAL_EVERY_N_CHOICES = 12;
-const INTERSTITIAL_COUNTER_PREFIX = "vchoice_inter_count_";
+const INTERSTITIAL_MIN_GAME_MS = 3.5 * 60 * 1000;
+const INTERSTITIAL_GLOBAL_CHOICE_KEY = "vchoice_ads_ingame_choices_v1";
+const INTERSTITIAL_GLOBAL_TIME_KEY = "vchoice_ads_ingame_time_ms_v1";
+const INDEX_RETURN_COUNTER_KEY = "vchoice_ads_end_return_count_v1";
+const INTERSTITIAL_INDEX_COOLDOWN_MS = 2 * 60 * 1000;
 
 // Langues prévues
 const SUPPORTED_LANGS = ["fr","en","de","es","pt","ptbr","it","ko","ja"];
@@ -355,18 +359,13 @@ function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
   wrap.appendChild(text);
   btn.appendChild(wrap);
 }
-function getInterstitialCounterKey(scenarioId){
-  const sid = String(scenarioId || "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9_]+/g, "_")
-    .replace(/^_+|_+$/g, "");
-  return `${INTERSTITIAL_COUNTER_PREFIX}${sid}`;
-}
+let GAMEPLAY_TIMER_STARTED_AT = 0;
+let GAMEPLAY_SESSION_REWARDED_SEEN = false;
 
-function readScenarioInterstitialCount(scenarioId){
+function nowMs(){ return Date.now(); }
+
+function readNumberLS(key){
   try{
-    const key = getInterstitialCounterKey(scenarioId);
     const v = Number(localStorage.getItem(key) || 0);
     return Number.isFinite(v) && v > 0 ? v : 0;
   }catch(_){
@@ -374,32 +373,81 @@ function readScenarioInterstitialCount(scenarioId){
   }
 }
 
-function writeScenarioInterstitialCount(scenarioId, value){
+function writeNumberLS(key, value){
   try{
-    const key = getInterstitialCounterKey(scenarioId);
     const n = Math.max(0, Number(value || 0) || 0);
     localStorage.setItem(key, String(n));
-  }catch(_){}
+  }catch(_){ }
+}
+
+function addNumberLS(key, delta){
+  const cur = readNumberLS(key);
+  writeNumberLS(key, cur + Math.max(0, Number(delta || 0) || 0));
+}
+
+function canTrackGameplayNow(){
+  const scenarioId = String(currentScenarioId || "").trim();
+  return !!scenarioId && scenarioId !== INTRO_SCENARIO_ID && !document.hidden;
+}
+
+function flushGameplayTimeIntoCounter(){
+  if(GAMEPLAY_TIMER_STARTED_AT <= 0) return 0;
+
+  const elapsed = Math.max(0, nowMs() - GAMEPLAY_TIMER_STARTED_AT);
+  GAMEPLAY_TIMER_STARTED_AT = 0;
+
+  if(elapsed > 0){
+    addNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY, elapsed);
+  }
+
+  return elapsed;
+}
+
+function ensureGameplayTimerRunning(){
+  if(!canTrackGameplayNow()) return;
+  if(GAMEPLAY_TIMER_STARTED_AT > 0) return;
+  GAMEPLAY_TIMER_STARTED_AT = nowMs();
+}
+
+function syncGameplayTimer(){
+  flushGameplayTimeIntoCounter();
+  ensureGameplayTimerRunning();
+}
+
+function incrementGlobalInterstitialChoiceCount(step = 1){
+  addNumberLS(INTERSTITIAL_GLOBAL_CHOICE_KEY, step);
+}
+
+function resetGlobalInterstitialProgress(){
+  writeNumberLS(INTERSTITIAL_GLOBAL_CHOICE_KEY, 0);
+  writeNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY, 0);
+}
+
+function markGameplayRewardedSeen(){
+  GAMEPLAY_SESSION_REWARDED_SEEN = true;
+}
+
+function getLastInterstitialAt(){
+  try{
+    const v = Number(window.VAds?.getLastInterstitialAt?.() || 0);
+    return Number.isFinite(v) && v > 0 ? v : 0;
+  }catch(_){
+    return 0;
+  }
 }
 
 async function maybeShowInterstitialAfterChoice(){
   const scenarioId = String(currentScenarioId || "").trim();
-  if(!scenarioId) return false;
+  if(!scenarioId || scenarioId === INTRO_SCENARIO_ID) return false;
 
-  // pas d'interstitial dans l'intro tuto
-  if(scenarioId === INTRO_SCENARIO_ID) return false;
+  syncGameplayTimer();
+  incrementGlobalInterstitialChoiceCount(1);
 
-  let count = readScenarioInterstitialCount(scenarioId);
-  count += 1;
+  const choiceCount = readNumberLS(INTERSTITIAL_GLOBAL_CHOICE_KEY);
+  const gameMs = readNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY);
 
-  if(count < INTERSTITIAL_EVERY_N_CHOICES){
-    writeScenarioInterstitialCount(scenarioId, count);
-    return false;
-  }
-
-  // on remet à 0 dès qu'on atteint le seuil
-  // comme ça on évite de retenter à chaque clic si la pub n'est pas dispo
-  writeScenarioInterstitialCount(scenarioId, 0);
+  if(choiceCount < INTERSTITIAL_EVERY_N_CHOICES) return false;
+  if(gameMs < INTERSTITIAL_MIN_GAME_MS) return false;
 
   try{
     if(!window.VAds || typeof window.VAds.showInterstitial !== "function"){
@@ -411,11 +459,73 @@ async function maybeShowInterstitialAfterChoice(){
     }
 
     const res = await window.VAds.showInterstitial();
-    return !!res?.ok;
+    if(res?.ok){
+      resetGlobalInterstitialProgress();
+      GAMEPLAY_SESSION_REWARDED_SEEN = false;
+      ensureGameplayTimerRunning();
+      return true;
+    }
+
+    return false;
   }catch(_){
     return false;
   }
 }
+
+async function maybeShowInterstitialOnReturnToIndex(){
+  const scenarioId = String(currentScenarioId || "").trim();
+  flushGameplayTimeIntoCounter();
+
+  if(!scenarioId || scenarioId === INTRO_SCENARIO_ID) return false;
+  if(GAMEPLAY_SESSION_REWARDED_SEEN) return false;
+
+  try{
+    if(!window.VAds || typeof window.VAds.showInterstitial !== "function"){
+      return false;
+    }
+
+    if(typeof window.VAds.isInterstitialAllowed === "function" && !window.VAds.isInterstitialAllowed()){
+      return false;
+    }
+
+    const lastInterstitialAt = getLastInterstitialAt();
+    if(lastInterstitialAt > 0 && (nowMs() - lastInterstitialAt) < INTERSTITIAL_INDEX_COOLDOWN_MS){
+      return false;
+    }
+
+    const eligibleReturns = readNumberLS(INDEX_RETURN_COUNTER_KEY) + 1;
+    if(eligibleReturns < 3){
+      writeNumberLS(INDEX_RETURN_COUNTER_KEY, eligibleReturns);
+      return false;
+    }
+
+    writeNumberLS(INDEX_RETURN_COUNTER_KEY, 0);
+
+    const res = await window.VAds.showInterstitial();
+    if(res?.ok){
+      resetGlobalInterstitialProgress();
+      GAMEPLAY_SESSION_REWARDED_SEEN = false;
+      return true;
+    }
+
+    return false;
+  }catch(_){
+    return false;
+  }
+}
+
+document.addEventListener("visibilitychange", () => {
+  if(document.hidden){
+    flushGameplayTimeIntoCounter();
+  } else {
+    ensureGameplayTimerRunning();
+  }
+});
+
+window.addEventListener("pagehide", () => {
+  flushGameplayTimeIntoCounter();
+});
+
 /* =========================
    iOS AUDIO GATE
 ========================= */
@@ -624,6 +734,7 @@ function hardResetScenario(scenarioId){
     clues: [],
     history: []
   };
+  GAMEPLAY_SESSION_REWARDED_SEEN = false;
   save();
 }
 
@@ -1322,6 +1433,8 @@ async function openScenario(scenarioId, opts = {}){
   const { skipResumePrompt = false } = opts;
 
   currentScenarioId = scenarioId;
+  GAMEPLAY_SESSION_REWARDED_SEEN = false;
+  syncGameplayTimer();
 
   const logicPromise = fetchJSON(PATHS.scenarioLogic(scenarioId));
   const textPromise = fetchJSON(PATHS.scenarioText(scenarioId, LANG))
@@ -1640,6 +1753,7 @@ function showIntroForcedJetonModal(choice, missingAll, missingAny){
             return;
           }
 
+          markGameplayRewardedSeen();
           grantMissingFlags(choice, missingAll, missingAny);
           save();
 
@@ -2163,6 +2277,8 @@ async function handleEnding(type, endScene){
         return;
       }
 
+      markGameplayRewardedSeen();
+
       try{
         await window.VUserData?.addVCoins?.(ENDING_AD_BONUS_AMOUNT);
       }catch(_){}
@@ -2196,8 +2312,9 @@ async function handleEnding(type, endScene){
     btnBack.type = "button";
     btnBack.className = "choice_btn";
     btnBack.textContent = tUI("btn_back");
-    btnBack.onclick = () => {
+    btnBack.onclick = async () => {
       ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
+      await maybeShowInterstitialOnReturnToIndex();
       location.href = "index.html";
     };
 
@@ -2214,6 +2331,7 @@ function renderScene(){
   renderTopbar();
   bindHintModal();
   updateHudJetons();
+  ensureGameplayTimerRunning();
 
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
