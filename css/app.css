@@ -368,10 +368,10 @@ body{
 .modal__content{
   position:relative;
   width:min(720px, calc(100% - 24px));
-  background: rgba(16,24,39,.96);
-  border:1px solid rgba(255,255,255,.12);
+  background: linear-gradient(180deg, rgba(44, 18, 67, .98) 0%, rgba(24, 16, 44, .97) 100%);
+  border:1px solid rgba(215, 126, 255, .28);
   border-radius:20px;
-  box-shadow: var(--shadowDeep);
+  box-shadow: 0 28px 80px rgba(8, 6, 20, .62), 0 0 0 1px rgba(255,255,255,.04) inset;
   overflow:hidden;
   max-height: min(80vh, 720px);
   display:flex;
@@ -381,10 +381,10 @@ body{
 .modal__panel{
   position:relative;
   width: min(560px, calc(100vw - 24px));
-  background: rgba(20,20,24,.96);
-  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(44, 18, 67, .98) 0%, rgba(24, 16, 44, .97) 100%);
+  border:1px solid rgba(215, 126, 255, .28);
   border-radius: 18px;
-  box-shadow: var(--shadowDeep);
+  box-shadow: 0 28px 80px rgba(8, 6, 20, .62), 0 0 0 1px rgba(255,255,255,.04) inset;
   overflow:hidden;
   max-height: min(80vh, 720px);
   display:flex;
@@ -399,17 +399,20 @@ body{
   justify-content:space-between;
   gap: 12px;
   padding:14px 16px;
-  border-bottom:1px solid rgba(255,255,255,.10);
+  border-bottom:1px solid rgba(215, 126, 255, .22);
+  background: linear-gradient(180deg, rgba(255,255,255,.08) 0%, rgba(255,255,255,.02) 100%);
 }
 
 .modal__title{
   font-weight:900;
+  color:#ffe7ff;
+  text-shadow: 0 1px 0 rgba(0,0,0,.24);
 }
 
 .modal__close{
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,.06);
-  color: var(--text);
+  border:1px solid rgba(215, 126, 255, .28);
+  background: rgba(255,255,255,.08);
+  color:#fff3ff;
   border-radius: 12px;
   padding: 6px 10px;
   cursor: pointer;
@@ -419,7 +422,7 @@ body{
 /* body scroll interne */
 .modal__body{
   padding:14px 16px 18px;
-  color: rgba(255,255,255,.92);
+  color: rgba(255,240,255,.94);
   line-height:1.6;
   overflow:auto;
   white-space: pre-wrap;
