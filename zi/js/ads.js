@@ -66,7 +66,20 @@
     return false;
   }
 
+  function _getScenarioIdFromUrl() {
+    try {
+      const u = new URL(location.href);
+      return String(u.searchParams.get("scenario") || "").trim();
+    } catch (_) {}
+    return "";
+  }
+
+  function _isIntroScenarioPage() {
+    return _isGameHtmlPage() && _getScenarioIdFromUrl() === "intro_tuto";
+  }
+
   function _getWeightedFactor() {
+    if (_isIntroScenarioPage()) return 0;
     return _isGameHtmlPage() ? 1 : (1 / 3);
   }
 
