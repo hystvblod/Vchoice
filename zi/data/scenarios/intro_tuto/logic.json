@@ -1,0 +1,90 @@
+{
+  "meta": {
+    "scenario_id": "intro_tuto",
+    "version": 4,
+    "start_scene": "intro",
+    "hint_ns": "it.h"
+  },
+  "images": {
+    "intro": { "file": "assets/scenarios/intro_tuto/img/intro.webp" },
+    "s1": { "file": "assets/scenarios/intro_tuto/img/s1.webp" },
+    "s2": { "file": "assets/scenarios/intro_tuto/img/s2.webp" },
+    "s3": { "file": "assets/scenarios/intro_tuto/img/s3.webp" },
+    "s4": { "file": "assets/scenarios/intro_tuto/img/s4.webp" }
+  },
+  "scenes": {
+    "intro": {
+      "image_id": "intro",
+      "title_key": "it.intro.title",
+      "body_key": "it.intro.body",
+      "choices": [
+        { "choice_key": "it.intro.c1", "next": "s1" },
+        { "choice_key": "it.intro.c2", "next": "s1" },
+        { "choice_key": "it.intro.c3", "next": "s1" }
+      ]
+    },
+    "s1": {
+      "image_id": "s1",
+      "title_key": "it.s1.title",
+      "body_key": "it.s1.body",
+      "choices": [
+        { "choice_key": "it.s1.c1", "next": "s2" },
+        { "choice_key": "it.s1.c2", "next": "s2" },
+        { "choice_key": "it.s1.c3", "next": "s2" }
+      ]
+    },
+    "s2": {
+      "image_id": "s2",
+      "title_key": "it.s2.title",
+      "body_key": "it.s2.body",
+      "choices": [
+        { "choice_key": "it.s2.c1", "next": "s3" },
+        { "choice_key": "it.s2.c2", "next": "s3" },
+        { "choice_key": "it.s2.c3", "next": "s3" }
+      ]
+    },
+    "s3": {
+      "image_id": "s3",
+      "title_key": "it.s3.title",
+      "body_key": "it.s3.body",
+      "choices": [
+        {
+          "choice_key": "it.s3.c1",
+          "next": "s4",
+          "requires_all_flags": ["it_key"]
+        },
+        {
+          "choice_key": "it.s3.c2",
+          "next": "s4",
+          "requires_all_flags": ["it_key"]
+        },
+        {
+          "choice_key": "it.s3.c3",
+          "next": "s4",
+          "requires_all_flags": ["it_key"]
+        }
+      ]
+    },
+    "s4": {
+      "image_id": "s4",
+      "title_key": "it.s4.title",
+      "body_key": "it.s4.body",
+      "choices": [
+        { "choice_key": "it.s4.c1", "next": "end_good" },
+        { "choice_key": "it.s4.c2", "next": "end_bad" }
+      ]
+    },
+    "end_good": {
+      "image_id": "s4",
+      "title_key": "it.end_good.title",
+      "body_key": "it.end_good.body",
+      "choices": []
+    },
+    "end_bad": {
+      "image_id": "s3",
+      "title_key": "it.end_bad.title",
+      "body_key": "it.end_bad.body",
+      "choices": []
+    }
+  }
+}
