@@ -11,7 +11,7 @@
     "hf.tagline": "Dans un hôpital fermé depuis des années, ton nom apparaît déjà dans les registres. Entre badge patient, chambre 14 et salles encore allumées, tout indique que ta venue était prévue.",
 
     "hf.s01.title": "La grille",
-    "hf.s01.body": "La grille est fermée, mais la chaîne pend, comme coupée récemment. Derrière, l’hôpital avale la nuit. Un néon clignote une seconde sur deux.",
+    "hf.s01.body": "La grille est fermée, mais la chaîne pend, comme coupée récemment. Derrière, l’hôpital est presque entièrement dans le noir. Un néon clignote une seconde sur deux.",
     "hf.s01.c1": "Passer la grille quand même",
     "hf.s01.c2": "Lire le panneau d’interdiction",
     "hf.s01.c3": "Appeler quelqu’un",
@@ -47,7 +47,7 @@
     "hf.s06.c3": "Tenter l’ascenseur du fond",
 
     "hf.s07.title": "Couloir principal",
-    "hf.s07.body": "Le couloir s’étire comme une ligne trop droite. Les portes sont toutes identiques. Au bout, un panneau : « CONSULTATIONS », et plus loin : « ESCALIER — NIVEAU -1 ».",
+    "hf.s07.body": "Le couloir paraît anormalement long. Les portes sont toutes identiques. Au bout, un panneau : « CONSULTATIONS », et plus loin : « ESCALIER — NIVEAU -1 ».",
     "hf.s07.c1": "Aller vers les chambres",
     "hf.s07.c2": "Partir vers la radiologie",
     "hf.s07.c3": "Descendre par l’escalier",
@@ -71,13 +71,13 @@
     "hf.s10.c3": "Le déchirer",
 
     "hf.s11.title": "Chambre 14",
-    "hf.s11.body": "Le lit est défait, encore tiède côté oreiller. Sur la tablette : un bracelet patient. Le moniteur cardiaque est éteint, mais ses LEDs respirent lentement.",
+    "hf.s11.body": "Le lit est défait, encore tiède côté oreiller. Sur la tablette : un bracelet patient. Le moniteur cardiaque est éteint, mais ses LEDs clignotent lentement.",
     "hf.s11.c1": "Prendre le bracelet sur la tablette",
     "hf.s11.c2": "Appuyer sur le bouton d’appel",
     "hf.s11.c3": "Sortir tout de suite",
 
     "hf.s12.title": "Bracelet tiède",
-    "hf.s12.body": "Le bracelet est à ton nom. Quand tu le touches, tu sens une impulsion, comme un pouls dans le plastique.",
+    "hf.s12.body": "Le bracelet est à ton nom. Quand tu le touches, tu sens une légère vibration dans le plastique.",
     "hf.s12.c1": "Le mettre au poignet",
     "hf.s12.c2": "Le garder dans ta poche",
     "hf.s12.c3": "Le laisser là",
@@ -119,13 +119,13 @@
     "hf.s18.c3": "Fouiller les tiroirs",
 
     "hf.s19.title": "Couloir qui glisse",
-    "hf.s19.body": "À peine la porte franchie, le couloir n’est plus le même. Une intersection apparaît là où il n’y avait qu’un mur. Les néons se décalent, comme des dents.",
+    "hf.s19.body": "À peine la porte franchie, le couloir n’est plus le même. Une intersection apparaît là où il n’y avait qu’un mur. Les néons ne sont plus alignés.",
     "hf.s19.c1": "Marquer le mur",
     "hf.s19.c2": "Suivre le bruit du chariot",
     "hf.s19.c3": "Chercher l’escalier",
 
     "hf.s20.title": "Cage d’escalier",
-    "hf.s20.body": "Un panneau indique « Niveau -1 ». L’air qui monte d’en bas est humide et froid. On dirait que quelqu’un respire dans l’escalier.",
+    "hf.s20.body": "Un panneau indique « Niveau -1 ». L’air qui monte d’en bas est humide et froid. Tu entends un souffle régulier dans l’escalier.",
     "hf.s20.c1": "Descendre au niveau -1",
     "hf.s20.c2": "Remonter au couloir",
     "hf.s20.c3": "Revenir à l’ascenseur",
@@ -149,7 +149,7 @@
     "hf.s23.c3": "Retourner au poste de sécurité",
 
     "hf.s24.title": "Porte « Archives »",
-    "hf.s24.body": "Une porte grise, lecteur de badge. L’étiquette est neuve : « PATIENT 0 ». Comme si l’hôpital ajoutait des panneaux pendant que tu marches.",
+    "hf.s24.body": "Une porte grise, avec un lecteur de badge. L’étiquette est neuve : « PATIENT 0 ». Tu es certain de ne pas l’avoir vue avant.",
     "hf.s24.c1": "Badger et entrer",
     "hf.s24.c2": "Écouter derrière la porte",
     "hf.s24.c3": "Revenir au plan d’évacuation",
@@ -161,7 +161,7 @@
     "hf.s25.c3": "Chercher une autre issue",
 
     "hf.s26.title": "Dossiers qui respirent",
-    "hf.s26.body": "Les dossiers sont gonflés, comme s’ils prenaient de l’air. Chaque fois que tu inspires, un classeur se soulève très légèrement.",
+    "hf.s26.body": "Les dossiers semblent se gonfler légèrement. Chaque fois que tu inspires, un classeur se soulève un peu.",
     "hf.s26.c1": "Tirer le dossier le plus « vivant »",
     "hf.s26.c2": "Partir vers la surveillance",
     "hf.s26.c3": "Revenir aux étagères",
@@ -173,7 +173,7 @@
     "hf.s27.c3": "L’emporter vers toi et prendre la porte de gauche",
 
     "hf.s28.title": "Salle de surveillance",
-    "hf.s28.body": "Les écrans montrent les couloirs. Sur l’un, tu te vois… mais avec une seconde de retard. Le décalage est parfait, comme un battement.",
+    "hf.s28.body": "Les écrans montrent les couloirs. Sur l’un, tu te vois… mais avec une seconde de retard. Le décalage est toujours le même.",
     "hf.s28.c1": "Lancer un enregistrement",
     "hf.s28.c2": "Changer d’angle de caméra",
     "hf.s28.c3": "Retourner au plan d’évacuation",
@@ -203,7 +203,7 @@
     "hf.s32.c3": "Te rendormir une seconde",
 
     "hf.s33.title": "Couloir des brancards",
-    "hf.s33.body": "Des brancards sont alignés contre le mur. L’un d’eux bouge très légèrement, tout seul, comme si quelqu’un y posait un poids invisible.",
+    "hf.s33.body": "Des brancards sont alignés contre le mur. L’un d’eux bouge très légèrement, tout seul, comme si quelque chose venait de s’y poser.",
     "hf.s33.c1": "Suivre la flèche « Sortie »",
     "hf.s33.c2": "Retourner à la sécurité",
     "hf.s33.c3": "Chercher les vestiaires",
@@ -251,7 +251,7 @@
     "hf.s40.c3": "Rentrer à l’intérieur",
 
     "hf.s41.title": "L’air dehors",
-    "hf.s41.body": "Tu inspires. L’air est réel. Trop réel. Puis ton téléphone vibre : « Rappel : consultation en cours ». Tu n’as jamais pris de rendez-vous.",
+    "hf.s41.body": "Tu inspires. L’air dehors est froid et normal. Puis ton téléphone vibre : « Rappel : consultation en cours ». Tu n’as jamais pris de rendez-vous.",
     "hf.s41.c1": "Forcer la grille vers la rue",
     "hf.s41.c2": "Retourner dans la cour",
     "hf.s41.c3": "Regarder les fenêtres du deuxième étage",
@@ -293,19 +293,19 @@
     "hf.s47.c3": "Activer la vérité complète",
 
     "hf.s48.title": "Dernier couloir",
-    "hf.s48.body": "Tu avances vers la grille. Le métal est froid. Tu sens, derrière toi, la porte de la cour se refermer lentement, sans bruit. L’air semble retenir sa phrase.",
+    "hf.s48.body": "Tu avances vers la grille. Le métal est froid. Derrière toi, la porte de la cour se referme lentement, sans bruit. Tout devient anormalement silencieux.",
     "hf.s48.c1": "Pousser la grille et ne pas regarder derrière",
     "hf.s48.c2": "Te retourner",
     "hf.s48.c3": "Revenir chercher « quelque chose »",
 
     "hf.end_good.title": "Fin — Sortie",
-    "hf.end_good.body": "Tu passes la grille. L’aube te mord les poumons. Derrière, l’hôpital reste immobile… trop immobile. Tu ne sais pas encore tout. Mais une chose est sûre : cette nuit ne te quittera plus.",
+    "hf.end_good.body": "Tu passes la grille. L’air du matin te fait mal aux poumons. Derrière, l’hôpital reste parfaitement immobile. Tu ne sais pas encore tout. Mais une chose est sûre : cette nuit ne te quittera plus.",
 
     "hf.end_bad.title": "Fin — Retour au bloc",
-    "hf.end_bad.body": "La lumière du plafond te mange les yeux. Le bip devient une seule note. Quelqu’un écrit quelque part : « Patient présenté. Garde validée. » Et tu comprends qu’ici, la sortie n’a jamais été une porte.",
+    "hf.end_bad.body": "La lumière du plafond t’éblouit. Le bip devient un son continu. Quelqu’un écrit quelque part : « Patient présenté. Garde validée. » Et tu comprends qu’ici, il n’y a jamais vraiment eu de sortie.",
 
     "hf.end_secret.title": "Fin secrète — Assignation",
-    "hf.end_secret.body": "Le tampon s’abat. « VALIDÉ ». L’écran affiche : « Personnel de garde : actif ». Le clavier cesse. La porte se ferme. Et, dans le silence, tu sens que le lieu respire enfin… parce que tu as pris le relais.",
+    "hf.end_secret.body": "Le tampon s’abat. « VALIDÉ ». L’écran affiche : « Personnel de garde : actif ». Le clavier s’arrête. La porte se ferme. Tu comprends alors que le lieu t’attendait pour prendre la relève.",
 
     "hf.clue.has_bracelet.title": "Bracelet patient",
     "hf.clue.has_bracelet.desc": "Un bracelet tiède, comme si quelqu’un venait de te l’attacher.",
