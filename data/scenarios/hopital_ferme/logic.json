@@ -315,7 +315,7 @@
       "choices": [
         { "choice_key": "hf.s15.c1", "next": "s14" },
         { "choice_key": "hf.s15.c2", "next": "s24" },
-        { "choice_key": "hf.s15.c3", "next": "s14" }
+        { "choice_key": "hf.s15.c3", "next": "s16" }
       ]
     },
     "s16": {
@@ -538,7 +538,7 @@
         {
           "choice_key": "hf.s37.c3",
           "next": "s46",
-          "requires_all_flags": ["has_bracelet", "has_keycard", "has_tape", "has_recording", "has_dossier"]
+          "requires_all_flags": ["has_tape", "has_recording", "has_dossier"]
         }
       ]
     },
@@ -621,7 +621,7 @@
         {
           "choice_key": "hf.s45.c2",
           "next": "s46",
-          "requires_all_flags": ["has_bracelet", "has_keycard", "has_tape", "has_recording", "has_dossier"]
+          "requires_all_flags": ["has_tape", "has_recording", "has_dossier"]
         },
         { "choice_key": "hf.s45.c3", "next": "end_bad" }
       ]
@@ -646,7 +646,7 @@
         {
           "choice_key": "hf.s47.c3",
           "next": "end_secret",
-          "requires_all_flags": ["has_bracelet", "has_keycard", "has_tape", "has_recording", "has_dossier"]
+          "requires_all_flags": ["has_tape", "has_recording", "has_dossier"]
         }
       ]
     },
