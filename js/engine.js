@@ -359,7 +359,6 @@ function setChoiceButtonContentWithIcon(btn, iconSrc, labelText){
   wrap.appendChild(text);
   btn.appendChild(wrap);
 }
-let GAMEPLAY_TIMER_STARTED_AT = 0;
 let GAMEPLAY_SESSION_REWARDED_SEEN = false;
 
 function nowMs(){ return Date.now(); }
@@ -385,33 +384,32 @@ function addNumberLS(key, delta){
   writeNumberLS(key, cur + Math.max(0, Number(delta || 0) || 0));
 }
 
-function canTrackGameplayNow(){
-  const scenarioId = String(currentScenarioId || "").trim();
-  return !!scenarioId && scenarioId !== INTRO_SCENARIO_ID && !document.hidden;
+function syncAdWeightedTime(){
+  try{
+    if(window.VAds && typeof window.VAds.syncWeightedTime === "function"){
+      return Number(window.VAds.syncWeightedTime() || 0);
+    }
+  }catch(_){ }
+  return readNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY);
 }
 
-function flushGameplayTimeIntoCounter(){
-  if(GAMEPLAY_TIMER_STARTED_AT <= 0) return 0;
-
-  const elapsed = Math.max(0, nowMs() - GAMEPLAY_TIMER_STARTED_AT);
-  GAMEPLAY_TIMER_STARTED_AT = 0;
-
-  if(elapsed > 0){
-    addNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY, elapsed);
-  }
-
-  return elapsed;
+function flushAdWeightedTime(){
+  try{
+    if(window.VAds && typeof window.VAds.flushWeightedTime === "function"){
+      window.VAds.flushWeightedTime();
+    }
+  }catch(_){ }
+  return readNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY);
 }
 
-function ensureGameplayTimerRunning(){
-  if(!canTrackGameplayNow()) return;
-  if(GAMEPLAY_TIMER_STARTED_AT > 0) return;
-  GAMEPLAY_TIMER_STARTED_AT = nowMs();
-}
-
-function syncGameplayTimer(){
-  flushGameplayTimeIntoCounter();
-  ensureGameplayTimerRunning();
+function getAccumulatedWeightedTimeMs(){
+  try{
+    if(window.VAds && typeof window.VAds.getWeightedAccumulatedMs === "function"){
+      const v = Number(window.VAds.getWeightedAccumulatedMs() || 0);
+      return Number.isFinite(v) && v > 0 ? v : 0;
+    }
+  }catch(_){ }
+  return readNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY);
 }
 
 function incrementGlobalInterstitialChoiceCount(step = 1){
@@ -420,6 +418,14 @@ function incrementGlobalInterstitialChoiceCount(step = 1){
 
 function resetGlobalInterstitialProgress(){
   writeNumberLS(INTERSTITIAL_GLOBAL_CHOICE_KEY, 0);
+
+  try{
+    if(window.VAds && typeof window.VAds.resetWeightedAccumulatedMs === "function"){
+      window.VAds.resetWeightedAccumulatedMs();
+      return;
+    }
+  }catch(_){ }
+
   writeNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY, 0);
 }
 
@@ -440,14 +446,14 @@ async function maybeShowInterstitialAfterChoice(){
   const scenarioId = String(currentScenarioId || "").trim();
   if(!scenarioId || scenarioId === INTRO_SCENARIO_ID) return false;
 
-  syncGameplayTimer();
+  syncAdWeightedTime();
   incrementGlobalInterstitialChoiceCount(1);
 
   const choiceCount = readNumberLS(INTERSTITIAL_GLOBAL_CHOICE_KEY);
-  const gameMs = readNumberLS(INTERSTITIAL_GLOBAL_TIME_KEY);
+  const weightedMs = getAccumulatedWeightedTimeMs();
 
   if(choiceCount < INTERSTITIAL_EVERY_N_CHOICES) return false;
-  if(gameMs < INTERSTITIAL_MIN_GAME_MS) return false;
+  if(weightedMs < INTERSTITIAL_MIN_GAME_MS) return false;
 
   try{
     if(!window.VAds || typeof window.VAds.showInterstitial !== "function"){
@@ -462,7 +468,7 @@ async function maybeShowInterstitialAfterChoice(){
     if(res?.ok){
       resetGlobalInterstitialProgress();
       GAMEPLAY_SESSION_REWARDED_SEEN = false;
-      ensureGameplayTimerRunning();
+      syncAdWeightedTime();
       return true;
     }
 
@@ -474,7 +480,7 @@ async function maybeShowInterstitialAfterChoice(){
 
 async function maybeShowInterstitialOnReturnToIndex(){
   const scenarioId = String(currentScenarioId || "").trim();
-  flushGameplayTimeIntoCounter();
+  flushAdWeightedTime();
 
   if(!scenarioId || scenarioId === INTRO_SCENARIO_ID) return false;
   if(GAMEPLAY_SESSION_REWARDED_SEEN) return false;
@@ -513,18 +519,6 @@ async function maybeShowInterstitialOnReturnToIndex(){
     return false;
   }
 }
-
-document.addEventListener("visibilitychange", () => {
-  if(document.hidden){
-    flushGameplayTimeIntoCounter();
-  } else {
-    ensureGameplayTimerRunning();
-  }
-});
-
-window.addEventListener("pagehide", () => {
-  flushGameplayTimeIntoCounter();
-});
 
 /* =========================
    iOS AUDIO GATE
@@ -1434,7 +1428,7 @@ async function openScenario(scenarioId, opts = {}){
 
   currentScenarioId = scenarioId;
   GAMEPLAY_SESSION_REWARDED_SEEN = false;
-  syncGameplayTimer();
+  syncAdWeightedTime();
 
   const logicPromise = fetchJSON(PATHS.scenarioLogic(scenarioId));
   const textPromise = fetchJSON(PATHS.scenarioText(scenarioId, LANG))
@@ -2331,7 +2325,7 @@ function renderScene(){
   renderTopbar();
   bindHintModal();
   updateHudJetons();
-  ensureGameplayTimerRunning();
+  syncAdWeightedTime();
 
   const st = scenarioStates[currentScenarioId];
   if(!st) return;
