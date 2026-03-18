@@ -212,7 +212,7 @@
       "choices": [
         {
           "choice_key": "styx.s03.c1",
-          "next": "s02"
+          "next": "s05"
         },
         {
           "choice_key": "styx.s03.c2",
@@ -506,7 +506,7 @@
         },
         {
           "choice_key": "styx.s17.c2",
-          "next": "s20"
+          "next": "s22"
         },
         {
           "choice_key": "styx.s17.c3",
@@ -617,7 +617,7 @@
         },
         {
           "choice_key": "styx.s22.c3",
-          "next": "s39"
+          "next": "s13"
         }
       ]
     },
@@ -802,7 +802,7 @@
         },
         {
           "choice_key": "styx.s31.c2",
-          "next": "s39"
+          "next": "s13"
         },
         {
           "choice_key": "styx.s31.c3",
@@ -882,7 +882,7 @@
         },
         {
           "choice_key": "styx.s35.c3",
-          "next": "s39"
+          "next": "s13"
         }
       ]
     },
