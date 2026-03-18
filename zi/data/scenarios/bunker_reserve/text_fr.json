@@ -1,0 +1,420 @@
+{
+  "meta": {
+    "lang": "fr",
+    "scenario_id": "bunker_reserve",
+    "title": "Bunker",
+    "tagline": "Sous une colline ordinaire, une trappe cache un bunker encore actif. Réserves intactes, badges, dortoirs et zones scellées te font comprendre que quelqu’un vit encore là-dessous.",
+    "hint_ns": "br.h"
+  },
+  "strings": {
+    "br.s01.title": "La colline muette",
+    "br.s01.body": "La pente paraît normale, mais l’air est plus froid ici. Entre deux racines, un métal dépasse un peu… comme si la terre avait mal refermé quelque chose.",
+    "br.s01.c1": "Chercher une ouverture le long de la clôture",
+    "br.s01.c2": "Toucher le métal",
+    "br.s01.c3": "Forcer l’accès",
+
+    "br.s02.title": "Clôture neuve",
+    "br.s02.body": "Le grillage est trop récent pour ce terrain oublié. Au pied d’un piquet, la terre est tassée comme si quelqu’un passait encore ici, discrètement, mais souvent.",
+    "br.s02.c1": "Suivre les traces jusqu’à la colline",
+    "br.s02.c2": "Revenir au point de départ",
+    "br.s02.c3": "Chercher une entrée plus discrète",
+
+    "br.s03.title": "Métal froid",
+    "br.s03.body": "Sous la poussière, une poignée. Le métal te brûle presque par son froid. Quand tu tires un peu, un souffle très léger remonte de l’intérieur.",
+    "br.s03.c1": "Tirer franchement",
+    "br.s03.c2": "Reculer et écouter",
+    "br.s03.c3": "Soulever juste assez pour passer",
+
+    "br.s04.title": "Descendre, longtemps",
+    "br.s04.body": "Tu t’enfonces. L’odeur de terre disparaît. Le béton humide prend sa place, puis une odeur sèche, presque propre. Ton souffle résonne trop bien.",
+    "br.s04.c1": "Continuer la descente",
+    "br.s04.c2": "Remonter",
+    "br.s04.c3": "Éteindre la lumière et rejoindre le sas au son",
+
+    "br.s05.title": "Le sas",
+    "br.s05.body": "Deux portes. Des joints parfaits. Un voyant dort, mais pas complètement. À droite, un petit boîtier de contrôle semble encore pouvoir ouvrir l’accès intérieur.",
+    "br.s05.c1": "Passer la première porte",
+    "br.s05.c2": "Activer le boîtier du sas",
+    "br.s05.c3": "Revenir vers l’escalier",
+
+    "br.s06.title": "Couloir principal",
+    "br.s06.body": "Le couloir est trop propre. Pas abandonné : suspendu. À droite, une vitre trouble protège un plan mural. Plus loin, des portes fermées, toutes numérotées.",
+    "br.s06.c1": "Aller vers la vitre du plan",
+    "br.s06.c2": "Chercher une salle de contrôle",
+    "br.s06.c3": "Suivre l’odeur sèche vers les réserves",
+
+    "br.s07.title": "Vitrine du plan",
+    "br.s07.body": "Le plan est ancien mais maintenu sous verre. Un coin a été arraché. Quelqu’un a voulu emporter un morceau précis, pas détruire l’ensemble.",
+    "br.s07.c1": "Inspecter le coin arraché",
+    "br.s07.c2": "Revenir au couloir",
+    "br.s07.c3": "Chercher la zone du plan qui mène à la sécurité",
+
+    "br.s08.title": "Le morceau manquant",
+    "br.s08.body": "Sur le bord de la vitrine, un résidu de colle sèche. Juste en dessous, une petite marque au mur : quelqu’un s’est appuyé ici, souvent, comme pour mémoriser un trajet.",
+    "br.s08.c1": "Mémoriser le tracé avant d’avancer",
+    "br.s08.c2": "Retourner au couloir principal",
+    "br.s08.c3": "Suivre le trajet manquant vers les réserves",
+
+    "br.s09.title": "Salle de contrôle",
+    "br.s09.body": "Un pupitre central, des écrans noirs, quelques voyants encore vivants. Au mur, un horaire de rotation… daté d’hier. Le bunker n’est peut-être pas vide.",
+    "br.s09.c1": "Observer sans toucher",
+    "br.s09.c2": "Chercher une porte d’accès",
+    "br.s09.c3": "Quitter la salle",
+
+    "br.s10.title": "Horaire impossible",
+    "br.s10.body": "Les noms sont effacés, mais les heures sont nettes. Plusieurs tours de garde. Hier. Et aujourd’hui. Ici, quelqu’un continue un protocole sans témoin.",
+    "br.s10.c1": "Retourner vers la porte à lecteur",
+    "br.s10.c2": "Revenir au couloir principal",
+    "br.s10.c3": "Chercher les zones de repos",
+
+    "br.s11.title": "Porte à badge",
+    "br.s11.body": "Lecteur actif. Une diode clignote doucement, presque poliment. Sur la plaque, un nom de secteur : Sécurité secondaire.",
+    "br.s11.c1": "Chercher un badge dans les vestiaires",
+    "br.s11.c2": "Revenir au couloir",
+    "br.s11.c3": "Explorer les réserves d’abord",
+
+    "br.s12.title": "Vestiaire service",
+    "br.s12.body": "Casier entrouvert. Uniforme suspendu. Une odeur faible de savon récent, déplacée dans cet endroit mort. Au fond d’une poche, un badge encore tiède.",
+    "br.s12.c1": "Prendre le badge",
+    "br.s12.c2": "Retourner à la porte à lecteur",
+    "br.s12.c3": "Revenir au couloir principal",
+
+    "br.s13.title": "Bip discret",
+    "br.s13.body": "Le lecteur accepte. La porte coulisse de quelques centimètres avec une retenue presque méfiante. Au-delà, une salle plus sombre t’attend.",
+    "br.s13.c1": "Entrer dans la salle sécurité",
+    "br.s13.c2": "Renoncer et repartir",
+    "br.s13.c3": "Retourner vers les réserves",
+
+    "br.s14.title": "Réserves intactes",
+    "br.s14.body": "Rayonnages pleins. Conserves, eau, linge scellé. Rien n’a été pillé. Ce lieu n’a pas été oublié : il est entretenu par quelqu’un qui veut durer.",
+    "br.s14.c1": "Inspecter les travées",
+    "br.s14.c2": "Chercher les dortoirs",
+    "br.s14.c3": "Revenir au couloir principal",
+
+    "br.s15.title": "La travée vide",
+    "br.s15.body": "Une rangée entière a été vidée proprement. Pas de désordre. À sa place, au fond, une porte métallique sans marquage visible.",
+    "br.s15.c1": "Aller vers la porte sans marquage",
+    "br.s15.c2": "Chercher l’infirmerie",
+    "br.s15.c3": "Retourner aux réserves",
+
+    "br.s16.title": "Dortoir au carré",
+    "br.s16.body": "Lits faits au millimètre. Un seul est légèrement affaissé. Le drap a été retendu vite, comme après un départ interrompu.",
+    "br.s16.c1": "Suivre les indices vers l’infirmerie",
+    "br.s16.c2": "Chercher une salle technique",
+    "br.s16.c3": "Revenir aux réserves",
+
+    "br.s17.title": "Infirmerie",
+    "br.s17.body": "Matériel rangé. Flacons triés. Dans un tiroir resté ouvert, une découpe dans la mousse laisse penser qu’un objet manque… ou attend son retour.",
+    "br.s17.c1": "Ouvrir le tiroir complètement",
+    "br.s17.c2": "Retourner au dortoir",
+    "br.s17.c3": "Revenir aux réserves",
+
+    "br.s18.title": "Emplacement manquant",
+    "br.s18.body": "Dans le tiroir : une place vide, propre, découpée dans la mousse. Une clé lourde y manquait… et elle est là, collée au fond, glacée, comme si elle refusait la chaleur de ta main.",
+    "br.s18.c1": "Prendre la clé et aller vers la salle technique",
+    "br.s18.c2": "Refermer et reculer",
+    "br.s18.c3": "Retourner aux réserves",
+
+    "br.s19.title": "Salle technique",
+    "br.s19.body": "Pompes, filtres, gaines. Tout vibre à peine. Mais derrière le bruit mécanique, un autre rythme pulse. Plus lent. Presque organique.",
+    "br.s19.c1": "Suivre le battement",
+    "br.s19.c2": "Examiner la filtration",
+    "br.s19.c3": "Retourner au dortoir",
+
+    "br.s20.title": "Le battement",
+    "br.s20.body": "Tu te colles au mur : la vibration revient à intervalle régulier. Comme une respiration cachée. Ça te guide vers une grille déposée au sol, trop propre pour être ancienne.",
+    "br.s20.c1": "Examiner la grille de ventilation",
+    "br.s20.c2": "Ramper dans le conduit ouvert",
+    "br.s20.c3": "Revenir en arrière",
+
+    "br.s21.title": "Filtration",
+    "br.s21.body": "Les filtres sont récents. Changés il y a peu. Quelqu’un continue d’entretenir l’air ici-dessous, comme si vivre dans ce bunker restait une routine.",
+    "br.s21.c1": "Chercher où mène l’entretien",
+    "br.s21.c2": "Revenir vers la salle technique",
+    "br.s21.c3": "Retourner au dortoir",
+
+    "br.s22.title": "Porte scellée",
+    "br.s22.body": "Cadenas. Métal épais. Sur le cadre, une trace de chaleur… comme une fièvre contenue. Le bunker semble retenir quelque chose derrière, par discipline, pas par sécurité.",
+    "br.s22.c1": "Chercher un autre accès",
+    "br.s22.c2": "Revenir à la travée vide",
+    "br.s22.c3": "Insister sur le cadenas",
+
+    "br.s23.title": "Atelier",
+    "br.s23.body": "Établi nu. Quelques outils alignés. Une note sans mots : seulement des traits, des pauses, trois séquences. Pas un message. Une procédure.",
+    "br.s23.c1": "Prendre le papier et l’étudier",
+    "br.s23.c2": "Chercher une issue de maintenance",
+    "br.s23.c3": "Retourner à la porte scellée",
+
+    "br.s24.title": "La séquence",
+    "br.s24.body": "Sur le papier, trois blocs reviennent avec deux pauses. Ce n’est pas un message. C’est un rythme précis à reproduire sur une interface.",
+    "br.s24.c1": "Mémoriser la séquence",
+    "br.s24.c2": "Revenir à l’atelier",
+    "br.s24.c3": "Tester la séquence au hasard",
+
+    "br.s25.title": "Grille ouverte",
+    "br.s25.body": "Les vis ont déjà été retirées. La grille repose juste à côté, comme si quelqu’un passait souvent par là sans vouloir laisser de trace visible.",
+    "br.s25.c1": "Se glisser dans l’ouverture",
+    "br.s25.c2": "Retourner à la salle technique",
+    "br.s25.c3": "Écouter encore le battement",
+
+    "br.s26.title": "Dans le conduit",
+    "br.s26.body": "L’air est sec. Trop sec. Plus loin, une lumière file sous une plaque d’aération. Sur le métal, des frottements réguliers ont poli certaines zones.",
+    "br.s26.c1": "Aller vers la lumière",
+    "br.s26.c2": "Chercher une sortie latérale",
+    "br.s26.c3": "Reculer jusqu’à la grille",
+
+    "br.s27.title": "Salle sécurité",
+    "br.s27.body": "Écrans sombres. Un seul est actif. Et l’image a une seconde de retard. Pas assez pour être utile… juste assez pour être humiliant : le bunker voit avant toi.",
+    "br.s27.c1": "Approcher l’écran actif",
+    "br.s27.c2": "Explorer les commandes de l’écran",
+    "br.s27.c3": "Fuir",
+
+    "br.s28.title": "Une seconde de trop",
+    "br.s28.body": "L’écran te montre… toi. Mais avec un léger décalage. Et dans l’image, derrière toi, quelque chose semble traverser le fond du couloir que tu viens de quitter.",
+    "br.s28.c1": "Regarder jusqu’au bout",
+    "br.s28.c2": "Couper l’écran",
+    "br.s28.c3": "Partir avant la fin",
+
+    "br.s29.title": "Le curseur bouge",
+    "br.s29.body": "Aucun bouton ne répond franchement. Pourtant, un curseur glisse seul sur une interface ancienne, comme guidé par une routine encore active. Il choisit une zone et s’y arrête.",
+    "br.s29.c1": "Noter la zone indiquée",
+    "br.s29.c2": "Sortir de la salle",
+    "br.s29.c3": "Attendre une autre réaction",
+
+    "br.s30.title": "Observation",
+    "br.s30.body": "La zone désignée correspond à un secteur absent du plan mural. Quelque chose existe ici sans avoir jamais été montré officiellement.",
+    "br.s30.c1": "Suivre cette piste",
+    "br.s30.c2": "Retourner par le conduit",
+    "br.s30.c3": "Déclencher une alerte volontairement",
+
+    "br.s31.title": "Lumière rouge",
+    "br.s31.body": "La lumière rouge clignote lentement. Au loin, plusieurs portes se ferment l’une après l’autre, sans bruit. Le bunker n’entre pas en panique : il réorganise les accès et te pousse vers une zone précise.",
+    "br.s31.c1": "Rester calme et marcher",
+    "br.s31.c2": "Suivre la pulsation vers le fond",
+    "br.s31.c3": "Prendre le couloir qui mène à la porte du fond",
+
+    "br.s32.title": "Retour au calme",
+    "br.s32.body": "Le rouge cesse. Le silence qui revient est pire. Devant toi, une zone de maintenance partiellement déverrouillée semble t’avoir été accordée, comme une récompense ou un test.",
+    "br.s32.c1": "Utiliser la clé sur la porte latérale",
+    "br.s32.c2": "Suivre les traces discrètes dans le couloir",
+    "br.s32.c3": "Retourner aux réserves",
+
+    "br.s33.title": "Local de maintenance",
+    "br.s33.body": "Produits d’entretien, outils, gants, et au mur une feuille de suivi. Certaines lignes sont remplies très récemment, avec une écriture serrée, presque timide.",
+    "br.s33.c1": "Lire les dernières lignes",
+    "br.s33.c2": "Retourner dans le conduit",
+    "br.s33.c3": "Revenir au couloir apaisé",
+
+    "br.s34.title": "Pas récents",
+    "br.s34.body": "Les notes parlent de nettoyage, de rotation, de veille. Puis d’un mot isolé, répété plusieurs fois : ‘sanctuaire’. Comme si l’auteur essayait de garder du sens sans écrire le vrai problème.",
+    "br.s34.c1": "Chercher le sanctuaire",
+    "br.s34.c2": "Replier la feuille et repartir",
+    "br.s34.c3": "Forcer une autre réaction du bunker",
+
+    "br.s35.title": "Couloir des détails",
+    "br.s35.body": "Le couloir a des micro-traces : frottements, condensation déplacée, un angle plus propre que les autres. Avec le plan en tête, tu comprends qu’un détour existe… mais seulement si tu l’acceptes.",
+    "br.s35.c1": "Suivre l’angle trop propre",
+    "br.s35.c2": "Comparer le couloir au fragment du plan",
+    "br.s35.c3": "Forcer le passage",
+
+    "br.s36.title": "La marque",
+    "br.s36.body": "Sur le mur, au ras des doigts, une marque de frottement revient à intervalles réguliers. Quelqu’un passe ici souvent, en touchant toujours le même point pour se guider.",
+    "br.s36.c1": "Suivre la marque",
+    "br.s36.c2": "Continuer sans la toucher",
+    "br.s36.c3": "Revenir au couloir précédent",
+
+    "br.s37.title": "Le repère revient",
+    "br.s37.body": "La marque se répète jusque devant une zone presque invisible : un pan de mur plus mat, une couture dans le béton, une manière de cacher une porte sans la nier.",
+    "br.s37.c1": "Toucher la couture",
+    "br.s37.c2": "Reculer pour observer l’ensemble",
+    "br.s37.c3": "Abandonner cette piste",
+
+    "br.s38.title": "Pièce habitée",
+    "br.s38.body": "Un fauteuil. Un drap occultant. Un verre vide, sans poussière. La pièce n’est pas un décor : elle est entretenue. Ici, quelqu’un vit… mais seulement quand tu ne le vois pas.",
+    "br.s38.c1": "Approcher le drap pour voir ce qu’il cache",
+    "br.s38.c2": "Observer assez longtemps pour comprendre la logique du lieu",
+    "br.s38.c3": "Partir",
+
+    "br.s39.title": "L’air manque",
+    "br.s39.body": "Ton souffle devient trop fort, trop chaud. Tu sens que le lieu n’aime pas la chaleur humaine. C’est un frigo, oui… mais un frigo avec des règles. Et tu es dedans.",
+    "br.s39.c1": "Chercher où ces règles se commandent",
+    "br.s39.c2": "Rester et écouter longtemps",
+    "br.s39.c3": "Revenir vers la pièce habitée",
+
+    "br.s40.title": "Le plan répond",
+    "br.s40.body": "Le fragment manquant te revient en tête. Ce couloir ne relie pas deux zones : il contourne quelque chose que le plan officiel n’assumait pas. Le bunker a été dessiné pour cacher son centre réel.",
+    "br.s40.c1": "Chercher la zone absente",
+    "br.s40.c2": "Revenir au couloir des détails",
+    "br.s40.c3": "Déclencher une nouvelle alerte",
+
+    "br.s41.title": "Zone absente",
+    "br.s41.body": "Les dimensions ne collent plus. Derrière ce mur, il manque un volume entier. Pas vide : caché.",
+    "br.s41.c1": "Chercher une console liée à cette zone",
+    "br.s41.c2": "Revenir sur tes pas",
+    "br.s41.c3": "Forcer le bunker à rouvrir ses accès",
+
+    "br.s42.title": "Console centrale",
+    "br.s42.body": "Un terminal ancien attend. Pas de clavier complet. Seulement des boutons, des pauses, et une interface qui semble conçue pour reproduire un rythme plutôt qu’écrire des mots.",
+    "br.s42.c1": "Rejouer la séquence mémorisée",
+    "br.s42.c2": "Revenir à l’atelier",
+    "br.s42.c3": "Improviser un accès",
+
+    "br.s43.title": "Double clé",
+    "br.s43.body": "La console valide le rythme, puis demande un second élément : identité ou autorisation. Ici, les secrets se protègent en couches.",
+    "br.s43.c1": "Présenter le badge",
+    "br.s43.c2": "Abandonner et repartir",
+    "br.s43.c3": "Forcer la suite",
+
+    "br.s44.title": "Accès accordé",
+    "br.s44.body": "La console valide le rythme, puis le badge. Un voyant passe au vert. Plus loin, un passage jusque-là invisible se déverrouille lentement. Pour la première fois, le bunker te laisse avancer.",
+    "br.s44.c1": "Suivre le passage qui s’ouvre",
+    "br.s44.c2": "Vérifier une dernière fois la console",
+    "br.s44.c3": "Provoquer une alerte",
+
+    "br.s45.title": "Mode de test",
+    "br.s45.body": "Une section cachée apparaît. Paramètres de veille. Isolement. Procédure prioritaire. Le bunker n’a pas été conçu pour protéger quelqu’un. Il a été conçu pour le contenir sans jamais l’affronter.",
+    "br.s45.c1": "Lire la procédure prioritaire",
+    "br.s45.c2": "Chercher la porte du sanctuaire",
+    "br.s45.c3": "Couper l’écran",
+
+    "br.s46.title": "Procédure prioritaire",
+    "br.s46.body": "Une procédure sèche s’affiche. Tu comprends comment inverser temporairement la logique du lieu : ralentir les accès du sanctuaire, verrouiller certains circuits, et reprendre un peu d’avance.",
+    "br.s46.c1": "Mémoriser la procédure",
+    "br.s46.c2": "Revenir au mode test",
+    "br.s46.c3": "Déclencher une alerte pour ouvrir plus loin",
+
+    "br.s47.title": "La porte respire",
+    "br.s47.body": "Devant toi, la porte du sanctuaire reste fermée, mais elle n’est plus inerte. Une chaleur sourde passe par les joints. L’air autour est plus lourd. Le bunker ne bloque pas ce lieu. Il le maintient endormi.",
+    "br.s47.c1": "Entrer",
+    "br.s47.c2": "Chercher encore un détour",
+    "br.s47.c3": "Retourner à la console",
+
+    "br.s48.title": "Antichambre rouge",
+    "br.s48.body": "Une pièce vide, baignée d’un rouge fixe. Trois portes s’y dessinent plus loin, presque noires. Le bunker t’amène ici comme à un choix qu’il connaissait déjà.",
+    "br.s48.c1": "Aller vers la porte la plus nette",
+    "br.s48.c2": "Chercher une sortie de surface",
+    "br.s48.c3": "Observer les trois portes avant de choisir",
+
+    "br.s49.title": "Couloir de l’écho",
+    "br.s49.body": "Le couloir normal est pire : aucun signal. Tu te sens seul. Puis tu remarques : ton pas n’a pas le même rythme que ton écho. L’écho hésite. Comme s’il attendait une autre marche.",
+    "br.s49.c1": "Suivre la présence dans le couloir",
+    "br.s49.c2": "Remonter vers la surface",
+    "br.s49.c3": "Aller vers les trois portes",
+
+    "br.s50.title": "Ombre sans corps",
+    "br.s50.body": "Une ombre glisse sur le drap, mais personne ne traverse la pièce. Tu ne vois ni corps, ni source, ni reflet logique. Le bunker ne te montre peut-être pas l’occupant lui-même. Il te montre seulement les traces de son passage.",
+    "br.s50.c1": "Se cacher pour observer plus longtemps",
+    "br.s50.c2": "Activer la séquence finale",
+    "br.s50.c3": "Aller vers les trois portes",
+
+    "br.s51.title": "Le couloir trop long",
+    "br.s51.body": "Tu marches, mais la porte ne vient pas. Le bunker t’use sur place. Ce chemin n’est pas une fuite : c’est une boucle déguisée en sortie.",
+    "br.s51.c1": "Revenir aux trois portes",
+    "br.s51.c2": "Chercher un passage latéral",
+    "br.s51.c3": "Faire demi-tour complet",
+
+    "br.s52.title": "Retour à la trappe",
+    "br.s52.body": "L’air de la surface est proche, mais pas encore. Tu entends un bruit faible derrière toi : pas un pas. Le frottement d’un tissu sur du béton. Une présence qui refuse la lumière.",
+    "br.s52.c1": "Remonter maintenant",
+    "br.s52.c2": "Revenir dans le bunker pour fouiller encore",
+    "br.s52.c3": "Redescendre vers la zone des trois portes",
+
+    "br.s53.title": "La règle de nuit",
+    "br.s53.body": "Tu comprends enfin la règle du lieu. Le bunker ne réagit pas au hasard. Il change selon les phases de présence, de veille et de repos. Ici, tout a été organisé autour d’un occupant qu’on ne voit presque jamais.",
+    "br.s53.c1": "Lancer le protocole complet",
+    "br.s53.c2": "Revenir dans la pièce habitée",
+    "br.s53.c3": "Aller aux trois portes",
+
+    "br.s54.title": "Protocole complet",
+    "br.s54.body": "Le bunker te propose une inversion : isoler le sanctuaire, couper les accès, forcer une ‘veille’ qui n’avantage plus l’occupant. Ce n’est pas héroïque. C’est mécanique.",
+    "br.s54.c1": "Retourner vers les trois portes",
+    "br.s54.c2": "Couper le protocole et fuir dans le mauvais couloir",
+    "br.s54.c3": "Remonter vers la surface",
+
+    "br.s55.title": "Le dernier air",
+    "br.s55.body": "Un courant froid passe enfin sur ton visage. La sortie est proche, mais le bunker donne l’impression de te laisser partir seulement parce qu’il a fini de t’utiliser.",
+    "br.s55.c1": "Revenir aux trois portes pour comprendre",
+    "br.s55.c2": "Retourner à la trappe",
+    "br.s55.c3": "Revenir à l’antichambre rouge",
+
+    "br.s56.title": "Les trois portes",
+    "br.s56.body": "Devant toi, trois portes. Aucune inscription. Mais tu sais déjà que ce choix ne sépare pas trois lieux. Il sépare trois façons d’avoir compris le bunker.",
+    "br.s56.c1": "Choisir la sortie réelle",
+    "br.s56.c2": "Choisir la porte qui promet une réponse immédiate",
+    "br.s56.c3": "Choisir la porte qui referme le secret",
+
+    "br.end_good.title": "Sortie à l’aube",
+    "br.end_good.body": "Tu retrouves la surface au petit matin. La colline semble banale à nouveau. Mais sous tes pieds, tu sais que quelque chose continue, hors de vue, à suivre ses règles anciennes.",
+
+    "br.end_bad.title": "Réserve humaine",
+    "br.end_bad.body": "Tu prends la mauvaise logique pour une fuite. Le bunker te récupère sans violence. Une porte se referme. Une chambre s’ouvre. Ici, tout était prêt pour qu’un intrus devienne une ressource de plus.",
+
+    "br.end_secret.title": "Le centre réel",
+    "br.end_secret.body": "Tu ne sors pas seulement vivant. Tu comprends enfin la vérité du lieu et refermes ce qui devait l’être. Le bunker se calme. Pour la première fois, il ne semble plus attendre.",
+
+    "br.h.s02.soft": "Un passage humain existe encore ici.",
+    "br.h.s02.strong": "La clôture n’est pas une frontière. Elle guide vers un point précis.",
+
+    "br.h.s07.soft": "Le plan mural ne montre pas tout.",
+    "br.h.s07.strong": "Le morceau arraché compte plus que le plan entier.",
+
+    "br.h.s08.soft": "Quelqu’un a mémorisé un trajet absent.",
+    "br.h.s08.strong": "Le fragment du plan aide à voir une zone cachée.",
+
+    "br.h.s11.soft": "Certaines portes attendent un badge, pas de la force.",
+    "br.h.s11.strong": "La sécurité secondaire cache une voie utile.",
+
+    "br.h.s12.soft": "Quelqu’un a laissé un accès derrière lui.",
+    "br.h.s12.strong": "Le badge ouvre bien plus qu’une porte.",
+
+    "br.h.s15.soft": "La travée vidée sert de cache, pas de perte.",
+    "br.h.s15.strong": "La porte sans nom mène vers quelque chose qu’on évite de nommer.",
+
+    "br.h.s17.soft": "L’infirmerie garde un objet important.",
+    "br.h.s17.strong": "La clé lourde n’a pas été oubliée. Elle attendait.",
+
+    "br.h.s18.soft": "Ce qui manque ici ouvre ailleurs.",
+    "br.h.s18.strong": "La clé maître sert plus loin, après l’alerte.",
+
+    "br.h.s20.soft": "Le battement indique une voie technique.",
+    "br.h.s20.strong": "La ventilation te mène vers une zone non officielle.",
+
+    "br.h.s24.soft": "La note n’est pas un texte, mais un rythme.",
+    "br.h.s24.strong": "La séquence sert à une console, pas à une porte simple.",
+
+    "br.h.s26.soft": "Le conduit contourne la carte officielle.",
+    "br.h.s26.strong": "Une sortie latérale mène à la maintenance cachée.",
+
+    "br.h.s27.soft": "La sécurité regarde encore, même vide.",
+    "br.h.s27.strong": "L’écran et le curseur désignent une zone absente du plan.",
+
+    "br.h.s30.soft": "Une partie du bunker existe hors carte.",
+    "br.h.s30.strong": "Suivre la zone absente aide à trouver le sanctuaire.",
+
+    "br.h.s33.soft": "Quelqu’un entretient encore ce lieu.",
+    "br.h.s33.strong": "Le mot sanctuaire apparaît dans les suivis récents.",
+
+    "br.h.s37.soft": "La couture dans le mur n’est pas un défaut.",
+    "br.h.s37.strong": "Le repère mène à la pièce réellement habitée.",
+
+    "br.h.s42.soft": "Le bunker répond à des rythmes, pas seulement à des mots.",
+    "br.h.s42.strong": "Le terminal ouvre la voie vers le centre réel.",
+
+    "br.h.s43.soft": "Un accès suffit rarement ici.",
+    "br.h.s43.strong": "Badge et séquence donnent la double clé du sanctuaire.",
+
+    "br.h.s46.soft": "L’override n’ouvre pas tout. Il inverse un avantage.",
+    "br.h.s46.strong": "La procédure finale sert avant les trois portes.",
+
+    "br.h.s56.soft": "La bonne porte dépend de ce que tu as compris.",
+    "br.h.s56.strong": "Le secret n’est accessible qu’avec la vérité du protocole et la marque du sanctuaire.",
+
+    "br.clue.has_badge.title": "Badge récupéré",
+    "br.clue.has_code.title": "Séquence mémorisée",
+    "br.clue.has_map_fragment.title": "Fragment de plan compris",
+    "br.clue.has_master_key.title": "Clé maître récupérée",
+    "br.clue.has_override.title": "Procédure prioritaire mémorisée",
+    "br.clue.has_protocol_truth.title": "Vérité du protocole comprise",
+    "br.clue.has_sanctuary_mark.title": "Marque du sanctuaire trouvée"
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "ui": {
+    "app_title": "VChronicles",
+    "app_subtitle": "Interactive story",
+    "index_title": "Choose your scenario",
+    "index_subtitle": "Tap a card to begin.",
+    "index_menu_aria": "Scenario menu",
+    "language": "Language",
+    "symbol_close": "×",
+    "symbol_check": "✓",
+    "symbol_help": "?",
+    "hint_title": "Info",
+    "hint_close": "Close",
+    "hint_close_aria": "Close",
+    "btn_ok": "OK",
+    "btn_close": "Close",
+    "btn_play": "Play",
+    "btn_continue": "Continue",
+    "btn_restart": "Restart",
+    "btn_back": "Back",
+    "btn_exit": "Exit",
+    "btn_hint": "Hint",
+    "loading": "Loading…",
+    "locked_choice": "Unavailable for now",
+    "no_next_scene": "This choice does not lead anywhere yet.",
+    "resume_title": "Resume your game?",
+    "resume_desc": "A saved progress exists for this scenario.",
+    "resume_body": "A saved progress exists for this scenario.\n\nDo you want to continue where you left off, or restart from the beginning?",
+    "ending_title": "Ending reached",
+    "ending_desc": "You completed this scenario.",
+    "reward_toast": "+{reward} VCoins",
+    "end_title": "Scenario complete",
+    "end_title_good": "Good ending",
+    "end_title_bad": "Bad ending",
+    "end_title_secret": "Secret ending",
+
+    "ending_label_good": "good ending",
+    "ending_label_bad": "bad ending",
+    "ending_label_secret": "secret ending",
+    "end_unlock_line": "Congrats, you unlocked the {ending}.",
+    "end_already_done_line": "You had already unlocked the {ending}.",
+    "end_reward_label": "Reward:",
+    "end_btn_add_bonus": "Add +{amount}",
+    "end_add_bonus_wait": "Checking…",
+    "end_add_bonus_done": "Bonus +{amount} added",
+    "end_add_bonus_error": "Ad unavailable right now.",
+
+    "profile_title": "Profile",
+    "profile_subtitle": "Your balance and unlocked endings.",
+    "profile_jetons": "Tokens",
+    "profile_vcoins": "VCoins",
+    "profile_username_label": "Username",
+    "profile_username_missing": "—",
+    "profile_username_edit": "Edit username",
+    "profile_username_cancel": "Cancel",
+    "profile_username_placeholder": "New username",
+    "profile_username_save": "Save",
+    "profile_username_hint": "You can change your username once for free. After that, each change costs 1 token.",
+    "profile_scenarios_title": "Scenarios",
+    "profile_err_not_ready": "Profile not ready. Try again in a few seconds.",
+    "profile_username_working": "Updating…",
+    "profile_username_ok_saved": "Username updated.",
+    "profile_username_ok_nochange": "No changes made.",
+    "profile_username_err_format": "Invalid username: 3–20 characters, letters, numbers, or underscore.",
+    "profile_username_err_taken": "Username already taken.",
+    "profile_username_err_nojeton": "Not enough tokens.",
+    "profile_username_err_generic": "Unable to change username.",
+    "profile_username_err_cost_failed": "Username changed, but token deduction failed. Open the app later to resync.",
+
+    "aria_back": "Back",
+    "aria_settings": "Settings",
+    "aria_shop": "Shop",
+
+    "shop_title": "Shop",
+    "settings_title": "Settings",
+    "page_soon_body": "Coming soon.",
+
+    "locked_title": "Locked choice",
+    "locked_body": "You missed required elements to unlock this path.",
+    "locked_missing": "You are missing:",
+    "locked_missing_any": "You need at least one of the following:",
+    "locked_tip": "Tip: explore more, some items can be used as proof.",
+    "locked_back_jeton": "Go back — 1 token",
+    "locked_restart_jeton": "Go back to the start — 1 token",
+    "locked_close": "Close",
+    "locked_no_back": "No way back from here.",
+
+    "jeton_not_enough": "Not enough tokens.",
+    "jeton_title": "Tokens",
+    "jeton_balance_label": "Balance:",
+    "jeton_back_btn": "Go back — 1 token",
+    "jeton_guide_btn": "Guide to an ending — 3 tokens",
+    "jeton_guide_good": "Good ending",
+    "jeton_guide_bad": "Bad ending",
+    "jeton_guide_secret": "Secret ending",
+    "jeton_guide_stop": "Stop guide",
+    "jeton_guide_no_path": "No path found to that ending from here.",
+    "jeton_guide_error": "Guide error.",
+    "jeton_guide_stopped": "Guide stopped.",
+
+    "locked_note_foundable": "These elements can be found in the game, without ads.",
+    "locked_unlock_jeton": "Spend 1 token",
+    "locked_unlock_ad": "Watch an ad",
+    "locked_unlock_ad_fail": "Ad unavailable right now.",
+    "locked_unlock_no_jetons": "Not enough tokens.",
+    "locked_unlock_error": "Unable to unlock right now.",
+
+    "scenario_buy": {
+      "desc": "This scenario is locked. You can unlock it with VCoins, buy it directly at the store price, or open the shop.",
+      "pay_prefix": "Unlock:",
+      "pay_balance_inline": "(current balance {balance})",
+      "iap_direct": "Unlock: {price}",
+      "open_shop": "Open shop",
+      "err_unlock": "Unable to unlock the scenario.",
+      "err_unlock_insufficient": "Not enough VCoins ({balance}/{price}).",
+      "err_app_only": "Store purchase available only in the app.",
+      "err_not_ready": "Purchase system not ready.",
+      "err_buy_failed": "Purchase canceled or failed.",
+      "err_unlock_after_iap": "Purchase confirmed, but the scenario could not be opened."
+    },
+
+    "update_banner_title": "Update available",
+    "update_banner_desc": "A new version of the app is available.",
+    "update_banner_desc_install": "The update is ready. You can install it now.",
+    "update_banner_later": "Later",
+    "update_banner_update": "Update",
+    "update_banner_install": "Install",
+
+    "end_congrats": "Congrats, you completed the ending: {ending}.",
+    "end_reward": "Congrats, you earned {reward} VCoins.",
+    "end_btn_quit": "Exit",
+    "end_double_unavailable": "Ad unavailable. You can leave with the normal reward.",
+
+    "settings_lang_desc": "Choose the language. It is saved on the device and on your profile.",
+    "settings_lang_label": "Language",
+    "settings_msg_saved": "Language saved.",
+    "settings_msg_saved_local": "Language saved on the device. Server sync later.",
+    "settings_msg_hint": "",
+    "settings_choose_lang_aria": "Choose language: {code}",
+    "settings_back_home_aria": "Back to home",
+    "settings_open_profile_aria": "Open profile",
+
+    "settings_ads_title": "Advertising",
+    "settings_ads_personalized_label": "Personalized ads",
+    "settings_ads_personalized_desc": "Allow the use of data for more relevant ads.",
+    "settings_ads_saved": "Ad preference saved.",
+
+    "settings_help_title": "Help",
+    "settings_help_email_label": "Contact:",
+    "settings_help_email": "help.vboldstudio@gmail.com",
+
+    "lang_name": {
+      "en": "English",
+      "fr": "French",
+      "de": "German",
+      "es": "Spanish",
+      "pt": "Portuguese",
+      "ptbr": "Brazilian Portuguese",
+      "it": "Italian",
+      "ko": "Korean",
+      "ja": "Japanese"
+    },
+
+    "ios_enter_title": "Enter",
+    "ios_enter_body": "Tap to begin.",
+    "ios_enter_btn": "Enter",
+
+    "icon_vcoins_webp": "assets/img/ui/vcoin.webp",
+    "icon_jeton_webp": "assets/img/ui/jeton.webp",
+
+    "intro_forced_jeton_title": "Missing item",
+    "intro_forced_jeton_body": "Oops… you are missing {item}.",
+    "intro_forced_jeton_note": "This piece is used to unlock a forgotten item, go back, or activate a guide to an ending.",
+    "intro_forced_jeton_cta": "Unlock with",
+    "intro_forced_jeton_ok": "Item unlocked: {item}",
+    "intro_forced_jeton_error": "Unable to unlock right now.",
+
+    "intro_end_silence": "Silence falls again.",
+
+    "intro_end_title": "Well done — you made it out",
+    "intro_end_line1": "Silence falls again.",
+    "intro_end_line2": "You breathe.",
+    "intro_end_reward_label": "Reward:",
+    "intro_end_prefix_les": "",
+    "intro_end_use_vcoins": "VCoins are used to unlock new scenarios.",
+    "intro_end_use_jetons": "Tokens are used to:",
+    "intro_end_jetons_b1": "unlock a forgotten item",
+    "intro_end_jetons_b2": "go back",
+    "intro_end_jetons_b3": "activate the guide to a good, bad, or secret ending",
+    "intro_end_multi_endings": "Each scenario has multiple endings: one good, one bad, and sometimes one or more secret endings.",
+    "intro_end_tip_prefix": "Tip: if an option is locked, you can often find the item or unlock it with",
+
+    "shop_watch_ad": "Watch",
+    "shop_buy": "Buy",
+    "shop_cancel": "Cancel",
+    "shop_enabled": "Enabled",
+    "shop_included": "Included",
+    "shop_unavailable": "Unavailable",
+    "shop_owned_badge": "OK",
+
+    "shop_store_title": "Store",
+    "shop_reward_jeton_x1": "x1",
+    "shop_reward_vcoins_x100": "x100",
+
+    "shop_p_jetons12_title": "x12",
+    "shop_p_jetons12_desc": "Token pack to use for unlocking items or certain actions.",
+
+    "shop_p_jetons30_title": "x30",
+    "shop_p_jetons30_desc": "Better value token pack to progress faster.",
+
+    "shop_p_vcoins1200_title": "1200",
+    "shop_p_vcoins1200_desc": "VCoins used for in-game purchases and unlocks.",
+
+    "shop_p_vcoins3000_title": "3000",
+    "shop_p_vcoins3000_desc": "Large VCoins pack with the best value.",
+
+    "shop_p_noads_title": "",
+    "shop_p_noads_desc": "Disables interstitial ads. Rewarded ads remain available.",
+
+    "shop_p_diamond_title": "",
+    "shop_p_diamond_desc": "Diamond access: all current and future scenarios + No Ads. Bonus included depending on your pack."
+  },
+
+  "common": {
+    "cancel": "Cancel"
+  },
+
+  "scenarios": {
+    "dossier14_appartement": {
+      "title": "Apartment 14",
+      "desc": "At 2:14 a.m., someone says your name in the hallway. By following a door that should not exist, you descend into a building that already seems to know you."
+    },
+    "bunker_reserve": {
+      "title": "Bunker",
+      "desc": "Beneath an ordinary hill, a hatch hides a bunker that is still active. Untouched supplies, badges, dorm rooms, and sealed areas make it clear that someone is still living down there."
+    },
+    "hopital_ferme": {
+      "title": "Abandoned Hospital",
+      "desc": "Inside a hospital closed for years, your name already appears in the records. Between a patient badge, Room 14, and rooms still lit, everything suggests your arrival was expected."
+    },
+    "metro_station_zero": {
+      "title": "Station Zero",
+      "desc": "You descend into a station that appears on no map. Frozen platforms, strange announcements, a Zero ticket, and shifting corridors lead you toward a place that seems to be waiting for you."
+    },
+    "styx_gare": {
+      "title": "Styx Station",
+      "desc": "You wake up alone in a station drowned in black fog. Between dead clocks, endless platforms, and a black ticket, everything feels like you have arrived in a place that judges its travelers."
+    },
+    "foret_relais": {
+      "title": "Whispering Forest",
+      "desc": "Deep in the forest, signs bear your first name and the paths keep changing places. The farther you go, the more the old relay post seems to be calling you."
+    },
+    "chateau_absents": {
+      "title": "Castle of Shadows",
+      "desc": "An isolated castle opens its gates to you, then shifts its hallways around you. Between portraits, empty rooms, and hidden passages, the place keeps the trace of those who enter."
+    },
+    "temple_mictlan": {
+      "title": "Temple Mictlan",
+      "desc": "Fresh out of college, you travel to Mexico to study a newly discovered area. Beneath the stone, you uncover the buried temple of the Lady of the Dead."
+    }
+  }
+}
