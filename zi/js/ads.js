@@ -32,6 +32,44 @@
   let _rewardBusy = false;
   let _interstitialBusy = false;
 
+  const LAST_REWARDED_AT_KEY = "vchoice_ads_last_rewarded_at_v1";
+  const LAST_INTERSTITIAL_AT_KEY = "vchoice_ads_last_interstitial_at_v1";
+
+  function _nowMs() {
+    return Date.now();
+  }
+
+  function _readTs(key) {
+    try {
+      const v = Number(localStorage.getItem(key) || 0);
+      return Number.isFinite(v) && v > 0 ? v : 0;
+    } catch (_) {}
+    return 0;
+  }
+
+  function _writeTs(key, value) {
+    try {
+      const n = Math.max(0, Number(value || 0) || 0);
+      localStorage.setItem(key, String(n));
+    } catch (_) {}
+  }
+
+  function markRewardedShown() {
+    _writeTs(LAST_REWARDED_AT_KEY, _nowMs());
+  }
+
+  function markInterstitialShown() {
+    _writeTs(LAST_INTERSTITIAL_AT_KEY, _nowMs());
+  }
+
+  function getLastRewardedAt() {
+    return _readTs(LAST_REWARDED_AT_KEY);
+  }
+
+  function getLastInterstitialAt() {
+    return _readTs(LAST_INTERSTITIAL_AT_KEY);
+  }
+
   function _readPersonalized() {
     try {
       const v = localStorage.getItem(AdsPrefKey);
@@ -188,6 +226,8 @@
         "rewarded_show_timeout"
       );
 
+      markRewardedShown();
+
       return {
         ok: true,
         reward: rewardItem || null,
@@ -239,6 +279,7 @@
         "interstitial_show_timeout"
       );
 
+      markInterstitialShown();
       return { ok: true };
     } catch (e) {
       return {
@@ -266,6 +307,8 @@
     getPersonalized,
     setPersonalized,
     isInterstitialAllowed,
+    getLastRewardedAt,
+    getLastInterstitialAt,
     _debug: {
       getPlatform,
       getTestIds,
