@@ -1243,6 +1243,12 @@ ensureAuth: async function(){
       });
     },
 
+    addVcoinsAsync: async function(delta){
+      const res = await this.addVCoins(delta);
+      const v = Number(res && res.vcoins);
+      return Number.isNaN(v) ? NaN : v;
+    },
+
     reduceVCoinsTo: async function(value){
       const v0 = Number(value || 0);
       if (!Number.isFinite(v0)) return { ok: false, reason: "invalid_value" };
@@ -1301,6 +1307,12 @@ ensureAuth: async function(){
 
         return { ok: false, reason: "rpc_error" };
       });
+    },
+
+    addJetonsAsync: async function(delta){
+      const res = await this.addJetons(delta);
+      const v = Number(res && res.jetons);
+      return Number.isNaN(v) ? NaN : v;
     },
 
     spendJetons: async function(delta){

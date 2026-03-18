@@ -1857,16 +1857,22 @@ async function handleEnding(type, endScene){
         introRewardJetons = 2;
         introRewardVCoins = 100;
 
+        let vcoinsOk = false;
+        let jetonsOk = false;
+
         try{
-          if(window.VUserData && typeof window.VUserData.addJetons === "function"){
-            await window.VUserData.addJetons(introRewardJetons);
-          }
+          const jetons = await window.VUserData?.addJetonsAsync?.(introRewardJetons);
+          jetonsOk = typeof jetons === "number" && !Number.isNaN(jetons);
         }catch(_){}
+
         try{
-          if(window.VUserData && typeof window.VUserData.addVCoins === "function"){
-            await window.VUserData.addVCoins(introRewardVCoins);
-          }
+          const vcoins = await window.VUserData?.addVcoinsAsync?.(introRewardVCoins);
+          vcoinsOk = typeof vcoins === "number" && !Number.isNaN(vcoins);
         }catch(_){}
+
+        if(!vcoinsOk || !jetonsOk){
+          return;
+        }
 
         try{ localStorage.setItem(INTRO_REWARD_KEY, "1"); }catch(_){}
 
