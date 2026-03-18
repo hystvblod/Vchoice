@@ -98,7 +98,7 @@
     "hf.s15.body": "Le cliché montre un thorax… et, au centre, un rectangle sombre : l’emplacement exact d’un dossier cartonné. En bas, un tampon : « PATIENT 0 — ARCHIVES ».",
     "hf.s15.c1": "Noter « Archives » et reculer",
     "hf.s15.c2": "Aller chercher les archives",
-    "hf.s15.c3": "Allumer la salle pour vérifier",
+    "hf.s15.c3": "Suivre la lueur",
 
     "hf.s16.title": "La chapelle",
     "hf.s16.body": "Dans une niche, trois bougies brûlent encore, cire fraîche. Un carnet de prières est ouvert à une page vide, sauf une phrase : « GARDE = TOI ».",
@@ -114,7 +114,7 @@
 
     "hf.s18.title": "Bureau du médecin",
     "hf.s18.body": "Le bureau est rangé, trop. Un dictaphone est posé au centre, cassette dedans. Une note : « Ne pas laisser le patient sortir sans preuve. »",
-    "hf.s18.c1": "Écouter le dictaphone et fouiller le bureau",
+    "hf.s18.c1": "Suivre une porte entrouverte",
     "hf.s18.c2": "Prendre la cassette",
     "hf.s18.c3": "Fouiller les tiroirs",
 
@@ -288,7 +288,7 @@
 
     "hf.s47.title": "Le choix final",
     "hf.s47.body": "La grille vers la rue est devant toi. Une dernière fois, tu entends le clavier. Comme si l’hôpital attendait que tu choisisses ta fin.",
-    "hf.s47.c1": "Sortir avec tes preuves",
+    "hf.s47.c1": "Sortir",
     "hf.s47.c2": "Revenir « terminer la consultation »",
     "hf.s47.c3": "Activer la vérité complète",
 
@@ -299,7 +299,7 @@
     "hf.s48.c3": "Revenir chercher « quelque chose »",
 
     "hf.end_good.title": "Fin — Sortie",
-    "hf.end_good.body": "Tu passes la grille. L’aube te mord les poumons. Derrière, l’hôpital reste immobile… trop immobile. Dans ta main, ta preuve pèse comme un caillou chaud. Quand tu regardes ta photo ou ton enregistrement, l’horodatage n’existe pas.",
+    "hf.end_good.body": "Tu passes la grille. L’aube te mord les poumons. Derrière, l’hôpital reste immobile… trop immobile. Tu ne sais pas encore tout. Mais une chose est sûre : cette nuit ne te quittera plus.",
 
     "hf.end_bad.title": "Fin — Retour au bloc",
     "hf.end_bad.body": "La lumière du plafond te mange les yeux. Le bip devient une seule note. Quelqu’un écrit quelque part : « Patient présenté. Garde validée. » Et tu comprends qu’ici, la sortie n’a jamais été une porte.",
