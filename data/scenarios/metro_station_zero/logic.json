@@ -787,8 +787,7 @@
       "choices": [
         {
           "choice_key": "msz.s68.c1",
-          "next": "end_good",
-          "requires_any_flags": ["has_phone_recording", "has_name_tag", "has_map_fragment"]
+          "next": "end_good"
         },
         { "choice_key": "msz.s68.c2", "next": "s69" },
         { "choice_key": "msz.s68.c3", "next": "s10" }
@@ -827,7 +826,7 @@
         {
           "choice_key": "msz.s71.c2",
           "next": "end_secret",
-          "requires_all_flags": ["has_zero_ticket", "has_map_fragment", "has_service_key", "has_phone_recording", "has_name_tag"]
+          "requires_all_flags": ["has_zero_ticket", "has_service_key", "has_phone_recording"]
         },
         { "choice_key": "msz.s71.c3", "next": "s69" }
       ]
@@ -869,14 +868,13 @@
       "choices": [
         {
           "choice_key": "msz.s75.c1",
-          "next": "end_good",
-          "requires_any_flags": ["has_phone_recording", "has_name_tag", "has_map_fragment"]
+          "next": "end_good"
         },
         { "choice_key": "msz.s75.c2", "next": "end_bad" },
         {
           "choice_key": "msz.s75.c3",
           "next": "end_secret",
-          "requires_all_flags": ["has_zero_ticket", "has_map_fragment", "has_service_key", "has_phone_recording", "has_name_tag"]
+          "requires_all_flags": ["has_zero_ticket", "has_service_key", "has_phone_recording"]
         }
       ]
     },
