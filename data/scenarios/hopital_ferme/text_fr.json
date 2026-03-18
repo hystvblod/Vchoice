@@ -32,7 +32,7 @@
     "hf.s04.body": "Ton téléphone affiche zéro barre. Puis l’écran s’allume seul : « Service de garde : présent ». Tu lèves les yeux. Une fenêtre vient de s’éteindre au deuxième.",
     "hf.s04.c1": "Retourner à la grille",
     "hf.s04.c2": "Entrer dans le hall",
-    "hf.s04.c3": "Fixer la fenêtre jusqu’à comprendre",
+    "hf.s04.c3": "Entrer en suivant la fenêtre du regard",
 
     "hf.s05.title": "Le hall",
     "hf.s05.body": "L’air sent le chlore chaud. Le carrelage est humide au centre, comme si quelqu’un venait de passer la serpillière. Tout est trop propre pour un lieu fermé.",
@@ -116,7 +116,7 @@
     "hf.s18.body": "Le bureau est rangé, trop. Un dictaphone est posé au centre, cassette dedans. Une note : « Ne pas laisser le patient sortir sans preuve. »",
     "hf.s18.c1": "Suivre une porte entrouverte",
     "hf.s18.c2": "Prendre la cassette",
-    "hf.s18.c3": "Fouiller les tiroirs",
+    "hf.s18.c3": "Chercher un plan dans les tiroirs",
 
     "hf.s19.title": "Couloir qui glisse",
     "hf.s19.body": "À peine la porte franchie, le couloir n’est plus le même. Une intersection apparaît là où il n’y avait qu’un mur. Les néons ne sont plus alignés.",
@@ -338,6 +338,6 @@
     "hf.h.s37.strong": "Prends le dossier : c’est la preuve la plus forte, et une clé pour la vérité complète.",
 
     "hf.h.s47.soft": "Tu peux finir vite… ou aller plus loin.",
-    "hf.h.s47.strong": "Fin secrète = bracelet + carte + cassette + enregistrement + dossier."
+    "hf.h.s47.strong": "Fin secrète = cassette + enregistrement + dossier."
   }
 }
