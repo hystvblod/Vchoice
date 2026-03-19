@@ -264,7 +264,7 @@
       "choices": [
         { "choice_key": "tm.s15.c1", "next": "s12" },
         { "choice_key": "tm.s15.c2", "next": "s16" },
-        { "choice_key": "tm.s15.c3", "next": "s18" }
+        { "choice_key": "tm.s15.c3", "next": "s14" }
       ]
     },
     "s16": {
@@ -404,7 +404,7 @@
       "choices": [
         { "choice_key": "tm.s29.c1", "next": "s30" },
         { "choice_key": "tm.s29.c2", "next": "s31" },
-        { "choice_key": "tm.s29.c3", "next": "s12" }
+        { "choice_key": "tm.s29.c3", "next": "s18" }
       ]
     },
     "s30": {
@@ -885,7 +885,7 @@
         {
           "choice_key": "tm.s76.c3",
           "next": "end_secret",
-          "requires_all_flags": ["has_codex", "has_jade", "has_obsidian", "has_name", "has_offering"]
+          "requires_all_flags": ["has_name", "has_offering"]
         }
       ]
     },
@@ -929,7 +929,7 @@
         {
           "choice_key": "tm.s80.c3",
           "next": "end_secret",
-          "requires_all_flags": ["has_codex", "has_jade", "has_obsidian", "has_name", "has_offering"]
+          "requires_all_flags": ["has_name", "has_offering"]
         }
       ]
     },

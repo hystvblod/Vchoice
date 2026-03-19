@@ -58,7 +58,7 @@
     "styx.s08.c2": "Chercher la ligne qui clignote",
     "styx.s08.c3": "Reculer, la brume te suit",
     "styx.h.s08.soft": "Le panneau n’informe pas : il trie. La ligne qui clignote ressemble à une exception.",
-    "styx.h.s08.strong": "Trouve la « ligne de retour » sur le tableau : elle n’apparaît qu’après un signe précis au guichet.",
+    "styx.h.s08.strong": "Le tableau ne montre pas tout à tout le monde.",
 
     "styx.s09.title": "03:17",
     "styx.s09.body": "L’horloge est immense. Les aiguilles sont arrêtées à 03:17. La poussière flotte, immobile, comme si l’air lui-même hésitait.\n\nTu as la certitude que cette heure n’est pas un hasard : c’est une preuve.",
@@ -66,7 +66,7 @@
     "styx.s09.c2": "Chercher une inscription près de l’horloge",
     "styx.s09.c3": "Fuir cette sensation",
     "styx.h.s09.soft": "Une gare figée a encore une règle. L’heure arrêtée en fait partie.",
-    "styx.h.s09.strong": "03:17 doit être cité comme repère : garde-le pour convaincre le contrôleur.",
+    "styx.h.s09.strong": "Cette heure compte. Mieux vaut t’en souvenir.",
 
     "styx.s10.title": "Guichet fermé",
     "styx.s10.body": "Le guichet est clos. Une cloche en laiton attend sur le comptoir. Derrière la vitre poussiéreuse, aucun employé, mais une lampe allumée… comme si quelqu’un travaillait sans se montrer.",
@@ -74,7 +74,7 @@
     "styx.s10.c2": "Sonner trois coups",
     "styx.s10.c3": "Revenir sur le quai",
     "styx.h.s10.soft": "Tout ici répond à des rituels simples. Pas à des explications.",
-    "styx.h.s10.strong": "La cloche doit être sonnée trois fois pour déclencher une réaction du panneau d’affichage.",
+    "styx.h.s10.strong": "Le guichet répond aux rituels, pas aux questions.",
 
     "styx.s11.title": "La cloche",
     "styx.s11.body": "La cloche est froide. Tu lis un détail gravé dessous : un petit symbole de vague noire, presque effacé.\n\nDerrière la vitre, une ombre passe… trop lente pour être un reflet.",
@@ -82,7 +82,7 @@
     "styx.s11.c2": "Reculer et écouter",
     "styx.s11.c3": "Retourner au guichet",
     "styx.h.s11.soft": "La gare n’est pas vide. Elle se cache.",
-    "styx.h.s11.strong": "Sonne trois fois, avec une pause courte entre chaque. Ensuite, retourne au panneau.",
+    "styx.h.s11.strong": "Le guichet et le panneau semblent liés.",
 
     "styx.s12.title": "Ticket déchiré",
     "styx.s12.body": "Sur le sol de marbre fissuré, un ticket noir est déjà déchiré en deux. Comme si quelqu’un avait tenté d’annuler son passage… et échoué.\n\nLes deux moitiés s’attirent presque, comme aimantées.",
@@ -90,7 +90,7 @@
     "styx.s12.c2": "Garder une moitié seulement",
     "styx.s12.c3": "Ignorer et partir",
     "styx.h.s12.soft": "Ici, déchirer ne suffit pas. Les règles restent collées à toi.",
-    "styx.h.s12.strong": "Ticket noir intact OU ticket déchiré : dans tous les cas, garde une « preuve de billet ».",
+    "styx.h.s12.strong": "Ne repars pas sans garder une trace du billet.",
 
     "styx.s13.title": "Salle d’attente",
     "styx.s13.body": "La salle d’attente est un temple en ruine : marbre fissuré, statues brisées, bancs vides. L’air sent la pierre froide.\n\nSur un mur, des traces de doigts récentes apparaissent dans la poussière… puis s’arrêtent net.",
@@ -328,7 +328,7 @@
 
     "styx.s50.title": "L’heure",
     "styx.s50.body": "Tu dis : « 03:17. »\n\nLe contrôleur incline la tête. Pour la première fois, l’air bouge. « Continue. »",
-    "styx.s50.c1": "Prouver avec cette heure, si tu l’as vue",
+    "styx.s50.c1": "Donner l’heure au contrôleur",
     "styx.s50.c2": "Aller vérifier l’horloge",
     "styx.s50.c3": "Revenir au protocole",
 
@@ -372,7 +372,7 @@
 
     "styx.s57.title": "Le prix",
     "styx.s57.body": "Charon lève sa lanterne. « Billet. Ou mémoire. »\n\nSon regard semble passer à travers toi, comme s’il cherchait ton poids exact.",
-    "styx.s57.c1": "Donner ton billet / te laisser prendre",
+    "styx.s57.c1": "Donner ton billet",
     "styx.s57.c2": "Refuser et courir",
     "styx.s57.c3": "Revenir en arrière, lentement",
 
@@ -398,7 +398,7 @@
 
     "styx.s61.title": "Quai d’ombres",
     "styx.s61.body": "Depuis la cabine, tu vois un quai rempli de silhouettes floues. Elles attendent. Elles ne parlent pas.\n\nEt tu réalises que la place du passeur… est vide.",
-    "styx.s61.c1": "Prendre la place, définitivement",
+    "styx.s61.c1": "Prendre la place",
     "styx.s61.c2": "Revenir en arrière pour sauver ta peau",
     "styx.s61.c3": "Aller voir le contrôleur",
     "styx.h.s61.soft": "La gare manque d’un rôle. Elle cherche un remplaçant.",
@@ -407,7 +407,7 @@
     "styx.s62.title": "Choix de fonction",
     "styx.s62.body": "Les leviers vibrent sous tes doigts. Tu sens une signature invisible se préparer : ton nom, attaché à la gare.\n\nSi tu valides, tu ne seras plus un passager.",
     "styx.s62.c1": "Valider la prise de poste",
-    "styx.s62.c2": "Revenir, c’est trop dangereux",
+    "styx.s62.c2": "Revenir en arrière",
     "styx.s62.c3": "Retourner vers le contrôleur",
 
     "styx.s63.title": "Résister",
@@ -470,7 +470,7 @@
     "styx.s72.body": "Le contrôleur est là, comme un point fixe. « Tu hésites. Alors écoute : ceux qui hésitent trop finissent par appartenir à la gare. »\n\nIl désigne la brume. « Elle sait déjà ton poids. »",
     "styx.s72.c1": "Revenir vers Hadès",
     "styx.s72.c2": "Assembler les preuves",
-    "styx.s72.c3": "Aller à la cabine si tu l’as déjà activée",
+    "styx.s72.c3": "Retourner à la cabine",
 
     "styx.end_good.title": "END GOOD — Retour",
     "styx.end_good.body": "Tu montes. Les portes se referment avec un bruit normal.\n\nLa lumière blanche avale la gare. Puis, d’un coup, tu te réveilles dans le monde réel, dans un train banal. Des passagers parlent, un enfant rit, une annonce grésille.\n\nTon téléphone affiche l’heure. 03:17 vient de passer.\n\nEt dans ta poche… il n’y a plus de ticket.",
