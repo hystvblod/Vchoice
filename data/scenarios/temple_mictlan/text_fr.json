@@ -31,7 +31,7 @@
     "tm.s04.title": "La pierre qui résonne",
     "tm.s04.body": "Sous une fine couche de terre, une dalle. Tu frappes : un son creux, profond. Pas une grotte… plutôt un vide construit. Un vide fermé.",
     "tm.s04.c1": "Dégager la zone à la truelle",
-    "tm.s04.c2": "Retourner au camp pour prévenir (et noter l’endroit)",
+    "tm.s04.c2": "Retourner au camp pour prévenir et noter l’endroit",
     "tm.s04.c3": "Chercher une fissure naturelle",
 
     "tm.s05.title": "L’ouverture",
@@ -43,8 +43,8 @@
     "tm.s06.title": "Premier souffle d’air",
     "tm.s06.body": "La dalle bouge. Un air froid sort, chargé d’encens éteint. Ce n’est pas l’odeur d’un lieu abandonné : c’est l’odeur d’un lieu scellé.",
     "tm.s06.c1": "Descendre avec ta lampe",
-    "tm.s06.c2": "Laisser une corde de fortune (repère) et tester le sol",
-    "tm.s06.c3": "Revenir au camp (si tu arrives à te décider)",
+    "tm.s06.c2": "Laisser une corde de fortune comme repère et tester le sol",
+    "tm.s06.c3": "Revenir au camp si tu arrives à te décider",
 
     "tm.s07.title": "Le couloir bas",
     "tm.s07.body": "Tu avances courbé. La roche est noire, presque vitreuse. Sur les parois, des traces de doigts… fraîches, dans la poussière ancienne.",
@@ -73,13 +73,13 @@
     "tm.s11.title": "Escalier de basalte",
     "tm.s11.body": "Des marches taillées net. Elles descendent vers un noir plus dense que l’ombre. Humidité, fragments pâles au sol… et cette odeur : terre + os.",
     "tm.s11.c1": "Descendre lentement",
-    "tm.s11.c2": "Descendre vite (pour arrêter d’y penser)",
-    "tm.s11.c3": "Remonter (tu n’as pas de renfort)",
+    "tm.s11.c2": "Descendre vite pour arrêter d’y penser",
+    "tm.s11.c3": "Remonter, tu n’as pas de renfort",
 
     "tm.s12.title": "La première porte",
     "tm.s12.body": "Une porte de pierre. Pas de poignée. Juste un creux en forme d’éclat d’obsidienne. Une serrure… sans métal. Elle attend quelque chose de précis.",
-    "tm.s12.c1": "Chercher autour (alcôves, sol, fissures)",
-    "tm.s12.c2": "Tenter de forcer (mauvaise idée)",
+    "tm.s12.c1": "Chercher autour, dans les alcôves, au sol et dans les fissures",
+    "tm.s12.c2": "Tenter de forcer la porte",
     "tm.s12.c3": "Insérer l’obsidienne dans le creux",
     
 
@@ -87,7 +87,7 @@
     "tm.s13.body": "Des crânes alignés, impeccables, presque polis. Dans certaines orbites : des perles de jade. Le décor est trop “rangé” pour être mort.",
     "tm.s13.c1": "Prendre une perle de jade",
     "tm.s13.c2": "Ne rien toucher et reculer",
-    "tm.s13.c3": "Observer les murs (chercher un indice)",
+    "tm.s13.c3": "Observer les murs pour chercher un indice",
 
     "tm.s14.title": "Le couloir des offrandes",
     "tm.s14.body": "Poteries cassées, ossements rangés. Une page de codex, coincée sous une pierre, intacte — comme si l’humidité l’avait épargnée exprès.",
@@ -97,7 +97,7 @@
 
     "tm.s15.title": "La porte résiste",
     "tm.s15.body": "Tu reviens à la porte. Le creux en forme d’obsidienne semble… plus profond. Comme si le temple l’avait “ajusté” pendant ton absence.",
-    "tm.s15.c1": "Insister pour comprendre (sans forcer)",
+    "tm.s15.c1": "Insister pour comprendre sans forcer",
     "tm.s15.c2": "Chercher l’obsidienne ailleurs",
     "tm.s15.c3": "Abandonner la porte pour l’instant",
 
@@ -105,7 +105,7 @@
     "tm.s16.body": "Dans une fissure, un éclat d’obsidienne, taillé exprès. Quand tu le tiens, tu sens une chaleur minuscule au bout des doigts.",
     "tm.s16.c1": "Le garder précieusement",
     "tm.s16.c2": "Le tester immédiatement sur la porte",
-    "tm.s16.c3": "Le remettre en place (par prudence)",
+    "tm.s16.c3": "Le remettre en place par prudence",
 
     "tm.s17.title": "La porte cède",
     "tm.s17.body": "L’éclat s’insère. Un déclic de pierre. La porte glisse sans bruit… comme si elle n’avait jamais été lourde.",
@@ -117,24 +117,24 @@
     "tm.s18.body": "Murales de procession : silhouettes sans visages, offrandes d’os, de dents, de cheveux. Au bout, une figure “couronnée” regarde sans yeux.",
     "tm.s18.c1": "Suivre la procession peinte",
     "tm.s18.c2": "Chercher un détail récurrent",
-    "tm.s18.c3": "Reculer (trop d’informations d’un coup)",
+    "tm.s18.c3": "Reculer, il y a trop d’informations d’un coup",
 
     "tm.s19.title": "L’écho",
     "tm.s19.body": "Le tunnel répète tes pas avec un léger retard, comme un autre marcheur qui copie ta cadence. Une flaque tremble… sans goutte qui tombe.",
     "tm.s19.c1": "Continuer",
     "tm.s19.c2": "Revenir vers les fresques",
-    "tm.s19.c3": "Éteindre la lampe une seconde (test)",
+    "tm.s19.c3": "Éteindre la lampe une seconde pour tester",
 
     "tm.s20.title": "La fissure respirante",
     "tm.s20.body": "Dans la pierre : une fissure qui ventile une brume froide. Pas un courant d’air normal. Plutôt… une respiration.",
     "tm.s20.c1": "Passer vite",
-    "tm.s20.c2": "Mettre un peu de sel (si tu en as)",
+    "tm.s20.c2": "Mettre un peu de sel si tu en as",
     "tm.s20.c3": "Reculer",
 
     "tm.s21.title": "Bassin noir",
     "tm.s21.body": "Un bassin d’eau immobile, sombre. Sa surface reflète ton visage… avec une seconde de retard. Le calme est une menace.",
     "tm.s21.c1": "Contourner le bassin",
-    "tm.s21.c2": "Toucher l’eau (mauvaise idée)",
+    "tm.s21.c2": "Toucher l’eau",
     "tm.s21.c3": "Jeter une pierre dedans",
 
     "tm.s22.title": "La passerelle",
@@ -146,7 +146,7 @@
     "tm.s23.title": "Le reflet faux",
     "tm.s23.body": "La surface noire ment : le plafond reflété ne correspond pas à ce que ta lampe éclaire. Le lieu fabrique une image… pour te tromper.",
     "tm.s23.c1": "Ignorer et avancer",
-    "tm.s23.c2": "Mettre du sel au bord (si tu en as)",
+    "tm.s23.c2": "Mettre du sel au bord si tu en as",
     "tm.s23.c3": "Revenir à la passerelle",
 
     "tm.s24.title": "L’odeur de sel",
@@ -159,7 +159,7 @@
     "tm.s25.body": "La pente t’amène plus bas. L’air devient plus froid. Chaque pas résonne comme si le temple comptait pour toi.",
     "tm.s25.c1": "Descendre",
     "tm.s25.c2": "Faire demi-tour",
-    "tm.s25.c3": "Marquer un repère (si tu peux)",
+    "tm.s25.c3": "Marquer un repère si tu peux",
 
     "tm.s26.title": "Le souffle derrière",
     "tm.s26.body": "La brume se déplace contre le sens logique de l’air. Comme si quelque chose cherchait à se mettre… dans ton dos.",
@@ -176,13 +176,13 @@
     "tm.s28.title": "Le petit couteau d’obsidienne",
     "tm.s28.body": "Un petit couteau d’obsidienne, placé comme une clé. Ta main sait immédiatement : c’est lui que la porte attend.",
     "tm.s28.c1": "Le prendre",
-    "tm.s28.c2": "Le laisser (et regretter ensuite ?)",
+    "tm.s28.c2": "Le laisser et risquer de le regretter",
     "tm.s28.c3": "Tester tout de suite sur la porte",
 
     "tm.s29.title": "Le cœur du temple",
     "tm.s29.body": "Une grande salle s’ouvre enfin. Colonnes de basalte, brume basse. Au loin : une silhouette d’autel. L’échelle du lieu écrase tes pensées.",
     "tm.s29.c1": "Avancer vers l’autel",
-    "tm.s29.c2": "Observer d’abord les côtés (issues, pièges)",
+    "tm.s29.c2": "Observer d’abord les côtés, les issues et les pièges",
     "tm.s29.c3": "Revenir vers la porte",
 
     "tm.s30.title": "La salle de l’autel",
@@ -193,9 +193,9 @@
 
     "tm.s31.title": "Le charnier rangé",
     "tm.s31.body": "Un mur d’os et de pierre, empilé comme des briques. Trop précis. Trop patient. Comme si une main invisible entretenait tout ça.",
-    "tm.s31.c1": "Suivre le mur (chercher une porte)",
+    "tm.s31.c1": "Suivre le mur pour chercher une porte",
     "tm.s31.c2": "Revenir à l’autel",
-    "tm.s31.c3": "Mettre du sel au pied du mur (si tu en as)",
+    "tm.s31.c3": "Mettre du sel au pied du mur si tu en as",
 
     "tm.s32.title": "La présence immobile",
     "tm.s32.body": "La salle est vide… mais la brume s’arrête net, comme si elle attendait un ordre. Les ombres sont plus épaisses dans certains coins.",
@@ -211,21 +211,21 @@
 
     "tm.s34.title": "Le codex insiste",
     "tm.s34.body": "La page + un os + une perle : un assemblage qui ressemble à une consigne. Pas un texte. Une règle mise en scène.",
-    "tm.s34.c1": "Suivre la règle (objets d’abord)",
-    "tm.s34.c2": "Refuser (tu ne joues pas à ça)",
+    "tm.s34.c1": "Suivre la règle et placer les objets d’abord",
+    "tm.s34.c2": "Refuser, tu ne joues pas à ça",
     "tm.s34.c3": "Retour à l’autel",
 
     "tm.s35.title": "La brume qui monte",
     "tm.s35.body": "La brume s’élève vers toi. Pas comme de la fumée… comme une chose qui choisit. Tu sens une pression au niveau de la bouche.",
-    "tm.s35.c1": "Tracer un cercle de sel (si tu en as)",
+    "tm.s35.c1": "Tracer un cercle de sel si tu en as",
     "tm.s35.c2": "Reculer sans paniquer",
-    "tm.s35.c3": "Courir (mauvais réflexe)",
+    "tm.s35.c3": "Courir par réflexe",
 
     "tm.s36.title": "Le passage latéral",
     "tm.s36.body": "Derrière un panneau abîmé, un passage étroit. Des marques de frottement dans la poussière : quelqu’un passe ici… parfois.",
     "tm.s36.c1": "S’y engager",
     "tm.s36.c2": "Revenir à l’autel",
-    "tm.s36.c3": "Mettre un repère (sel / craie)",
+    "tm.s36.c3": "Mettre un repère au sol avec du sel ou de la craie",
 
     "tm.s37.title": "Le mur de dents",
     "tm.s37.body": "La pierre forme des “dents” imbriquées. Tu comprends que ce n’est pas décoratif : ça peut se resserrer… très lentement.",
@@ -237,19 +237,19 @@
     "tm.s38.body": "Un seuil plus sombre que le reste. La brume s’y accumule. Au sol : un fragment d’os et une poussière verdâtre de jade.",
     "tm.s38.c1": "Entrer quand même",
     "tm.s38.c2": "Reculer",
-    "tm.s38.c3": "Appeler (écho déformé)",
+    "tm.s38.c3": "Appeler et écouter l’écho déformé",
 
     "tm.s39.title": "Salle des jarres scellées",
     "tm.s39.body": "Des jarres fermées à la résine. L’une est fissurée. Un souffle froid en sort, comme un soupir emprisonné.",
     "tm.s39.c1": "S’approcher",
-    "tm.s39.c2": "Colmater la fissure avec du sel (si tu en as)",
+    "tm.s39.c2": "Colmater la fissure avec du sel si tu en as",
     "tm.s39.c3": "Revenir au seuil",
 
     "tm.s40.title": "Le souffle libéré",
     "tm.s40.body": "Au contact, un courant d’air remonte ton bras. Comme si quelque chose cherchait à entrer… par ta peau. Ton réflexe : retirer ta main.",
     "tm.s40.c1": "Reculer immédiatement",
     "tm.s40.c2": "Mettre le sel contre la fissure",
-    "tm.s40.c3": "Fermer la jarre (si possible)",
+    "tm.s40.c3": "Essayer de fermer la jarre",
 
     "tm.s41.title": "Galerie des noms",
     "tm.s41.body": "Des murs gravés de lignes “nom-like”. Certains endroits sont effacés : la pierre est plus blanche, comme si l’absence avait une couleur.",
@@ -273,7 +273,7 @@
     "tm.s44.body": "Quand tu approches les emplacements, la pierre vibre. La poussière tremble. Le temple n’est pas un bâtiment. C’est une volonté qui avale des décisions.",
     "tm.s44.c1": "Finaliser l’offrande",
     "tm.s44.c2": "Retirer les objets",
-    "tm.s44.c3": "Reculer (et respirer peu)",
+    "tm.s44.c3": "Reculer et respirer le moins possible",
 
     "tm.s45.title": "Salle du puits vertical",
     "tm.s45.body": "Un puits descend dans le noir. Une corde est attachée… très vieille, mais étonnamment propre au toucher. On dirait qu’on l’a “préparée” pour toi.",
@@ -297,23 +297,23 @@
     "tm.s48.body": "Au bord, tu regardes : le noir avale la profondeur. Une goutte tombe… et tu ne l’entends jamais toucher. Le temple adore le vertige.",
     "tm.s48.c1": "Revenir au pont",
     "tm.s48.c2": "Continuer malgré tout",
-    "tm.s48.c3": "Mettre du sel (si tu en as) et reculer",
+    "tm.s48.c3": "Mettre du sel si tu en as, puis reculer",
 
     "tm.s49.title": "Le retour à l’autel",
     "tm.s49.body": "Tu revois l’autel à distance. La brume est plus épaisse. L’autel semble plus net, comme s’il te reconnaissait. Comme s’il t’attendait.",
     "tm.s49.c1": "Approcher",
     "tm.s49.c2": "Revenir aux noms",
-    "tm.s49.c3": "Chercher la “Dame” (sans la voir)",
+    "tm.s49.c3": "Chercher la Dame sans la voir",
 
     "tm.s50.title": "L’autel d’obsidienne",
     "tm.s50.body": "De près, les creux circulaires ressemblent à des bouches. Les reflets te font croire qu’ils bougent. Ici, la règle du souffle devient réelle.",
-    "tm.s50.c1": "Placer des objets (si tu en as)",
+    "tm.s50.c1": "Placer des objets si tu en as",
     "tm.s50.c2": "Reculer",
-    "tm.s50.c3": "Chercher le sceau (salle du rituel)",
+    "tm.s50.c3": "Chercher le sceau dans la salle du rituel",
 
     "tm.s51.title": "La reine des os",
     "tm.s51.body": "Un trône “fait d’os” est suggéré par l’architecture. Pas de corps visible. Et pourtant, tu sens une autorité te regarder comme une proie.",
-    "tm.s51.c1": "Parler à voix basse (respect)",
+    "tm.s51.c1": "Parler à voix basse avec respect",
     "tm.s51.c2": "Ne rien dire",
     "tm.s51.c3": "Revenir à l’autel",
 
@@ -325,7 +325,7 @@
 
     "tm.s53.title": "Offrir la page",
     "tm.s53.body": "Ta main place la page près d’un emplacement. Les bords frémissent sous un flux d’air invisible. Le temple “lit” sans yeux.",
-    "tm.s53.c1": "Continuer l’offrande (objets)",
+    "tm.s53.c1": "Continuer l’offrande avec les objets",
     "tm.s53.c2": "Retirer la page",
     "tm.s53.c3": "Revenir aux noms",
 
@@ -339,13 +339,13 @@
     "tm.s55.body": "La procession peinte paraît plus proche. La poussière dessine des contours récents. Ce n’est pas un mouvement… c’est une intention qui se rapproche.",
     "tm.s55.c1": "Revenir à l’autel",
     "tm.s55.c2": "Revenir au couloir des offrandes",
-    "tm.s55.c3": "Aller aux noms (choisir un nom)",
+    "tm.s55.c3": "Aller aux noms pour en choisir un",
 
     "tm.s56.title": "La Dame des morts",
     "tm.s56.body": "Tu n’aperçois pas un visage. Juste une architecture de trône et d’os. Mais la salle se comporte comme si quelqu’un était assis là.",
-    "tm.s56.c1": "Rester respectueux (parler peu)",
+    "tm.s56.c1": "Rester respectueux et parler peu",
     "tm.s56.c2": "Reculer",
-    "tm.s56.c3": "Chercher la sortie “propre” (sceau)",
+    "tm.s56.c3": "Chercher la sortie par le sceau",
 
     "tm.s57.title": "L’autel réclame",
     "tm.s57.body": "Les creux paraissent plus sombres. La brume y file comme vers des bouches. Les objets près de toi semblent “appelés”.",
@@ -355,7 +355,7 @@
 
     "tm.s58.title": "Le couloir qui se replie",
     "tm.s58.body": "Le corridor paraît plus court qu’avant. Les arches ne s’alignent plus. Le temple réécrit ses distances pour te garder.",
-    "tm.s58.c1": "Forcer (avancer quand même)",
+    "tm.s58.c1": "Forcer et avancer quand même",
     "tm.s58.c2": "Revenir à l’autel",
     "tm.s58.c3": "Aller aux noms",
 
@@ -365,7 +365,7 @@
     "tm.s59.c2": "Revenir à la Dame",
     "tm.s59.c3": "Fuir vers la sortie",
 
-    "tm.s60.title": "La porte s’ouvre (presque)",
+    "tm.s60.title": "La porte s’entrouvre",
     "tm.s60.body": "Une porte s’entrouvre. Le mécanisme obsidienne-like s’aligne. De la poussière fraîche trahit un passage récent. Une sortie… ou un autre piège.",
     "tm.s60.c1": "Passer",
     "tm.s60.c2": "Reculer",
@@ -374,7 +374,7 @@
     "tm.s61.title": "Le regard sans yeux",
     "tm.s61.body": "Une architecture d’orbites vides pointe vers toi. Pas de créature. Juste une forme qui t’observe. Ton souffle devient soudain trop bruyant.",
     "tm.s61.c1": "Contrôler ta respiration",
-    "tm.s61.c2": "Mettre du sel (si tu en as)",
+    "tm.s61.c2": "Mettre du sel si tu en as",
     "tm.s61.c3": "Revenir",
 
     "tm.s62.title": "L’autel du retour",
@@ -387,25 +387,25 @@
     "tm.s63.body": "Une dalle gravée d’un sceau. Quatre symboles correspondent aux objets : obsidienne, jade, os, page. Au centre : une empreinte de main.",
     "tm.s63.c1": "Placer les objets sur le sceau",
     "tm.s63.c2": "Poser ta main sur l’empreinte",
-    "tm.s63.c3": "Revenir (tu n’es pas prêt)",
+    "tm.s63.c3": "Revenir, tu n’es pas prêt",
 
     "tm.s64.title": "Le poids du choix",
     "tm.s64.body": "La main-empreinte semble humide. La brume s’y enroule comme un souffle aspiré. La règle est simple : sortir = offrir un nom, pas ton air.",
     "tm.s64.c1": "Choisir un nom à offrir",
-    "tm.s64.c2": "Refuser le pacte (fuir)",
+    "tm.s64.c2": "Refuser le pacte et fuir",
     "tm.s64.c3": "Tenter de tricher",
 
     "tm.s65.title": "L’ossuaire derrière la peau",
     "tm.s65.body": "Tu as l’impression que l’ossuaire est derrière tes yeux. Comme si le temple avait pris une empreinte de toi. Tu dois décider vite, avant qu’il décide à ta place.",
     "tm.s65.c1": "Retour aux noms",
     "tm.s65.c2": "Finaliser le sceau",
-    "tm.s65.c3": "Revenir à la Dame (négocier)",
+    "tm.s65.c3": "Revenir à la Dame pour négocier",
 
     "tm.s66.title": "La règle du souffle",
     "tm.s66.body": "La page, posée comme une loi : nom contre sortie. Souffle contre damnation. Si tu donnes ton souffle, tu deviens “un os de plus”.",
-    "tm.s66.c1": "Appliquer la règle (nom, pas souffle)",
+    "tm.s66.c1": "Appliquer la règle, offrir un nom et garder ton souffle",
     "tm.s66.c2": "Refuser tout pacte",
-    "tm.s66.c3": "Voler un nom (horrible, mais efficace)",
+    "tm.s66.c3": "Voler un nom",
 
     "tm.s67.title": "Choisir un nom",
     "tm.s67.body": "Les lignes gravées sont illisibles, mais certaines zones “accrochent” la lumière. Tu peux offrir le tien… ou prendre celui d’un autre.",
@@ -421,27 +421,27 @@
 
     "tm.s69.title": "Le nom effacé",
     "tm.s69.body": "Un effacement laisse une place vide. Si tu le “complètes”, le temple l’accepte. Tu sens que quelqu’un attend… dans ce vide.",
-    "tm.s69.c1": "Compléter le nom (vol silencieux)",
-    "tm.s69.c2": "Refuser (écœuré)",
+    "tm.s69.c1": "Compléter le nom effacé",
+    "tm.s69.c2": "Refuser",
     "tm.s69.c3": "Retour au sceau",
 
     "tm.s70.title": "Retour au sceau",
     "tm.s70.body": "La salle paraît plus petite. Le sceau semble plus net. Comme si la décision le nourrissait. Tu dois activer… ou fuir.",
     "tm.s70.c1": "Activer le sceau avec le nom choisi",
     "tm.s70.c2": "Tenter de casser le sceau",
-    "tm.s70.c3": "Revenir à la Dame (ultime négociation)",
+    "tm.s70.c3": "Revenir à la Dame pour une ultime négociation",
 
     "tm.s71.title": "Négocier avec la Dame des morts",
     "tm.s71.body": "Tu parles. Les os “répondent” par un cliquetis léger. Elle écoute… mais ne promet rien. Ce lieu ne fait pas de cadeaux.",
     "tm.s71.c1": "Proposer une offrande d’objets, pas d’âme",
-    "tm.s71.c2": "Mentir (dire que tu reviendras avec plus)",
+    "tm.s71.c2": "Mentir et dire que tu reviendras avec plus",
     "tm.s71.c3": "Refuser et partir",
 
     "tm.s72.title": "L’offrande d’objets",
     "tm.s72.body": "Si tu poses la page, la perle, le sel, l’obsidienne… la salle se calme une seconde. Mais la faim revient aussitôt. Tu dois profiter du répit.",
     "tm.s72.c1": "Fuir pendant le répit",
-    "tm.s72.c2": "Finaliser le sceau (sortie propre)",
-    "tm.s72.c3": "Reprendre tes objets (risqué)",
+    "tm.s72.c2": "Finaliser le sceau et prendre la sortie propre",
+    "tm.s72.c3": "Reprendre tes objets malgré le risque",
 
     "tm.s73.title": "Le mensonge",
     "tm.s73.body": "Tu promets de revenir. Le temple “accepte”. Tu sens une marque froide : un contrat.",
@@ -452,20 +452,20 @@
     "tm.s74.title": "Casser le sceau",
     "tm.s74.body": "Tu frappes. La pierre ne casse pas : elle répond. La brume monte à hauteur de bouche, comme une main qui se ferme.",
     "tm.s74.c1": "Reculer avant d’étouffer",
-    "tm.s74.c2": "Continuer à frapper (désespoir)",
+    "tm.s74.c2": "Continuer à frapper dans le désespoir",
     "tm.s74.c3": "Jeter du sel sur les fissures",
 
     "tm.s75.title": "Le passage s’ouvre",
     "tm.s75.body": "Quelque chose cède. Un panneau glisse. Derrière : un tunnel qui remonte vers une lumière réelle. Tu sens l’air du dehors.",
     "tm.s75.c1": "Monter immédiatement",
     "tm.s75.c2": "Récupérer ton matériel d’abord",
-    "tm.s75.c3": "Regarder derrière toi (une seconde)",
+    "tm.s75.c3": "Regarder derrière toi une seconde",
 
     "tm.s76.title": "La dernière tentation",
     "tm.s76.body": "En regardant derrière, l’ossuaire paraît “beau”. Calme. Sacré. Une partie de toi veut rester, comme si ton cerveau demandait la paix… au mauvais endroit.",
     "tm.s76.c1": "Ne pas regarder et monter",
-    "tm.s76.c2": "Regarder encore (erreur)",
-    "tm.s76.c3": "Prononcer le nom choisi (pacte)",
+    "tm.s76.c2": "Regarder encore",
+    "tm.s76.c3": "Prononcer le nom choisi",
 
     "tm.s77.title": "La sortie",
     "tm.s77.body": "Le tunnel mène à une ouverture dissimulée sous des rochers. L’air chaud te frappe. Tu tombes à genoux, haletant. Et tu sens encore du froid dans ta poitrine.",
@@ -477,11 +477,11 @@
     "tm.s78.body": "Tes empreintes font une boucle parfaite. Comme si tu étais sorti… et rentré… sans t’en souvenir. Et ton souffle fait de petits nuages, comme en hiver.",
     "tm.s78.c1": "Retourner au camp coûte que coûte",
     "tm.s78.c2": "Revenir sceller le temple",
-    "tm.s78.c3": "Relire la règle (codex)",
+    "tm.s78.c3": "Relire la règle du codex",
 
     "tm.s79.title": "Comprendre",
     "tm.s79.body": "La page parle d’une faim ancienne : elle ne mange pas la chair. Elle mange les âmes “non fixées”. Les jeunes. Les curieux. Les nouveaux.",
-    "tm.s79.c1": "Tout raconter au camp (preuves)",
+    "tm.s79.c1": "Tout raconter au camp avec les preuves",
     "tm.s79.c2": "Te taire et fuir ce pays",
     "tm.s79.c3": "Te convaincre que tu hallucines",
 
@@ -516,7 +516,7 @@
     "tm.clue.has_rope.desc": "Une corde récupérée près du puits, utile pour certaines sorties.",
 
     "tm.clue.has_name.title": "Nom choisi",
-    "tm.clue.has_name.desc": "Un nom offert (ou volé) pour activer le sceau.",
+    "tm.clue.has_name.desc": "Un nom offert ou volé pour activer le sceau.",
 
     "tm.clue.has_offering.title": "Offrande prête",
     "tm.clue.has_offering.desc": "Tu as réuni les objets clés pour calmer le temple et finaliser le rituel.",
@@ -534,6 +534,6 @@
     "tm.h.s63.strong": "Sortie propre = objets + nom choisi. Évite de “donner ton souffle”.",
 
     "tm.h.s80.soft": "Dehors ne veut pas dire libre.",
-    "tm.h.s80.strong": "Fin secrète = nom + offrande complète + règle comprise (codex)."
+    "tm.h.s80.strong": "Fin secrète : nom choisi, offrande complète et règle comprise grâce au codex."
   }
 }
