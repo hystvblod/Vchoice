@@ -61,8 +61,8 @@
     "tm.s09.title": "Salle des outils oubliés",
     "tm.s09.body": "Une niche. Des outils anciens, rangés comme si quelqu’un allait revenir. Devant, un petit sachet de sel, posé trop visiblement pour être un hasard.",
     "tm.s09.c1": "Prendre le sachet de sel",
-    "tm.s09.c2": "Laisser le sel et fouiller la niche",
-    "tm.s09.c3": "Quitter la salle immédiatement",
+    "tm.s09.c2": "Laisser le sel et inspecter rapidement la niche",
+    "tm.s09.c3": "Sortir sans rien prendre",
 
     "tm.s10.title": "Le silence qui répond",
     "tm.s10.body": "Tu t’arrêtes. Le silence a une texture. Comme une matière qui te touche en retour. Ta lampe éclaire… un coude de couloir qui n’était pas là tout à l’heure.",
@@ -71,7 +71,7 @@
     "tm.s10.c3": "Rester immobile et écouter encore",
 
     "tm.s11.title": "Escalier de basalte",
-    "tm.s11.body": "Des marches taillées net. Elles descendent vers un noir plus dense que l’ombre. Humidité, fragments pâles au sol… et cette odeur : terre + os.",
+    "tm.s11.body": "Des marches taillées net. Elles descendent vers un noir plus dense que l’ombre. Humidité, fragments pâles au sol… et cette odeur : de la terre et de l’os.",
     "tm.s11.c1": "Descendre lentement",
     "tm.s11.c2": "Descendre vite pour arrêter d’y penser",
     "tm.s11.c3": "Remonter, tu n’as pas de renfort",
@@ -210,7 +210,7 @@
     "tm.s33.c3": "Revenir vers la fresque",
 
     "tm.s34.title": "Le codex insiste",
-    "tm.s34.body": "La page + un os + une perle : un assemblage qui ressemble à une consigne. Pas un texte. Une règle mise en scène.",
+    "tm.s34.body": "La page, un os et une perle forment un assemblage qui ressemble à une consigne. Pas un texte. Une règle mise en scène.",
     "tm.s34.c1": "Suivre la règle et placer les objets d’abord",
     "tm.s34.c2": "Refuser, tu ne joues pas à ça",
     "tm.s34.c3": "Retour à l’autel",
@@ -252,7 +252,7 @@
     "tm.s40.c3": "Essayer de fermer la jarre",
 
     "tm.s41.title": "Galerie des noms",
-    "tm.s41.body": "Des murs gravés de lignes “nom-like”. Certains endroits sont effacés : la pierre est plus blanche, comme si l’absence avait une couleur.",
+    "tm.s41.body": "Des murs gravés de lignes qui ressemblent à des noms. Certains endroits sont effacés : la pierre est plus blanche, comme si l’absence avait une couleur.",
     "tm.s41.c1": "Chercher ton nom",
     "tm.s41.c2": "Chercher un nom “protecteur”",
     "tm.s41.c3": "Ne rien lire et avancer",
@@ -366,7 +366,7 @@
     "tm.s59.c3": "Fuir vers la sortie",
 
     "tm.s60.title": "La porte s’entrouvre",
-    "tm.s60.body": "Une porte s’entrouvre. Le mécanisme obsidienne-like s’aligne. De la poussière fraîche trahit un passage récent. Une sortie… ou un autre piège.",
+    "tm.s60.body": "Une porte s’entrouvre. Un mécanisme d’obsidienne s’aligne. De la poussière fraîche trahit un passage récent. Une sortie… ou un autre piège.",
     "tm.s60.c1": "Passer",
     "tm.s60.c2": "Reculer",
     "tm.s60.c3": "Revenir au sceau",
