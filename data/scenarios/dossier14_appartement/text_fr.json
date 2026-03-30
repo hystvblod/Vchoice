@@ -3,7 +3,7 @@
     "lang": "fr",
     "scenario_id": "dossier14_appartement",
     "title": "Appartement 14",
-    "tagline": "À 02:14, quelqu’un prononce ton nom dans le couloir. En passant une porte qui ne devrait pas exister, tu t’enfonces dans un immeuble qui semble déjà te connaître.",
+    "tagline": "À 02:14, quelqu’un prononce ton nom dans le couloir. En passant la porte de ton nouvel appartement, tu t’enfonces dans un immeuble de plus en plus étrange.",
     "hint_ns": "d14.h"
   },
 
@@ -64,7 +64,7 @@
     "d14.s09.c3": "Aller au hall",
 
     "d14.s10.title": "Couloir identique",
-    "d14.s10.body": "Tout se ressemble dans ce couloir. Les portes sont toutes pareilles.",
+    "d14.s10.body": "Le couloir se ressemble partout. Les portes sont toutes pareilles.",
     "d14.s10.c1": "Aller à la porte du fond",
     "d14.s10.c2": "Retourner à l’escalier",
     "d14.s10.c3": "Chercher la zone SERVICE",
@@ -175,7 +175,7 @@
     "d14.s28.body": "Un clavier à code. La lumière est rouge. Le badge ne suffit pas. Il faut une clé.",
     "d14.s28.c1": "Revenir sur tes pas",
     "d14.s28.c2": "Prendre l’autre chemin",
-    "d14.s28.c3": "Utiliser la clé",
+    "d14.s28.c3": "Mettre la clé",
 
     "d14.s29.title": "Tuyaux vivants",
     "d14.s29.body": "Les tuyaux vibrent. La vapeur te colle au visage. Tu descends encore.",
@@ -270,7 +270,7 @@
     "d14.s44.title": "Allée d’archives",
     "d14.s44.body": "Des boîtes partout. Tu cherches le numéro 14.",
     "d14.s44.c1": "Chercher “14”",
-    "d14.s44.c2": "Examiner un tiroir ouvert",
+    "d14.s44.c2": "Suivre un tiroir ouvert",
     "d14.s44.c3": "Chercher la sortie",
 
     "d14.s45.title": "Dossier abîmé",
@@ -310,13 +310,13 @@
     "d14.s50.c3": "Comprendre toute la vérité",
 
     "d14.end_good.title": "FIN — Tu sors",
-    "d14.end_good.body": "Tu sors dehors. L’air est froid. Tu marches vite et tu ne regardes pas derrière toi. Mais tu sais que l’immeuble n’oubliera pas ton nom.",
+    "d14.end_good.body": "Tu sors dehors. L’air est froid. Tu marches vite et tu ne regardes pas derrière toi. Mais tu sais que l’immeuble a retenu ton nom et qu'il en t'oubliera pas.",
 
     "d14.end_bad.title": "FIN — Tu restes",
-    "d14.end_bad.body": "Le couloir se ferme. La lumière devient faible. Tu comprends que tu ne vas pas sortir. Et à 02:14, ton nom revient encore et encore, et toi, tu deviens une ombre de plus ici.",
+    "d14.end_bad.body": "Le couloir se ferme. La lumière devient faible. Tu comprends que tu ne vas pas sortir. Ton appartement est à louer et toi tu devient une ombre de plus ici",
 
     "d14.end_secret.title": "FIN SECRÈTE — Dossier complet",
-    "d14.end_secret.body": "Tu as le badge, la clé, et tu as compris. L’immeuble avale des gens et en fait des ombres... Tu le sais, et tu sais aussi que jamais tu ne reviendras ici.",
+    "d14.end_secret.body": "Tu as le badge, la clé, et tu as compris. l’immeuble avale des gens et en fait des ombres... tu le sais et tu sais aussi que jamais tu ne reviendras ici",
 
     "d14.h.clue.has_photo.title": "Photo",
     "d14.h.clue.has_photo.desc": "Une photo qui montre la forme.",
