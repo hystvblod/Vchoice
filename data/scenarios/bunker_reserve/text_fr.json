@@ -338,10 +338,10 @@
     "br.s55.c3": "Revenir à l’antichambre rouge",
 
     "br.s56.title": "Les trois portes",
-    "br.s56.body": "Devant toi, trois portes. Aucune inscription. Mais tu sais déjà que ce choix ne sépare pas trois lieux. Il sépare trois façons d’avoir compris le bunker.",
-    "br.s56.c1": "Choisir la sortie réelle",
-    "br.s56.c2": "Choisir la porte qui promet une réponse immédiate",
-    "br.s56.c3": "Choisir la porte qui referme le secret",
+    "br.s56.body": "Devant toi, trois portes. Similaires à l'exception d'un symbole, propre a chacune.",
+    "br.s56.c1": "Choisir la porte au symbole de soleil",
+    "br.s56.c2": "Choisir la porte au symbole de croix",
+    "br.s56.c3": "Choisir la porte au symbole rond",
 
     "br.end_good.title": "Sortie à l’aube",
     "br.end_good.body": "Tu retrouves la surface au petit matin. La colline semble banale à nouveau. Mais sous tes pieds, tu sais que quelque chose continue, hors de vue, à suivre ses règles anciennes.",
