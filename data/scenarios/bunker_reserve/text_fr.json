@@ -179,7 +179,7 @@
     "br.s29.body": "Aucun bouton ne répond franchement. Pourtant, un curseur glisse seul sur une interface ancienne, comme guidé par une routine encore active. Il choisit une zone et s’y arrête.",
     "br.s29.c1": "Noter la zone indiquée",
     "br.s29.c2": "Sortir de la salle",
-    "br.s29.c3": "Attendre une autre réaction",
+    "br.s29.c3": "s'énerver contre le clavier et partir",
 
     "br.s30.title": "Observation",
     "br.s30.body": "La zone désignée correspond à un secteur absent du plan mural. Quelque chose existe ici sans avoir jamais été montré officiellement.",
@@ -194,7 +194,7 @@
     "br.s31.c3": "Prendre le couloir qui mène à la porte du fond",
 
     "br.s32.title": "Retour au calme",
-    "br.s32.body": "Le rouge cesse. Le silence qui revient est pire. Devant toi, une zone de maintenance partiellement déverrouillée semble t’avoir été accordée, comme une récompense ou un test.",
+    "br.s32.body": "Le silence qui revient est pire. Devant toi, une zone de maintenance partiellement déverrouillée semble t’avoir été accordée, comme une récompense ou un test.",
     "br.s32.c1": "Utiliser la clé sur la porte latérale",
     "br.s32.c2": "Suivre les traces discrètes dans le couloir",
     "br.s32.c3": "Retourner aux réserves",
