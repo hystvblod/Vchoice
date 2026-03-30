@@ -1008,6 +1008,180 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   background: rgba(255, 214, 102, .18);
 }
 
+/* =========================
+   GUIDE MENTOR OVERLAY
+   ========================= */
+
+#view-game{
+  position: relative;
+  overflow: hidden;
+}
+
+.vr-guide-overlay{
+  position: absolute;
+  inset: 0;
+  z-index: 3500;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(8px) scale(.985);
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.vr-guide-overlay.is-visible{
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.vr-guide-popup{
+  position: absolute;
+  left: 50%;
+  top: 31%;
+  transform: translate(-50%, -50%);
+  width: min(92%, 760px);
+  max-width: calc(100% - 8px);
+  z-index: 4;
+}
+
+.vr-guide-bubble-text{
+  position: relative;
+  width: 100%;
+  min-height: clamp(72px, 9.5vh, 110px);
+  padding: clamp(10px, 1.5vw, 14px) clamp(12px, 1.8vw, 18px);
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(12, 16, 32, 0.92);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vr-guide-figure{
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: min(64%, 430px);
+  min-width: 240px;
+  max-width: 430px;
+  aspect-ratio: 1024 / 1536;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.vr-guide-image{
+  width: 100%;
+  height: auto;
+  max-height: min(74vh, 720px);
+  object-fit: contain;
+  object-position: right bottom;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(0 16px 34px rgba(0,0,0,.42));
+}
+
+.vr-guide-bubble-fit{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  color: #f3efe6;
+  font-weight: 700;
+  line-height: 1.08;
+  font-size: 18px;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+}
+
+.vr-guide-line{
+  display: block;
+  width: 100%;
+}
+
+.vr-guide-line--title{
+  font-size: 1.12em;
+  font-weight: 900;
+  line-height: 1.04;
+}
+
+.vr-guide-line--body{
+  font-size: .84em;
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.vr-guide-overlay.is-final .vr-guide-bubble-text{
+  background: rgba(12, 16, 32, 0.92);
+  border-color: rgba(255,255,255,0.12);
+}
+
+@media (max-width: 600px){
+  .vr-guide-popup{
+    top: 28%;
+    width: calc(100% - 6px);
+    max-width: none;
+  }
+
+  .vr-guide-bubble-text{
+    min-height: clamp(68px, 8.8vh, 92px);
+    padding: 8px 10px;
+    border-radius: 16px;
+  }
+
+  .vr-guide-bubble-fit{
+    gap: 4px;
+    line-height: 1.06;
+  }
+
+  .vr-guide-figure{
+    right: 0;
+    bottom: 0;
+    width: min(56%, 280px);
+    min-width: 190px;
+    max-width: 280px;
+  }
+
+  .vr-guide-image{
+    max-height: min(58vh, 470px);
+  }
+}
+
+@media (min-width: 900px){
+  .vr-guide-popup{
+    top: 33%;
+    width: min(86%, 820px);
+  }
+
+  .vr-guide-bubble-text{
+    min-height: clamp(78px, 10vh, 116px);
+  }
+
+  .vr-guide-figure{
+    right: 0;
+    bottom: 0;
+    width: min(42%, 520px);
+    min-width: 290px;
+    max-width: 520px;
+  }
+
+  .vr-guide-image{
+    max-height: min(78vh, 820px);
+  }
+}
+
 /* =========================================================
    ✅ MODAL JETONS — COMPACT + JETON PLUS GROS
    ========================================================= */
