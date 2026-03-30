@@ -1569,20 +1569,33 @@ async function goBackWithJeton(){
 }
 
 function prettyFlagTitle(flag){
-  const ns = LOGIC?.meta?.hint_ns || "";
+  const ns =
+    LOGIC?.meta?.hint_ns ||
+    TEXT?.meta?.hint_ns ||
+    "";
+
+  const baseNs = String(ns).replace(/\.h$/, "");
+
+  const logicTitleKey =
+    (LOGIC && LOGIC.clues && LOGIC.clues[flag] && LOGIC.clues[flag].title_key)
+      ? LOGIC.clues[flag].title_key
+      : "";
+
   const keys = [
-    `${ns}.clue.${flag}.title`,
-    `hf.clue.${flag}.title`
-  ];
+    logicTitleKey,
+    ns ? `${ns}.clue.${flag}.title` : "",
+    baseNs ? `${baseNs}.clue.${flag}.title` : ""
+  ].filter(Boolean);
 
   for (const key of keys){
     const v = (TEXT_STRINGS && Object.prototype.hasOwnProperty.call(TEXT_STRINGS, key))
       ? TEXT_STRINGS[key]
       : deepGet(TEXT, key);
-    if (v) return v;
+
+    if (typeof v === "string" && v.trim()) return v.trim();
   }
 
-  return "";
+  return flag || "";
 }
 
 async function executeChoice(ch){
