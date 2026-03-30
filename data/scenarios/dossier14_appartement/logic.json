@@ -232,7 +232,7 @@
       "choices": [
         { "choice_key": "d14.s14.c1", "next": "s13" },
         { "choice_key": "d14.s14.c2", "next": "s26" },
-        { "choice_key": "d14.s14.c3", "next": "s11" }
+        { "choice_key": "d14.s14.c3", "next": "s03" }
       ]
     },
 

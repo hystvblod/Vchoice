@@ -91,7 +91,7 @@
     "d14.s14.body": "Au bout du couloir, une porte sombre. Tu sens que ce n’est pas bon signe.",
     "d14.s14.c1": "Revenir au hall",
     "d14.s14.c2": "Continuer quand même",
-    "d14.s14.c3": "Allumer la lampe pour mieux voir",
+    "d14.s14.c3": "Revenir chez soi et pleurer",
 
     "d14.s15.title": "Zone SERVICE",
     "d14.s15.body": "Un panneau SERVICE pend de travers. Ici, ça ne ressemble plus à un endroit normal.",
@@ -180,8 +180,8 @@
     "d14.s29.title": "Tuyaux vivants",
     "d14.s29.body": "Les tuyaux vibrent. La vapeur te colle au visage. Tu descends encore.",
     "d14.s29.c1": "Descendre plus bas",
-    "d14.s29.c2": "Revenir au clavier à code",
-    "d14.s29.c3": "Prendre un passage latéral",
+    "d14.s29.c2": "Prendre à droite",
+    "d14.s29.c3": "Prendre à gauche",
 
     "d14.s30.title": "Clé lourde",
     "d14.s30.body": "La clé est lourde et vieille. On dirait qu’elle ouvre une seule porte.",
