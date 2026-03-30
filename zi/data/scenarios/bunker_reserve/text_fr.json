@@ -97,7 +97,7 @@
     "br.s15.c2": "Chercher l’infirmerie",
     "br.s15.c3": "Retourner aux réserves",
 
-    "br.s16.title": "Dortoir au carré",
+    "br.s16.title": "Dortoir impeccable",
     "br.s16.body": "Lits faits au millimètre. Un seul est légèrement affaissé. Le drap a été retendu vite, comme après un départ interrompu.",
     "br.s16.c1": "Suivre les indices vers l’infirmerie",
     "br.s16.c2": "Chercher une salle technique",
@@ -128,7 +128,7 @@
     "br.s20.c3": "Revenir en arrière",
 
     "br.s21.title": "Filtration",
-    "br.s21.body": "Les filtres sont récents. Changés il y a peu. Quelqu’un continue d’entretenir l’air ici-dessous, comme si vivre dans ce bunker restait une routine.",
+    "br.s21.body": "Les filtres sont récents. Changés il y a peu. Quelqu’un continue d’entretenir l’air ici, sous terre, comme si vivre dans ce bunker restait une routine.",
     "br.s21.c1": "Chercher où mène l’entretien",
     "br.s21.c2": "Revenir vers la salle technique",
     "br.s21.c3": "Retourner au dortoir",
@@ -163,7 +163,7 @@
     "br.s26.c2": "Chercher une sortie latérale",
     "br.s26.c3": "Reculer jusqu’à la grille",
 
-    "br.s27.title": "Salle sécurité",
+    "br.s27.title": "Salle de sécurité",
     "br.s27.body": "Écrans sombres. Un seul est actif. Et l’image a une seconde de retard. Pas assez pour être utile… juste assez pour être humiliant : le bunker voit avant toi.",
     "br.s27.c1": "Approcher l’écran actif",
     "br.s27.c2": "Explorer les commandes de l’écran",
@@ -179,7 +179,7 @@
     "br.s29.body": "Aucun bouton ne répond franchement. Pourtant, un curseur glisse seul sur une interface ancienne, comme guidé par une routine encore active. Il choisit une zone et s’y arrête.",
     "br.s29.c1": "Noter la zone indiquée",
     "br.s29.c2": "Sortir de la salle",
-    "br.s29.c3": "Attendre une autre réaction",
+    "br.s29.c3": "S’énerver contre le clavier et partir",
 
     "br.s30.title": "Observation",
     "br.s30.body": "La zone désignée correspond à un secteur absent du plan mural. Quelque chose existe ici sans avoir jamais été montré officiellement.",
@@ -194,7 +194,7 @@
     "br.s31.c3": "Prendre le couloir qui mène à la porte du fond",
 
     "br.s32.title": "Retour au calme",
-    "br.s32.body": "Le rouge cesse. Le silence qui revient est pire. Devant toi, une zone de maintenance partiellement déverrouillée semble t’avoir été accordée, comme une récompense ou un test.",
+    "br.s32.body": "Le silence qui revient est pire. Devant toi, une zone de maintenance partiellement déverrouillée semble avoir été ouverte pour toi, comme une récompense ou un test.",
     "br.s32.c1": "Utiliser la clé sur la porte latérale",
     "br.s32.c2": "Suivre les traces discrètes dans le couloir",
     "br.s32.c3": "Retourner aux réserves",
@@ -205,14 +205,14 @@
     "br.s33.c2": "Retourner dans le conduit",
     "br.s33.c3": "Revenir au couloir apaisé",
 
-    "br.s34.title": "Pas récents",
+    "br.s34.title": "Traces récentes",
     "br.s34.body": "Les notes parlent de nettoyage, de rotation, de veille. Puis d’un mot isolé, répété plusieurs fois : ‘sanctuaire’. Comme si l’auteur essayait de garder du sens sans écrire le vrai problème.",
     "br.s34.c1": "Chercher le sanctuaire",
     "br.s34.c2": "Replier la feuille et repartir",
     "br.s34.c3": "Forcer une autre réaction du bunker",
 
     "br.s35.title": "Couloir des détails",
-    "br.s35.body": "Le couloir a des micro-traces : frottements, condensation déplacée, un angle plus propre que les autres. Avec le plan en tête, tu comprends qu’un détour existe… mais seulement si tu l’acceptes.",
+    "br.s35.body": "Le couloir a des micro-traces : frottements, condensation déplacée, un angle plus propre que les autres. Avec le plan en tête, tu comprends qu’un passage caché existe.",
     "br.s35.c1": "Suivre l’angle trop propre",
     "br.s35.c2": "Comparer le couloir au fragment du plan",
     "br.s35.c3": "Forcer le passage",
@@ -302,7 +302,7 @@
     "br.s49.c3": "Aller vers les trois portes",
 
     "br.s50.title": "Ombre sans corps",
-    "br.s50.body": "Une ombre glisse sur le drap, mais personne ne traverse la pièce. Tu ne vois ni corps, ni source, ni reflet logique. Le bunker ne te montre peut-être pas l’occupant lui-même. Il te montre seulement les traces de son passage.",
+    "br.s50.body": "Une ombre glisse sur le drap, mais personne ne traverse la pièce. Tu ne vois ni corps, ni source, ni explication logique. Le bunker ne te montre peut-être pas l’occupant lui-même. Il te montre seulement les traces de son passage.",
     "br.s50.c1": "Se cacher pour observer plus longtemps",
     "br.s50.c2": "Activer la séquence finale",
     "br.s50.c3": "Aller vers les trois portes",
@@ -338,7 +338,7 @@
     "br.s55.c3": "Revenir à l’antichambre rouge",
 
     "br.s56.title": "Les trois portes",
-    "br.s56.body": "Devant toi, trois portes. Aucune inscription. Mais tu sais déjà que ce choix ne sépare pas trois lieux. Il sépare trois façons d’avoir compris le bunker.",
+    "br.s56.body": "Devant toi, trois portes presque identiques, à part un symbole propre à chacune.",
     "br.s56.c1": "Choisir la sortie réelle",
     "br.s56.c2": "Choisir la porte qui promet une réponse immédiate",
     "br.s56.c3": "Choisir la porte qui referme le secret",
@@ -374,7 +374,7 @@
     "br.h.s17.strong": "La clé lourde n’a pas été oubliée. Elle attendait.",
 
     "br.h.s18.soft": "Ce qui manque ici ouvre ailleurs.",
-    "br.h.s18.strong": "La clé maître sert plus loin, après l’alerte.",
+    "br.h.s18.strong": "La clé maîtresse sert plus loin, après l’alerte.",
 
     "br.h.s20.soft": "Le battement indique une voie technique.",
     "br.h.s20.strong": "La ventilation te mène vers une zone non officielle.",
@@ -403,7 +403,7 @@
     "br.h.s43.soft": "Un accès suffit rarement ici.",
     "br.h.s43.strong": "Badge et séquence donnent la double clé du sanctuaire.",
 
-    "br.h.s46.soft": "L’override n’ouvre pas tout. Il inverse un avantage.",
+    "br.h.s46.soft": "La procédure n’ouvre pas tout. Elle inverse un avantage.",
     "br.h.s46.strong": "La procédure finale sert avant les trois portes.",
 
     "br.h.s56.soft": "La bonne porte dépend de ce que tu as compris.",
@@ -411,8 +411,8 @@
 
     "br.clue.has_badge.title": "Badge récupéré",
     "br.clue.has_code.title": "Séquence mémorisée",
-    "br.clue.has_map_fragment.title": "Fragment de plan compris",
-    "br.clue.has_master_key.title": "Clé maître récupérée",
+    "br.clue.has_map_fragment.title": "Plan incomplet compris",
+    "br.clue.has_master_key.title": "Clé maîtresse récupérée",
     "br.clue.has_override.title": "Procédure prioritaire mémorisée",
     "br.clue.has_protocol_truth.title": "Vérité du protocole comprise",
     "br.clue.has_sanctuary_mark.title": "Marque du sanctuaire trouvée"
