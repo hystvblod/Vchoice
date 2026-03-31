@@ -397,16 +397,12 @@
     "ca.end_good.title": "Fin, Aube froide",
     "ca.end_good.body": "Tu franchis la grille. L’air du matin te brûle les poumons. Derrière toi, le château paraît normal…",
     "ca.end_bad.title": "Fin, Cercle fermé",
-<<<<<<< HEAD
+
     "ca.end_bad.body": "Tu restes. Les rideaux se referment. Les miroirs ne te montrent plus. Tu comprends trop tard : tu fais désormais aprti du château, comme un meuble",
     "ca.end_secret.title": "Fin secrète, Rupture",
     "ca.end_secret.body": "Le symbole s’active. La poussière spirale, puis tombe d’un coup. Tu sens le lien se rompre, net. Le château devient un décor vide — enfin.",
 
-=======
-    "ca.end_bad.body": "Tu restes. Les rideaux se referment sans vent. Les miroirs ne te montrent plus. Tu comprends trop tard : tu fais désormais partie du château, comme un meuble.",
-    "ca.end_secret.title": "Fin secrète, Rupture",
-    "ca.end_secret.body": "Le symbole s’active. La poussière spirale, puis tombe d’un coup. Tu sens le lien se rompre, net. Le château devient un décor vide — enfin. Mais tu gardes en toi la certitude que tu as coupé quelque chose qui savait ton nom.",
->>>>>>> 455d943124927cf2a3fcc67c62760867026034c3
+
     "ca.h.s14.soft": "La page arrachée n’est pas obligatoire, mais elle reste une vraie preuve utile.",
     "ca.h.s14.strong": "Prends la page au bureau. Flag : has_diary_page. Elle renforce la cohérence du scénario, sans être requise pour sortir.",
     "ca.h.s26.soft": "L’autel n’offre pas une clé pour ouvrir une porte, mais pour changer le château.",
