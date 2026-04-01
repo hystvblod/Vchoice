@@ -4,6 +4,7 @@
 // ✅ Sinon : popup langue au démarrage
 // ✅ Clic drapeau = sélection seulement, validation via bouton SVG
 // ✅ Langues affichées sous les drapeaux dans leur propre langue
+// ✅ Popup déjà prête pour FR / EN / DE / ES / PT / PTBR / IT / KO / JA / ID
 // ✅ Priorité langue ensuite : localStorage > langue device > EN
 // ✅ Fallback fichier : si ui_xx.json absent => ui_en.json
 
@@ -14,10 +15,17 @@
   const LANG_STORAGE_KEY = "vchoice_lang";
   const SUPPORTED_LANGS = ["fr", "en", "de", "es", "pt", "ptbr", "it", "ko", "ja", "id"];
 
-  // Pour l’instant, popup limitée aux langues vraiment prêtes côté app.
   const LANGUAGE_CHOICES = [
     { code: "fr", label: "Français" },
-    { code: "en", label: "English" }
+    { code: "en", label: "English" },
+    { code: "de", label: "Deutsch" },
+    { code: "es", label: "Español" },
+    { code: "pt", label: "Português" },
+    { code: "ptbr", label: "Português BR" },
+    { code: "it", label: "Italiano" },
+    { code: "ko", label: "한국어" },
+    { code: "ja", label: "日本語" },
+    { code: "id", label: "Bahasa Indonesia" }
   ];
 
   const LANGUAGE_FLAGS = {
@@ -89,6 +97,76 @@
           <circle cx="10.8" cy="8.8" r=".35"></circle>
         </g>
       </svg>
+    `,
+    de: `
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="0" width="30" height="6.666" fill="#111111"></rect>
+        <rect x="0" y="6.666" width="30" height="6.666" fill="#d11f2e"></rect>
+        <rect x="0" y="13.332" width="30" height="6.668" fill="#f1c232"></rect>
+      </svg>
+    `,
+    es: `
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="0" width="30" height="20" fill="#f1c232"></rect>
+        <rect x="0" y="0" width="30" height="4.5" fill="#c81e1e"></rect>
+        <rect x="0" y="15.5" width="30" height="4.5" fill="#c81e1e"></rect>
+      </svg>
+    `,
+    pt: `
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="0" width="12" height="20" fill="#1f7a34"></rect>
+        <rect x="12" y="0" width="18" height="20" fill="#c81e1e"></rect>
+        <circle cx="12.5" cy="10" r="3.2" fill="#f1c232"></circle>
+      </svg>
+    `,
+    ptbr: `
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="0" width="30" height="20" fill="#1f7a34"></rect>
+        <polygon points="15,2 26,10 15,18 4,10" fill="#f1c232"></polygon>
+        <circle cx="15" cy="10" r="4.1" fill="#1f4fbf"></circle>
+      </svg>
+    `,
+    it: `
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="0" width="10" height="20" fill="#1f7a34"></rect>
+        <rect x="10" y="0" width="10" height="20" fill="#ffffff"></rect>
+        <rect x="20" y="0" width="10" height="20" fill="#d11f2e"></rect>
+      </svg>
+    `,
+    ko: `
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="0" width="30" height="20" fill="#ffffff"></rect>
+        <path d="M15 6.2a3.8 3.8 0 0 1 0 7.6a3.8 3.8 0 0 1 0-7.6z" fill="#cd2e3a"></path>
+        <path d="M15 13.8a3.8 3.8 0 0 1 0-7.6a3.8 3.8 0 0 0 0 7.6z" fill="#0047a0"></path>
+
+        <g fill="#111111">
+          <rect x="4" y="3" width="4.3" height="0.8" transform="rotate(-28 4 3)"></rect>
+          <rect x="4.6" y="4.3" width="4.3" height="0.8" transform="rotate(-28 4.6 4.3)"></rect>
+          <rect x="5.2" y="5.6" width="4.3" height="0.8" transform="rotate(-28 5.2 5.6)"></rect>
+
+          <rect x="21.8" y="14.3" width="4.3" height="0.8" transform="rotate(-28 21.8 14.3)"></rect>
+          <rect x="22.4" y="15.6" width="4.3" height="0.8" transform="rotate(-28 22.4 15.6)"></rect>
+          <rect x="23" y="16.9" width="4.3" height="0.8" transform="rotate(-28 23 16.9)"></rect>
+
+          <rect x="22.2" y="3.2" width="4.3" height="0.8" transform="rotate(28 22.2 3.2)"></rect>
+          <rect x="22.8" y="4.5" width="4.3" height="0.8" transform="rotate(28 22.8 4.5)"></rect>
+
+          <rect x="3.8" y="14.1" width="4.3" height="0.8" transform="rotate(28 3.8 14.1)"></rect>
+          <rect x="4.4" y="15.4" width="4.3" height="0.8" transform="rotate(28 4.4 15.4)"></rect>
+        </g>
+      </svg>
+    `,
+    ja: `
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="0" width="30" height="20" fill="#ffffff"></rect>
+        <circle cx="15" cy="10" r="5.2" fill="#c81e1e"></circle>
+      </svg>
+    `,
+    id: `
+      <svg viewBox="0 0 30 20" aria-hidden="true">
+        <rect x="0" y="0" width="30" height="10" fill="#c81e1e"></rect>
+        <rect x="0" y="10" width="30" height="10" fill="#ffffff"></rect>
+      </svg>
     `
   };
 
@@ -159,7 +237,7 @@
     if (stored) return stored;
 
     const detected = _normalizeLang(_detectDeviceLang()) || "en";
-    if (detected === "fr" || detected === "en") return detected;
+    if (detected) return detected;
     return "en";
   }
 
@@ -269,7 +347,9 @@
       }
 
       .vrLangModal{
-        width:min(92vw, 520px);
+        width:min(92vw, 560px);
+        max-height:86vh;
+        overflow:auto;
         background:linear-gradient(180deg, rgba(18,25,43,.98), rgba(11,16,28,.98));
         border:1px solid rgba(255,255,255,.12);
         border-radius:24px;
@@ -288,10 +368,16 @@
 
       .vrLangOverlay .vr-langGrid{
         display:grid;
-        grid-template-columns:repeat(2, minmax(0, 1fr));
+        grid-template-columns:repeat(3, minmax(0, 1fr));
         gap:12px;
         margin-top:6px;
         margin-bottom:6px;
+      }
+
+      @media (min-width: 560px){
+        .vrLangOverlay .vr-langGrid{
+          grid-template-columns:repeat(4, minmax(0, 1fr));
+        }
       }
 
       .vrLangOverlay .vr-langBtn{
