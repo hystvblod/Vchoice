@@ -11,7 +11,14 @@
   (function(){
     try{
       const INTRO_KEY = "vchoice_onboarding_done_v1";
-      if(localStorage.getItem(INTRO_KEY) !== "1"){
+      const LANG_KEY = "vchoice_lang";
+
+      const onboardingDone = localStorage.getItem(INTRO_KEY) === "1";
+      const storedLang = String(localStorage.getItem(LANG_KEY) || "").trim();
+
+      // On ne redirige vers l'intro que si la langue est déjà choisie.
+      // Sinon on laisse index charger i18n.js pour afficher la popup langue.
+      if (!onboardingDone && storedLang) {
         location.href = "game.html?scenario=intro_tuto";
       }
     }catch(_){}
@@ -1367,6 +1374,20 @@
           }
         } catch(e){
           console.error("[i18n early]", e);
+        }
+
+        try {
+          const INTRO_KEY = "vchoice_onboarding_done_v1";
+          const onboardingDone = localStorage.getItem(INTRO_KEY) === "1";
+          const chosenLang = String(localStorage.getItem("vchoice_lang") || "").trim();
+
+          // Après la popup langue, si onboarding pas encore fait, on part vers l'intro.
+          if (!onboardingDone && chosenLang) {
+            window.location.href = "game.html?scenario=intro_tuto";
+            return;
+          }
+        } catch (e) {
+          console.error("[intro redirect after i18n]", e);
         }
 
         try {
