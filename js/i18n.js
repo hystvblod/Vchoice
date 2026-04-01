@@ -444,9 +444,9 @@
       res = await fetch(`${UI_PATH}/ui_en.json`, { cache: "no-store" });
     }
 
-    if (!res.ok) {
-      throw new Error(\`i18n not found for lang=\${requestedLang}\`);
-    }
+  if (!res.ok) {
+  throw new Error(`i18n not found for lang=${requestedLang}`);
+}
 
     _lang = loadedLang;
     _dict = await res.json();
