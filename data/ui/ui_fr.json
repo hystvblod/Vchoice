@@ -33,7 +33,6 @@
     "end_title_good": "Fin bonne",
     "end_title_bad": "Fin mauvaise",
     "end_title_secret": "Fin secrète",
-
     "ending_label_good": "fin bonne",
     "ending_label_bad": "fin mauvaise",
     "ending_label_secret": "fin secrète",
@@ -44,7 +43,6 @@
     "end_add_bonus_wait": "Validation en cours…",
     "end_add_bonus_done": "Bonus +{amount} ajouté",
     "end_add_bonus_error": "Publicité indisponible pour le moment.",
-
     "profile_title": "Profil",
     "profile_subtitle": "Ton solde et tes fins débloquées.",
     "profile_jetons": "Jetons",
@@ -67,15 +65,12 @@
     "profile_username_err_nojeton": "Pas assez de jetons.",
     "profile_username_err_generic": "Impossible de modifier le pseudo.",
     "profile_username_err_cost_failed": "Pseudo changé, mais débit de jeton impossible. Ouvre l’app plus tard pour resynchroniser.",
-
     "aria_back": "Retour",
     "aria_settings": "Paramètres",
     "aria_shop": "Boutique",
-
     "shop_title": "Boutique",
     "settings_title": "Paramètres",
     "page_soon_body": "Bientôt disponible.",
-
     "locked_title": "Choix bloqué",
     "locked_body": "Tu as raté des éléments nécessaires pour débloquer cette voie.",
     "locked_missing": "Il te manque :",
@@ -85,7 +80,6 @@
     "locked_restart_jeton": "Revenir au début — 1 jeton",
     "locked_close": "Fermer",
     "locked_no_back": "Aucun retour possible ici.",
-
     "jeton_not_enough": "Pas assez de jetons.",
     "jeton_title": "Jetons",
     "jeton_balance_label": "Solde :",
@@ -98,14 +92,12 @@
     "jeton_guide_no_path": "Aucun chemin trouvé vers cette fin depuis ici.",
     "jeton_guide_error": "Erreur guide.",
     "jeton_guide_stopped": "Guide arrêté.",
-
     "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans pub.",
     "locked_unlock_jeton": "Dépenser 1 jeton",
     "locked_unlock_ad": "Regarder une pub",
     "locked_unlock_ad_fail": "Publicité indisponible pour le moment.",
     "locked_unlock_no_jetons": "Pas assez de jetons.",
     "locked_unlock_error": "Impossible de débloquer maintenant.",
-
     "scenario_buy": {
       "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec des VCoins, l’acheter directement au prix du store, ou ouvrir la boutique.",
       "pay_prefix": "Débloquer :",
@@ -119,19 +111,16 @@
       "err_buy_failed": "Achat annulé ou impossible.",
       "err_unlock_after_iap": "Achat validé, mais le scénario n’a pas pu être ouvert."
     },
-
     "update_banner_title": "Mise à jour disponible",
     "update_banner_desc": "Une nouvelle version de l’application est disponible.",
     "update_banner_desc_install": "La mise à jour est prête. Tu peux l’installer maintenant.",
     "update_banner_later": "Plus tard",
     "update_banner_update": "Mettre à jour",
     "update_banner_install": "Installer",
-
     "end_congrats": "Bravo, tu as terminé la fin : {ending}.",
     "end_reward": "Bravo, tu as gagné {reward} VCoins.",
     "end_btn_quit": "Quitter",
     "end_double_unavailable": "Publicité indisponible. Tu peux quitter avec la récompense normale.",
-
     "settings_lang_desc": "Choisis la langue. Elle est sauvegardée sur l’appareil et sur ton profil.",
     "settings_lang_label": "Langue",
     "settings_msg_saved": "Langue enregistrée.",
@@ -140,16 +129,13 @@
     "settings_choose_lang_aria": "Choisir la langue : {code}",
     "settings_back_home_aria": "Retour à l’accueil",
     "settings_open_profile_aria": "Ouvrir le profil",
-
     "settings_ads_title": "Publicité",
     "settings_ads_personalized_label": "Publicité personnalisée",
     "settings_ads_personalized_desc": "Autoriser l’utilisation de données pour des pubs plus pertinentes.",
     "settings_ads_saved": "Préférence publicitaire enregistrée.",
-
     "settings_help_title": "Aide",
     "settings_help_email_label": "Contact :",
     "settings_help_email": "help.vboldstudio@gmail.com",
-
     "lang_name": {
       "en": "English",
       "fr": "Français",
@@ -161,23 +147,18 @@
       "ko": "한국어",
       "ja": "日本語"
     },
-
     "ios_enter_title": "Entrer",
     "ios_enter_body": "Tape pour commencer.",
     "ios_enter_btn": "Entrer",
-
     "icon_vcoins_webp": "assets/img/ui/vcoin.webp",
     "icon_jeton_webp": "assets/img/ui/jeton.webp",
-
     "intro_forced_jeton_title": "Objet manquant",
     "intro_forced_jeton_body": "Oups… il te manque {item}.",
     "intro_forced_jeton_note": "Cette pièce sert à débloquer un objet oublié, revenir en arrière, ou activer un guide vers une fin.",
     "intro_forced_jeton_cta": "Débloquer avec",
     "intro_forced_jeton_ok": "Objet débloqué : {item}",
     "intro_forced_jeton_error": "Impossible de débloquer maintenant.",
-
     "intro_end_silence": "Le silence retombe.",
-
     "intro_end_title": "Bravo — tu t’en es sorti",
     "intro_end_line1": "Le silence retombe.",
     "intro_end_line2": "Tu respires.",
@@ -190,7 +171,6 @@
     "intro_end_jetons_b3": "activer le guide vers une fin bonne, mauvaise ou secrète",
     "intro_end_multi_endings": "Chaque scénario a plusieurs fins : une bonne, une mauvaise, et parfois une ou plusieurs secrètes.",
     "intro_end_tip_prefix": "Astuce : si une option est verrouillée, tu peux souvent trouver l’objet ou le débloquer avec",
-
     "shop_watch_ad": "Regarder",
     "shop_buy": "Acheter",
     "shop_cancel": "Annuler",
@@ -198,34 +178,25 @@
     "shop_included": "Inclus",
     "shop_unavailable": "Indisponible",
     "shop_owned_badge": "OK",
-
     "shop_store_title": "Store",
     "shop_reward_jeton_x1": "x1",
     "shop_reward_vcoins_x100": "x100",
-
     "shop_p_jetons12_title": "x12",
     "shop_p_jetons12_desc": "Pack de jetons à utiliser pour débloquer des objets ou certaines actions.",
-
     "shop_p_jetons30_title": "x30",
     "shop_p_jetons30_desc": "Pack de jetons plus avantageux, pour avancer plus vite.",
-
     "shop_p_vcoins1200_title": "1200",
     "shop_p_vcoins1200_desc": "VCoins utilisables pour les achats en jeu et déblocages.",
-
     "shop_p_vcoins3000_title": "3000",
     "shop_p_vcoins3000_desc": "Gros pack de VCoins pour le meilleur ratio.",
-
     "shop_p_noads_title": "",
     "shop_p_noads_desc": "Désactive les publicités interstitielles. Les pubs récompensées restent disponibles.",
-
     "shop_p_diamond_title": "",
     "shop_p_diamond_desc": "Accès Diamond : tous les scénarios actuels et à venir + No Ads. Bonus inclus selon ton pack."
   },
-
   "common": {
     "cancel": "Annuler"
   },
-
   "crosspromo": {
     "reward_prefix": "GAGNER",
     "reward_granted": "Récompense reçue : {amount} VCoins pour l’installation de {app}.",
@@ -268,7 +239,6 @@
       }
     }
   },
-
   "scenarios": {
     "dossier14_appartement": {
       "title": "Appartement 14",
@@ -301,6 +271,19 @@
     "temple_mictlan": {
       "title": "Temple Mictlan",
       "desc": "Fraîchement diplômé, tu pars au Mexique pour étudier une nouvelle zone. Sous la pierre, tu découvres le temple enfoui de la Dame des morts."
+    }
+  },
+  "referral": {
+    "invite_and_earn_title": "Inviter et gagner",
+    "invite_and_earn_btn": "Inviter et gagner",
+    "share_title": "Inviter un ami",
+    "share_text": "Télécharge VChronicles ici : {url}",
+    "link_copied": "Lien copié",
+    "crosspromo_reward_label": "Parrainage",
+    "crosspromo_desc": "Invite un ami à installer VChronicles et gagne 200 VCoins par installation validée, jusqu’à 5 invitations.",
+    "profile_desc": "Partage ton lien d’invitation et gagne des VCoins quand une installation est validée.",
+    "android_only_popup": {
+      "text": "Seule la version Android est disponible pour le moment."
     }
   }
 }
