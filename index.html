@@ -1351,12 +1351,19 @@
       } catch(_) {}
 
       (async () => {
-        let earlyLang = "en";
+        let earlyLang = "";
 
         try {
-          earlyLang = window.VRI18n?.getLang?.() || "en";
+          let storedLang = "";
+          try {
+            storedLang = String(localStorage.getItem("vchoice_lang") || "").trim();
+          } catch (_) {
+            storedLang = "";
+          }
+
           if (window.VRI18n && typeof window.VRI18n.initI18n === "function") {
-            await window.VRI18n.initI18n(earlyLang);
+            await window.VRI18n.initI18n(storedLang || undefined);
+            earlyLang = window.VRI18n?.getLoadedLang?.() || storedLang || "en";
           }
         } catch(e){
           console.error("[i18n early]", e);
