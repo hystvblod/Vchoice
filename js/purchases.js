@@ -1,18 +1,14 @@
 // js/purchases.js
 /* global CdvPurchase */
-// VChoice — IAP minimal “clean”
+// VChoice — IAP robuste
 // - Expose window.VCIAP (et alias VRIAP)
 // - Emit:
 //    vc:iap_price  / vr:iap_price
 //    vc:iap_credited / vr:iap_credited
 // - Anti double-credit + replay local pending
-//
-// ✅ SKU:
-// - 12 jetons, 30 jetons
-// - 500 vcoins, 3000 vcoins
-// - No Ads
-// - ULTRA
-// - Achat direct scénario (1 SKU par scénario)
+// - Guards de démarrage / register / events / init
+// - Extraction token / productId plus robuste
+// - Fallback txId si token absent
 
 (function () {
   "use strict";
@@ -21,19 +17,24 @@
   const log  = (...a) => { if (DEBUG) console.log("[VC-IAP]", ...a); };
   const warn = (...a) => { if (DEBUG) console.warn("[VC-IAP]", ...a); };
 
-  const ENT_NO_ADS_KEY    = "vchoice_ent_no_ads_v1";
-  const ENT_DIAMOND_KEY   = "vchoice_ent_diamond_v1";
-  const ENT_ULTRA_KEY     = "vchoice_ent_ultra_v1";
+  const ENT_NO_ADS_KEY  = "vchoice_ent_no_ads_v1";
+  const ENT_DIAMOND_KEY = "vchoice_ent_diamond_v1";
+  const ENT_ULTRA_KEY   = "vchoice_ent_ultra_v1";
 
   function _lsGet(k){ try { return localStorage.getItem(k); } catch { return null; } }
   function _lsSet(k,v){ try { localStorage.setItem(k, v); } catch(_){} }
 
   function hasUltra(){
-    try{ if (window.VUserData && typeof window.VUserData.hasDiamond === "function" && window.VUserData.hasDiamond()) return true; }catch(_){}
+    try{
+      if (window.VUserData && typeof window.VUserData.hasDiamond === "function" && window.VUserData.hasDiamond()) return true;
+    }catch(_){}
     return (_lsGet(ENT_DIAMOND_KEY) === "1") || (_lsGet(ENT_ULTRA_KEY) === "1");
   }
+
   function hasNoAds(){
-    try{ if (window.VUserData && typeof window.VUserData.hasNoAds === "function" && window.VUserData.hasNoAds()) return true; }catch(_){}
+    try{
+      if (window.VUserData && typeof window.VUserData.hasNoAds === "function" && window.VUserData.hasNoAds()) return true;
+    }catch(_){}
     return hasUltra() || (_lsGet(ENT_NO_ADS_KEY) === "1");
   }
 
@@ -56,7 +57,7 @@
   function setUltraEntitled(on){
     _lsSet(ENT_DIAMOND_KEY, on ? "1" : "0");
     _lsSet(ENT_ULTRA_KEY, on ? "1" : "0");
-    persistEntToUserData({ diamond: !!on, no_ads: !!on ? true : (hasNoAds()) });
+    persistEntToUserData({ diamond: !!on, no_ads: !!on ? true : hasNoAds() });
     if (on) setNoAdsEntitled(true);
   }
 
@@ -78,28 +79,17 @@
   }
 
   const SKU = {
-    vchoice_jetons_12:   { kind: "jetons", amount: 12,   type: "consumable" },
-    vchoice_jetons_30:   { kind: "jetons", amount: 30,   type: "consumable" },
-    vchoice_vcoins_1200:  { kind: "vcoins", amount: 1200,  type: "consumable" },
-    vchoice_vcoins_3000: { kind: "vcoins", amount: 3000, type: "consumable" },
-    vchoice_no_ads:      { kind: "no_ads", amount: 0,    type: "non_consumable" },
-    vchoice_ultra:       { kind: "ultra",  amount: 0,    type: "non_consumable" }
+    vchoice_jetons_12:    { kind: "jetons", amount: 12,   type: "consumable" },
+    vchoice_jetons_30:    { kind: "jetons", amount: 30,   type: "consumable" },
+    vchoice_vcoins_1200:  { kind: "vcoins", amount: 1200, type: "consumable" },
+    vchoice_vcoins_3000:  { kind: "vcoins", amount: 3000, type: "consumable" },
+    vchoice_no_ads:       { kind: "no_ads", amount: 0,    type: "non_consumable" },
+    vchoice_ultra:        { kind: "ultra",  amount: 0,    type: "non_consumable" }
   };
 
   DIRECT_SCENARIO_IDS.forEach((id) => {
     SKU[scenarioSku(id)] = { kind: "scenario", scenario: id, amount: 0, type: "non_consumable" };
   });
-
-  const ULTRA_SCENARIOS_KNOWN = [
-    "dossier14_appartement",
-    "bunker_reserve",
-    "hopital_ferme",
-    "metro_station_zero",
-    "styx_gare",
-    "foret_relais",
-    "chateau_absents",
-    "temple_mictlan"
-  ];
 
   function applyUltraUnlockOverride(){
     try{
@@ -113,6 +103,7 @@
           return orig(id, requiredPack);
         };
       }
+
       ud.__vcUltraPatched = true;
     }catch(_){}
   }
@@ -123,10 +114,20 @@
 
   const PRICES_BY_ID = Object.create(null);
   const IN_FLIGHT_TX = new Set();
+  const FINISHED_TX  = new Set();
 
   const PENDING_KEY  = "vchoice_iap_pending_v1";
   const CREDITED_KEY = "vchoice_iap_credited_v1";
+
   let STORE_READY = false;
+
+  let START_RUNNING      = false;
+  let STORE_REGISTERED   = false;
+  let STORE_EVENTS_WIRED = false;
+  let STORE_INITIALIZED  = false;
+  let STORE_READY_HOOKED = false;
+  let PENDING_REPLAYED   = false;
+  let RESUME_WIRED       = false;
 
   const readJson  = (k, d=[]) => { try { return JSON.parse(localStorage.getItem(k)||"null") ?? d; } catch { return d; } };
   const writeJson = (k, v)    => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
@@ -136,18 +137,21 @@
     const L = readJson(PENDING_KEY, []);
     if (!L.find(x => x.txId === txId)){
       L.push({ txId, productId, ts: Date.now() });
-      writeJson(PENDING_KEY, L.slice(-60));
+      writeJson(PENDING_KEY, L.slice(-80));
     }
   }
+
   function removePending(txId){
     if (!txId) return;
     writeJson(PENDING_KEY, readJson(PENDING_KEY, []).filter(x => x.txId !== txId));
   }
+
   function isCredited(txId){
     if (!txId) return false;
     const L = readJson(CREDITED_KEY, []);
     return L.includes(txId);
   }
+
   function markCredited(txId){
     if (!txId) return;
     const L = readJson(CREDITED_KEY, []);
@@ -176,18 +180,43 @@
       if (!x) return null;
       if (typeof x === "object") return x;
       return JSON.parse(x);
-    }catch{ return null; }
+    }catch{
+      return null;
+    }
+  }
+
+  function parseMaybeBase64Json(x){
+    if (!x || typeof x !== "string") return null;
+    try { return JSON.parse(x); } catch(_) {}
+    try { return JSON.parse(atob(x)); } catch(_) {}
+    return null;
+  }
+
+  function simpleHash(str){
+    const s = String(str || "");
+    let h = 5381;
+    let i = s.length;
+    while (i) h = (h * 33) ^ s.charCodeAt(--i);
+    return (h >>> 0).toString(16);
   }
 
   function getTxIdFromTx(tx){
+    try {
+      if (tx?.transaction?.purchaseToken) return tx.transaction.purchaseToken;
+    } catch(_) {}
+
     try{
       const rec = tx?.transaction?.receipt || tx?.receipt;
-      const r = typeof rec === "string" ? parseMaybeJson(rec) : rec;
+      const r = typeof rec === "string" ? parseMaybeBase64Json(rec) : rec;
+
+      if (r?.purchaseToken) return r.purchaseToken;
+
       if (r?.payload){
-        const p = typeof r.payload === "string" ? parseMaybeJson(r.payload) : r.payload;
+        const p = typeof r.payload === "string" ? parseMaybeBase64Json(r.payload) : r.payload;
         if (p?.purchaseToken) return p.purchaseToken;
       }
     }catch(_){}
+
     return (
       tx?.purchaseToken ||
       tx?.androidPurchaseToken ||
@@ -202,6 +231,7 @@
     let pid =
       tx?.products?.[0]?.id ||
       tx?.productIds?.[0] ||
+      tx?.transaction?.productIds?.[0] ||
       tx?.productId ||
       tx?.sku ||
       tx?.transaction?.productId ||
@@ -209,27 +239,50 @@
       null;
 
     if (!pid){
-      const rec = tx?.transaction?.receipt || tx?.receipt;
-      const r = typeof rec === "string" ? parseMaybeJson(rec) : rec;
-      if (Array.isArray(r?.productIds) && r.productIds[0]) pid = r.productIds[0];
-      else if (r?.productId) pid = r.productId;
-      else if (r?.payload){
-        const p = typeof r.payload === "string" ? parseMaybeJson(r.payload) : r.payload;
-        pid = p?.productId || (Array.isArray(p?.productIds) && p.productIds[0]) || pid;
-      }
+      try{
+        const rec = tx?.transaction?.receipt || tx?.receipt;
+        const r = typeof rec === "string" ? parseMaybeBase64Json(rec) : rec;
+
+        if (Array.isArray(r?.productIds) && r.productIds[0]) pid = r.productIds[0];
+        else if (r?.productId) pid = r.productId;
+        else if (r?.payload){
+          const p = typeof r.payload === "string" ? parseMaybeBase64Json(r.payload) : r.payload;
+          pid =
+            p?.productId ||
+            p?.product_id ||
+            (Array.isArray(p?.productIds) && p.productIds[0]) ||
+            pid;
+        }
+      }catch(_){}
     }
+
     return pid || null;
   }
 
   async function ensureAuthStrict(){
     try { await window.bootstrapAuthAndProfile?.(); } catch(_) {}
+
     try {
       const sb = window.sb;
-      if (sb?.auth?.getUser){
-        const r = await sb.auth.getUser();
-        return r?.data?.user?.id || null;
-      }
+      if (!sb?.auth) return null;
+
+      try{
+        if (sb.auth.getUser){
+          const r = await sb.auth.getUser();
+          const uid = r?.data?.user?.id || null;
+          if (uid) return uid;
+        }
+      } catch(_) {}
+
+      try{
+        if (sb.auth.getSession){
+          const s = await sb.auth.getSession();
+          const uid = s?.data?.session?.user?.id || null;
+          if (uid) return uid;
+        }
+      } catch(_) {}
     } catch(_) {}
+
     return null;
   }
 
@@ -243,7 +296,7 @@
       if (window.VUserData && typeof window.VUserData.grantEntitlement === "function"){
         await window.VUserData.grantEntitlement("diamond", {
           source:"iap",
-          txId: String(txId||""),
+          txId: String(txId || ""),
           productId:"vchoice_ultra"
         });
       }
@@ -305,7 +358,13 @@
     else if (cfg.kind === "no_ads"){
       setNoAdsEntitled(true);
       applyUltraUnlockOverride();
-      try{ await window.VUserData?.grantEntitlement?.("no_ads", { source:"iap", txId:String(txId||""), productId:String(productId||"") }); }catch(_){}
+      try{
+        await window.VUserData?.grantEntitlement?.("no_ads", {
+          source:"iap",
+          txId:String(txId||""),
+          productId:String(productId||"")
+        });
+      }catch(_){}
     }
     else if (cfg.kind === "ultra"){
       await grantUltra(txId);
@@ -326,6 +385,7 @@
       scenarioId: String(cfg.scenario || ""),
       txId: String(txId || "")
     });
+
     emit("vr:iap_credited", {
       productId: String(productId || ""),
       kind: String(cfg.kind || ""),
@@ -351,8 +411,12 @@
     if (!pendings.length) return;
 
     for (const it of pendings){
-      if (!it?.txId || !it?.productId) continue;
-      if (isCredited(it.txId)){ removePending(it.txId); continue; }
+      if (!it?.txId || !it?.productId || it.productId === "unknown") continue;
+
+      if (isCredited(it.txId)){
+        removePending(it.txId);
+        continue;
+      }
 
       try{
         await creditByProductClientSide(it.productId, it.txId);
@@ -365,81 +429,198 @@
 
   async function start(){
     const { S } = getStoreApi();
-    if (!S) return;
+
+    if (!S){
+      let tries = 0;
+      const timer = setInterval(() => {
+        tries++;
+        const g = getStoreApi();
+        if (g.S){
+          clearInterval(timer);
+          start().catch((e) => warn("start retry failed", e?.message || e));
+        }
+        if (tries > 60) clearInterval(timer);
+      }, 600);
+      return;
+    }
+
+    if (START_RUNNING){
+      log("start skipped: already running");
+      return;
+    }
+    START_RUNNING = true;
 
     const GP = getGooglePlayPlatform(S);
     const P = S?.ProductType || window.CdvPurchase?.ProductType;
 
-    ensureAuthStrict().catch(() => {});
-
     try{
-      if (!GP || !P){
-        warn("register failed: GOOGLE_PLAY or ProductType unavailable", { GP, P });
-        return;
+      ensureAuthStrict().catch(() => {});
+
+      try{
+        if (!GP || !P){
+          warn("register failed: GOOGLE_PLAY or ProductType unavailable", { GP, P });
+          return;
+        }
+
+        if (!STORE_REGISTERED){
+          Object.keys(SKU).forEach((id) => {
+            const cfg = SKU[id];
+            const t = (cfg?.type === "non_consumable") ? P.NON_CONSUMABLE : P.CONSUMABLE;
+            S.register({ id, type: t, platform: GP });
+          });
+
+          STORE_REGISTERED = true;
+        }
+      }catch(e){
+        warn("register failed", e?.message || e);
       }
 
-      Object.keys(SKU).forEach((id) => {
-        const cfg = SKU[id];
-        const t = (cfg?.type === "non_consumable") ? P.NON_CONSUMABLE : P.CONSUMABLE;
-        S.register({ id, type: t, platform: GP });
-      });
-    }catch(e){
-      warn("register failed", e?.message || e);
-    }
+      if (!STORE_EVENTS_WIRED){
+        S.error && S.error((err) => {
+          warn("store error", err?.code, err?.message || err);
+        });
 
-    S.when()
-      .productUpdated((p) => {
+        S.when()
+          .productUpdated((p) => {
+            try{
+              const id = p?.id;
+              const price =
+                p?.pricing?.price ||
+                p?.pricing?.formattedPrice ||
+                p?.price ||
+                p?.pricing?.priceString ||
+                null;
+
+              if (id && price){
+                PRICES_BY_ID[id] = String(price);
+                emit("vc:iap_price", { productId: String(id), price: String(price) });
+                emit("vr:iap_price", { productId: String(id), price: String(price) });
+              }
+            }catch(_){}
+          })
+          .approved(async (tx) => {
+            let txId = getTxIdFromTx(tx);
+            const productId = getProductIdFromTx(tx);
+
+            if (!txId){
+              txId = "fallback:" + (
+                tx?.orderId ||
+                tx?.transactionId ||
+                simpleHash(JSON.stringify(tx) || String(Date.now()))
+              );
+              log("approved without purchaseToken, fallback txId =", txId);
+            }
+
+            if (!productId){
+              addPending(txId, "unknown");
+              try { S.update && await S.update(); } catch (_) {}
+              warn("approved without productId, transaction kept for replay", txId);
+              return;
+            }
+
+            if (FINISHED_TX.has(txId)){
+              try { await tx.finish(); } catch(_) {}
+              return;
+            }
+
+            if (IN_FLIGHT_TX.has(txId)){
+              return;
+            }
+
+            if (isCredited(txId)){
+              try { await tx.finish(); } catch(_) {}
+              FINISHED_TX.add(txId);
+              return;
+            }
+
+            IN_FLIGHT_TX.add(txId);
+            addPending(txId, productId);
+
+            try{
+              await creditByProductClientSide(productId, txId);
+              removePending(txId);
+            }catch(e){
+              warn("credit failed", productId, txId, e?.message || e);
+              IN_FLIGHT_TX.delete(txId);
+              return;
+            }
+
+            try{
+              await tx.finish();
+              FINISHED_TX.add(txId);
+            }catch(e){
+              warn("finish failed", e?.message || e);
+            }finally{
+              IN_FLIGHT_TX.delete(txId);
+            }
+          });
+
+        STORE_EVENTS_WIRED = true;
+      }
+
+      if (!PENDING_REPLAYED){
         try{
-          const id = p?.id;
-          const price =
-            p?.pricing?.price ||
-            p?.pricing?.formattedPrice ||
-            p?.price ||
-            p?.pricing?.priceString ||
-            null;
-          if (id && price){
-            PRICES_BY_ID[id] = String(price);
-            emit("vc:iap_price", { productId: String(id), price: String(price) });
-            emit("vr:iap_price", { productId: String(id), price: String(price) });
-          }
+          await replayLocalPending();
+          PENDING_REPLAYED = true;
         }catch(_){}
-      })
-      .approved(async (tx) => {
-        const txId = getTxIdFromTx(tx);
-        const productId = getProductIdFromTx(tx);
-        if (!productId) return;
+      }
 
-        if (txId && (IN_FLIGHT_TX.has(txId) || isCredited(txId))){
-          try { await tx.finish(); } catch(_) {}
-          return;
-        }
-
-        if (txId){
-          IN_FLIGHT_TX.add(txId);
-          addPending(txId, productId);
-        }
-
+      if (!STORE_INITIALIZED){
         try{
-          await creditByProductClientSide(productId, txId);
-          removePending(txId);
+          await S.initialize([GP]);
+          STORE_INITIALIZED = true;
+          STORE_READY = true;
         }catch(e){
-          warn("credit failed", productId, txId, e?.message || e);
-          if (txId) IN_FLIGHT_TX.delete(txId);
-          return;
+          warn("store init failed", e?.message || e);
         }
+      }
 
-        try { await tx.finish(); } catch(e){ warn("finish failed", e?.message || e); }
-        if (txId) IN_FLIGHT_TX.delete(txId);
-      });
+      if (!STORE_READY_HOOKED && typeof S.ready === "function"){
+        STORE_READY_HOOKED = true;
+        try{
+          S.ready(async () => {
+            STORE_READY = true;
 
-    try{ await replayLocalPending(); }catch(_){}
+            try{
+              Object.keys(SKU).forEach((id) => {
+                const p = S.get ? S.get(id, GP) : (S.products?.byId?.[id]);
+                const price =
+                  p?.pricing?.price ||
+                  p?.price ||
+                  p?.pricing?.formattedPrice ||
+                  p?.pricing?.priceString ||
+                  null;
 
-    try{
-      await S.initialize([GP]);
-      await S.update();
-      STORE_READY = true;
-    }catch(e){
-      warn("store init/update failed", e?.message || e);
+                if (price) PRICES_BY_ID[id] = String(price);
+              });
+            }catch(_){}
+
+            try { await replayLocalPending(); } catch(_) {}
+            try { S.update && await S.update(); } catch(_) {}
+          });
+        }catch(e){
+          warn("store ready hook failed", e?.message || e);
+        }
+      }
+
+      try{
+        await S.update();
+        STORE_READY = true;
+      }catch(e){
+        warn("store update failed", e?.message || e);
+      }
+
+      if (!RESUME_WIRED){
+        RESUME_WIRED = true;
+        document.addEventListener("resume", async () => {
+          try { await ensureAuthStrict(); } catch(_) {}
+          try { S.update ? await S.update() : (S.refresh && await S.refresh()); } catch(_) {}
+          try { await replayLocalPending(); } catch(_) {}
+        });
+      }
+
+    } finally {
+      START_RUNNING = false;
     }
   }
 
@@ -456,10 +637,19 @@
     await ensureAuthStrict();
 
     if (!STORE_READY){
-      try{ await S.update(); STORE_READY = true; }catch(_){}
+      try{
+        await S.update();
+        STORE_READY = true;
+      }catch(_){}
     }
 
-    const p = S.get ? S.get(productId, GP) : (S.products?.byId?.[productId]);
+    let p = S.get ? S.get(productId, GP) : (S.products?.byId?.[productId]);
+
+    if (!p){
+      try { await S.update(); } catch(_) {}
+      p = S.get ? S.get(productId, GP) : (S.products?.byId?.[productId]);
+    }
+
     if (!p){
       emit("vc:iap_order_failed", { productId: String(productId || ""), error: "product_not_found" });
       emit("vr:iap_order_failed", { productId: String(productId || ""), error: "product_not_found" });
@@ -472,12 +662,22 @@
     else if (p?.order) err = await p.order();
 
     if (err?.isError){
-      emit("vc:iap_order_failed", { productId: String(productId || ""), error: String(err.message || err.code || "order_error") });
-      emit("vr:iap_order_failed", { productId: String(productId || ""), error: String(err.message || err.code || "order_error") });
+      const msg = String(err.message || err.code || "order_error");
+      emit("vc:iap_order_failed", { productId: String(productId || ""), error: msg });
+      emit("vr:iap_order_failed", { productId: String(productId || ""), error: msg });
     }
   }
 
+  window.restorePurchases = async function(){
+    try{
+      await replayLocalPending();
+      const { S } = getStoreApi();
+      if (S?.update) await S.update();
+    }catch(_){}
+  };
+
   window.safeOrder = safeOrder;
+  window.buyProduct = safeOrder;
 
   function startWhenReady(){
     const fire = () => { start().catch((e) => warn("start failed", e?.message || e)); };
@@ -489,14 +689,17 @@
       )) ||
       window._cordovaReady === true;
 
-    if (already) fire();
-    else {
+    if (already){
+      fire();
+    } else {
       document.addEventListener("deviceready", function () {
         window._cordovaReady = true;
         fire();
-      }, { once: true });
+      }, { once:true });
 
-      setTimeout(() => { if (window._cordovaReady) fire(); }, 1200);
+      setTimeout(() => {
+        fire();
+      }, 1200);
     }
   }
 
