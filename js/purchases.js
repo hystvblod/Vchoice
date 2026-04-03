@@ -342,6 +342,10 @@
     return { S };
   }
 
+  function getGooglePlayPlatform(S){
+    return S?.Platform?.GOOGLE_PLAY || window.CdvPurchase?.Platform?.GOOGLE_PLAY || null;
+  }
+
   async function replayLocalPending(){
     const pendings = readJson(PENDING_KEY, []);
     if (!pendings.length) return;
@@ -363,15 +367,21 @@
     const { S } = getStoreApi();
     if (!S) return;
 
-    await ensureAuthStrict();
+    const GP = getGooglePlayPlatform(S);
+    const P = S?.ProductType || window.CdvPurchase?.ProductType;
+
+    ensureAuthStrict().catch(() => {});
 
     try{
-      const P = window.CdvPurchase?.ProductType;
+      if (!GP || !P){
+        warn("register failed: GOOGLE_PLAY or ProductType unavailable", { GP, P });
+        return;
+      }
 
       Object.keys(SKU).forEach((id) => {
         const cfg = SKU[id];
         const t = (cfg?.type === "non_consumable") ? P.NON_CONSUMABLE : P.CONSUMABLE;
-        S.register({ id, type: t, platform: S.Platform.GOOGLE_PLAY });
+        S.register({ id, type: t, platform: GP });
       });
     }catch(e){
       warn("register failed", e?.message || e);
@@ -381,7 +391,12 @@
       .productUpdated((p) => {
         try{
           const id = p?.id;
-          const price = p?.pricing?.price || p?.pricing?.formattedPrice || null;
+          const price =
+            p?.pricing?.price ||
+            p?.pricing?.formattedPrice ||
+            p?.price ||
+            p?.pricing?.priceString ||
+            null;
           if (id && price){
             PRICES_BY_ID[id] = String(price);
             emit("vc:iap_price", { productId: String(id), price: String(price) });
@@ -420,7 +435,7 @@
     try{ await replayLocalPending(); }catch(_){}
 
     try{
-      await S.initialize([S.Platform.GOOGLE_PLAY]);
+      await S.initialize([GP]);
       await S.update();
       STORE_READY = true;
     }catch(e){
@@ -436,13 +451,15 @@
       return;
     }
 
+    const GP = getGooglePlayPlatform(S);
+
     await ensureAuthStrict();
 
     if (!STORE_READY){
       try{ await S.update(); STORE_READY = true; }catch(_){}
     }
 
-    const p = S.get ? S.get(productId, S.Platform.GOOGLE_PLAY) : (S.products?.byId?.[productId]);
+    const p = S.get ? S.get(productId, GP) : (S.products?.byId?.[productId]);
     if (!p){
       emit("vc:iap_order_failed", { productId: String(productId || ""), error: "product_not_found" });
       emit("vr:iap_order_failed", { productId: String(productId || ""), error: "product_not_found" });
