@@ -32,7 +32,7 @@
     "hf.s04.body": "Ton téléphone affiche zéro barre. Puis l’écran s’allume seul : « Service de garde : présent ». Tu lèves les yeux. Une fenêtre vient de s’éteindre au deuxième.",
     "hf.s04.c1": "Retourner à la grille",
     "hf.s04.c2": "Entrer dans le hall",
-    "hf.s04.c3": "Entrer en suivant la fenêtre du regard jusqu’au couloir si tu veux préparer la scène suivante.",
+    "hf.s04.c3": "Entrer en suivant la fenêtre du regard jusqu’au couloir",
 
     "hf.s05.title": "Le hall",
     "hf.s05.body": "Une odeur de chlore chaud flotte dans l’air. Le carrelage est humide au centre, comme si quelqu’un venait de passer la serpillière. Tout est trop propre pour un lieu fermé.",
@@ -67,19 +67,19 @@
     "hf.s10.title": "Badge « Patient »",
     "hf.s10.body": "Une imprimante crache un badge papier : « PATIENT — GARDE ». Il y a ta taille, ton poids… des chiffres exacts. Beaucoup trop exacts.",
     "hf.s10.c1": "Accrocher le badge",
-    "hf.s10.c2": "Le glisser dans ta poche",
+    "hf.s10.c2": "Le glisser dans ta poche puis suivre la flèche vers les chambres",
     "hf.s10.c3": "Le déchirer",
 
     "hf.s11.title": "Chambre 14",
     "hf.s11.body": "Le lit est défait, encore tiède près de l’oreiller. Sur la tablette : un bracelet patient. Le moniteur cardiaque est éteint, mais ses LEDs clignotent lentement.",
     "hf.s11.c1": "Prendre le bracelet sur la tablette",
-    "hf.s11.c2": "Appuyer sur le bouton d’appel",
+    "hf.s11.c2": "Appuyer sur le bouton d’appel et suivre le bruit dans le couloir",
     "hf.s11.c3": "Sortir tout de suite",
 
     "hf.s12.title": "Bracelet tiède",
     "hf.s12.body": "Le bracelet est à ton nom. Quand tu le touches, tu sens une légère vibration dans le plastique.",
     "hf.s12.c1": "Le mettre au poignet",
-    "hf.s12.c2": "Le mettre dans ta poche",
+    "hf.s12.c2": "Le mettre dans ta poche et suivre le couloir jusqu’au bureau",
     "hf.s12.c3": "Le laisser là",
 
     "hf.s13.title": "L’ascenseur figé",
@@ -114,7 +114,7 @@
 
     "hf.s18.title": "Bureau du médecin",
     "hf.s18.body": "Le bureau est trop bien rangé. Un dictaphone est posé au centre, cassette dedans. Une note : « Ne pas laisser le patient sortir sans preuve. »",
-    "hf.s18.c1": "Passer par la porte entrouverte",
+    "hf.s18.c1": "Passer par la porte entrouverte vers l’escalier",
     "hf.s18.c2": "Prendre la cassette",
     "hf.s18.c3": "Chercher un plan dans les tiroirs",
 
@@ -133,7 +133,7 @@
     "hf.s21.title": "Niveau -1",
     "hf.s21.body": "Des tuyaux ruissellent. Au bout, une porte « SÉCURITÉ ». Plus loin, une autre : « SURVEILLANCE ». La lumière semble venir du sol.",
     "hf.s21.c1": "Aller au poste de sécurité",
-    "hf.s21.c2": "Tenter la porte « Surveillance »",
+    "hf.s21.c2": "Tenter d’ouvrir la porte « Surveillance »",
     "hf.s21.c3": "Revenir à l’escalier",
 
     "hf.s22.title": "Poste de sécurité",
@@ -191,7 +191,7 @@
     "hf.s30.c3": "Observer derrière la vitre",
 
     "hf.s31.title": "Plateau d’instruments",
-    "hf.s31.body": "Les instruments sont alignés. Une paire de gants est posée sur le bord, encore brillante, comme fraîchement sortie de l’emballage.",
+    "hf.s31.body": "Les instruments sont alignés. Une paire de gants est posée sur le bord, encore propres, comme sorties à l’instant de l’emballage.",
     "hf.s31.c1": "Toucher le métal",
     "hf.s31.c2": "Prendre les gants et reculer",
     "hf.s31.c3": "Reculer sans rien toucher",
@@ -296,7 +296,7 @@
     "hf.s48.body": "Tu avances vers la grille. Le métal est froid. Derrière toi, la porte de la cour se referme lentement, sans bruit. Tout devient anormalement silencieux.",
     "hf.s48.c1": "Pousser la grille et ne pas regarder derrière",
     "hf.s48.c2": "Te retourner",
-    "hf.s48.c3": "Revenir chercher le dossier",
+    "hf.s48.c3": "Revenir aux archives",
 
     "hf.end_good.title": "Fin — Sortie",
     "hf.end_good.body": "Tu passes la grille. L’air du matin te fait mal aux poumons. Derrière, l’hôpital reste parfaitement immobile. Tu ne sais pas encore tout. Mais une chose est sûre : cette nuit ne te quittera plus.",
