@@ -65,13 +65,13 @@
     "hf.s09.c3": "Ignorer et repartir au couloir",
 
     "hf.s10.title": "Badge « Patient »",
-    "hf.s10.body": "Une imprimante crache un badge papier : « PATIENT — GARDE ». Il y a ta taille, ton poids… des chiffres justes. Trop justes.",
+    "hf.s10.body": "Une imprimante crache un badge papier : « PATIENT — GARDE ». Il y a ta taille, ton poids… des chiffres exacts. Beaucoup trop exacts.",
     "hf.s10.c1": "Accrocher le badge",
-    "hf.s10.c2": "Le plier et le garder",
+    "hf.s10.c2": "Le glisser dans ta poche",
     "hf.s10.c3": "Le déchirer",
 
     "hf.s11.title": "Chambre 14",
-    "hf.s11.body": "Le lit est défait, encore tiède côté oreiller. Sur la tablette : un bracelet patient. Le moniteur cardiaque est éteint, mais ses LEDs clignotent lentement.",
+    "hf.s11.body": "Le lit est défait, encore tiède près de l’oreiller. Sur la tablette : un bracelet patient. Le moniteur cardiaque est éteint, mais ses LEDs clignotent lentement.",
     "hf.s11.c1": "Prendre le bracelet sur la tablette",
     "hf.s11.c2": "Appuyer sur le bouton d’appel",
     "hf.s11.c3": "Sortir tout de suite",
@@ -79,11 +79,11 @@
     "hf.s12.title": "Bracelet tiède",
     "hf.s12.body": "Le bracelet est à ton nom. Quand tu le touches, tu sens une légère vibration dans le plastique.",
     "hf.s12.c1": "Le mettre au poignet",
-    "hf.s12.c2": "Le garder dans ta poche",
+    "hf.s12.c2": "Le mettre dans ta poche",
     "hf.s12.c3": "Le laisser là",
 
     "hf.s13.title": "L’ascenseur figé",
-    "hf.s13.body": "Les portes d’ascenseur sont entrouvertes sur le noir. Le bouton « –1 » est griffé, comme quelqu’un a essayé de l’arracher. Une odeur métallique sort de la cabine.",
+    "hf.s13.body": "Les portes d’ascenseur sont entrouvertes sur le noir. Le bouton « –1 » est griffé, comme si quelqu’un avait essayé de l’arracher. Une odeur métallique sort de la cabine.",
     "hf.s13.c1": "Tenter de forcer l’ouverture",
     "hf.s13.c2": "Appuyer sur « –1 »",
     "hf.s13.c3": "Revenir au comptoir",
@@ -98,12 +98,12 @@
     "hf.s15.body": "Le cliché montre un thorax… et, au centre, un rectangle sombre : l’emplacement exact d’un dossier cartonné. En bas, un tampon : « PATIENT 0 — ARCHIVES ».",
     "hf.s15.c1": "Noter « Archives » et reculer",
     "hf.s15.c2": "Aller chercher les archives",
-    "hf.s15.c3": "Suivre la lueur",
+    "hf.s15.c3": "Suivre la lumière au fond du couloir",
 
     "hf.s16.title": "La chapelle",
     "hf.s16.body": "Dans une niche, trois bougies brûlent encore, cire fraîche. Un carnet de prières est ouvert à une page vide, sauf une phrase : « GARDE = TOI ».",
     "hf.s16.c1": "Revenir à la radiologie",
-    "hf.s16.c2": "Suivre le silence vers un bureau",
+    "hf.s16.c2": "Suivre le couloir silencieux jusqu’au bureau",
     "hf.s16.c3": "Retourner au couloir",
 
     "hf.s17.title": "Porte « Consultations »",
@@ -113,7 +113,7 @@
     "hf.s17.c3": "Reculer vers les chambres",
 
     "hf.s18.title": "Bureau du médecin",
-    "hf.s18.body": "Le bureau est rangé, trop. Un dictaphone est posé au centre, cassette dedans. Une note : « Ne pas laisser le patient sortir sans preuve. »",
+    "hf.s18.body": "Le bureau est trop bien rangé. Un dictaphone est posé au centre, cassette dedans. Une note : « Ne pas laisser le patient sortir sans preuve. »",
     "hf.s18.c1": "Suivre une porte entrouverte",
     "hf.s18.c2": "Prendre la cassette",
     "hf.s18.c3": "Chercher un plan dans les tiroirs",
@@ -143,7 +143,7 @@
     "hf.s22.c3": "Fouiller l’armoire métallique",
 
     "hf.s23.title": "Plan d’évacuation",
-    "hf.s23.body": "Le plan indique : « SORTIE COUR INTÉRIEURE ». Une annotation au marqueur : « Sans preuve, retour au bloc. » Tu sens que c’est écrit pour toi.",
+    "hf.s23.body": "Le plan indique : « SORTIE COUR INTÉRIEURE ». Une annotation au marqueur : « Sans preuve, retour au bloc. » Tu as l’impression que ce message t’est destiné.",
     "hf.s23.c1": "Aller vers la cour intérieure",
     "hf.s23.c2": "Aller aux archives",
     "hf.s23.c3": "Retourner au poste de sécurité",
@@ -155,14 +155,14 @@
     "hf.s24.c3": "Revenir au plan d’évacuation",
 
     "hf.s25.title": "Archives",
-    "hf.s25.body": "Des étagères hautes. Des boîtes. Des dossiers. Et, sur une table, un classeur ouvert à une page blanche. La poussière est trouée par des traces de doigts récentes.",
+    "hf.s25.body": "Des étagères hautes. Des boîtes. Des dossiers. Et, sur une table, un classeur ouvert à une page blanche. La poussière est marquée par des traces de doigts récentes.",
     "hf.s25.c1": "Chercher « Patient 0 »",
     "hf.s25.c2": "Fouiller les rayonnages au hasard",
     "hf.s25.c3": "Chercher une autre issue",
 
     "hf.s26.title": "Dossiers qui respirent",
     "hf.s26.body": "Les dossiers semblent se gonfler légèrement. Chaque fois que tu inspires, un classeur se soulève un peu.",
-    "hf.s26.c1": "Tirer le dossier le plus « vivant »",
+    "hf.s26.c1": "Tirer le dossier qui bouge le plus",
     "hf.s26.c2": "Partir vers la surveillance",
     "hf.s26.c3": "Revenir aux étagères",
 
@@ -170,7 +170,7 @@
     "hf.s27.body": "Tu trouves enfin : « PATIENT 0 ». Sur l’étiquette : ton nom. En dessous, une date… demain. Le carton est froid, malgré l’air humide.",
     "hf.s27.c1": "Ouvrir le dossier",
     "hf.s27.c2": "Le laisser et reculer",
-    "hf.s27.c3": "L’emporter vers toi et prendre la porte de gauche",
+    "hf.s27.c3": "Prendre le dossier avec toi et passer par la porte de gauche",
 
     "hf.s28.title": "Salle de surveillance",
     "hf.s28.body": "Les écrans montrent les couloirs. Sur l’un, tu te vois… mais avec une seconde de retard. Le décalage est toujours le même.",
@@ -209,9 +209,9 @@
     "hf.s33.c3": "Chercher les vestiaires",
 
     "hf.s34.title": "Vestiaires",
-    "hf.s34.body": "Des casiers. Des blouses. Et, dans un casier entrouvert, un badge au nom illisible. Tu entends un stylo écrire derrière une porte.",
+    "hf.s34.body": "Des casiers. Des blouses. Et, dans un casier entrouvert, un badge au nom illisible. Tu entends le bruit d’un stylo derrière une porte.",
     "hf.s34.c1": "Ouvrir le casier « Interne »",
-    "hf.s34.c2": "Prendre une blouse et prendre la porte de droite",
+    "hf.s34.c2": "Prendre une blouse et passer par la porte de droite",
     "hf.s34.c3": "Revenir au couloir des brancards",
 
     "hf.s35.title": "Salle des déchets",
@@ -227,7 +227,7 @@
     "hf.s36.c3": "Décrocher le téléphone mural",
 
     "hf.s37.title": "Dossier Patient 0",
-    "hf.s37.body": "Dans le tiroir : un dossier cartonné. Pas de corps. Juste ton dossier, posé comme un paquet. Sur la première page : « ÉTAT : EN COURS ».",
+    "hf.s37.body": "Dans le tiroir : un dossier cartonné. Pas de corps. Juste ton dossier, posé là à la place d’un corps. Sur la première page : « ÉTAT : EN COURS ».",
     "hf.s37.c1": "Prendre le dossier avec toi",
     "hf.s37.c2": "Le laisser et reculer",
     "hf.s37.c3": "Chercher la salle « Validation »",
@@ -256,7 +256,7 @@
     "hf.s41.c2": "Retourner dans la cour",
     "hf.s41.c3": "Regarder les fenêtres du deuxième étage",
 
-    "hf.s42.title": "Le travailleur",
+    "hf.s42.title": "La silhouette en blouse",
     "hf.s42.body": "Au fond du couloir visible par une porte vitrée, quelqu’un passe, en blouse. Tu ne vois pas son visage. Il pousse un chariot. Comme si la garde continuait.",
     "hf.s42.c1": "Le suivre discrètement",
     "hf.s42.c2": "L’interpeller",
@@ -269,7 +269,7 @@
     "hf.s43.c3": "Fuir vers la sortie",
 
     "hf.s44.title": "Mise en place",
-    "hf.s44.body": "Tu sens des sangles. Le bip devient plus fort. Une phrase s’inscrit quelque part : « Sans preuve, retour au bloc. » Tu cherches ta respiration.",
+    "hf.s44.body": "Tu sens des sangles. Le bip devient plus fort. Une phrase s’inscrit quelque part : « Sans preuve, retour au bloc. » Tu essaies de reprendre ton souffle.",
     "hf.s44.c1": "Fermer les yeux",
     "hf.s44.c2": "Te débattre",
     "hf.s44.c3": "Montrer une preuve",
@@ -296,7 +296,7 @@
     "hf.s48.body": "Tu avances vers la grille. Le métal est froid. Derrière toi, la porte de la cour se referme lentement, sans bruit. Tout devient anormalement silencieux.",
     "hf.s48.c1": "Pousser la grille et ne pas regarder derrière",
     "hf.s48.c2": "Te retourner",
-    "hf.s48.c3": "Revenir chercher « quelque chose »",
+    "hf.s48.c3": "Revenir chercher le dossier",
 
     "hf.end_good.title": "Fin — Sortie",
     "hf.end_good.body": "Tu passes la grille. L’air du matin te fait mal aux poumons. Derrière, l’hôpital reste parfaitement immobile. Tu ne sais pas encore tout. Mais une chose est sûre : cette nuit ne te quittera plus.",
