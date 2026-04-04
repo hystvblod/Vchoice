@@ -11,7 +11,7 @@
     "hf.tagline": "Dans un hôpital fermé depuis des années, ton nom apparaît déjà dans les registres. Entre badge patient, chambre 14 et salles encore allumées, tout indique que ta venue était prévue.",
 
     "hf.s01.title": "La grille",
-    "hf.s01.body": "La grille est fermée, mais la chaîne pend, comme coupée récemment. Derrière, l’hôpital est presque entièrement dans le noir. Un néon clignote une seconde sur deux.",
+    "hf.s01.body": "La grille est fermée, mais la chaîne pend, comme coupée récemment. Derrière, l’hôpital est presque entièrement dans le noir. Un néon clignote une fois sur deux.",
     "hf.s01.c1": "Passer la grille quand même",
     "hf.s01.c2": "Lire le panneau d’interdiction",
     "hf.s01.c3": "Appeler quelqu’un",
@@ -32,10 +32,10 @@
     "hf.s04.body": "Ton téléphone affiche zéro barre. Puis l’écran s’allume seul : « Service de garde : présent ». Tu lèves les yeux. Une fenêtre vient de s’éteindre au deuxième.",
     "hf.s04.c1": "Retourner à la grille",
     "hf.s04.c2": "Entrer dans le hall",
-    "hf.s04.c3": "Entrer en suivant la fenêtre du regard",
+    "hf.s04.c3": "Entrer en suivant la fenêtre du regard jusqu’au couloir si tu veux préparer la scène suivante.",
 
     "hf.s05.title": "Le hall",
-    "hf.s05.body": "L’air sent le chlore chaud. Le carrelage est humide au centre, comme si quelqu’un venait de passer la serpillière. Tout est trop propre pour un lieu fermé.",
+    "hf.s05.body": "Une odeur de chlore chaud flotte dans l’air. Le carrelage est humide au centre, comme si quelqu’un venait de passer la serpillière. Tout est trop propre pour un lieu fermé.",
     "hf.s05.c1": "Aller au comptoir d’accueil",
     "hf.s05.c2": "Suivre le couloir principal",
     "hf.s05.c3": "Ressortir",
@@ -89,7 +89,7 @@
     "hf.s13.c3": "Revenir au comptoir",
 
     "hf.s14.title": "Radiologie",
-    "hf.s14.body": "La machine est en veille. Un écran affiche un cliché déjà chargé, comme si on t’attendait. Le bourdonnement est trop régulier pour être un simple appareil.",
+    "hf.s14.body": "La machine est en veille. Un écran affiche un cliché déjà chargé, comme si on t’attendait. Le bourdonnement est trop régulier pour venir d’un simple appareil en veille.",
     "hf.s14.c1": "Regarder le cliché à l’écran",
     "hf.s14.c2": "Chercher une sortie vers « Consultations »",
     "hf.s14.c3": "Retourner au couloir principal",
@@ -114,7 +114,7 @@
 
     "hf.s18.title": "Bureau du médecin",
     "hf.s18.body": "Le bureau est trop bien rangé. Un dictaphone est posé au centre, cassette dedans. Une note : « Ne pas laisser le patient sortir sans preuve. »",
-    "hf.s18.c1": "Suivre une porte entrouverte",
+    "hf.s18.c1": "Passer par la porte entrouverte",
     "hf.s18.c2": "Prendre la cassette",
     "hf.s18.c3": "Chercher un plan dans les tiroirs",
 
@@ -140,7 +140,7 @@
     "hf.s22.body": "Les écrans sont noirs, mais le ventilateur tourne. Sur un crochet : des cartes d’accès. Au mur, un plan d’évacuation avec une sortie vers la cour.",
     "hf.s22.c1": "Prendre une carte d’accès",
     "hf.s22.c2": "Redémarrer un moniteur",
-    "hf.s22.c3": "Fouiller l’armoire métallique",
+    "hf.s22.c3": "Fouiller l’armoire métallique puis passer par la porte de service",
 
     "hf.s23.title": "Plan d’évacuation",
     "hf.s23.body": "Le plan indique : « SORTIE COUR INTÉRIEURE ». Une annotation au marqueur : « Sans preuve, retour au bloc. » Tu as l’impression que ce message t’est destiné.",
@@ -242,7 +242,7 @@
     "hf.s39.body": "Une porte « SORTIE » avec une barre anti-panique. De l’autre côté : l’air froid. Mais aussi… un très léger bruit de clavier.",
     "hf.s39.c1": "Pousser la barre et sortir",
     "hf.s39.c2": "Revenir aux brancards",
-    "hf.s39.c3": "Écouter collé à la porte et sortir si silencieux",
+    "hf.s39.c3": "Coller l’oreille à la porte, puis sortir si tout reste calme",
 
     "hf.s40.title": "La cour intérieure",
     "hf.s40.body": "Tu es dehors, dans la cour. Les murs sont trop hauts. La sortie grillagée vers la rue est là… mais la serrure semble neuve, brillante.",
