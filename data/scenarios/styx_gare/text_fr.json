@@ -117,7 +117,7 @@
     "styx.s16.c3": "Fixer la silhouette",
 
     "styx.s17.title": "Silhouette",
-    "styx.s17.body": "La silhouette ne bouge pas. Elle n’a pas de visage. Elle a… une posture, comme un agent qui attend la fin d’un contrôle.\n\nQuand tu clignes des yeux, elle est un peu plus près.",
+    "styx.s17.body": "La silhouette ne bouge pas. Elle n’a pas de visage. Juste une posture, comme un agent qui attend la fin d’un contrôle.\n\nQuand tu clignes des yeux, elle est un peu plus près.",
     "styx.s17.c1": "Aller vers elle",
     "styx.s17.c2": "Fuir vers l’escalier",
     "styx.s17.c3": "Revenir lentement",
@@ -146,7 +146,7 @@
     "styx.s21.c2": "Dire que tu acceptes ton sort",
     "styx.s21.c3": "Prétexter un malentendu et partir",
 
-    "styx.s22.title": "Escalier vers le sous-sols",
+    "styx.s22.title": "Escalier vers le sous-sol",
     "styx.s22.body": "Un escalier descend vers un sous-sol. Les murs sont humides. La brume noire devient plus dense et colle aux marches.\n\nUne inscription grattée sur la rambarde : « ACHÉRON ».",
     "styx.s22.c1": "Descendre",
     "styx.s22.c2": "Revenir au quai",
@@ -179,7 +179,7 @@
     "styx.s26.c3": "Revenir en arrière",
 
     "styx.s27.title": "Au milieu",
-    "styx.s27.body": "Au centre de la passerelle, tu as l’impression exacte d’être pesé. Pas par un regard. Par une règle.\n\nTon cœur bat trop fort, comme s’il voulait prouver quelque chose.",
+    "styx.s27.body": "Au centre de la passerelle, tu as l’impression d’être évalué. Pas par un regard, mais par une règle invisible.\n\nTon cœur bat trop fort, comme s’il voulait prouver quelque chose.",
     "styx.s27.c1": "Continuer jusqu’au bout",
     "styx.s27.c2": "Regarder dans l’eau",
     "styx.s27.c3": "Revenir",
@@ -225,7 +225,7 @@
     "styx.s33.c3": "Revenir à la porte précédente",
 
     "styx.s34.title": "L’ombre à trois têtes",
-    "styx.s34.body": "Sur le mur, une ombre gigantesque : un chien à trois têtes, mais sans corps visible. La lumière projette la menace comme une annonce.\n\nQuelque chose garde ce seuil.",
+    "styx.s34.body": "Sur le mur, une ombre gigantesque : un chien à trois têtes, mais sans corps visible. La lumière projette cette menace sur le mur, comme si la gare voulait te prévenir.\n\nQuelque chose garde ce seuil.",
     "styx.s34.c1": "Avancer malgré l’ombre",
     "styx.s34.c2": "Reculer lentement",
     "styx.s34.c3": "Retourner vers la passerelle",
@@ -239,7 +239,7 @@
     "styx.s36.title": "Cabine vide",
     "styx.s36.body": "Tu trouves une cabine de conducteur ancienne, vide. Leviers en métal, cadrans analogiques. Tout est éteint.\n\nUn siège attend. Trop propre. Trop prêt.",
     "styx.s36.c1": "Entrer et examiner les leviers",
-    "styx.s36.c2": "Reculer, mauvais pressentiment",
+    "styx.s36.c2": "Sortir de la cabine et suivre une porte technique",
     "styx.s36.c3": "Retourner sur le quai",
 
     "styx.s37.title": "Poste de conduite",
@@ -250,7 +250,7 @@
 
     "styx.s38.title": "Casquette noire",
     "styx.s38.body": "Une casquette de conducteur, noire, posée seule. Elle ne porte aucun badge. Pas de nom.\n\nQuand tu la prends, tu sens une autorité froide te traverser.",
-    "styx.s38.c1": "La garder dans ta main",
+    "styx.s38.c1": "La garder dans ta main et retourner à la salle de contrôle",
     "styx.s38.c2": "La mettre",
     "styx.s38.c3": "La laisser et partir",
 
@@ -303,7 +303,7 @@
     "styx.h.s45.strong": "Si tu actives la cabine avec la casquette, tu ouvres la voie de la fin secrète.",
 
     "styx.s46.title": "La gare répond",
-    "styx.s46.body": "Un grondement roule dans les murs. Les rails vibrent. Tu as déclenché quelque chose.\n\nTu sens une règle se fixer sur toi : si tu conduis, tu deviens responsable des arrivées.",
+    "styx.s46.body": "Un grondement roule dans les murs. Les rails vibrent. Tu as déclenché quelque chose.\n\nTu sens qu’une règle s’applique à toi désormais : si tu conduis, tu deviens responsable des arrivées.",
     "styx.s46.c1": "Assumer et continuer",
     "styx.s46.c2": "Retourner vers le contrôleur",
     "styx.s46.c3": "Tout arrêter et revenir à la salle",

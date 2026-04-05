@@ -997,7 +997,7 @@
       "choices": [
         {
           "choice_key": "styx.s41.c1",
-          "next": "s42"
+          "next": "s40"
         },
         {
           "choice_key": "styx.s41.c2",
