@@ -1,4 +1,4 @@
-﻿{
+{
   "meta": {
     "scenario_id": "chateau_absents",
     "language": "fr",
@@ -13,7 +13,7 @@
     "ca.s01.body": "Tu coupes le moteur. Le château domine la colline, massif et muet. Le vent sent la pierre mouillée, comme une cave ouverte.",
     "ca.s01.c1": "Monter vers le portail",
     "ca.s01.c2": "Faire le tour par les arbres",
-    "ca.s01.c3": "Observer la cour de loin",
+    "ca.s01.c3": "S’approcher jusqu’à la cour",
     "ca.s02.title": "La grille qui cède",
     "ca.s02.body": "La grille rouillée n’est pas vraiment fermée. Une chaîne rompue pend comme un avertissement. Ton téléphone capte… puis lâche.",
     "ca.s02.c1": "Pousser la grille et entrer",
