@@ -949,7 +949,7 @@
         },
         {
           "choice_key": "frt.s34.c2",
-          "next": "s47"
+          "next": "s49"
         },
         {
           "choice_key": "frt.s34.c3",
@@ -964,7 +964,7 @@
       "choices": [
         {
           "choice_key": "frt.s35.c1",
-          "next": "s62"
+          "next": "s60"
         },
         {
           "choice_key": "frt.s35.c2",
@@ -1051,7 +1051,7 @@
         },
         {
           "choice_key": "frt.s39.c3",
-          "next": "s20"
+          "next": "s54"
         }
       ]
     },
@@ -1602,10 +1602,7 @@
       "choices": [
         {
           "choice_key": "frt.s67.c1",
-          "next": "s25",
-          "requires_all_flags": [
-            "has_ribbon"
-          ]
+          "next": "s25"
         },
         {
           "choice_key": "frt.s67.c2",
@@ -1845,7 +1842,7 @@
         },
         {
           "choice_key": "frt.s78.c3",
-          "next": "s72"
+          "next": "s60"
         }
       ]
     },
