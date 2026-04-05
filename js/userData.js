@@ -29,6 +29,8 @@
 
   // init guard (évite double init sur certaines pages)
   let _initPromise = null;
+  let _backgroundRefreshPromise = null;
+  let _ensureAuthPromise = null;
 
   // queue remote (évite RPC simultanés)
   let _remoteQueue = Promise.resolve();
@@ -453,47 +455,61 @@
     enabled: function(){ return sbReady(); },
 
 ensureAuth: async function(){
-  const sb = window.sb;
-  if (!sb || !sb.auth) return null;
+  if (_ensureAuthPromise) return _ensureAuthPromise;
+
+  _ensureAuthPromise = (async () => {
+    const sb = window.sb;
+    if (!sb || !sb.auth) return null;
+
+    try {
+      await window.bootstrapAuthAndProfile?.();
+    } catch (_) {}
+
+    try {
+      const s1 = await sb.auth.getSession();
+      const uidSession = s1?.data?.session?.user?.id || null;
+      if (uidSession) return uidSession;
+    } catch (e) {
+      _reportRemoteError("ensureAuth.getSession", e);
+    }
+
+    try {
+      const u1 = await sb.auth.getUser();
+      const uidUser = u1?.data?.user?.id || null;
+      if (uidUser) return uidUser;
+    } catch (e) {
+      _reportRemoteError("ensureAuth.getUser", e);
+    }
+
+    await _sleep(250);
+
+    try {
+      const s2 = await sb.auth.getSession();
+      const uidRetry = s2?.data?.session?.user?.id || null;
+      if (uidRetry) return uidRetry;
+    } catch (e) {
+      _reportRemoteError("ensureAuth.getSession.retry", e);
+    }
+
+    try {
+      const r = await sb.auth.signInAnonymously();
+      return r?.data?.user?.id || r?.data?.session?.user?.id || null;
+    } catch (e) {
+      _reportRemoteError("ensureAuth.signInAnonymously", e);
+    }
+
+    try {
+      const s3 = await sb.auth.getSession();
+      return s3?.data?.session?.user?.id || null;
+    } catch (_) {
+      return null;
+    }
+  })();
 
   try {
-    const s1 = await sb.auth.getSession();
-    const uidSession = s1?.data?.session?.user?.id || null;
-    if (uidSession) return uidSession;
-  } catch (e) {
-    _reportRemoteError("ensureAuth.getSession", e);
-  }
-
-  try {
-    const u1 = await sb.auth.getUser();
-    const uidUser = u1?.data?.user?.id || null;
-    if (uidUser) return uidUser;
-  } catch (e) {
-    _reportRemoteError("ensureAuth.getUser", e);
-  }
-
-  await _sleep(250);
-
-  try {
-    const s2 = await sb.auth.getSession();
-    const uidRetry = s2?.data?.session?.user?.id || null;
-    if (uidRetry) return uidRetry;
-  } catch (e) {
-    _reportRemoteError("ensureAuth.getSession.retry", e);
-  }
-
-  try {
-    const r = await sb.auth.signInAnonymously();
-    return r?.data?.user?.id || r?.data?.session?.user?.id || null;
-  } catch (e) {
-    _reportRemoteError("ensureAuth.signInAnonymously", e);
-  }
-
-  try {
-    const s3 = await sb.auth.getSession();
-    return s3?.data?.session?.user?.id || null;
-  } catch (_) {
-    return null;
+    return await _ensureAuthPromise;
+  } finally {
+    _ensureAuthPromise = null;
   }
 },
 
@@ -730,15 +746,44 @@ ensureAuth: async function(){
   };
 
   const VUserData = {
+    refreshInBackground: async function(){
+      if (_backgroundRefreshPromise) return _backgroundRefreshPromise;
+
+      const self = this;
+      _backgroundRefreshPromise = (async () => {
+        try {
+          if (window.VCRemoteStore && window.VCRemoteStore.enabled && window.VCRemoteStore.enabled()) {
+            await self.refresh().catch(function(e){
+              _reportRemoteError("VUserData.refreshInBackground.refresh", e);
+              return false;
+            });
+
+            try {
+              if (_memState._remote_lang_missing) {
+                await self.setLang(_memState.lang);
+              }
+            } catch (_) {}
+          }
+
+          return true;
+        } finally {
+          _backgroundRefreshPromise = null;
+        }
+      })();
+
+      return _backgroundRefreshPromise;
+    },
+
     init: async function(){
       if (_initPromise) return _initPromise;
 
+      const self = this;
       _initPromise = (async () => {
         if (!_primedLocal) {
           _primedLocal = true;
           const cached = _readLocal();
-          if (cached) this.save(cached, { silent: true });
-          else this.save(this.load(), { silent: true });
+          if (cached) self.save(cached, { silent: true });
+          else self.save(self.load(), { silent: true });
         }
 
         try {
@@ -752,23 +797,16 @@ ensureAuth: async function(){
           }
         } catch (_) {}
 
-        if (window.VCRemoteStore && window.VCRemoteStore.enabled && window.VCRemoteStore.enabled()) {
-          await this.refresh().catch(function(e){
-            _reportRemoteError("VUserData.init.refresh", e);
-            return false;
-          });
-
-          try {
-            if (_memState._remote_lang_missing) {
-              await this.setLang(_memState.lang);
-            }
-          } catch (_) {}
-        }
-
         _uiPaused = false;
         if (_pendingEmit) {
           _pendingEmit = false;
           _emitProfile();
+        }
+
+        if (window.VCRemoteStore && window.VCRemoteStore.enabled && window.VCRemoteStore.enabled()) {
+          setTimeout(() => {
+            try { self.refreshInBackground(); } catch (_) {}
+          }, 0);
         }
 
         return true;

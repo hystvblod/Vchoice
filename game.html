@@ -571,8 +571,11 @@
 
   <script>
   (async () => {
-    try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
     try { await window.VUserData?.init?.(); } catch(e) {}
+
+    setTimeout(() => {
+      try { window.bootstrapAuthAndProfile?.(); } catch(e) {}
+    }, 0);
   })();
   </script>
 </body>
