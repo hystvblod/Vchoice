@@ -99,12 +99,24 @@
     return true;
   };
 
+  let _bootstrapPromise = null;
+
   // ✅ IMPORTANT: bootstrapAuthAndProfile ne doit PAS toucher VUserData
   // Sinon: userData.ensureAuth -> bootstrapAuthAndProfile -> VUserData.refresh -> VCRemoteStore.getMe -> ensureAuth -> ...
   window.bootstrapAuthAndProfile = async function bootstrapAuthAndProfile() {
-    const sb = _getClient() || createClientOnce();
-    const session = await ensureAnonSession();
-    return session?.user || null;
+    if (_bootstrapPromise) return _bootstrapPromise;
+
+    _bootstrapPromise = (async () => {
+      try {
+        const sb = _getClient() || createClientOnce();
+        const session = await ensureAnonSession();
+        return session?.user || null;
+      } finally {
+        _bootstrapPromise = null;
+      }
+    })();
+
+    return _bootstrapPromise;
   };
 
   // Auto-init (silencieux)

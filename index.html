@@ -1390,19 +1390,14 @@
           console.error("[intro redirect after i18n]", e);
         }
 
-        try {
-          await window.bootstrapAuthAndProfile?.();
-        } catch(e){
-          console.error("[bootstrapAuthAndProfile]", e);
-        }
+        setTimeout(() => {
+          try { window.bootstrapAuthAndProfile?.(); } catch(e) {}
+        }, 0);
 
         try {
           const p = window.VUserData?.init?.();
           if (p && typeof p.then === "function") {
-            await Promise.race([
-              p,
-              new Promise((resolve) => setTimeout(resolve, 3000))
-            ]);
+            await p;
           }
         } catch(e){
           console.error("[VUserData.init]", e);
