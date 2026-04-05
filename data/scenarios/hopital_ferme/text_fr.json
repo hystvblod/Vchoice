@@ -95,7 +95,7 @@
     "hf.s14.c3": "Retourner au couloir principal",
 
     "hf.s15.title": "Cliché impossible",
-    "hf.s15.body": "Le cliché montre un thorax… et, au centre, un rectangle sombre : l’emplacement exact d’un dossier cartonné. En bas, un tampon : « PATIENT 0 — ARCHIVES ».",
+    "hf.s15.body": "Le cliché montre un thorax… et, au centre, un rectangle sombre, comme l’emplacement d’un dossier cartonné. En bas, un tampon : « PATIENT 0 — ARCHIVES ».",
     "hf.s15.c1": "Noter « Archives » et reculer",
     "hf.s15.c2": "Aller chercher les archives",
     "hf.s15.c3": "Suivre la lumière au fond du couloir",
@@ -140,7 +140,7 @@
     "hf.s22.body": "Les écrans sont noirs, mais le ventilateur tourne. Sur un crochet : des cartes d’accès. Au mur, un plan d’évacuation avec une sortie vers la cour.",
     "hf.s22.c1": "Prendre une carte d’accès",
     "hf.s22.c2": "Redémarrer un moniteur",
-    "hf.s22.c3": "Fouiller l’armoire métallique puis suivre un passage vers les vestiaires",
+    "hf.s22.c3": "Fouiller l’armoire métallique puis aller vers les vestiaires",
 
     "hf.s23.title": "Plan d’évacuation",
     "hf.s23.body": "Le plan indique : « SORTIE COUR INTÉRIEURE ». Une annotation au marqueur : « Sans preuve, retour au bloc. » Tu as l’impression que ce message t’est destiné.",
@@ -166,7 +166,7 @@
     "hf.s26.c2": "Partir vers la surveillance",
     "hf.s26.c3": "Revenir aux étagères",
 
-    "hf.s27.title": "Ton nom tapé",
+    "hf.s27.title": "Ton nom sur le dossier",
     "hf.s27.body": "Tu trouves enfin : « PATIENT 0 ». Sur l’étiquette : ton nom. En dessous, une date… demain. Le carton est froid, malgré l’air humide.",
     "hf.s27.c1": "Ouvrir le dossier",
     "hf.s27.c2": "Le laisser et reculer",
@@ -209,7 +209,7 @@
     "hf.s33.c3": "Chercher les vestiaires",
 
     "hf.s34.title": "Vestiaires",
-    "hf.s34.body": "Des casiers. Des blouses. Et, dans un casier entrouvert, un badge au nom illisible. Tu entends le bruit d’un stylo derrière une porte.",
+    "hf.s34.body": "Des casiers. Des blouses. Et, dans un casier entrouvert, un badge au nom illisible. Tu entends le grattement d’un stylo derrière une porte.",
     "hf.s34.c1": "Ouvrir le casier « Interne »",
     "hf.s34.c2": "Prendre une blouse et passer par la porte de droite",
     "hf.s34.c3": "Revenir au couloir des brancards",
@@ -269,7 +269,7 @@
     "hf.s43.c3": "Fuir vers la sortie",
 
     "hf.s44.title": "Mise en place",
-    "hf.s44.body": "Tu sens des sangles. Le bip devient plus fort. Une phrase s’inscrit quelque part : « Sans preuve, retour au bloc. » Tu essaies de reprendre ton souffle.",
+    "hf.s44.body": "Tu sens des sangles. Le bip devient plus fort. Une phrase s’inscrit sur un écran : « Sans preuve, retour au bloc. » Tu essaies de reprendre ton souffle.",
     "hf.s44.c1": "Fermer les yeux",
     "hf.s44.c2": "Te débattre",
     "hf.s44.c3": "Montrer une preuve",
