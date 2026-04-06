@@ -904,7 +904,7 @@
       "choices": [
         {
           "choice_key": "frt.s32.c1",
-          "next": "s41"
+          "next": "s47"
         },
         {
           "choice_key": "frt.s32.c2",
@@ -1081,7 +1081,7 @@
       "choices": [
         {
           "choice_key": "frt.s41.c1",
-          "next": "s25"
+          "next": "s64"
         },
         {
           "choice_key": "frt.s41.c2",
@@ -1195,7 +1195,7 @@
       "choices": [
         {
           "choice_key": "frt.s47.c1",
-          "next": "s64"
+          "next": "s41"
         },
         {
           "choice_key": "frt.s47.c2",
