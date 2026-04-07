@@ -130,7 +130,9 @@
       "err_app_only": "Store purchase available only in the app.",
       "err_not_ready": "Purchase system not ready.",
       "err_buy_failed": "Purchase canceled or failed.",
-      "err_unlock_after_iap": "Purchase confirmed, but the scenario could not be opened."
+      "err_unlock_after_iap": "Purchase confirmed, but the scenario could not be opened.",
+      "premium_desc": "This premium scenario is locked. You can unlock it with VCoins or buy it directly. See the FAQ for how it works.",
+      "open_faq": "Open FAQ"
     },
     "update_banner_title": "Update available",
     "update_banner_desc": "A new version of the app is available.",
@@ -215,7 +217,13 @@
     "shop_p_noads_desc": "Disables interstitial ads. Rewarded ads remain available.",
     "shop_p_diamond_title": "Diamond",
     "shop_p_diamond_note": "No Ads + all scenarios unlocked",
-    "shop_p_diamond_desc": "Diamond access: all current and future scenarios + No Ads. Bonus included depending on your pack."
+    "shop_p_diamond_desc": "Diamond access: all current and future scenarios + No Ads. Bonus included depending on your pack.",
+    "profile_secret_angelique_revealed": "Angelique has been revealed on the home screen.",
+    "settings_remote_faq_title": "Premium scenarios",
+    "settings_remote_faq_q1": "Why are some scenarios downloaded separately?",
+    "settings_remote_faq_a1": "To keep the app lighter. The cover stays inside the app, then the full scenario images are fetched after unlock.",
+    "settings_remote_faq_q2": "Why is there a dedicated FAQ?",
+    "settings_remote_faq_a2": "Because these scenarios use a special flow with purchase, unlock and separate download."
   },
   "common": {
     "cancel": "Cancel"
@@ -291,6 +299,18 @@
     "temple_mictlan": {
       "title": "Temple Mictlan",
       "desc": "Fresh out of college, you travel to Mexico to study a newly discovered area. Beneath the stone, you uncover the buried temple of the Lady of the Dead."
+    },
+    "village_brume_noire": {
+      "title": "Black Mist Village",
+      "desc": "You enter a village drowned in black mist, where the streets seem to fold back onto themselves."
+    },
+    "marais_sans_sepulture": {
+      "title": "Marsh Without Burial",
+      "desc": "In a marsh filled with dark water, open graves, forgotten traces and heavy silence wait for you."
+    },
+    "grotte_angelique": {
+      "title": "Angelique",
+      "desc": "A forgotten cave, a name that keeps coming back, and something far too old still waiting below."
     }
   },
   "referral": {

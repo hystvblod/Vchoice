@@ -802,6 +802,28 @@
           </div>
         </button>
 
+        <button class="vc-card" data-scenario="village_brume_noire" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/village_brume_noire/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.village_brume_noire.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.village_brume_noire.desc" data-i18n="ui.symbol_help"></span>
+            </div>
+          </div>
+        </button>
+
+        <button class="vc-card" data-scenario="marais_sans_sepulture" type="button">
+          <div class="vc-card-bg" style="background-image:url('assets/scenarios/marais_sans_sepulture/img/cover.webp');"></div>
+          <div class="vc-card-content">
+            <div class="vc-line">
+              <h3 class="vc-title" data-i18n="scenarios.marais_sans_sepulture.title"></h3>
+              <span class="vc-info" role="button" tabindex="0" data-i18n-tip="scenarios.marais_sans_sepulture.desc" data-i18n="ui.symbol_help"></span>
+            </div>
+          </div>
+        </button>
+
+        <div id="vc-secret-scenario-slot"></div>
+
       </div>
     </section>
   </main>
@@ -846,6 +868,7 @@
 
         <button id="vc-buy-iap" class="vc-buy-btn primary" type="button"></button>
         <button id="vc-buy-getcoins" class="vc-buy-btn ghost" type="button"></button>
+        <button id="vc-buy-faq" class="vc-buy-btn ghost" type="button"></button>
         <button id="vc-buy-cancel" class="vc-buy-btn" type="button"></button>
       </div>
 
@@ -876,6 +899,7 @@
   <script src="js/i18n.js"></script>
   <script src="js/crossPromo.js"></script>
   <script src="js/referral.js"></script>
+  <script src="js/scenarioPremium.js"></script>
 
   <script>
     function _t(key, fallback, vars) {
@@ -1079,6 +1103,7 @@
     const buyPay         = document.getElementById("vc-buy-pay");
     const buyIap         = document.getElementById("vc-buy-iap");
     const buyGet         = document.getElementById("vc-buy-getcoins");
+    const buyFaq         = document.getElementById("vc-buy-faq");
     const buyCancel      = document.getElementById("vc-buy-cancel");
     const buyErr         = document.getElementById("vc-buy-error");
     const buyPayPrefix   = document.getElementById("vc-buy-pay-prefix");
@@ -1103,9 +1128,13 @@
       pendingScenarioId = scenarioId;
 
       const balance = getCurrentVCoins();
+      const isPremium = !!window.VCScenarioPremium?.isPremiumScenario?.(scenarioId);
 
       buyTitle.textContent = _t("scenarios." + scenarioId + ".title", "");
-      buyDesc.textContent = _t("ui.scenario_buy.desc", "");
+      buyDesc.textContent = _t(
+        isPremium ? "ui.scenario_buy.premium_desc" : "ui.scenario_buy.desc",
+        ""
+      );
 
       buyPayPrefix.textContent = _t("ui.scenario_buy.pay_prefix", "");
       buyPayPrice.textContent = String(PRICE);
@@ -1117,7 +1146,16 @@
 
       buyIap.textContent = getScenarioStoreButtonLabel(scenarioId);
 
-      buyGet.textContent = _t("ui.scenario_buy.open_shop", "");
+      if (buyGet){
+        buyGet.textContent = _t("ui.scenario_buy.open_shop", "");
+        buyGet.style.display = isPremium ? "none" : "";
+      }
+
+      if (buyFaq){
+        buyFaq.textContent = _t("ui.scenario_buy.open_faq", "FAQ");
+        buyFaq.style.display = isPremium ? "" : "none";
+      }
+
       buyCancel.textContent = _t("common.cancel", "");
 
       showBuyError("");
@@ -1238,6 +1276,10 @@
       window.location.href = "shop.html";
     });
 
+    if (buyFaq) buyFaq.addEventListener("click", () => {
+      window.location.href = window.VCScenarioPremium?.getFaqUrl?.() || "settings.html#faq-remote-scenarios";
+    });
+
     if (buyCancel) buyCancel.addEventListener("click", closeBuyPopup);
     if (buyPopup) buyPopup.addEventListener("click", (e) => { if (e.target === buyPopup) closeBuyPopup(); });
 
@@ -1278,10 +1320,22 @@
     window.addEventListener("vc:iap_credited", handleScenarioIapCredited);
     window.addEventListener("vr:iap_credited", handleScenarioIapCredited);
 
+    function renderPremiumCards(){
+      const slot = document.getElementById("vc-secret-scenario-slot");
+      if (!slot || !window.VCScenarioPremium) return;
+
+      window.VCScenarioPremium.injectSecretScenarioCard(slot);
+
+      try { window.VRI18n?.applyI18n?.(slot); } catch(_) {}
+    }
+
     function bindCards(){
       document.querySelectorAll(".vc-card[data-scenario]").forEach((btn) => {
         const id = btn.getAttribute("data-scenario");
         if (!id) return;
+        if (btn.dataset.vcBoundClick === "1") return;
+
+        btn.dataset.vcBoundClick = "1";
 
         btn.addEventListener("click", (e) => {
           if (isUnlocked(id)) launchScenario(id);
@@ -1290,6 +1344,10 @@
       });
 
       document.querySelectorAll(".vc-info[data-i18n-tip]").forEach((tipBtn) => {
+        if (tipBtn.dataset.vcBoundHint === "1") return;
+
+        tipBtn.dataset.vcBoundHint = "1";
+
         tipBtn.addEventListener("click", (e) => {
           e.preventDefault(); e.stopPropagation();
           openHintByKey(tipBtn.getAttribute("data-i18n-tip"));
@@ -1445,12 +1503,28 @@
     if (vcUpdatePrimary) vcUpdatePrimary.addEventListener("click", handlePrimaryUpdateAction);
 
     (function boot(){
+      try { renderPremiumCards(); } catch(e){ console.error("[renderPremiumCards]", e); }
       try { bindCards(); } catch(e){ console.error("[bindCards]", e); }
       try { applyLocks(); } catch(e){ console.error("[applyLocks pre]", e); }
 
       try {
-        window.addEventListener("vc:profile", () => { try { applyLocks(); } catch(_){} });
-        window.addEventListener("vr:profile", () => { try { applyLocks(); } catch(_){} });
+        window.addEventListener("vc:profile", () => {
+          try { renderPremiumCards(); } catch(_) {}
+          try { bindCards(); } catch(_) {}
+          try { applyLocks(); } catch(_) {}
+        });
+
+        window.addEventListener("vr:profile", () => {
+          try { renderPremiumCards(); } catch(_) {}
+          try { bindCards(); } catch(_) {}
+          try { applyLocks(); } catch(_) {}
+        });
+
+        window.addEventListener("vc:secret_scenario_revealed", () => {
+          try { renderPremiumCards(); } catch(_) {}
+          try { bindCards(); } catch(_) {}
+          try { applyLocks(); } catch(_) {}
+        });
       } catch(_) {}
 
       (async () => {
