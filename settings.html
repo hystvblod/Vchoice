@@ -361,7 +361,126 @@
       min-height: 18px;
       text-align:center;
     }
-  </style>
+
+@media (min-width: 768px) and (max-width: 1366px){
+  .vc-top-actions{
+    gap:16px;
+    padding: calc(18px + env(safe-area-inset-top)) 20px 14px;
+  }
+
+  .vc-icon-button{
+    width:58px;
+    height:58px;
+  }
+
+  .vc-icon-button img{
+    width:38px;
+    height:38px;
+  }
+
+  .vc-back-ico{
+    width:30px;
+    height:30px;
+  }
+
+  body.page-settings .main{
+    padding: 0 22px 22px;
+  }
+
+  body.page-settings .panel__head{
+    padding-left: calc(22px + env(safe-area-inset-left));
+    padding-right: calc(22px + env(safe-area-inset-right));
+  }
+
+  body.page-settings .panel__body{
+    padding-left: calc(22px + env(safe-area-inset-left));
+    padding-right: calc(22px + env(safe-area-inset-right));
+  }
+
+  .panel__headCentered{
+    gap:10px;
+    padding-top:8px;
+  }
+
+  .panel__headCentered .title{
+    font-size:30px;
+  }
+
+  .panel__headCentered .muted{
+    max-width:760px;
+    font-size:18px;
+    line-height:1.6;
+  }
+
+  .langGrid{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap:14px;
+    margin-top:22px;
+    margin-bottom:22px;
+  }
+
+  .langBtn{
+    min-height:64px;
+    padding:12px 10px;
+    border-radius:18px;
+  }
+
+  .flag{
+    width:62px;
+    height:44px;
+    border-radius:10px;
+  }
+
+  .settingsSection{
+    margin-top:18px;
+    padding-top:16px;
+  }
+
+  .settingsSectionTitle{
+    font-size:20px;
+    margin-bottom:12px;
+  }
+
+  .toggleRow{
+    gap:18px;
+    padding:10px 0;
+  }
+
+  .toggleLabel{
+    font-size:19px;
+  }
+
+  .toggleDesc{
+    font-size:16px;
+    line-height:1.45;
+  }
+
+  .switch{
+    width:66px;
+    height:38px;
+  }
+
+  .switchUi::after{
+    top:4px;
+    left:4px;
+    width:28px;
+    height:28px;
+  }
+
+  .switch input:checked + .switchUi::after{
+    transform: translateX(28px);
+  }
+
+  .helpLine,
+  .dangerLine,
+  .versionLine,
+  .creditsLine{
+    font-size:17px;
+    line-height:1.5;
+  }
+}
+
+</style>
 </head>
 
 <body class="page-settings">
