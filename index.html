@@ -579,7 +579,103 @@
         width:100%;
       }
     }
-  </style>
+
+@media (min-width: 768px) and (max-width: 1366px){
+  .page{
+    padding-bottom: max(28px, env(safe-area-inset-bottom));
+  }
+
+  .vc-top-actions{
+    gap:16px;
+    padding: calc(18px + env(safe-area-inset-top)) 20px 14px;
+  }
+
+  .vc-icon-button{
+    width:58px;
+    height:58px;
+  }
+
+  .vc-icon-button img{
+    width:38px;
+    height:38px;
+  }
+
+  .vc-intro{
+    margin-top:10px;
+    margin-bottom:16px;
+    padding:0 20px;
+  }
+
+  .vc-logo{
+    height:108px;
+    width:min(88vw, 580px);
+  }
+
+  .hero{
+    padding:0 20px;
+  }
+
+  .hero__title{
+    font-size:30px;
+  }
+
+  .hero__text{
+    font-size:18px;
+    min-height:30px;
+  }
+
+  .vc-grid{
+    gap:18px;
+    padding:0 20px;
+  }
+
+  .vc-card{
+    min-height:92px;
+    height:92px;
+    border-radius:24px;
+  }
+
+  .vc-line{
+    padding:0 76px;
+  }
+
+  .vc-title{
+    font-size:24px;
+  }
+
+  .vc-info{
+    right:18px;
+    width:52px;
+    height:52px;
+    font-size:22px;
+  }
+
+  #vc-update-banner{
+    width:min(760px, calc(100vw - 40px));
+    bottom:calc(env(safe-area-inset-bottom) + 28px);
+  }
+
+  .vc-update-inner{
+    padding:20px 20px 18px 20px;
+  }
+
+  .vc-update-title{
+    font-size:24px;
+  }
+
+  .vc-update-desc{
+    font-size:17px;
+    line-height:1.5;
+  }
+
+  .vc-update-btn{
+    min-height:56px;
+    min-width:160px;
+    font-size:18px;
+  }
+}
+
+</style>
 </head>
 
 <body>
