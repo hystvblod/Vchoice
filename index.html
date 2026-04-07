@@ -928,6 +928,7 @@
   <script src="js/i18n.js"></script>
   <script src="js/crossPromo.js"></script>
   <script src="js/referral.js"></script>
+  <script src="js/scenarioPremium.js"></script>
   <script>
     window.addEventListener("load", async function () {
       try {
@@ -949,7 +950,6 @@
       } catch (_) {}
     });
   </script>
-  <script src="js/scenarioPremium.js"></script>
 
   <script>
     function _t(key, fallback, vars) {
@@ -1327,7 +1327,7 @@
     });
 
     if (buyFaq) buyFaq.addEventListener("click", () => {
-      window.location.href = window.VCScenarioPremium?.getFaqUrl?.() || "faq.html";
+      window.location.href = window.VCScenarioPremium?.getFaqUrl?.() || "settings.html#faq-remote-scenarios";
     });
 
     if (buyCancel) buyCancel.addEventListener("click", closeBuyPopup);
