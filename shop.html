@@ -371,34 +371,71 @@
       padding-right: 0;
     }
 
+    .prod-card[data-product="vchoice_no_ads"],
+    .prod-card[data-product="vchoice_ultra"]{
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+
+    .prod-card[data-product="vchoice_no_ads"] .prod-inner,
+    .prod-card[data-product="vchoice_ultra"] .prod-inner{
+      gap: 12px;
+    }
+
     .prod-card[data-product="vchoice_no_ads"] .prod-top,
     .prod-card[data-product="vchoice_ultra"] .prod-top{
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 8px;
-      min-height: 96px;
+      gap: 10px;
+      min-height: 128px;
     }
 
     .prod-card[data-product="vchoice_no_ads"] .prod-amount,
     .prod-card[data-product="vchoice_ultra"] .prod-amount{
       display: flex;
       flex: 0 0 auto;
+      width: 100%;
       align-items: center;
       justify-content: center;
-      font-size: 14px !important;
-      line-height: 1.15;
-      min-height: auto;
-      max-width: 9ch;
+      font-size: 15px !important;
+      font-weight: 950;
+      line-height: 1.08;
+      min-height: 32px;
+      max-width: none;
       text-align: center;
-      padding-right: 0;
+      white-space: normal;
+      padding: 0;
+      letter-spacing: .01em;
+      color: var(--vc-text);
+      text-shadow: 0 10px 24px rgba(0,0,0,.45);
     }
 
-    .prod-card[data-product="vchoice_no_ads"] .prod-ico,
+    .prod-card[data-product="vchoice_no_ads"] .prod-ico{
+      margin: 0 auto;
+      width: 74px;
+      height: 74px;
+    }
+
     .prod-card[data-product="vchoice_ultra"] .prod-ico{
       margin: 0 auto;
-      width: 68px;
-      height: 68px;
+      width: 88px;
+      height: 88px;
+      filter:
+        drop-shadow(0 0 10px rgba(180,220,255,.30))
+        drop-shadow(0 0 24px rgba(180,220,255,.18))
+        drop-shadow(0 16px 30px rgba(0,0,0,.45));
+      transform-origin: center;
+      animation: vcDiamondPulse 1.9s ease-in-out infinite;
+    }
+
+    @keyframes vcDiamondPulse{
+      0%,100%{
+        transform: scale(1);
+      }
+      50%{
+        transform: scale(1.10);
+      }
     }
 
     .prod-price{
