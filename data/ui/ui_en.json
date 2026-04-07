@@ -196,6 +196,45 @@
   "common": {
     "cancel": "Cancel"
   },
+  "crosspromo": {
+    "reward_prefix": "EARN",
+    "reward_granted": "Reward granted: {amount} VCoins for installing {app}.",
+    "cta_install": "Download",
+    "cta_later": "Later",
+    "close_aria": "Close",
+    "shot_open_aria": "Open image",
+    "apps": {
+      "vblocks": {
+        "name": "VBlocks",
+        "store_desc": "A block game to relax. Fast or chill, your choice.",
+        "popup1": {
+          "title": "Want another challenge",
+          "body": "Install VBlocks and claim your bonus VCoins in VChronicles."
+        },
+        "popup2": {
+          "title": "You can try something else",
+          "body": "Switch vibes with VBlocks and unlock your reward."
+        },
+        "popup3": {
+          "title": "A reward is waiting",
+          "body": "Install VBlocks then come back to the app to collect your VCoins."
+        }
+      },
+      "vuniverse": {
+        "name": "VUniverse",
+        "store_desc": "Rule hell, heaven, a vampire clan, or a giant company. Every choice truly changes what happens next.",
+        "diamond_note": "No Ads + all universes unlocked",
+        "popup1": {
+          "title": "Discover VUniverse",
+          "body": "Install VUniverse, then come back here to claim your bonus VCoins."
+        },
+        "popup2": {
+          "title": "Another adventure is waiting",
+          "body": "Rule empires and make your choices."
+        }
+      }
+    }
+  },
   "scenarios": {
     "dossier14_appartement": {
       "title": "Apartment 14",

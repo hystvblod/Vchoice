@@ -49,7 +49,8 @@
       popup2TitleKey: "crosspromo.apps.vuniverse.popup2.title",
       popup2BodyKey: "crosspromo.apps.vuniverse.popup2.body",
       popup3TitleKey: "crosspromo.apps.vuniverse.popup3.title",
-      popup3BodyKey: "crosspromo.apps.vuniverse.popup3.body"
+      popup3BodyKey: "crosspromo.apps.vuniverse.popup3.body",
+      premiumNoteKey: "crosspromo.apps.vuniverse.diamond_note"
     }
   };
 
@@ -379,6 +380,18 @@
       .replaceAll("'", "&#039;");
   }
 
+  function buildPremiumHtml(app) {
+    const premiumNote = t(app && app.premiumNoteKey);
+    if (!premiumNote) return "";
+
+    return [
+      '<div class="vc-crosspromo-premium">',
+      '  <img class="vc-crosspromo-premium-icon" src="assets/img/ui/diamond.webp" alt="" draggable="false" />',
+      '  <div class="vc-crosspromo-premium-text">' + escapeHtml(premiumNote) + '</div>',
+      '</div>'
+    ].join("");
+  }
+
   function getValidShots(app) {
     return (Array.isArray(app.shots) ? app.shots : [])
       .filter(Boolean)
@@ -645,7 +658,7 @@
       const desc = t(app.descKey);
 
       rows.push([
-        '<article class="vc-crosspromo-card">',
+        '<article class="vc-crosspromo-card" data-app-id="' + escapeHtml(id) + '">',
         '  <div class="vc-crosspromo-hero">',
         '    <img src="' + escapeHtml(app.cover) + '" alt="" draggable="false" />',
         "  </div>",
@@ -658,6 +671,7 @@
         "      </div>",
         "    </div>",
         '    <p class="vc-crosspromo-desc">' + escapeHtml(desc) + "</p>",
+               buildPremiumHtml(app),
         '    <div class="vc-crosspromo-gallery">',
                buildShotsHtml(app),
         "    </div>",

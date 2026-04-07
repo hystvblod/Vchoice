@@ -223,7 +223,7 @@
       },
       "vuniverse": {
         "name": "VUniverse",
-        "store_desc": "Dirige des univers : l'enfer, le paradis, un clan de vampire ou encore une grande entreprise. Attention chauqe choix a des conséquences.",
+        "store_desc": "Dirige l’enfer, le paradis, un clan de vampires ou une grande entreprise. Chaque choix change vraiment la suite.",
         "popup1": {
           "title": "Découvre VUniverse",
           "body": "Installe VUniverse puis reviens ici pour récupérer tes VCoins bonus."
@@ -235,7 +235,8 @@
         "popup3": {
           "title": "Bonus disponible",
           "body": "Gagne un bonus en jouant à VUniverse et en dirigieant des univers fictifs."
-        }
+        },
+        "diamond_note": "No Pub + tous les univers débloqués"
       }
     }
   },
