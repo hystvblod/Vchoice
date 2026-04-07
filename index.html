@@ -899,6 +899,27 @@
   <script src="js/i18n.js"></script>
   <script src="js/crossPromo.js"></script>
   <script src="js/referral.js"></script>
+  <script>
+    window.addEventListener("load", async function () {
+      try {
+        const introJustFinished = localStorage.getItem("vchoice_intro_just_finished") === "1";
+
+        if (introJustFinished) {
+          try {
+            await window.VAds?.maybeShowGoogleConsentFormOnIndexAfterIntro?.();
+          } catch (_) {}
+
+          try {
+            localStorage.removeItem("vchoice_intro_just_finished");
+          } catch (_) {}
+        }
+
+        try {
+          await window.VROneSignal?.maybePromptNativeAfterAdmobOnIndex?.();
+        } catch (_) {}
+      } catch (_) {}
+    });
+  </script>
   <script src="js/scenarioPremium.js"></script>
 
   <script>
