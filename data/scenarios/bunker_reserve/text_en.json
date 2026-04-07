@@ -1,0 +1,420 @@
+﻿{
+  "meta": {
+    "lang": "us",
+    "scenario_id": "bunker_reserve",
+    "title": "Bunker",
+    "tagline": "Under an ordinary hill, a hatch hides a bunker that is still active. Intact supplies, badges, dorms, and sealed areas make you realize that someone is still living down there.",
+    "hint_ns": "br.h"
+  },
+  "strings": {
+    "br.s01.title": "The Silent Hill",
+    "br.s01.body": "The slope looks normal, but the air is colder here. Between two roots, a piece of metal sticks out, as if something had been buried in a hurry.",
+    "br.s01.c1": "Look for an opening along the fence",
+    "br.s01.c2": "Touch the metal",
+    "br.s01.c3": "Force your way in",
+
+    "br.s02.title": "New Fence",
+    "br.s02.body": "At the base of a post, the ground is packed down as if someone still comes through here, quietly, but often.",
+    "br.s02.c1": "Follow the tracks and go around the bunker",
+    "br.s02.c2": "Go back to the starting point",
+    "br.s02.c3": "Look for a more hidden entrance",
+
+    "br.s03.title": "Cold Metal",
+    "br.s03.body": "Under the dust, a handle. The metal almost burns from how cold it is. When you pull a little, a very faint draft rises from inside.",
+    "br.s03.c1": "Pull hard",
+    "br.s03.c2": "Step back and listen",
+    "br.s03.c3": "Lift it just enough to get through",
+
+    "br.s04.title": "A Long Way Down",
+    "br.s04.body": "You keep going deeper. The smell of earth fades away. Damp concrete takes its place, then a drier smell, almost clean. Your breathing echoes.",
+    "br.s04.c1": "Keep going down",
+    "br.s04.c2": "Go back up",
+    "br.s04.c3": "Turn off your light and move toward the airlock by following the sound",
+
+    "br.s05.title": "The Airlock",
+    "br.s05.body": "Two doors. Perfect seals. A light blinks faintly. On the right, a small control box still looks like it could open the inner access.",
+    "br.s05.c1": "Go through the first airlock door",
+    "br.s05.c2": "Activate the airlock control box",
+    "br.s05.c3": "Go back to the stairs",
+
+    "br.s06.title": "Main Hallway",
+    "br.s06.body": "The hallway runs straight ahead, and a cloudy glass panel protects a wall map. Farther on, closed doors, all numbered.",
+    "br.s06.c1": "Go to the map behind the glass",
+    "br.s06.c2": "Look for a control room",
+    "br.s06.c3": "Follow the dry smell toward the supplies",
+
+    "br.s07.title": "Map Display",
+    "br.s07.body": "The map is old but kept behind glass. One corner has been torn off. Someone wanted to take one exact piece, not destroy the whole thing.",
+    "br.s07.c1": "Inspect the torn corner",
+    "br.s07.c2": "Go back to the hallway",
+    "br.s07.c3": "Look for the part of the map that leads to security",
+
+    "br.s08.title": "The Missing Piece",
+    "br.s08.body": "On the edge of the display case, there is dried glue residue. Just below it, a small mark on the wall: someone leaned here often, as if trying to memorize a path.",
+    "br.s08.c1": "Memorize the route before moving on",
+    "br.s08.c2": "Go back to the main hallway",
+    "br.s08.c3": "Follow the missing route toward the supplies",
+
+    "br.s09.title": "Control Room",
+    "br.s09.body": "A central console, black screens, a few lights still on. On the wall, a rotation schedule... dated yesterday. The bunker may not be empty.",
+    "br.s09.c1": "Watch without touching anything",
+    "br.s09.c2": "Look for an access door",
+    "br.s09.c3": "Leave the room",
+
+    "br.s10.title": "Impossible Schedule",
+    "br.s10.body": "The names are erased, but the times are clear. Several guard shifts. Yesterday. And today. Someone here is still following a routine without showing themselves.",
+    "br.s10.c1": "Go back to the badge door",
+    "br.s10.c2": "Return to the main hallway",
+    "br.s10.c3": "Look for the sleeping quarters",
+
+    "br.s11.title": "Badge Door",
+    "br.s11.body": "The reader is active. A light blinks softly, almost politely. On the plate, a sector name: Secondary Security.",
+    "br.s11.c1": "Look for a badge in the locker room",
+    "br.s11.c2": "Go back to the hallway",
+    "br.s11.c3": "Explore the supplies first",
+
+    "br.s12.title": "Service Locker Room",
+    "br.s12.body": "A locker stands half open. A uniform hangs inside. A faint smell of recent soap clashes with this abandoned place. In the bottom of a pocket, a badge still feels warm.",
+    "br.s12.c1": "Take the badge",
+    "br.s12.c2": "Go back to the badge door",
+    "br.s12.c3": "Return to the main hallway",
+
+    "br.s13.title": "Quiet Beep",
+    "br.s13.body": "The reader accepts it. The door slides open a few inches, slowly. Beyond it, a darker room is waiting for you.",
+    "br.s13.c1": "Enter the security room",
+    "br.s13.c2": "Give up and leave",
+    "br.s13.c3": "Go back toward the supplies",
+
+    "br.s14.title": "Untouched Supplies",
+    "br.s14.body": "Full shelves. Cans, water, sealed linens. Nothing has been looted. This place was not forgotten: it is maintained by someone planning to last.",
+    "br.s14.c1": "Inspect the aisles",
+    "br.s14.c2": "Look for the dorms",
+    "br.s14.c3": "Return to the main hallway",
+
+    "br.s15.title": "The Empty Aisle",
+    "br.s15.body": "One whole row has been cleared out neatly. No mess. In its place, at the back, a metal door with no visible label.",
+    "br.s15.c1": "Go to the unmarked door",
+    "br.s15.c2": "Look for the infirmary",
+    "br.s15.c3": "Go back to the supplies",
+
+    "br.s16.title": "Dorm in Perfect Order",
+    "br.s16.body": "The beds are made with exact precision. Only one is slightly sunk in. The sheet was pulled tight again in a hurry, like after an interrupted departure.",
+    "br.s16.c1": "Follow the clues toward the infirmary",
+    "br.s16.c2": "Look for a technical room",
+    "br.s16.c3": "Go back to the supplies",
+
+    "br.s17.title": "Infirmary",
+    "br.s17.body": "Everything is neatly arranged. Bottles sorted. In a drawer left open, a cutout in the foam shows that something is missing.",
+    "br.s17.c1": "Open the drawer fully",
+    "br.s17.c2": "Go back to the dorm",
+    "br.s17.c3": "Return to the supplies",
+
+    "br.s18.title": "The Missing Slot",
+    "br.s18.body": "Inside the drawer: one clean empty slot cut into the foam. A heavy key should have been there... and it is, stuck to the bottom, freezing in your hand.",
+    "br.s18.c1": "Take the key and head to the technical room",
+    "br.s18.c2": "Close it and step back",
+    "br.s18.c3": "Go back to the supplies",
+
+    "br.s19.title": "Technical Room",
+    "br.s19.body": "Pumps, filters, ducts. Everything barely vibrates. But behind the mechanical noise, another rhythm beats. Slower. More alive.",
+    "br.s19.c1": "Follow the beating",
+    "br.s19.c2": "Examine the filtration system",
+    "br.s19.c3": "Go back to the dorm",
+
+    "br.s20.title": "The Beating",
+    "br.s20.body": "You press yourself to the wall: the vibration comes back at regular intervals. Like breathing. It leads you to a vent grate set down on the floor, too clean to be old.",
+    "br.s20.c1": "Inspect the vent grate",
+    "br.s20.c2": "Crawl into the open duct",
+    "br.s20.c3": "Go back",
+
+    "br.s21.title": "Filtration",
+    "br.s21.body": "The filters are recent. Replaced not long ago. Someone is still maintaining the air down here, as if living in this bunker is still routine.",
+    "br.s21.c1": "Look for where the maintenance leads",
+    "br.s21.c2": "Go back to the technical room",
+    "br.s21.c3": "Return to the dorm",
+
+    "br.s22.title": "Sealed Door",
+    "br.s22.body": "Padlock. Thick metal. On the frame, a heat mark. The bunker seems to be keeping something behind this door, on purpose.",
+    "br.s22.c1": "Look for another way in",
+    "br.s22.c2": "Go back to the empty aisle",
+    "br.s22.c3": "Keep working on the padlock",
+
+    "br.s23.title": "Workshop",
+    "br.s23.body": "A bare workbench. A few tools lined up. A note with no words: only lines, pauses, three sequences. Not a message. A procedure.",
+    "br.s23.c1": "Take the paper and study it",
+    "br.s23.c2": "Look for a maintenance exit",
+    "br.s23.c3": "Go back to the sealed door",
+
+    "br.s24.title": "The Sequence",
+    "br.s24.body": "On the paper, three blocks repeat with two pauses. It is not a message. It is an exact rhythm to reproduce on an interface.",
+    "br.s24.c1": "Memorize the sequence",
+    "br.s24.c2": "Go back to the workshop",
+    "br.s24.c3": "Try the sequence at random",
+
+    "br.s25.title": "Open Grate",
+    "br.s25.body": "The screws have already been removed. The grate rests right beside it, as if someone often passes through here without wanting to leave visible traces.",
+    "br.s25.c1": "Slip into the opening",
+    "br.s25.c2": "Go back to the technical room",
+    "br.s25.c3": "Listen to the beating again",
+
+    "br.s26.title": "Inside the Duct",
+    "br.s26.body": "The air is dry. Too dry. Farther ahead, light slips under a vent plate. On the metal, repeated scraping has polished certain spots.",
+    "br.s26.c1": "Move toward the light",
+    "br.s26.c2": "Look for a side exit",
+    "br.s26.c3": "Back up to the grate",
+
+    "br.s27.title": "Security Room",
+    "br.s27.body": "Dark screens. Only one is active. The image is one second behind. Not enough to help you... just enough to make you understand that the bunker sees before you do.",
+    "br.s27.c1": "Walk up to the active screen",
+    "br.s27.c2": "Explore the screen controls",
+    "br.s27.c3": "Run",
+
+    "br.s28.title": "One Second Too Long",
+    "br.s28.body": "The screen shows... you. But with a slight delay. And in the image, behind you, something seems to move across the back of the hallway you just left.",
+    "br.s28.c1": "Keep watching to the end",
+    "br.s28.c2": "Turn off the screen",
+    "br.s28.c3": "Leave before it finishes",
+
+    "br.s29.title": "The Cursor Moves",
+    "br.s29.body": "No button really responds. And yet, a cursor glides by itself across an old interface, as if guided by a routine still running. It selects one zone and stops there.",
+    "br.s29.c1": "Write down the marked zone",
+    "br.s29.c2": "Leave the room",
+    "br.s29.c3": "Hit the keyboard and leave",
+
+    "br.s30.title": "Observation",
+    "br.s30.body": "The marked area matches a sector missing from the wall map. Something exists here without ever having been officially shown.",
+    "br.s30.c1": "Follow that lead",
+    "br.s30.c2": "Go back through the duct",
+    "br.s30.c3": "Trigger an alert on purpose",
+
+    "br.s31.title": "Red Light",
+    "br.s31.body": "The red light blinks slowly. In the distance, several doors close one after another, without sound. The bunker is not panicking: it is reorganizing access and pushing you toward one exact area.",
+    "br.s31.c1": "Stay calm and walk",
+    "br.s31.c2": "Follow the pulse deeper in",
+    "br.s31.c3": "Take the hallway leading to the back door",
+
+    "br.s32.title": "Back to Calm",
+    "br.s32.body": "The returning silence is worse. In front of you, a partially unlocked maintenance area seems to have been granted to you, like a reward or a test.",
+    "br.s32.c1": "Use the key on the side door",
+    "br.s32.c2": "Follow the faint traces in the hallway",
+    "br.s32.c3": "Return to the supplies",
+
+    "br.s33.title": "Maintenance Room",
+    "br.s33.body": "Cleaning products, tools, gloves, and on the wall a tracking sheet. Some lines were filled in very recently, in tight, almost shy handwriting.",
+    "br.s33.c1": "Read the last entries",
+    "br.s33.c2": "Go back into the duct",
+    "br.s33.c3": "Return to the quiet hallway",
+
+    "br.s34.title": "Recent Steps",
+    "br.s34.body": "The notes mention cleaning, rotation, and watch duty. Then one isolated word, repeated several times: sanctuary. As if the writer was trying to name the place without writing what really happens there.",
+    "br.s34.c1": "Look for the sanctuary",
+    "br.s34.c2": "Fold the sheet and leave",
+    "br.s34.c3": "Force another reaction from the bunker",
+
+    "br.s35.title": "Hallway of Details",
+    "br.s35.body": "The hallway carries small signs: scuff marks, shifted condensation, one corner cleaner than the others. With the map in mind, you realize there is a detour... if you look closely enough.",
+    "br.s35.c1": "Follow the too-clean corner",
+    "br.s35.c2": "Compare the hallway to the map fragment",
+    "br.s35.c3": "Force your way through",
+
+    "br.s36.title": "The Mark",
+    "br.s36.body": "On the wall, at finger height, a scuff mark appears again at regular intervals. Someone passes here often, always touching the same point to guide themselves.",
+    "br.s36.c1": "Follow the mark",
+    "br.s36.c2": "Keep going without touching it",
+    "br.s36.c3": "Go back to the previous hallway",
+
+    "br.s37.title": "The Marker Returns",
+    "br.s37.body": "The mark repeats all the way to an almost invisible area: one section of wall is duller, a seam in the concrete, like a carefully hidden door.",
+    "br.s37.c1": "Touch the seam",
+    "br.s37.c2": "Step back and look at the whole wall",
+    "br.s37.c3": "Drop this lead",
+
+    "br.s38.title": "Lived-In Room",
+    "br.s38.body": "An armchair. A blackout sheet. An empty glass with no dust on it. The room is not a setup: it is maintained. Someone lives here... but you always arrive after they are gone.",
+    "br.s38.c1": "Move closer to the sheet to see what it hides",
+    "br.s38.c2": "Watch longer to understand how the room is used",
+    "br.s38.c3": "Leave",
+
+    "br.s39.title": "Air Runs Short",
+    "br.s39.body": "Your breathing becomes too loud, too warm. You feel that this place does not like human warmth. This place is cold, yes... but it also follows its own rules. And you are inside them.",
+    "br.s39.c1": "Look for where all this is controlled",
+    "br.s39.c2": "Stay and listen for a long time",
+    "br.s39.c3": "Go back toward the lived-in room",
+
+    "br.s40.title": "The Map Answers",
+    "br.s40.body": "The missing fragment comes back to mind. This hallway does not connect two areas: it goes around something the official map refused to admit. The bunker was designed to hide its true center.",
+    "br.s40.c1": "Look for the missing area",
+    "br.s40.c2": "Go back to the hallway of details",
+    "br.s40.c3": "Trigger another alert",
+
+    "br.s41.title": "Missing Area",
+    "br.s41.body": "The dimensions no longer match. Behind this wall, one entire volume is missing. It is not empty: it is hidden.",
+    "br.s41.c1": "Look for a console tied to this area",
+    "br.s41.c2": "Go back the way you came",
+    "br.s41.c3": "Force the bunker to reopen its access points",
+
+    "br.s42.title": "Central Console",
+    "br.s42.body": "An old terminal is waiting. No full keyboard. Only buttons, pauses, and an interface that seems made to reproduce a rhythm rather than write words.",
+    "br.s42.c1": "Replay the sequence you memorized",
+    "br.s42.c2": "Go back to the workshop",
+    "br.s42.c3": "Improvise a way in",
+
+    "br.s43.title": "Double Key",
+    "br.s43.body": "The console accepts the rhythm, then asks for a second element: identity or authorization. Here, secrets are protected in layers.",
+    "br.s43.c1": "Present the badge",
+    "br.s43.c2": "Give up and leave",
+    "br.s43.c3": "Force the next step",
+
+    "br.s44.title": "Access Granted",
+    "br.s44.body": "The console validates the rhythm, then the badge. One light turns green. Farther ahead, a passage that was invisible until now slowly unlocks. For the first time, the bunker lets you move forward.",
+    "br.s44.c1": "Follow the opening passage",
+    "br.s44.c2": "Check the console one last time",
+    "br.s44.c3": "Trigger an alert",
+
+    "br.s45.title": "Test Mode",
+    "br.s45.body": "A hidden section appears. Watch settings. Isolation. Priority procedure. The bunker was not built to protect someone. It was built to contain them.",
+    "br.s45.c1": "Read the priority procedure",
+    "br.s45.c2": "Look for the sanctuary door",
+    "br.s45.c3": "Turn off the screen",
+
+    "br.s46.title": "Priority Procedure",
+    "br.s46.body": "A dry procedure appears on the screen. You understand how to temporarily change the way the place works: slow access to the sanctuary, lock certain circuits, and gain a little time.",
+    "br.s46.c1": "Memorize the procedure",
+    "br.s46.c2": "Go back to test mode",
+    "br.s46.c3": "Trigger an alert to open a deeper area",
+
+    "br.s47.title": "The Door Breathes",
+    "br.s47.body": "In front of you, the sanctuary door stays closed, but it is no longer still. A dull warmth leaks through the seals. The air around it feels heavier. The bunker is not blocking this place. It is keeping it asleep.",
+    "br.s47.c1": "Enter",
+    "br.s47.c2": "Look for another way around",
+    "br.s47.c3": "Return to the console",
+
+    "br.s48.title": "Red Antechamber",
+    "br.s48.body": "An empty room bathed in steady red light. Three doors take shape farther ahead, almost black. The bunker brings you here like it already knew this choice was coming.",
+    "br.s48.c1": "Go to the most visible door",
+    "br.s48.c2": "Look for a way back to the surface",
+    "br.s48.c3": "Study the three doors before choosing",
+
+    "br.s49.title": "Hallway of Echoes",
+    "br.s49.body": "The normal hallway is worse: no signal at all. You feel alone. Then you notice your steps do not match your echo. The echo lags a little behind. As if another set of steps were following.",
+    "br.s49.c1": "Follow the sound down the hallway",
+    "br.s49.c2": "Go back up to the surface",
+    "br.s49.c3": "Go to the three doors",
+
+    "br.s50.title": "Shadow Without a Body",
+    "br.s50.body": "A shadow slides across the sheet, but no one crosses the room. You see no body, no source, no logical reflection. The bunker may not be showing you the occupant itself, only the traces left behind.",
+    "br.s50.c1": "Hide and watch longer",
+    "br.s50.c2": "Activate the final sequence",
+    "br.s50.c3": "Go to the three doors",
+
+    "br.s51.title": "The Hallway Too Long",
+    "br.s51.body": "You keep walking, but the door never comes closer. The bunker wears you down in place. This path is not an escape: it is a loop disguised as an exit.",
+    "br.s51.c1": "Go back to the three doors",
+    "br.s51.c2": "Look for a side passage",
+    "br.s51.c3": "Turn all the way around",
+
+    "br.s52.title": "Back to the Hatch",
+    "br.s52.body": "The air from the surface is close, but not yet. You hear a faint sound behind you. A presence that refuses the light.",
+    "br.s52.c1": "Climb up now",
+    "br.s52.c2": "Go back into the bunker and keep searching",
+    "br.s52.c3": "Go back down toward the area with the three doors",
+
+    "br.s53.title": "The Night Rule",
+    "br.s53.body": "You finally understand the rule of this place. The bunker does not react at random. It changes depending on moments of presence, watch, and rest. Everything here was organized around one occupant you rarely see.",
+    "br.s53.c1": "Launch the full protocol",
+    "br.s53.c2": "Go back to the lived-in room",
+    "br.s53.c3": "Go to the three doors",
+
+    "br.s54.title": "Full Protocol",
+    "br.s54.body": "The bunker offers you a change in function: isolate the sanctuary, cut access, force a standby mode that no longer favors the occupant. It is not heroic. It is mechanical.",
+    "br.s54.c1": "Go back toward the three doors",
+    "br.s54.c2": "Stop the protocol and flee through the wrong hallway",
+    "br.s54.c3": "Go back up to the surface",
+
+    "br.s55.title": "The Last Breath",
+    "br.s55.body": "A cold draft finally passes across your face. The exit is close, but you feel like the bunker is only letting you go because it is done with you.",
+    "br.s55.c1": "Go back to the three doors to understand",
+    "br.s55.c2": "Return to the hatch",
+    "br.s55.c3": "Go back to the red antechamber",
+
+    "br.s56.title": "The Three Doors",
+    "br.s56.body": "In front of you, three doors. They look alike, but each one carries a different symbol.",
+    "br.s56.c1": "Choose the door with the sun symbol",
+    "br.s56.c2": "Choose the door with the cross symbol",
+    "br.s56.c3": "Choose the door with the round symbol",
+
+    "br.end_good.title": "Exit at Dawn",
+    "br.end_good.body": "You reach the surface at first light. The hill looks ordinary again. But under your feet, you know something continues out of sight, still following its old rules.",
+
+    "br.end_bad.title": "Human Reserve",
+    "br.end_bad.body": "You mistake the wrong logic for an exit. The bunker takes you back without violence. One door closes. One chamber opens. Everything here was already prepared to lock you in.",
+
+    "br.end_secret.title": "The True Center",
+    "br.end_secret.body": "You do not just make it out alive. You finally understand what this place really is, and you close what was meant to stay closed. The bunker grows quiet. For the first time, it no longer seems to be waiting.",
+
+    "br.h.s02.soft": "There is still a human path here.",
+    "br.h.s02.strong": "The fence is not a boundary. It guides you toward one exact point.",
+
+    "br.h.s07.soft": "The wall map does not show everything.",
+    "br.h.s07.strong": "The torn piece matters more than the whole map.",
+
+    "br.h.s08.soft": "Someone memorized a path that is not shown.",
+    "br.h.s08.strong": "The map fragment helps reveal a hidden area.",
+
+    "br.h.s11.soft": "Some doors want a badge, not force.",
+    "br.h.s11.strong": "Secondary security hides a useful path.",
+
+    "br.h.s12.soft": "Someone left an access point behind them.",
+    "br.h.s12.strong": "The badge opens much more than one door.",
+
+    "br.h.s15.soft": "The cleared aisle is a hiding place, not a loss.",
+    "br.h.s15.strong": "The nameless door leads to something people avoid naming.",
+
+    "br.h.s17.soft": "The infirmary keeps an important item.",
+    "br.h.s17.strong": "The heavy key was not forgotten. It was waiting.",
+
+    "br.h.s18.soft": "What is missing here opens something elsewhere.",
+    "br.h.s18.strong": "The master key is used later, after the alert.",
+
+    "br.h.s20.soft": "The beating points to a technical route.",
+    "br.h.s20.strong": "The ventilation leads you to an unofficial area.",
+
+    "br.h.s24.soft": "The note is not text, but rhythm.",
+    "br.h.s24.strong": "The sequence is for a console, not a simple door.",
+
+    "br.h.s26.soft": "The duct goes around the official layout.",
+    "br.h.s26.strong": "A side exit leads to hidden maintenance.",
+
+    "br.h.s27.soft": "Security is still watching, even if the place looks empty.",
+    "br.h.s27.strong": "The screen and the cursor point to an area missing from the map.",
+
+    "br.h.s30.soft": "Part of the bunker exists off the map.",
+    "br.h.s30.strong": "Following the missing area helps you find the sanctuary.",
+
+    "br.h.s33.soft": "Someone is still maintaining this place.",
+    "br.h.s33.strong": "The word sanctuary appears in the recent logs.",
+
+    "br.h.s37.soft": "The seam in the wall is not a flaw.",
+    "br.h.s37.strong": "The marker leads to the room that is truly lived in.",
+
+    "br.h.s42.soft": "The bunker responds to rhythms, not just words.",
+    "br.h.s42.strong": "The terminal opens the way to the true center.",
+
+    "br.h.s43.soft": "One access point is rarely enough here.",
+    "br.h.s43.strong": "Badge and sequence make the sanctuary's double key.",
+
+    "br.h.s46.soft": "The override does not open everything. It reverses an advantage.",
+    "br.h.s46.strong": "The final procedure is meant to be used before the three doors.",
+
+    "br.h.s56.soft": "The right door depends on what you understood.",
+    "br.h.s56.strong": "The secret can only be reached with the truth of the protocol and the mark of the sanctuary.",
+
+    "br.clue.has_badge.title": "Badge collected",
+    "br.clue.has_code.title": "Sequence memorized",
+    "br.clue.has_map_fragment.title": "Map fragment understood",
+    "br.clue.has_master_key.title": "Master key collected",
+    "br.clue.has_override.title": "Priority procedure memorized",
+    "br.clue.has_protocol_truth.title": "Protocol understood",
+    "br.clue.has_sanctuary_mark.title": "Sanctuary mark found"
+  }
+}
