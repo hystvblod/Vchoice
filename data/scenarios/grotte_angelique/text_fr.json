@@ -26,13 +26,13 @@
     "ga.s03.c3": "Regarder derrière toi une dernière fois",
 
     "ga.s04.title": "Le bord de pierre",
-    "ga.s04.body": "Tu avances sur une corniche étroite. Plus bas, la roche plonge dans l’ombre. Une autre ouverture s’ouvre sur le côté, plus discrète, plus vieille.",
+    "ga.s04.body": "Tu avances sur une corniche étroite. Plus bas, la roche plonge dans l’ombre. Sur le côté, une autre ouverture apparaît, plus discrète et plus ancienne.",
     "ga.s04.c1": "Passer par la corniche au-dessus du vide",
     "ga.s04.c2": "Inspecter un ancien point d’ancrage",
     "ga.s04.c3": "Suivre un vieux marquage sur le mur",
 
     "ga.s05.title": "La roche sale",
-    "ga.s05.body": "Des signes cassés courent sur la pierre. Entre eux, une poussière noire s’accroche aux doigts. Tu as l’impression que quelqu’un a voulu effacer un message sans jamais finir.",
+    "ga.s05.body": "Des signes cassés courent sur la pierre. Entre eux, une poussière noire s’accroche aux doigts. Tu as l’impression que quelqu’un a voulu effacer un message sans aller jusqu’au bout.",
     "ga.s05.c1": "Suivre le courant d’air venu d’une fissure",
     "ga.s05.c2": "Observer un dessin ancien sur le mur",
     "ga.s05.c3": "Avancer vers du matériel abandonné",
@@ -128,7 +128,7 @@
     "ga.s20.c3": "Retourner vers la salle des gouttes",
 
     "ga.s21.title": "Le passage poli",
-    "ga.s21.body": "La roche est trop lisse par endroits, comme si des corps y avaient frotté pendant très longtemps. Le passage serre les épaules et ralentit chaque geste.",
+    "ga.s21.body": "La roche est trop lisse par endroits, comme si quelque chose y avait frotté pendant des années. Le passage serre les épaules et ralentit chaque geste.",
     "ga.s21.c1": "Entrer dans la salle qui respire",
     "ga.s21.c2": "Suivre la galerie rouge",
     "ga.s21.c3": "Chercher la ligne effacée",
@@ -206,7 +206,7 @@
     "ga.s33.c3": "Entrer dans la salle ronde",
 
     "ga.s34.title": "Le souffle chaud",
-    "ga.s34.body": "L’air change ici. Il ne vient plus du dehors. Il vient du fond. Lent, chaud, régulier. Comme si une poitrine immense travaillait dans le noir.",
+    "ga.s34.body": "L’air change ici. Il ne vient plus du dehors. Il vient du fond. Lent, chaud, régulier. Comme une respiration immense dans le noir.",
     "ga.s34.c1": "Entrer dans la grande coupole noire",
     "ga.s34.c2": "Suivre les traces de suie plus loin",
     "ga.s34.c3": "Chercher l’autel usé",
@@ -296,7 +296,7 @@
     "ga.s48.c3": "Lire la plaque de cuivre",
 
     "ga.s49.title": "Le cuivre",
-    "ga.s49.body": "La plaque s'est salie avec le temps, mais les lettres tiennent encore. Le est mot clair : Angélique.",
+    "ga.s49.body": "La plaque s’est salie avec le temps, mais les lettres tiennent encore. Un mot reste clair : Angélique.",
     "ga.s49.c1": "Suivre le nom brisé",
     "ga.s49.c2": "Rejoindre le grand anneau gravé",
     "ga.s49.c3": "Suivre les échos plus loin",
@@ -362,7 +362,7 @@
     "ga.s59.c3": "Chercher la caisse ouverte",
 
     "ga.s60.title": "La cheminée",
-    "ga.s60.body": "Une lumière pâle tombe d’en haut, trop faible pour sauver, mais assez forte pour rappeler que le monde existe encore ailleurs.",
+    "ga.s60.body": "Une lumière pâle tombe d’en haut. Elle ne suffit pas à te guider dehors, mais elle rappelle que le monde existe encore au-dessus.",
     "ga.s60.c1": "Tenter la fausse sortie",
     "ga.s60.c2": "Chercher l’abri scellé",
     "ga.s60.c3": "Suivre les échos plus loin",
@@ -518,7 +518,7 @@
     "ga.bad_end.body": "Tu avances d’un pas de trop. Le souffle change. Le noir devant toi bouge vraiment cette fois. Tu comprends enfin la taille d’Angélique, mais trop tard. La grotte garde ton dernier bruit, puis plus rien.",
 
     "ga.secret_end.title": "FIN SECRÈTE — La vérité",
-    "ga.secret_end.body": "Tu apprends l’origine d’Angélique. Ce mythe a été créé par un frère pour se venger de sa sœur, qui lui reprochait de trop “s’affaler”, tel un méchant dragon… et toc ! ",
+    "ga.secret_end.body": "Tu découvres l’origine d’Angélique. Le mythe serait né d’une querelle entre un frère et sa sœur, puis transmis et déformé avec le temps jusqu’à devenir cette histoire.",
 
     "ga.h.s02.soft": "Les mots effacés ne sont pas juste du décor. Ils donnent déjà trois règles simples.",
     "ga.h.s02.strong": "Lis bien les avertissements. Ils annoncent le nom, le noir et le retour avant qu’il soit trop tard.",

@@ -259,8 +259,8 @@
       "body_key": "ga.s15.body",
       "choices": [
         { "choice_key": "ga.s15.c1", "next": "s28" },
-        { "choice_key": "ga.s15.c2", "next": "s38" },
-        { "choice_key": "ga.s15.c3", "next": "s39" }
+        { "choice_key": "ga.s15.c2", "next": "s39" },
+        { "choice_key": "ga.s15.c3", "next": "s38" }
       ]
     },
 

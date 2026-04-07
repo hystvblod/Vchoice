@@ -14,7 +14,7 @@
     "ms.s01.c3": "Monter sur la butte pour mieux voir",
 
     "ms.s02.title": "Entre les roseaux",
-    "ms.s02.body": "Le sentier s’enfonce entre de grands roseaux. Ils se frottent doucement sans vent. Le sol est mou. Chaque pas te pousse plus loin, comme si le marais acceptait ton poids mais refusait déjà ton retour.",
+    "ms.s02.body": "Le sentier s’enfonce entre de grands roseaux. Ils se frottent doucement sans vent. Le sol est mou. À chaque pas, le retour te paraît un peu moins simple.",
     "ms.s02.c1": "Continuer tout droit",
     "ms.s02.c2": "Regarder ce qui brille dans les roseaux",
     "ms.s02.c3": "Te retourner pour vérifier le chemin",
@@ -98,7 +98,7 @@
     "ms.s15.c3": "Suivre les planches plus loin",
 
     "ms.s16.title": "À l’intérieur",
-    "ms.s16.body": "Une table sale. Une fenêtre terne. Une odeur de vase sèche. Tout est resté en place, comme si quelqu’un avait quitté la pièce il y a des années sans prendre le temps de refermer la porte.",
+    "ms.s16.body": "Une table sale. Une fenêtre terne. Une odeur de vase sèche. Tout est resté en place, comme si quelqu’un était parti à la hâte et n’était jamais revenu.",
     "ms.s16.c1": "Regarder la carte au mur",
     "ms.s16.c2": "Observer les objets suspendus",
     "ms.s16.c3": "Sortir et suivre la direction du hameau noyé",
@@ -134,7 +134,7 @@
     "ms.s21.c3": "Suivre le chemin le plus sec",
 
     "ms.s22.title": "Le ruban",
-    "ms.s22.body": "Le ruban rouge colle un peu à tes doigts. Il est plus lourd qu’il ne devrait l’être. Ce n’est qu’un bout de tissu, et pourtant tu as l’impression d’avoir pris quelque chose que le marais comptait encore garder.",
+    "ms.s22.body": "Le ruban rouge colle un peu à tes doigts. Il est plus lourd qu’il ne devrait l’être. Ce n’est qu’un bout de tissu, mais tu as l’impression de prendre quelque chose qui n’aurait pas dû quitter cet endroit.",
     "ms.s22.c1": "Aller vers le tas de pierres",
     "ms.s22.c2": "Suivre le chemin vers le hameau",
     "ms.s22.c3": "Chercher la place centrale",
@@ -170,7 +170,7 @@
     "ms.s27.c3": "Aller à l’écurie",
 
     "ms.s28.title": "L’ancienne poste",
-    "ms.s28.body": "La petite poste semble avoir été vidée par l’eau puis oubliée. Une boîte rouillée pend encore près de la porte. L’endroit te donne l’impression que des messages ont essayé d’en sortir sans jamais y arriver.",
+    "ms.s28.body": "La petite poste semble avoir été vidée par l’eau puis oubliée. Une boîte rouillée pend encore près de la porte. On dirait qu’aucun message n’est jamais vraiment parti d’ici.",
     "ms.s28.c1": "Entrer",
     "ms.s28.c2": "Regarder les lettres au sol",
     "ms.s28.c3": "Partir vers la chapelle",
@@ -224,7 +224,7 @@
     "ms.s36.c3": "Monter à la plateforme de guet",
 
     "ms.s37.title": "Le cimetière noyé",
-    "ms.s37.body": "Derrière la chapelle, les stèles penchent dans l’eau basse. Certaines semblent vides. D’autres portent encore des noms mangés par la mousse. Le lieu n’est pas grand, mais il suffit à comprendre que tout le monde n’a pas reçu la même fin.",
+    "ms.s37.body": "Derrière la chapelle, les stèles penchent dans l’eau basse. Certaines semblent vides. D’autres portent encore des noms mangés par la mousse. Le lieu est petit, mais il suffit pour comprendre que tout le monde n’a pas eu droit à une tombe.",
     "ms.s37.c1": "Approcher la tombe ouverte",
     "ms.s37.c2": "Suivre le passage d’os",
     "ms.s37.c3": "Monter à la plateforme",
@@ -248,7 +248,7 @@
     "ms.s40.c3": "Suivre la ligne de pierres plus bas",
 
     "ms.s41.title": "Le marais d’en haut",
-    "ms.s41.body": "Depuis la hauteur, tu repères la cabane, le hameau, la chapelle, la maison des pompes et, plus loin, une butte centrale que tu n’avais pas vue clairement avant. Ce lieu n’est pas un hasard. Il est organisé autour d’un centre.",
+    "ms.s41.body": "Depuis la hauteur, tu repères la cabane, le hameau, la chapelle et la maison des pompes. Plus loin, tu distingues aussi une butte centrale que tu n’avais pas vue avant. Ce lieu n’est pas un hasard. Tout semble organisé autour d’un centre.",
     "ms.s41.c1": "Revenir au plan",
     "ms.s41.c2": "Suivre la ligne de pierres",
     "ms.s41.c3": "Aller vers la maison des pompes",
@@ -278,7 +278,7 @@
     "ms.s45.c3": "Chercher l’écluse derrière",
 
     "ms.s46.title": "Les vannes",
-    "ms.s46.body": "Des vannes, des chaînes et des leviers mangés par la rouille entourent la pièce. Tu comprends sans savoir comment que l’eau a pu être forcée ici, déplacée, contenue, puis relâchée. Le marais n’a pas toujours été libre.",
+    "ms.s46.body": "Des vannes, des chaînes et des leviers mangés par la rouille entourent la pièce. Tu comprends alors que l’eau a déjà été guidée, retenue puis relâchée ici. Le marais n’a pas toujours été libre.",
     "ms.s46.c1": "Aller au petit bureau",
     "ms.s46.c2": "Passer derrière le bâtiment",
     "ms.s46.c3": "Rejoindre l’écluse",
@@ -338,7 +338,7 @@
     "ms.s55.c3": "Aller à la butte centrale",
 
     "ms.s56.title": "Le chêne creux",
-    "ms.s56.body": "Le chêne est vieux, creux et presque noir. Son intérieur est vide, mais pas propre. Quelqu’un a déjà caché des choses là-dedans. Tu n’y trouves rien maintenant, sauf la certitude que ce marais a servi à plus qu’une simple frontière naturelle.",
+    "ms.s56.body": "Le chêne est vieux, creux et presque noir. Son intérieur est vide, mais pas propre. Quelqu’un a déjà caché des choses là-dedans. Tu n’y trouves rien, sauf l’impression que ce marais servait à bien plus qu’à marquer une frontière.",
     "ms.s56.c1": "Aller au poteau d’amarrage",
     "ms.s56.c2": "Suivre la chaîne",
     "ms.s56.c3": "Rejoindre la rive plus sèche",
@@ -404,7 +404,7 @@
     "ms.s66.c3": "Prendre le couloir de séparation",
 
     "ms.s67.title": "Le souffle",
-    "ms.s67.body": "L’ouverture ronde dans le sol laisse monter un souffle froid. Pas un courant d’air normal. Un souffle qui a presque la forme d’un mot si tu restes trop longtemps à l’écouter. Tu n’aimes pas ce qu’il essaie de dire.",
+    "ms.s67.body": "L’ouverture ronde dans le sol laisse monter un souffle froid. Pas un courant d’air normal. On dirait presque un souffle qui cherche à former un mot, à condition de rester trop longtemps à l’écouter. Tu n’aimes pas ce qu’il essaie de dire.",
     "ms.s67.c1": "Observer l’eau qui monte",
     "ms.s67.c2": "Prendre le couloir de séparation",
     "ms.s67.c3": "Reculer vers les visages blancs",

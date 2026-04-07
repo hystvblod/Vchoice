@@ -122,7 +122,7 @@
     "vbn.s19.c3": "Prendre plutôt la route de la chapelle",
 
     "vbn.s20.title": "Le comptoir",
-    "vbn.s20.body": "L’intérieur est figé. Des étagères vides. Une caisse ancienne. Sur le comptoir, un registre semble t’attendre, ouvert à la bonne page.",
+    "vbn.s20.body": "L’intérieur est figé. Des étagères vides. Une caisse ancienne. Sur le comptoir, un registre est resté ouvert, comme s’il attendait qu’on le lise.",
     "vbn.s20.c1": "Lire le registre",
     "vbn.s20.c2": "Regarder le papier coincé dessous",
     "vbn.s20.c3": "Quitter la boutique et viser l’auberge au centre",
@@ -164,7 +164,7 @@
     "vbn.s26.c3": "Laisser la maison et rejoindre l’auberge",
 
     "vbn.s27.title": "Le cercle fendu",
-    "vbn.s27.body": "Le signe ressemble à un cercle ouvert sur un côté, comme une porte mal refermée. En le regardant, tu comprends sans savoir pourquoi qu’il ne faut pas seulement fuir. Il faut trouver l’ouverture juste.",
+    "vbn.s27.body": "Le signe ressemble à un cercle ouvert sur un côté, comme une porte mal refermée. En le regardant, tu comprends une chose : il ne suffit pas de fuir. Il faut trouver le bon passage.",
     "vbn.s27.c1": "Mémoriser le signe et retourner dehors",
     "vbn.s27.c2": "Chercher ce même signe ailleurs",
     "vbn.s27.c3": "Quitter les lieux et aller à l’auberge",
@@ -188,7 +188,7 @@
     "vbn.s30.c3": "Prendre la porte latérale",
 
     "vbn.s31.title": "La petite cloche",
-    "vbn.s31.body": "Près de l’autel, une petite cloche repose sur le bois. Elle n’a rien de précieux, mais sa présence paraît trop précise pour être un hasard.",
+    "vbn.s31.body": "Près de l’autel, une petite cloche repose sur le bois. Elle n’a rien de précieux, mais elle a visiblement été laissée là pour une raison.",
     "vbn.s31.c1": "Prendre la cloche",
     "vbn.s31.c2": "Prendre la cloche puis lire le vitrail",
     "vbn.s31.c3": "Prendre la cloche puis passer par la porte latérale",
@@ -368,7 +368,7 @@
     "vbn.s60.c3": "Quitter le souterrain et remonter",
 
     "vbn.s61.title": "La fresque",
-    "vbn.s61.body": "La fresque montre le village, la parade, puis une ouverture blanche sous la terre. Un symbole apparaît plusieurs fois. C’est le même que dans la chambre, mais sans ce souvenir, il resterait muet.",
+    "vbn.s61.body": "La fresque montre le village, la parade, puis une ouverture blanche sous la terre. Un symbole revient plusieurs fois. C’est le même que dans la chambre. Sans ce souvenir, tu n’y aurais sans doute pas prêté attention.",
     "vbn.s61.c1": "Continuer vers la bifurcation",
     "vbn.s61.c2": "Chercher la voie du symbole",
     "vbn.s61.c3": "Remonter avant qu’il soit trop tard",
@@ -386,7 +386,7 @@
     "vbn.s63.c3": "Abandonner et remonter vers la brume",
 
     "vbn.s64.title": "La porte scellée",
-    "vbn.s64.body": "La porte de pierre ne possède ni poignée ni serrure. Tu reconnais le cercle fendu, gravé presque invisible, et la rainure faite pour un petit son ou un petit choc.",
+    "vbn.s64.body": "La porte de pierre n’a ni poignée ni serrure. Tu reconnais le cercle fendu, gravé presque invisiblement, ainsi qu’une petite rainure prévue pour un son bref ou un choc léger.",
     "vbn.s64.c1": "Essayer d’ouvrir avec ce que tu as compris",
     "vbn.s64.c2": "Remonter vers les hauteurs",
     "vbn.s64.c3": "Tout laisser et reprendre la brume",
