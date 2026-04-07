@@ -71,7 +71,10 @@
     "styx_gare",
     "foret_relais",
     "chateau_absents",
-    "temple_mictlan"
+    "temple_mictlan",
+    "village_brume_noire",
+    "marais_sans_sepulture",
+    "grotte_angelique"
   ];
 
   function scenarioSku(scenarioId){
