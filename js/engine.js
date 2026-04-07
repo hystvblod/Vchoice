@@ -68,11 +68,17 @@ let TEXT_STRINGS = null;
 
 let scenarioStates = {};
 
+const STUCK_REPEAT_THRESHOLD = 4;
+const MINI_GUIDE_STEP_COUNT = 5;
+
 let GUIDE_STATE = {
   active: false,
   targetType: null,
   nextByScene: {},
-  path: []
+  path: [],
+  mode: null,
+  stepsLeft: 0,
+  dynamic: false
 };
 
 let OVERRIDE_FLAGS = false;
@@ -719,16 +725,81 @@ function hasLocalRun(scenarioId){
   return (start && cur && cur !== start) || hasFlags || hasClues;
 }
 
-function hardResetScenario(scenarioId){
-  if(!scenarioId) return;
-  const start = resolveStartScene(LOGIC);
-  scenarioStates[scenarioId] = {
+function createScenarioRuntimeState(start){
+  const first = String(start || "");
+  return {
     scene: start,
     flags: {},
     clues: [],
-    history: []
+    history: [],
+    sceneVisits: first ? { [first]: 1 } : {},
+    recentScenes: first ? [first] : [],
+    stuckHelpShown: {}
   };
+}
+
+function ensureScenarioTrackingState(st){
+  if(!st || typeof st !== "object") return;
+
+  st.sceneVisits ??= {};
+  st.recentScenes ??= [];
+  st.stuckHelpShown ??= {};
+
+  const cur = String(st.scene || "");
+  if(!cur) return;
+
+  if(!Object.prototype.hasOwnProperty.call(st.sceneVisits, cur)){
+    st.sceneVisits[cur] = 1;
+  }
+  if(!Array.isArray(st.recentScenes) || !st.recentScenes.length){
+    st.recentScenes = [cur];
+  }
+}
+
+function trackSceneVisit(sceneId){
+  const st = scenarioStates[currentScenarioId];
+  if(!st || !sceneId) return;
+
+  ensureScenarioTrackingState(st);
+
+  const id = String(sceneId);
+  st.sceneVisits[id] = Number(st.sceneVisits[id] || 0) + 1;
+  st.recentScenes.push(id);
+
+  if(st.recentScenes.length > 8){
+    st.recentScenes.shift();
+  }
+}
+
+function getJetonBalance(){
+  let jetons = 0;
+  if(window.VUserData && typeof window.VUserData.getJetons === "function"){
+    try{ jetons = Number(window.VUserData.getJetons() || 0); }catch(_){ }
+  }
+  return Number.isFinite(jetons) ? jetons : 0;
+}
+
+function openShopPage(){
+  location.href = "shop.html";
+}
+
+function resetGuideState(){
+  GUIDE_STATE.active = false;
+  GUIDE_STATE.targetType = null;
+  GUIDE_STATE.nextByScene = {};
+  GUIDE_STATE.path = [];
+  GUIDE_STATE.mode = null;
+  GUIDE_STATE.stepsLeft = 0;
+  GUIDE_STATE.dynamic = false;
+  OVERRIDE_FLAGS = false;
+}
+
+function hardResetScenario(scenarioId){
+  if(!scenarioId) return;
+  const start = resolveStartScene(LOGIC);
+  scenarioStates[scenarioId] = createScenarioRuntimeState(start);
   GAMEPLAY_SESSION_REWARDED_SEEN = false;
+  resetGuideState();
   save();
 }
 
@@ -904,11 +975,12 @@ function bindJetonHud(){
         }
 
         if(GUIDE_STATE.active){
-          GUIDE_STATE.active = true;
-          GUIDE_STATE.targetType = targetType;
-          GUIDE_STATE.nextByScene = plan.nextByScene;
-          GUIDE_STATE.path = plan.path || [];
-          OVERRIDE_FLAGS = true;
+          applyGuidePlan(plan, {
+            targetType,
+            mode: "full",
+            stepsLeft: 0,
+            dynamic: false
+          });
 
           updateJetonGuideUI();
           hideJetonModal();
@@ -924,12 +996,12 @@ function bindJetonHud(){
           return;
         }
 
-        GUIDE_STATE.active = true;
-        GUIDE_STATE.targetType = targetType;
-        GUIDE_STATE.nextByScene = plan.nextByScene;
-        GUIDE_STATE.path = plan.path || [];
-
-        OVERRIDE_FLAGS = true;
+        applyGuidePlan(plan, {
+          targetType,
+          mode: "full",
+          stepsLeft: 0,
+          dynamic: false
+        });
 
         updateHudJetons();
         updateJetonModalCount();
@@ -945,11 +1017,7 @@ function bindJetonHud(){
   const stopBtn = $("btnJetonGuideStop");
   if(stopBtn){
     stopBtn.addEventListener("click", () => {
-      GUIDE_STATE.active = false;
-      GUIDE_STATE.targetType = null;
-      GUIDE_STATE.nextByScene = {};
-      GUIDE_STATE.path = [];
-      OVERRIDE_FLAGS = false;
+      resetGuideState();
 
       updateJetonGuideUI();
       renderScene();
@@ -1345,12 +1413,25 @@ function isChoiceAvailable(choice){
 
 function _findEndingTargets(logic, type){
   const scenes = logic?.scenes || {};
-  const direct = `end_${type}`;
-  if (Object.prototype.hasOwnProperty.call(scenes, direct)) return [direct];
-
   const keys = Object.keys(scenes);
+  const needle = String(type || "any").toLowerCase();
   const out = [];
-  const needle = String(type || "").toLowerCase();
+
+  if(needle === "any"){
+    for(const k of keys){
+      const sc = scenes[k] || {};
+      const choices = Array.isArray(sc?.choices) ? sc.choices : [];
+      const lk = String(k || "").toLowerCase();
+      const isNamedEnd = /^end_(good|bad|secret)$/.test(lk) || /^fin_(good|bad|secret)$/.test(lk) || /^ending_(good|bad|secret)$/.test(lk);
+      if(sc.ending || isNamedEnd || choices.length === 0){
+        out.push(k);
+      }
+    }
+    return [...new Set(out)];
+  }
+
+  const direct = `end_${needle}`;
+  if (Object.prototype.hasOwnProperty.call(scenes, direct)) return [direct];
 
   for(const k of keys){
     const lk = k.toLowerCase();
@@ -1366,7 +1447,7 @@ function _findEndingTargets(logic, type){
       if(ch.length === 0) out.push(k);
     }
   }
-  return out;
+  return [...new Set(out)];
 }
 
 function computeGuidePlan(fromSceneId, targetType){
@@ -1419,6 +1500,228 @@ function computeGuidePlan(fromSceneId, targetType){
 
   return { path, nextByScene };
 }
+function trimGuidePlan(plan, maxChoices){
+  const limit = Math.max(0, Number(maxChoices) || 0);
+  if(!plan || !Array.isArray(plan.path) || plan.path.length < 2 || limit < 1){
+    return { path: Array.isArray(plan?.path) ? plan.path.slice(0, 1) : [], nextByScene: {} };
+  }
+
+  const slice = plan.path.slice(0, Math.min(plan.path.length, limit + 1));
+  const nextByScene = {};
+  for(let i=0;i<slice.length-1;i++){
+    nextByScene[slice[i]] = slice[i+1];
+  }
+
+  return { path: slice, nextByScene };
+}
+
+function applyGuidePlan(plan, opts = {}){
+  const {
+    targetType = "any",
+    mode = "full",
+    stepsLeft = 0,
+    dynamic = false
+  } = opts;
+
+  GUIDE_STATE.active = true;
+  GUIDE_STATE.targetType = targetType;
+  GUIDE_STATE.nextByScene = plan?.nextByScene || {};
+  GUIDE_STATE.path = Array.isArray(plan?.path) ? plan.path.slice() : [];
+  GUIDE_STATE.mode = mode;
+  GUIDE_STATE.stepsLeft = Math.max(0, Number(stepsLeft) || 0);
+  GUIDE_STATE.dynamic = !!dynamic;
+  OVERRIDE_FLAGS = true;
+}
+
+function refreshDynamicGuideFromCurrentScene(){
+  if(!GUIDE_STATE.active || !GUIDE_STATE.dynamic) return;
+
+  const st = scenarioStates[currentScenarioId];
+  const curId = st?.scene;
+  if(!curId){
+    resetGuideState();
+    return;
+  }
+
+  const plan = computeGuidePlan(curId, GUIDE_STATE.targetType || "any");
+  if(!plan || !plan.nextByScene || !Object.keys(plan.nextByScene).length){
+    resetGuideState();
+    return;
+  }
+
+  let finalPlan = plan;
+  if(GUIDE_STATE.mode === "mini"){
+    if(Number(GUIDE_STATE.stepsLeft || 0) <= 0){
+      resetGuideState();
+      return;
+    }
+    finalPlan = trimGuidePlan(plan, GUIDE_STATE.stepsLeft);
+  }
+
+  GUIDE_STATE.nextByScene = finalPlan.nextByScene || {};
+  GUIDE_STATE.path = Array.isArray(finalPlan.path) ? finalPlan.path.slice() : [];
+  OVERRIDE_FLAGS = true;
+}
+
+async function startMiniGuideAssist(){
+  const curId = scenarioStates[currentScenarioId]?.scene;
+  const plan = computeGuidePlan(curId, "any");
+  if(!plan || !plan.nextByScene || !Object.keys(plan.nextByScene).length){
+    throw new Error("no_path");
+  }
+
+  if(getJetonBalance() >= 1){
+    const res = await spendJetons(1);
+    if(!res?.ok) throw new Error("jeton_failed");
+    updateHudJetons();
+    updateJetonModalCount();
+  }else{
+    if(!window.VAds || typeof window.VAds.showRewarded !== "function"){
+      throw new Error("ad_unavailable");
+    }
+    const ad = await window.VAds.showRewarded();
+    if(!ad?.ok) throw new Error("ad_unavailable");
+    markGameplayRewardedSeen();
+  }
+
+  const miniPlan = trimGuidePlan(plan, MINI_GUIDE_STEP_COUNT);
+  applyGuidePlan(miniPlan, {
+    targetType: "any",
+    mode: "mini",
+    stepsLeft: MINI_GUIDE_STEP_COUNT,
+    dynamic: true
+  });
+}
+
+async function startFullGuideAssist(){
+  const curId = scenarioStates[currentScenarioId]?.scene;
+  const plan = computeGuidePlan(curId, "any");
+  if(!plan || !plan.nextByScene || !Object.keys(plan.nextByScene).length){
+    throw new Error("no_path");
+  }
+
+  const res = await spendJetons(3);
+  if(!res?.ok) throw new Error("jeton_failed");
+
+  updateHudJetons();
+  updateJetonModalCount();
+
+  applyGuidePlan(plan, {
+    targetType: "any",
+    mode: "full",
+    stepsLeft: 0,
+    dynamic: true
+  });
+}
+
+function showStuckAssistModal(){
+  showHintModalWithActionsRich(
+    tUI("stuck_title"),
+    (root) => {
+      const p = document.createElement("div");
+      p.className = "vc-modal-prewrap";
+      p.textContent = tUI("stuck_body", { count: STUCK_REPEAT_THRESHOLD });
+      root.appendChild(p);
+
+      const msg = document.createElement("div");
+      msg.id = "vcStuckMsg";
+      msg.className = "vc-lock-msg";
+      msg.textContent = "";
+      root.appendChild(msg);
+    },
+    (actionsWrap) => {
+      const msg = () => $("vcStuckMsg");
+
+      const btnContinue = document.createElement("button");
+      btnContinue.type = "button";
+      btnContinue.className = "btn btn--ghost";
+      btnContinue.textContent = tUI("stuck_continue");
+      btnContinue.onclick = () => hideHintModal();
+      actionsWrap.appendChild(btnContinue);
+
+      const btnMini = document.createElement("button");
+      btnMini.type = "button";
+      btnMini.className = "btn";
+      if(getJetonBalance() >= 1){
+        setChoiceButtonContentWithIcon(btnMini, UI_JETON_ICON_WEBP, tUI("stuck_mini_guide"));
+      }else{
+        btnMini.textContent = tUI("stuck_mini_guide_ad");
+      }
+      btnMini.onclick = async () => {
+        try{
+          if(msg()) msg().textContent = "";
+          await startMiniGuideAssist();
+          hideHintModal();
+          renderScene();
+        }catch(e){
+          const code = String(e?.message || "");
+          if(code === "no_path"){
+            if(msg()) msg().textContent = tUI("jeton_guide_no_path");
+            return;
+          }
+          if(code === "ad_unavailable"){
+            if(msg()) msg().textContent = tUI("locked_unlock_ad_fail");
+            return;
+          }
+          if(msg()) msg().textContent = tUI("jeton_not_enough");
+        }
+      };
+      actionsWrap.appendChild(btnMini);
+
+      const btnFull = document.createElement("button");
+      btnFull.type = "button";
+      btnFull.className = "btn";
+      setChoiceButtonContentWithIcon(btnFull, UI_JETON_ICON_WEBP, tUI("stuck_full_guide"));
+      btnFull.onclick = async () => {
+        try{
+          if(msg()) msg().textContent = "";
+          await startFullGuideAssist();
+          hideHintModal();
+          renderScene();
+        }catch(e){
+          const code = String(e?.message || "");
+          if(code === "no_path"){
+            if(msg()) msg().textContent = tUI("jeton_guide_no_path");
+            return;
+          }
+          if(msg()) msg().textContent = tUI("jeton_not_enough");
+        }
+      };
+      actionsWrap.appendChild(btnFull);
+
+      const btnShop = document.createElement("button");
+      btnShop.type = "button";
+      btnShop.className = "btn btn--ghost";
+      btnShop.textContent = tUI("stuck_get_jetons");
+      btnShop.onclick = () => openShopPage();
+      actionsWrap.appendChild(btnShop);
+    }
+  );
+}
+
+async function maybeShowStuckAssist(){
+  if(String(currentScenarioId || "") === INTRO_SCENARIO_ID) return;
+  if(GUIDE_STATE.active) return;
+
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return;
+
+  ensureScenarioTrackingState(st);
+
+  const cur = String(st.scene || "");
+  if(!cur) return;
+
+  const visits = Number(st.sceneVisits?.[cur] || 0);
+  if(visits < STUCK_REPEAT_THRESHOLD) return;
+
+  st.stuckHelpShown ??= {};
+  if(st.stuckHelpShown[cur]) return;
+
+  st.stuckHelpShown[cur] = true;
+  save();
+  showStuckAssistModal();
+}
+
 
 /* =========================
    SCENARIO OPEN
@@ -1448,12 +1751,7 @@ async function openScenario(scenarioId, opts = {}){
 
   if(!scenarioStates[scenarioId]){
     const start = resolveStartScene(LOGIC);
-    scenarioStates[scenarioId] = {
-      scene: start,
-      flags: {},
-      clues: [],
-      history: []
-    };
+    scenarioStates[scenarioId] = createScenarioRuntimeState(start);
     save();
   } else {
     if(!scenarioStates[scenarioId].scene){
@@ -1465,6 +1763,7 @@ async function openScenario(scenarioId, opts = {}){
   scenarioStates[scenarioId].flags ??= {};
   scenarioStates[scenarioId].clues ??= [];
   scenarioStates[scenarioId].history ??= [];
+  ensureScenarioTrackingState(scenarioStates[scenarioId]);
 
   if (isIOS() && !_iosGateDone && window.VCAudio) {
     await showIOSAudioGate();
@@ -1562,10 +1861,15 @@ async function goBackWithJeton(){
   }
 
   st.scene = st.history.pop();
+  trackSceneVisit(st.scene);
+  if(GUIDE_STATE.active && GUIDE_STATE.dynamic){
+    refreshDynamicGuideFromCurrentScene();
+  }
   save();
   updateHudJetons();
   hideHintModal();
   renderScene();
+  await maybeShowStuckAssist();
 }
 
 function prettyFlagTitle(flag){
@@ -1623,11 +1927,25 @@ async function executeChoice(ch){
     st.history.push(st.scene);
 
     st.scene = ch.next;
+    trackSceneVisit(st.scene);
+
+    if(GUIDE_STATE.active && GUIDE_STATE.mode === "mini"){
+      GUIDE_STATE.stepsLeft = Math.max(0, Number(GUIDE_STATE.stepsLeft || 0) - 1);
+      if(GUIDE_STATE.stepsLeft <= 0){
+        resetGuideState();
+      }else if(GUIDE_STATE.dynamic){
+        refreshDynamicGuideFromCurrentScene();
+      }
+    }else if(GUIDE_STATE.active && GUIDE_STATE.dynamic){
+      refreshDynamicGuideFromCurrentScene();
+    }
+
     save();
 
     await maybeShowInterstitialAfterChoice();
 
     renderScene();
+    await maybeShowStuckAssist();
     return;
   }
 
@@ -2455,6 +2773,4 @@ window.VLang = {
 document.addEventListener("DOMContentLoaded", boot);
 
 })();
-
-
 
