@@ -1,1 +1,41 @@
-﻿{}
+﻿{
+  "meta": {
+    "lang": "it",
+    "scenario_id": "intro_tuto",
+    "title": "2:00 — Il grido",
+    "tagline": "Un grido nel buio. Reale… o solo per te?",
+    "hint_ns": "it.h",
+    "generated": "2026-02-23"
+  },
+  "strings": {
+    "it.intro.title": "2:00 — Il grido",
+    "it.intro.body": "Sono le 2 del mattino.\n\nUn grido attraversa il silenzio, breve… poi si interrompe di colpo.\nRimani immobile. Non sai se sia reale. Non sai da dove venga.\n\nMa sai una cosa: succederà di nuovo.",
+    "it.intro.c1": "Uscire dalla camera",
+    "it.intro.c2": "Guardare dallo spioncino",
+    "it.intro.c3": "Aprire leggermente la porta",
+    "it.s1.title": "Il corridoio",
+    "it.s1.body": "Il parquet scricchiola sotto il tuo peso.\nLa luce del corridoio vacilla una sola volta… poi si stabilizza.\n\nL’aria è fredda. Non come una finestra aperta.\nCome una stanza rimasta chiusa per anni.\n\nIn fondo, l’oscurità sembra più densa.",
+    "it.s1.c1": "Avanzare senza fare rumore",
+    "it.s1.c2": "Spegnere la luce e ascoltare, seguendo il tuo istinto",
+    "it.s1.c3": "Sussurrare: \"C’è qualcuno?\" e seguire il rumore",
+    "it.s2.title": "I gradini",
+    "it.s2.body": "Scendi lentamente.\nA metà scala, vedi una porta socchiusa.\nDietro, una corrente d’aria odora di pietra umida.\n\nIl tuo telefono segna le 02:00.\nNon hai campo.\n\nE poi… un secondo grido.\nPiù vicino.\nPiù in basso.\nCome se venisse dall’interno della casa.",
+    "it.s2.c1": "Seguire il corridoio verso il grido",
+    "it.s2.c2": "Appoggiare la mano al muro per orientarti e seguirlo",
+    "it.s2.c3": "Avvicinarti alla porta",
+    "it.s3.title": "La porta segnata",
+    "it.s3.body": "La porta porta un simbolo inciso, appena visibile.\nLa maniglia è gelida.\n\nNella serratura, qualcosa brilla: un frammento di metallo, una chiave arrugginita incastrata lì da molto tempo.\n\nVuoi prenderla.\nMa le tue dita tremano.\nE il grido si trasforma in un respiro, proprio dietro il legno.\n\nNon puoi continuare senza sbloccare l’oggetto mancante. Questa scena serve a mostrarti il sistema dei gettoni.",
+    "it.s3.c1": "Inserire la chiave arrugginita",
+    "it.s3.c2": "Forzare la maniglia",
+    "it.s3.c3": "Provare ad aprirla colpendola",
+    "it.s4.title": "Dall’altra parte",
+    "it.s4.body": "La serratura cede con uno schiocco secco.\nIl respiro si ferma.\n\nLa stanza è vuota.\nSolo una sedia.\nE sul pavimento, una traccia umida, come se qualcuno avesse strisciato.",
+    "it.s4.c1": "Uscire dall’edificio e chiedere aiuto",
+    "it.s4.c2": "Indietreggiare lentamente, senza fare rumore",
+    "it.end_good.title": "Bravo — ce l’hai fatta",
+    "it.end_good.body": "Il silenzio torna a calare.\nRespiri.\n\n✅ Ricompensa del tutorial:\n• +2 Gettoni\n• +100 VCoins\n\nLe **VCoins** servono a sbloccare nuovi scenari.\nI **Gettoni** servono per:\n• sbloccare un oggetto dimenticato\n• tornare indietro\n• attivare la guida verso un finale (buono / cattivo / segreto)\n\nOgni scenario ha più finali: uno buono, uno cattivo e, a volte, uno o più segreti.\n\nSuggerimento: se un’opzione è bloccata, spesso puoi trovare l’oggetto… oppure sbloccarla con 1 gettone.",
+    "it.end_bad.title": "Fine — sei fuggito",
+    "it.end_bad.body": "Fai un passo indietro all’improvviso e fuggi.\n\nDietro di te, il grido ricomincia… ma questa volta sembra seguirti.\n\n✅ Ricompensa del tutorial:\n• +2 Gettoni\n• +100 VCoins\n\nLe **VCoins** servono a sbloccare nuovi scenari.\nI **Gettoni** servono per:\n• sbloccare un oggetto dimenticato\n• tornare indietro\n• attivare la guida verso un finale (buono / cattivo / segreto)\n\nOgni scenario ha più finali: uno buono, uno cattivo e, a volte, uno o più segreti.\n\nSuggerimento: se un’opzione è bloccata, spesso puoi trovare l’oggetto… oppure sbloccarla con 1 gettone.",
+    "it.h.clue.it_key.title": "Chiave arrugginita"
+  }
+}

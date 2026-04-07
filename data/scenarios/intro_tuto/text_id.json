@@ -1,1 +1,41 @@
-﻿{}
+﻿{
+  "meta": {
+    "lang": "id",
+    "scenario_id": "intro_tuto",
+    "title": "02.00 — Jeritan",
+    "tagline": "Sebuah jeritan di dalam gelap. Nyata… atau hanya untukmu?",
+    "hint_ns": "it.h",
+    "generated": "2026-02-23"
+  },
+  "strings": {
+    "it.intro.title": "02.00 — Jeritan",
+    "it.intro.body": "Jam 2 pagi.\n\nSebuah jeritan membelah kesunyian, singkat… lalu terputus mendadak.\nKamu tetap diam. Kamu tidak tahu apakah itu nyata. Kamu tidak tahu dari mana asalnya.\n\nTapi kamu tahu satu hal: itu akan terjadi lagi.",
+    "it.intro.c1": "Keluar dari kamar",
+    "it.intro.c2": "Melihat melalui lubang intip",
+    "it.intro.c3": "Membuka pintu sedikit",
+    "it.s1.title": "Koridor",
+    "it.s1.body": "Lantai kayu berderit di bawah berat tubuhmu.\nLampu koridor berkedip sekali… lalu kembali stabil.\n\nUdara terasa dingin. Bukan seperti jendela yang terbuka.\nSeperti ruangan yang tertutup selama bertahun-tahun.\n\nDi ujung sana, kegelapan tampak lebih pekat.",
+    "it.s1.c1": "Maju tanpa membuat suara",
+    "it.s1.c2": "Mematikan lampu dan mendengarkan, mengikuti nalurimu",
+    "it.s1.c3": "Berbisik: \"Ada orang?\" lalu mengikuti suara itu",
+    "it.s2.title": "Anak tangga",
+    "it.s2.body": "Kamu turun perlahan.\nDi tengah tangga, kamu melihat sebuah pintu yang sedikit terbuka.\nDari baliknya, ada hembusan udara berbau batu lembap.\n\nPonselmu menunjukkan 02:00.\nTidak ada sinyal.\n\nLalu… jeritan kedua.\nLebih dekat.\nLebih bawah.\nSeolah datang dari dalam rumah.",
+    "it.s2.c1": "Mengikuti koridor menuju jeritan",
+    "it.s2.c2": "Meletakkan tangan di dinding untuk menuntun arah dan mengikutinya",
+    "it.s2.c3": "Mendekati pintu",
+    "it.s3.title": "Pintu bertanda",
+    "it.s3.body": "Pintu itu memiliki simbol terukir, nyaris tak terlihat.\nGagangnya sedingin es.\n\nDi lubang kunci, ada sesuatu yang berkilau: serpihan logam, sebuah kunci berkarat yang tersangkut di sana sejak lama.\n\nKamu ingin mengambilnya.\nTapi jari-jarimu gemetar.\nDan jeritan itu berubah menjadi suara napas, tepat di balik kayu.\n\nKamu tidak bisa melanjutkan tanpa membuka item yang hilang. Adegan ini ada untuk menunjukkan sistem token.",
+    "it.s3.c1": "Memasukkan kunci berkarat",
+    "it.s3.c2": "Memaksa gagang pintu",
+    "it.s3.c3": "Mencoba membukanya dengan mengetuknya",
+    "it.s4.title": "Di sisi lain",
+    "it.s4.body": "Kuncinya lepas dengan bunyi retak yang kering.\nSuara napas berhenti.\n\nRuangan itu kosong.\nHanya sebuah kursi.\nDan di lantai, ada jejak basah, seolah seseorang merayap di sana.",
+    "it.s4.c1": "Keluar dari gedung dan meminta bantuan",
+    "it.s4.c2": "Mundur perlahan, tanpa suara",
+    "it.end_good.title": "Bagus — kamu berhasil selamat",
+    "it.end_good.body": "Kesunyian kembali turun.\nKamu bernapas.\n\n✅ Hadiah tutorial:\n• +2 Token\n• +100 VCoins\n\n**VCoins** digunakan untuk membuka skenario baru.\n**Token** digunakan untuk:\n• membuka item yang terlupakan\n• kembali ke belakang\n• mengaktifkan panduan menuju sebuah akhir baik / buruk / rahasia\n\nSetiap skenario memiliki beberapa akhir: satu akhir baik, satu akhir buruk, dan kadang satu atau beberapa akhir rahasia.\n\nTips: jika sebuah opsi terkunci, kamu sering kali bisa menemukan itemnya… atau membukanya dengan 1 token.",
+    "it.end_bad.title": "Akhir — kamu melarikan diri",
+    "it.end_bad.body": "Kamu mundur mendadak lalu kabur.\n\nDi belakangmu, jeritan itu terdengar lagi… tapi kali ini terasa seperti sedang mengikutimu.\n\n✅ Hadiah tutorial:\n• +2 Token\n• +100 VCoins\n\n**VCoins** digunakan untuk membuka skenario baru.\n**Token** digunakan untuk:\n• membuka item yang terlupakan\n• kembali ke belakang\n• mengaktifkan panduan menuju sebuah akhir baik / buruk / rahasia\n\nSetiap skenario memiliki beberapa akhir: satu akhir baik, satu akhir buruk, dan kadang satu atau beberapa akhir rahasia.\n\nTips: jika sebuah opsi terkunci, kamu sering kali bisa menemukan itemnya… atau membukanya dengan 1 token.",
+    "it.h.clue.it_key.title": "Kunci berkarat"
+  }
+}

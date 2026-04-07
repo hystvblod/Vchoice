@@ -1,1 +1,41 @@
-﻿{}
+﻿{
+  "meta": {
+    "lang": "en",
+    "scenario_id": "intro_tuto",
+    "title": "2:00 AM — The scream",
+    "tagline": "A scream in the dark. Real… or just for you?",
+    "hint_ns": "it.h",
+    "generated": "2026-02-23"
+  },
+  "strings": {
+    "it.intro.title": "2:00 AM — The scream",
+    "it.intro.body": "It is 2 in the morning.\n\nA scream cuts through the silence, brief… then suddenly stopped.\nYou stay perfectly still. You do not know if it is real. You do not know where it came from.\n\nBut you know one thing: it will happen again.",
+    "it.intro.c1": "Leave the bedroom",
+    "it.intro.c2": "Look through the peephole",
+    "it.intro.c3": "Open the door slightly",
+    "it.s1.title": "The hallway",
+    "it.s1.body": "The floorboards creak under your weight.\nThe hallway light flickers once… then steadies.\n\nThe air is cold. Not like an open window.\nLike a room that has been sealed for years.\n\nAt the far end, the darkness seems thicker.",
+    "it.s1.c1": "Move forward quietly",
+    "it.s1.c2": "Turn off the light and listen, following your instinct",
+    "it.s1.c3": "Whisper: \"Is someone there?\" and follow the sound",
+    "it.s2.title": "The stairs",
+    "it.s2.body": "You go down slowly.\nHalfway down, you see a door left slightly open.\nBehind it, a draft smells of damp stone.\n\nYour phone says 02:00.\nYou have no signal.\n\nAnd then… a second scream.\nCloser.\nLower.\nAs if it came from inside the house.",
+    "it.s2.c1": "Follow the hallway toward the scream",
+    "it.s2.c2": "Place your hand on the wall to guide yourself and follow it",
+    "it.s2.c3": "Approach the door",
+    "it.s3.title": "The marked door",
+    "it.s3.body": "There is a symbol carved into the door, barely visible.\nThe handle is freezing cold.\n\nInside the lock, something glints: a metal fragment, a rusty key jammed there for a long time.\n\nYou want to grab it.\nBut your fingers are shaking.\nAnd the scream turns into breathing, right behind the wood.\n\nYou cannot continue without unlocking the missing item. This scene is here to show you the token system.",
+    "it.s3.c1": "Insert the rusty key",
+    "it.s3.c2": "Force the handle",
+    "it.s3.c3": "Try to open it by banging on it",
+    "it.s4.title": "On the other side",
+    "it.s4.body": "The lock gives way with a sharp crack.\nThe breathing stops.\n\nThe room is empty.\nJust a chair.\nAnd on the floor, a damp trail, as if someone had crawled there.",
+    "it.s4.c1": "Leave the building and call for help",
+    "it.s4.c2": "Step back slowly, without making a sound",
+    "it.end_good.title": "Well done — you made it out",
+    "it.end_good.body": "Silence falls again.\nYou breathe.\n\n✅ Tutorial reward:\n• +2 Tokens\n• +100 VCoins\n\n**VCoins** are used to unlock new scenarios.\n**Tokens** are used to:\n• unlock a forgotten item\n• go back\n• activate the guide toward an ending (good / bad / secret)\n\nEach scenario has multiple endings: one good, one bad, and sometimes one or more secret ones.\n\nTip: if an option is locked, you can often find the item… or unlock it with 1 token.",
+    "it.end_bad.title": "Ending — you ran away",
+    "it.end_bad.body": "You step back suddenly and run.\n\nBehind you, the scream starts again… but this time, it seems to be following you.\n\n✅ Tutorial reward:\n• +2 Tokens\n• +100 VCoins\n\n**VCoins** are used to unlock new scenarios.\n**Tokens** are used to:\n• unlock a forgotten item\n• go back\n• activate the guide toward an ending (good / bad / secret)\n\nEach scenario has multiple endings: one good, one bad, and sometimes one or more secret ones.\n\nTip: if an option is locked, you can often find the item… or unlock it with 1 token.",
+    "it.h.clue.it_key.title": "Rusty key"
+  }
+}

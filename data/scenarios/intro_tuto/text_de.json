@@ -1,1 +1,41 @@
-﻿{}
+﻿{
+  "meta": {
+    "lang": "de",
+    "scenario_id": "intro_tuto",
+    "title": "2:00 Uhr — Der Schrei",
+    "tagline": "Ein Schrei in der Dunkelheit. Echt… oder nur für dich?",
+    "hint_ns": "it.h",
+    "generated": "2026-02-23"
+  },
+  "strings": {
+    "it.intro.title": "2:00 Uhr — Der Schrei",
+    "it.intro.body": "Es ist 2 Uhr morgens.\n\nEin Schrei durchschneidet die Stille, kurz… dann bricht er abrupt ab.\nDu bleibst regungslos stehen. Du weißt nicht, ob er echt ist. Du weißt nicht, woher er kommt.\n\nAber eines weißt du: Es wird wieder passieren.",
+    "it.intro.c1": "Das Schlafzimmer verlassen",
+    "it.intro.c2": "Durch den Türspion schauen",
+    "it.intro.c3": "Die Tür leicht öffnen",
+    "it.s1.title": "Der Flur",
+    "it.s1.body": "Das Parkett knarrt unter deinem Gewicht.\nDas Licht im Flur flackert nur ein einziges Mal… dann wird es wieder ruhig.\n\nDie Luft ist kalt. Nicht wie bei einem offenen Fenster.\nEher wie in einem Raum, der seit Jahren verschlossen ist.\n\nAm Ende wirkt die Dunkelheit dichter.",
+    "it.s1.c1": "Lautlos weitergehen",
+    "it.s1.c2": "Das Licht ausschalten und lauschen, deinem Instinkt folgen",
+    "it.s1.c3": "Flüstern: „Ist da jemand?“ und dem Geräusch folgen",
+    "it.s2.title": "Die Stufen",
+    "it.s2.body": "Du gehst langsam hinunter.\nAuf halber Höhe siehst du eine angelehnte Tür.\nDahinter riecht ein Luftzug nach feuchtem Stein.\n\nAuf deinem Handy steht 02:00.\nDu hast kein Netz.\n\nUnd dann… ein zweiter Schrei.\nNäher.\nTiefer.\nAls käme er aus dem Inneren des Hauses.",
+    "it.s2.c1": "Dem Flur in Richtung des Schreis folgen",
+    "it.s2.c2": "Die Hand an die Wand legen, um dich zu orientieren, und ihm folgen",
+    "it.s2.c3": "Zur Tür gehen",
+    "it.s3.title": "Die markierte Tür",
+    "it.s3.body": "Auf der Tür ist ein Symbol eingeritzt, kaum sichtbar.\nDie Klinke ist eiskalt.\n\nIm Schloss glitzert etwas: ein Metallstück, ein rostiger Schlüssel, der dort schon lange feststeckt.\n\nDu willst ihn greifen.\nAber deine Finger zittern.\nUnd der Schrei wird zu einem Atemzug, direkt hinter dem Holz.\n\nDu kannst nicht weiter, ohne das fehlende Objekt freizuschalten. Diese Szene zeigt dir das Jeton-System.",
+    "it.s3.c1": "Den rostigen Schlüssel einstecken",
+    "it.s3.c2": "Die Klinke mit Gewalt herunterdrücken",
+    "it.s3.c3": "Versuchen, sie durch Klopfen zu öffnen",
+    "it.s4.title": "Auf der anderen Seite",
+    "it.s4.body": "Das Schloss gibt mit einem trockenen Knacken nach.\nDer Atem hört auf.\n\nDer Raum ist leer.\nNur ein Stuhl.\nUnd auf dem Boden eine feuchte Spur, als wäre jemand darüber gekrochen.",
+    "it.s4.c1": "Das Gebäude verlassen und um Hilfe rufen",
+    "it.s4.c2": "Langsam und lautlos zurückweichen",
+    "it.end_good.title": "Glückwunsch — du hast es geschafft",
+    "it.end_good.body": "Die Stille kehrt zurück.\nDu atmest.\n\n✅ Tutorial-Belohnung:\n• +2 Jetons\n• +100 VCoins\n\n**VCoins** werden verwendet, um neue Szenarien freizuschalten.\n**Jetons** werden verwendet, um:\n• ein vergessenes Objekt freizuschalten\n• zurückzugehen\n• den Guide zu einem Ende zu aktivieren gut / schlecht / geheim\n\nJedes Szenario hat mehrere Enden: ein gutes, ein schlechtes und manchmal ein oder mehrere geheime.\n\nTipp: Wenn eine Option gesperrt ist, kannst du das Objekt oft finden… oder sie mit 1 Jeton freischalten.",
+    "it.end_bad.title": "Ende — du bist geflohen",
+    "it.end_bad.body": "Du weichst plötzlich zurück und fliehst.\n\nHinter dir beginnt der Schrei erneut… aber diesmal scheint er dir zu folgen.\n\n✅ Tutorial-Belohnung:\n• +2 Jetons\n• +100 VCoins\n\n**VCoins** werden verwendet, um neue Szenarien freizuschalten.\n**Jetons** werden verwendet, um:\n• ein vergessenes Objekt freizuschalten\n• zurückzugehen\n• den Guide zu einem Ende zu aktivieren gut / schlecht / geheim\n\nJedes Szenario hat mehrere Enden: ein gutes, ein schlechtes und manchmal ein oder mehrere geheime.\n\nTipp: Wenn eine Option gesperrt ist, kannst du das Objekt oft finden… oder sie mit 1 Jeton freischalten.",
+    "it.h.clue.it_key.title": "Rostiger Schlüssel"
+  }
+}

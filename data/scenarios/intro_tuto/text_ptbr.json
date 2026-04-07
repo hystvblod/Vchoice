@@ -1,1 +1,41 @@
-﻿{}
+﻿{
+  "meta": {
+    "lang": "ptbr",
+    "scenario_id": "intro_tuto",
+    "title": "2h00 — O grito",
+    "tagline": "Um grito no escuro. Real… ou só para você?",
+    "hint_ns": "it.h",
+    "generated": "2026-02-23"
+  },
+  "strings": {
+    "it.intro.title": "2h00 — O grito",
+    "it.intro.body": "São 2 da manhã.\n\nUm grito corta o silêncio, breve… e depois para de repente.\nVocê fica imóvel. Não sabe se é real. Não sabe de onde vem.\n\nMas sabe de uma coisa: vai acontecer de novo.",
+    "it.intro.c1": "Sair do quarto",
+    "it.intro.c2": "Olhar pelo olho mágico",
+    "it.intro.c3": "Abrir a porta um pouco",
+    "it.s1.title": "O corredor",
+    "it.s1.body": "O assoalho geme sob o seu peso.\nA luz do corredor oscila uma única vez… e depois se estabiliza.\n\nO ar está frio. Não como o de uma janela aberta.\nComo o de um cômodo fechado há anos.\n\nLá no fundo, a escuridão parece mais densa.",
+    "it.s1.c1": "Avançar sem fazer barulho",
+    "it.s1.c2": "Apagar a luz e escutar, seguindo seu instinto",
+    "it.s1.c3": "Sussurrar: \"Tem alguém aí?\" e seguir o barulho",
+    "it.s2.title": "Os degraus",
+    "it.s2.body": "Você desce devagar.\nNa metade da escada, vê uma porta entreaberta.\nPor trás dela, uma corrente de ar cheira a pedra úmida.\n\nSeu celular mostra 02:00.\nVocê está sem sinal.\n\nE então… um segundo grito.\nMais perto.\nMais embaixo.\nComo se viesse de dentro da casa.",
+    "it.s2.c1": "Seguir o corredor em direção ao grito",
+    "it.s2.c2": "Encostar a mão na parede para se orientar e segui-lo",
+    "it.s2.c3": "Se aproximar da porta",
+    "it.s3.title": "A porta marcada",
+    "it.s3.body": "A porta tem um símbolo gravado, quase invisível.\nA maçaneta está gelada.\n\nNa fechadura, algo brilha: um fragmento de metal, uma chave enferrujada presa ali há muito tempo.\n\nVocê quer pegá-la.\nMas seus dedos tremem.\nE o grito vira uma respiração, bem atrás da madeira.\n\nVocê não pode continuar sem desbloquear o item que falta. Esta cena está aqui para mostrar o sistema de fichas.",
+    "it.s3.c1": "Inserir a chave enferrujada",
+    "it.s3.c2": "Forçar a maçaneta",
+    "it.s3.c3": "Tentar abrir batendo nela",
+    "it.s4.title": "Do outro lado",
+    "it.s4.body": "A fechadura cede com um estalo seco.\nA respiração para.\n\nO cômodo está vazio.\nSó uma cadeira.\nE no chão, um rastro úmido, como se alguém tivesse se arrastado.",
+    "it.s4.c1": "Sair do prédio e pedir ajuda",
+    "it.s4.c2": "Recuar devagar, sem fazer barulho",
+    "it.end_good.title": "Parabéns — você conseguiu sair",
+    "it.end_good.body": "O silêncio volta a cair.\nVocê respira.\n\n✅ Recompensa do tutorial:\n• +2 Fichas\n• +100 VCoins\n\nAs **VCoins** servem para desbloquear novos cenários.\nAs **Fichas** servem para:\n• desbloquear um item esquecido\n• voltar atrás\n• ativar o guia para um final (bom / ruim / secreto)\n\nCada cenário tem vários finais: um bom, um ruim e, às vezes, um ou mais secretos.\n\nDica: se uma opção estiver bloqueada, muitas vezes você pode encontrar o item… ou desbloqueá-la com 1 ficha.",
+    "it.end_bad.title": "Final — você fugiu",
+    "it.end_bad.body": "Você recua de repente e foge.\n\nAtrás de você, o grito recomeça… mas desta vez parece estar seguindo você.\n\n✅ Recompensa do tutorial:\n• +2 Fichas\n• +100 VCoins\n\nAs **VCoins** servem para desbloquear novos cenários.\nAs **Fichas** servem para:\n• desbloquear um item esquecido\n• voltar atrás\n• ativar o guia para um final (bom / ruim / secreto)\n\nCada cenário tem vários finais: um bom, um ruim e, às vezes, um ou mais secretos.\n\nDica: se uma opção estiver bloqueada, muitas vezes você pode encontrar o item… ou desbloqueá-la com 1 ficha.",
+    "it.h.clue.it_key.title": "Chave enferrujada"
+  }
+}
