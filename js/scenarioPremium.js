@@ -75,7 +75,10 @@
   }
 
   function checkAndRevealFromPseudo(v){
-    if (normalizeSecretInput(v) !== "angelique") return false;
+    const normalized = normalizeSecretInput(v);
+
+    if (normalized !== "angelique" && normalized !== "baudelaire") return false;
+
     revealAngelique();
     return true;
   }
@@ -130,7 +133,7 @@
   }
 
   function getFaqUrl(){
-    return "settings.html#faq-remote-scenarios";
+    return "faq.html";
   }
 
   window.VCScenarioPremium = {
