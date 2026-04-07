@@ -133,7 +133,10 @@
       "err_buy_failed": "Achat annulé ou impossible.",
       "err_unlock_after_iap": "Achat validé, mais le scénario n’a pas pu être ouvert.",
       "premium_desc": "Ce scénario premium est verrouillé. Tu peux le débloquer avec des VCoins ou l’acheter directement. Voir la FAQ pour le fonctionnement.",
-      "open_faq": "Voir la FAQ"
+      "open_faq": "Voir la FAQ",
+      "premium_pay_suffix": "{price} + reward",
+      "premium_iap_with_price": "Débloquer : {price} sans reward",
+      "premium_iap_no_price": "Débloquer via le store sans reward"
     },
     "update_banner_title": "Mise à jour disponible",
     "update_banner_desc": "Une nouvelle version de l’application est disponible.",
