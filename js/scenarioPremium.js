@@ -3,20 +3,17 @@
 
   const SECRET_STORAGE_KEY = "vchoice_secret_angelique_revealed_v1";
 
-  const PREMIUM_SCENARIOS = {
+  const REMOTE_SCENARIOS = {
+    foret_relais: {
+      id: "foret_relais",
+      remoteImages: true
+    },
     village_brume_noire: {
       id: "village_brume_noire",
-      secret: false,
       remoteImages: true
     },
     marais_sans_sepulture: {
       id: "marais_sans_sepulture",
-      secret: false,
-      remoteImages: true
-    },
-    grotte_angelique: {
-      id: "grotte_angelique",
-      secret: true,
       remoteImages: true
     }
   };
@@ -28,24 +25,22 @@
   function normalizeSecretInput(v){
     return String(v || "")
       .normalize("NFD")
-      .replace(/[̀-ͯ]/g, "")
+      .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
       .replace(/\s+/g, "")
       .trim();
   }
 
-  function isPremiumScenario(id){
-    return !!PREMIUM_SCENARIOS[normalizeScenarioId(id)];
+  function isRemoteScenario(id){
+    return !!REMOTE_SCENARIOS[normalizeScenarioId(id)];
   }
 
-  function isSecretScenario(id){
-    const sid = normalizeScenarioId(id);
-    return !!PREMIUM_SCENARIOS[sid]?.secret;
+  function isPremiumScenario(id){
+    return isRemoteScenario(id);
   }
 
   function usesRemoteImages(id){
-    const sid = normalizeScenarioId(id);
-    return !!PREMIUM_SCENARIOS[sid]?.remoteImages;
+    return isRemoteScenario(id);
   }
 
   function isAngeliqueRevealed(){
@@ -75,10 +70,7 @@
   }
 
   function checkAndRevealFromPseudo(v){
-    const normalized = normalizeSecretInput(v);
-
-    if (normalized !== "angelique" && normalized !== "baudelaire") return false;
-
+    if (normalizeSecretInput(v) !== "angelique") return false;
     revealAngelique();
     return true;
   }
@@ -86,9 +78,8 @@
   function getProfileScenarioIds(baseIds){
     const out = Array.isArray(baseIds) ? baseIds.slice() : [];
 
-    ["village_brume_noire", "marais_sans_sepulture"].forEach((id) => {
-      if (!out.includes(id)) out.push(id);
-    });
+    if (!out.includes("village_brume_noire")) out.push("village_brume_noire");
+    if (!out.includes("marais_sans_sepulture")) out.push("marais_sans_sepulture");
 
     if (isAngeliqueRevealed() && !out.includes("grotte_angelique")){
       out.push("grotte_angelique");
@@ -133,15 +124,15 @@
   }
 
   function getFaqUrl(){
-    return "faq.html";
+    return "settings.html#faq-remote-scenarios";
   }
 
   window.VCScenarioPremium = {
     SECRET_STORAGE_KEY,
-    PREMIUM_SCENARIOS,
+    REMOTE_SCENARIOS,
     normalizeSecretInput,
+    isRemoteScenario,
     isPremiumScenario,
-    isSecretScenario,
     usesRemoteImages,
     isAngeliqueRevealed,
     revealAngelique,
