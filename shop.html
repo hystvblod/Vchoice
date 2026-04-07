@@ -638,7 +638,136 @@
       opacity:.6;
       cursor:not-allowed;
     }
-  </style>
+
+@media (min-width: 768px) and (max-width: 1366px){
+  .page{
+    padding: 18px 22px 34px;
+  }
+
+  .vc-top-actions{
+    gap:16px;
+    padding: calc(18px + env(safe-area-inset-top)) 20px 14px;
+  }
+
+  .vc-icon-button{
+    width:58px;
+    height:58px;
+  }
+
+  .vc-icon-button img{
+    width:38px;
+    height:38px;
+  }
+
+  .vc-back-ico{
+    width:30px;
+    height:30px;
+  }
+
+  .shop-head{
+    padding: 24px 4px 16px;
+  }
+
+  .shop-title,
+  .shop-divider-title{
+    font-size:18px;
+  }
+
+  .reward-grid,
+  .shop-grid{
+    gap:18px;
+  }
+
+  .reward-card,
+  .prod-card{
+    padding:18px;
+  }
+
+  .reward-top,
+  .prod-top{
+    min-height:94px;
+  }
+
+  .reward-ico,
+  .prod-ico{
+    width:92px;
+    height:92px;
+  }
+
+  .prod-card[data-product="vchoice_no_ads"] .prod-ico{
+    width:96px;
+    height:96px;
+  }
+
+  .prod-card[data-product="vchoice_ultra"] .prod-ico{
+    width:116px;
+    height:116px;
+  }
+
+  .reward-x,
+  .prod-amount,
+  .shop-modal-title,
+  .shop-modal-price{
+    font-size:28px;
+  }
+
+  .prod-card[data-product="vchoice_no_ads"] .prod-amount,
+  .prod-card[data-product="vchoice_ultra"] .prod-amount{
+    font-size:22px !important;
+  }
+
+  .prod-card[data-product="vchoice_no_ads"] .prod-note,
+  .prod-card[data-product="vchoice_ultra"] .prod-note{
+    max-width:18ch;
+    min-height:44px;
+    font-size:15px;
+    line-height:1.3;
+  }
+
+  .reward-btn,
+  .prod-price,
+  .shop-modal-btn{
+    min-height:56px;
+    font-size:18px;
+    border-radius:16px;
+  }
+
+  .owned-badge{
+    top:14px;
+    right:14px;
+    font-size:14px;
+    padding:8px 12px;
+  }
+
+  .shop-modal{
+    padding: 24px 20px;
+  }
+
+  .shop-modal-card{
+    width:min(680px, 92vw);
+  }
+
+  .shop-modal-top{
+    padding: 24px 22px 14px;
+  }
+
+  .shop-modal-ico{
+    width:104px;
+    height:104px;
+  }
+
+  .shop-modal-desc{
+    margin: 10px 20px 0;
+    font-size:17px;
+    line-height:1.5;
+  }
+
+  .shop-modal-bottom{
+    padding: 18px 20px 20px;
+  }
+}
+
+</style>
 </head>
 
 <body data-page="shop">
