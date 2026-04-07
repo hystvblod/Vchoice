@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title></title>
+  <link rel="stylesheet" href="css/app.css" />
+
+  <style>
+    html,
+    body{
+      min-height:100%;
+    }
+
+    body.page-faq{
+      margin:0;
+      width:100%;
+      min-height:100dvh;
+      display:flex;
+      flex-direction:column;
+      overflow-x:hidden;
+    }
+
+    .topbar{ display:none !important; }
+
+    .vc-top-actions{
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      flex: 0 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: calc(10px + env(safe-area-inset-top)) 12px 8px;
+      box-sizing:border-box;
+    }
+
+    .vc-top-slot{
+      flex: 1 1 0;
+      display:flex;
+      align-items:center;
+    }
+
+    .vc-top-left{ justify-content:flex-start; }
+    .vc-top-center{ justify-content:center; }
+    .vc-top-right{ justify-content:flex-end; }
+
+    .vc-icon-button{
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.26);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      box-shadow: 0 10px 22px rgba(0,0,0,0.22);
+      padding:0;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      text-decoration:none;
+      -webkit-tap-highlight-color: transparent;
+      flex: 0 0 auto;
+    }
+
+    .vc-icon-button:active{
+      transform: scale(.98);
+    }
+
+    .vc-icon-button img{
+      width:30px;
+      height:30px;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65)) contrast(1.15) brightness(1.08);
+    }
+
+    .vc-back-ico{
+      width:24px;
+      height:24px;
+      display:block;
+      opacity:.98;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.65));
+    }
+
+    body.page-faq .app{
+      flex: 1 1 auto;
+      min-height: 0;
+      display:flex;
+      flex-direction:column;
+    }
+
+    body.page-faq .main{
+      flex: 1 1 auto;
+      min-height: 0;
+      display:flex;
+      padding: 0 12px 12px;
+      box-sizing:border-box;
+    }
+
+    body.page-faq .panel{
+      flex: 1 1 auto;
+      min-height: 0;
+      display:flex;
+      flex-direction:column;
+    }
+
+    body.page-faq .panel__head{
+      flex: 0 0 auto;
+      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-right: calc(16px + env(safe-area-inset-right));
+    }
+
+    body.page-faq .panel__body{
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow:auto;
+      padding-left: calc(16px + env(safe-area-inset-left));
+      padding-right: calc(16px + env(safe-area-inset-right));
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      box-sizing:border-box;
+    }
+
+    .panel__headCentered{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap:6px;
+      padding-top:2px;
+      margin-bottom:10px;
+    }
+
+    .panel__headCentered .title{
+      margin:0;
+      text-align:center;
+      width:100%;
+    }
+
+    .panel__headCentered .muted{
+      margin:0;
+      text-align:center;
+      max-width: 560px;
+    }
+
+    .vc-faqCard{
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      box-shadow:0 10px 22px rgba(0,0,0,.18);
+      padding:12px;
+    }
+
+    .vc-faqList{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .vc-faqItem{
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      overflow:hidden;
+      box-shadow:0 10px 20px rgba(0,0,0,.14);
+    }
+
+    .vc-faqQuestion{
+      list-style:none;
+      cursor:pointer;
+      padding:12px 42px 12px 14px;
+      font-weight:950;
+      line-height:1.25;
+      position:relative;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .vc-faqQuestion::-webkit-details-marker{
+      display:none;
+    }
+
+    .vc-faqQuestion::after{
+      content:"+";
+      position:absolute;
+      right:14px;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:20px;
+      font-weight:800;
+      opacity:.82;
+    }
+
+    .vc-faqItem[open] .vc-faqQuestion::after{
+      content:"−";
+    }
+
+    .vc-faqAnswer{
+      padding:0 14px 14px;
+      font-size:12px;
+      line-height:1.45;
+      opacity:.86;
+      white-space:pre-line;
+    }
+
+    @media (min-width: 768px) and (max-width: 1366px){
+      .vc-top-actions{
+        gap:16px;
+        padding: calc(18px + env(safe-area-inset-top)) 20px 14px;
+      }
+
+      .vc-icon-button{
+        width:58px;
+        height:58px;
+      }
+
+      .vc-icon-button img{
+        width:38px;
+        height:38px;
+      }
+
+      .vc-back-ico{
+        width:30px;
+        height:30px;
+      }
+
+      body.page-faq .main{
+        padding: 0 22px 22px;
+      }
+
+      body.page-faq .panel__head{
+        padding-left: calc(22px + env(safe-area-inset-left));
+        padding-right: calc(22px + env(safe-area-inset-right));
+      }
+
+      body.page-faq .panel__body{
+        padding-left: calc(22px + env(safe-area-inset-left));
+        padding-right: calc(22px + env(safe-area-inset-right));
+      }
+
+      .panel__headCentered{
+        gap:10px;
+        padding-top:8px;
+        margin-bottom:16px;
+      }
+
+      .panel__headCentered .title{
+        font-size:30px;
+      }
+
+      .panel__headCentered .muted{
+        max-width:760px;
+        font-size:18px;
+        line-height:1.6;
+      }
+
+      .vc-faqCard{
+        padding:18px;
+        border-radius:20px;
+      }
+
+      .vc-faqList{
+        gap:14px;
+      }
+
+      .vc-faqItem{
+        border-radius:18px;
+      }
+
+      .vc-faqQuestion{
+        padding:18px 58px 18px 18px;
+        font-size:19px;
+      }
+
+      .vc-faqQuestion::after{
+        right:18px;
+        font-size:28px;
+      }
+
+      .vc-faqAnswer{
+        padding:0 18px 18px;
+        font-size:16px;
+        line-height:1.55;
+      }
+    }
+  </style>
+</head>
+
+<body class="page-faq">
+  <div class="vc-top-actions">
+    <div class="vc-top-slot vc-top-left">
+      <a id="btnBackSettings" class="vc-icon-button" href="settings.html" aria-label="">
+        <svg class="vc-back-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path fill="white" d="M15.5 5.5a1 1 0 0 1 0 1.4L10.4 12l5.1 5.1a1 1 0 1 1-1.4 1.4l-5.8-5.8a1.2 1.2 0 0 1 0-1.4l5.8-5.8a1 1 0 0 1 1.4 0z"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="vc-top-slot vc-top-center"></div>
+
+    <div class="vc-top-slot vc-top-right">
+      <a id="btnGoProfile" class="vc-icon-button" href="profile.html" aria-label="">
+        <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
+      </a>
+    </div>
+  </div>
+
+  <div class="app">
+    <main class="main">
+      <section class="panel">
+        <div class="panel__head panel__headCentered">
+          <h1 id="faqTitle" class="title"></h1>
+          <p id="faqSubtitle" class="muted"></p>
+        </div>
+
+        <div class="panel__body">
+          <div class="vc-faqCard">
+            <div id="faqList" class="vc-faqList"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/supabase.min.js"></script>
+  <script src="js/supabaseBootstrap.js"></script>
+  <script src="js/userData.js"></script>
+  <script src="js/onesignal.js"></script>
+  <script src="js/i18n.js"></script>
+
+  <script>
+  (async () => {
+    "use strict";
+
+    const FAQ_ITEMS = [1, 2, 3, 4, 5, 6, 7];
+
+    function $(id){
+      return document.getElementById(id);
+    }
+
+    function t(key){
+      try{
+        if(window.VRI18n && typeof window.VRI18n.t === "function"){
+          return window.VRI18n.t(key) || "";
+        }
+      }catch(_){}
+      return "";
+    }
+
+    function renderFaq(){
+      const host = $("faqList");
+      if(!host) return;
+
+      host.innerHTML = "";
+
+      FAQ_ITEMS.forEach((n, idx) => {
+        const q = t(`ui.faq_q${n}`);
+        const a = t(`ui.faq_a${n}`);
+
+        if(!q || !a) return;
+
+        const item = document.createElement("details");
+        item.className = "vc-faqItem";
+        if(idx === 0) item.open = true;
+
+        const question = document.createElement("summary");
+        question.className = "vc-faqQuestion";
+        question.textContent = q;
+
+        const answer = document.createElement("div");
+        answer.className = "vc-faqAnswer";
+        answer.textContent = a;
+
+        item.appendChild(question);
+        item.appendChild(answer);
+        host.appendChild(item);
+      });
+    }
+
+    function renderTexts(){
+      const title = $("faqTitle");
+      const subtitle = $("faqSubtitle");
+      const back = $("btnBackSettings");
+      const profile = $("btnGoProfile");
+
+      const pageTitle = t("ui.faq_title");
+
+      if(title) title.textContent = pageTitle;
+      if(subtitle) subtitle.textContent = t("ui.faq_subtitle");
+      if(pageTitle) document.title = pageTitle;
+
+      if(back) back.setAttribute("aria-label", t("ui.faq_back_settings_aria"));
+      if(profile) profile.setAttribute("aria-label", t("ui.faq_open_profile_aria"));
+
+      renderFaq();
+    }
+
+    try { await window.bootstrapAuthAndProfile?.(); } catch(_) {}
+    try { await window.VUserData?.init?.(); } catch(_) {}
+    try { await window.VRI18n?.initI18n?.(); } catch(_) {}
+
+    renderTexts();
+  })();
+  </script>
+</body>
+</html>
