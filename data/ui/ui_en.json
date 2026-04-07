@@ -196,8 +196,10 @@
     "shop_p_vcoins3000_title": "3000",
     "shop_p_vcoins3000_desc": "Large VCoins pack with the best value.",
     "shop_p_noads_title": "No Ads",
+    "shop_p_noads_note": "Removes ads",
     "shop_p_noads_desc": "Disables interstitial ads. Rewarded ads remain available.",
     "shop_p_diamond_title": "Diamond",
+    "shop_p_diamond_note": "No Ads + all scenarios unlocked",
     "shop_p_diamond_desc": "Diamond access: all current and future scenarios + No Ads. Bonus included depending on your pack."
   },
   "common": {

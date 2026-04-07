@@ -379,7 +379,7 @@
 
     .prod-card[data-product="vchoice_no_ads"] .prod-inner,
     .prod-card[data-product="vchoice_ultra"] .prod-inner{
-      gap: 12px;
+      gap: 10px;
     }
 
     .prod-card[data-product="vchoice_no_ads"] .prod-top,
@@ -387,8 +387,8 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 10px;
-      min-height: 128px;
+      gap: 8px;
+      min-height: 116px;
     }
 
     .prod-card[data-product="vchoice_no_ads"] .prod-amount,
@@ -401,14 +401,28 @@
       font-size: 15px !important;
       font-weight: 950;
       line-height: 1.08;
-      min-height: 32px;
+      min-height: 20px;
       max-width: none;
       text-align: center;
-      white-space: normal;
       padding: 0;
       letter-spacing: .01em;
       color: var(--vc-text);
       text-shadow: 0 10px 24px rgba(0,0,0,.45);
+    }
+
+    .prod-card[data-product="vchoice_no_ads"] .prod-note,
+    .prod-card[data-product="vchoice_ultra"] .prod-note{
+      display: block;
+      width: 100%;
+      margin: -2px auto 2px;
+      max-width: 15ch;
+      min-height: 30px;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.22;
+      text-align: center;
+      color: rgba(255,255,255,.82);
+      text-shadow: 0 8px 18px rgba(0,0,0,.38);
     }
 
     .prod-card[data-product="vchoice_no_ads"] .prod-ico{
@@ -419,11 +433,11 @@
 
     .prod-card[data-product="vchoice_ultra"] .prod-ico{
       margin: 0 auto;
-      width: 88px;
-      height: 88px;
+      width: 92px;
+      height: 92px;
       filter:
-        drop-shadow(0 0 10px rgba(180,220,255,.30))
-        drop-shadow(0 0 24px rgba(180,220,255,.18))
+        drop-shadow(0 0 12px rgba(185,230,255,.34))
+        drop-shadow(0 0 28px rgba(185,230,255,.20))
         drop-shadow(0 16px 30px rgba(0,0,0,.45));
       transform-origin: center;
       animation: vcDiamondPulse 1.9s ease-in-out infinite;
@@ -735,6 +749,7 @@
             <div class="prod-top">
               <img class="prod-ico" data-product-icon src="assets/img/ui/no_ads.webp" alt="" draggable="false" />
               <div class="prod-amount" style="font-size:16px" data-i18n="ui.shop_p_noads_title"></div>
+              <div class="prod-note" data-i18n="ui.shop_p_noads_note"></div>
             </div>
             <div class="prod-price" data-price-for="vchoice_no_ads" data-i18n="ui.loading"></div>
           </div>
@@ -746,6 +761,7 @@
             <div class="prod-top">
               <img class="prod-ico" data-product-icon src="assets/img/ui/diamond.webp" alt="" draggable="false" />
               <div class="prod-amount" style="font-size:16px" data-i18n="ui.shop_p_diamond_title"></div>
+              <div class="prod-note" data-i18n="ui.shop_p_diamond_note"></div>
             </div>
             <div class="prod-price" data-price-for="vchoice_ultra" data-i18n="ui.loading"></div>
           </div>
