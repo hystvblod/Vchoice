@@ -318,6 +318,45 @@
        ✅ centré
        ✅ pas de carré
     */
+    .vc-navRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 8px 0;
+      text-decoration:none;
+      color:inherit;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .vc-navRow:active{
+      transform: scale(.99);
+    }
+
+    .vc-navText{
+      min-width:0;
+    }
+
+    .vc-navLabel{
+      margin:0;
+      font-weight:950;
+      line-height:1.2;
+    }
+
+    .vc-navDesc{
+      margin:4px 0 0 0;
+      opacity:.78;
+      font-size:12px;
+      line-height:1.25;
+    }
+
+    .vc-navArrow{
+      flex:0 0 auto;
+      font-size:24px;
+      line-height:1;
+      opacity:.72;
+    }
+
     #settingsHelpTitle{
       text-align:center;
       width:100%;
@@ -446,13 +485,31 @@
     padding:10px 0;
   }
 
+  .vc-navRow{
+    gap:18px;
+    padding:10px 0;
+  }
+
   .toggleLabel{
+    font-size:19px;
+  }
+
+  .vc-navLabel{
     font-size:19px;
   }
 
   .toggleDesc{
     font-size:16px;
     line-height:1.45;
+  }
+
+  .vc-navDesc{
+    font-size:16px;
+    line-height:1.45;
+  }
+
+  .vc-navArrow{
+    font-size:30px;
   }
 
   .switch{
@@ -531,29 +588,24 @@
           </div>
 
           <div class="settingsSection">
+            <div id="settingsFaqTitle" class="settingsSectionTitle"></div>
+
+            <a id="btnOpenFaq" class="vc-navRow" href="faq.html" aria-label="">
+              <div class="vc-navText">
+                <p id="settingsFaqLabel" class="vc-navLabel"></p>
+                <p id="settingsFaqDesc" class="vc-navDesc"></p>
+              </div>
+
+              <span class="vc-navArrow" aria-hidden="true">›</span>
+            </a>
+          </div>
+
+          <div class="settingsSection">
             <div id="settingsHelpTitle" class="settingsSectionTitle"></div>
 
             <div class="helpLine">
               <span id="helpEmailLabel" class="helpLabel"></span>
               <span id="helpEmailValue" class="helpMail"></span>
-            </div>
-          </div>
-
-          <div class="settingsSection" id="faq-remote-scenarios">
-            <div id="settingsRemoteFaqTitle" class="settingsSectionTitle"></div>
-
-            <div class="helpLine">
-              <span id="settingsRemoteFaqQ1" class="helpLabel"></span>
-            </div>
-            <div class="helpLine">
-              <span id="settingsRemoteFaqA1" class="helpMail"></span>
-            </div>
-
-            <div class="helpLine">
-              <span id="settingsRemoteFaqQ2" class="helpLabel"></span>
-            </div>
-            <div class="helpLine">
-              <span id="settingsRemoteFaqA2" class="helpMail"></span>
             </div>
           </div>
 
@@ -712,17 +764,15 @@
       if(helpLab)   helpLab.textContent   = t("ui.settings_help_email_label", "Contact:");
       if(helpVal)   helpVal.textContent   = t("ui.settings_help_email", "help.vboldstudio@gmail.com");
 
-      const remoteFaqTitle = $("settingsRemoteFaqTitle");
-      const remoteFaqQ1    = $("settingsRemoteFaqQ1");
-      const remoteFaqA1    = $("settingsRemoteFaqA1");
-      const remoteFaqQ2    = $("settingsRemoteFaqQ2");
-      const remoteFaqA2    = $("settingsRemoteFaqA2");
+      const faqTitle = $("settingsFaqTitle");
+      const faqBtn   = $("btnOpenFaq");
+      const faqLabel = $("settingsFaqLabel");
+      const faqDesc  = $("settingsFaqDesc");
 
-      if(remoteFaqTitle) remoteFaqTitle.textContent = t("ui.settings_remote_faq_title", "Premium scenarios");
-      if(remoteFaqQ1)    remoteFaqQ1.textContent    = t("ui.settings_remote_faq_q1", "");
-      if(remoteFaqA1)    remoteFaqA1.textContent    = t("ui.settings_remote_faq_a1", "");
-      if(remoteFaqQ2)    remoteFaqQ2.textContent    = t("ui.settings_remote_faq_q2", "");
-      if(remoteFaqA2)    remoteFaqA2.textContent    = t("ui.settings_remote_faq_a2", "");
+      if(faqTitle) faqTitle.textContent = t("ui.settings_faq_title", "");
+      if(faqBtn)   faqBtn.setAttribute("aria-label", t("ui.settings_open_faq_aria", ""));
+      if(faqLabel) faqLabel.textContent = t("ui.settings_faq_label", "");
+      if(faqDesc)  faqDesc.textContent  = t("ui.settings_faq_desc", "");
     }
 
     function buildGrid(){
