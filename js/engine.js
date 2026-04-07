@@ -1366,6 +1366,8 @@ function showEndModal(title, bodyOrBuilder, onBack, onReplay){
     btnBack.textContent = tUI("btn_close");
     btnBack.onclick = () => {
       hideEndModal();
+      try{ localStorage.setItem("vchoice_intro_just_finished", "1"); }catch(_){}
+      try{ window.VROneSignal?.markPromptPendingOnNextIndex?.(); }catch(_){}
       location.href = "index.html";
     };
   }
@@ -2750,6 +2752,7 @@ async function handleEnding(type, endScene){
     btnBack.onclick = async () => {
       ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
       await maybeShowInterstitialOnReturnToIndex();
+      try{ window.VROneSignal?.markPromptPendingOnNextIndex?.(); }catch(_){}
       location.href = "index.html";
     };
 
@@ -2883,4 +2886,3 @@ window.VLang = {
 document.addEventListener("DOMContentLoaded", boot);
 
 })();
-

@@ -35,8 +35,10 @@
   const LAST_REWARDED_AT_KEY = "vchoice_ads_last_rewarded_at_v1";
   const LAST_INTERSTITIAL_AT_KEY = "vchoice_ads_last_interstitial_at_v1";
   const INTERSTITIAL_GLOBAL_TIME_KEY = "vchoice_ads_ingame_time_ms_v1";
+  const INTRO_FINISHED_FLOW_KEY = "vchoice_intro_just_finished";
 
   let _weightedTimerStartedAt = 0;
+  let _umpConsentInfo = null;
 
   function _nowMs() {
     return Date.now();
@@ -226,6 +228,104 @@
     return p === "android" || p === "ios";
   }
 
+  function _readLSString(key) {
+    try {
+      return String(localStorage.getItem(key) || "");
+    } catch (_) {}
+    return "";
+  }
+
+  function _emptyConsentInfo() {
+    return {
+      status: "UNKNOWN",
+      isConsentFormAvailable: false,
+      canRequestAds: false,
+      privacyOptionsRequirementStatus: "UNKNOWN"
+    };
+  }
+
+  async function refreshGoogleConsentInfo(opts) {
+    try {
+      if (!isNativeMobile()) {
+        _umpConsentInfo = {
+          status: "NOT_REQUIRED",
+          isConsentFormAvailable: false,
+          canRequestAds: true,
+          privacyOptionsRequirementStatus: "NOT_REQUIRED"
+        };
+        return _umpConsentInfo;
+      }
+
+      const plugin = getPlugin();
+      if (!plugin || typeof plugin.requestConsentInfo !== "function") {
+        _umpConsentInfo = _emptyConsentInfo();
+        return _umpConsentInfo;
+      }
+
+      _umpConsentInfo = await plugin.requestConsentInfo(opts || {});
+      return _umpConsentInfo || _emptyConsentInfo();
+    } catch (_) {
+      return _umpConsentInfo || _emptyConsentInfo();
+    }
+  }
+
+  function getGoogleConsentInfo() {
+    return _umpConsentInfo || _emptyConsentInfo();
+  }
+
+  async function canRequestAdsNowWithConsent() {
+    try {
+      const info = await refreshGoogleConsentInfo();
+      return !!(info && info.canRequestAds);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function maybeShowGoogleConsentFormOnIndexAfterIntro() {
+    try {
+      const introJustFinished = _readLSString(INTRO_FINISHED_FLOW_KEY) === "1";
+      if (!introJustFinished) return false;
+      if (!isNativeMobile()) return false;
+
+      const plugin = getPlugin();
+      if (!plugin) return false;
+      if (typeof plugin.requestConsentInfo !== "function") return false;
+      if (typeof plugin.showConsentForm !== "function") return false;
+
+      const info = await refreshGoogleConsentInfo();
+
+      if (info.canRequestAds) return false;
+
+      await plugin.showConsentForm();
+      await refreshGoogleConsentInfo();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function openGooglePrivacyOptionsForm() {
+    try {
+      if (!isNativeMobile()) return false;
+
+      const plugin = getPlugin();
+      if (!plugin) return false;
+      if (typeof plugin.requestConsentInfo !== "function") return false;
+      if (typeof plugin.showPrivacyOptionsForm !== "function") return false;
+
+      const info = await refreshGoogleConsentInfo();
+
+      if (info.privacyOptionsRequirementStatus !== "REQUIRED") return false;
+
+      await plugin.showPrivacyOptionsForm();
+      await refreshGoogleConsentInfo();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   function getTestIds() {
     const p = getPlatform();
     if (p === "ios") return TEST_IDS.ios;
@@ -404,6 +504,11 @@
     flushWeightedTime,
     getWeightedAccumulatedMs,
     resetWeightedAccumulatedMs,
+    refreshGoogleConsentInfo,
+    getGoogleConsentInfo,
+    canRequestAdsNowWithConsent,
+    maybeShowGoogleConsentFormOnIndexAfterIntro,
+    openGooglePrivacyOptionsForm,
     _debug: {
       getPlatform,
       getTestIds,
