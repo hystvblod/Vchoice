@@ -131,7 +131,9 @@
       "err_app_only": "Achat store dispo uniquement dans l’app.",
       "err_not_ready": "Système d’achat non prêt.",
       "err_buy_failed": "Achat annulé ou impossible.",
-      "err_unlock_after_iap": "Achat validé, mais le scénario n’a pas pu être ouvert."
+      "err_unlock_after_iap": "Achat validé, mais le scénario n’a pas pu être ouvert.",
+      "premium_desc": "Ce scénario premium est verrouillé. Tu peux le débloquer avec des VCoins ou l’acheter directement. Voir la FAQ pour le fonctionnement.",
+      "open_faq": "Voir la FAQ"
     },
     "update_banner_title": "Mise à jour disponible",
     "update_banner_desc": "Une nouvelle version de l’application est disponible.",
@@ -216,7 +218,13 @@
     "shop_p_noads_desc": "Désactive les publicités interstitielles. Les pubs récompensées restent disponibles.",
     "shop_p_diamond_title": "Diamond",
     "shop_p_diamond_note": "No Pub + tous les scénarios débloqués",
-    "shop_p_diamond_desc": "Accès Diamond : tous les scénarios actuels et à venir + No Ads. Bonus inclus selon ton pack."
+    "shop_p_diamond_desc": "Accès Diamond : tous les scénarios actuels et à venir + No Ads. Bonus inclus selon ton pack.",
+    "profile_secret_angelique_revealed": "Angélique a été révélée sur l’accueil.",
+    "settings_remote_faq_title": "Scénarios premium",
+    "settings_remote_faq_q1": "Pourquoi certains scénarios sont téléchargés séparément ?",
+    "settings_remote_faq_a1": "Pour garder l’application plus légère. La couverture reste dans l’app, puis les images complètes du scénario sont récupérées après déblocage.",
+    "settings_remote_faq_q2": "Pourquoi y a-t-il une FAQ dédiée ?",
+    "settings_remote_faq_a2": "Parce que ces scénarios utilisent un fonctionnement spécial avec achat, déblocage et téléchargement séparé."
   },
   "common": {
     "cancel": "Annuler"
@@ -296,6 +304,18 @@
     "temple_mictlan": {
       "title": "Temple Mictlan",
       "desc": "Fraîchement diplômé, tu pars au Mexique pour étudier une nouvelle zone. Sous la pierre, tu découvres le temple enfoui de la Dame des morts."
+    },
+    "village_brume_noire": {
+      "title": "Village brume noire",
+      "desc": "Tu entres dans un village noyé dans une brume noire, où les rues semblent tourner sur elles-mêmes."
+    },
+    "marais_sans_sepulture": {
+      "title": "Marais sans sépulture",
+      "desc": "Dans un marais saturé d’eau sombre, tombes ouvertes, traces oubliées et silence lourd t’attendent."
+    },
+    "grotte_angelique": {
+      "title": "Angélique",
+      "desc": "Une grotte oubliée, un nom qui revient sans cesse, et quelque chose de trop ancien qui attend encore."
     }
   },
   "referral": {

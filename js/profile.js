@@ -20,7 +20,7 @@
   const ENDINGS_CACHE_KEY = "vchoice_endings_cache_v1";
 
   // ✅ IDs EXACTS (d'après ton dossier assets/scenarios/)
-  const SCENARIO_IDS = [
+  const BASE_SCENARIO_IDS = [
     "bunker_reserve",
     "chateau_absents",
     "dossier14_appartement",
@@ -223,6 +223,21 @@
     if (!inp) return;
 
     const next = String(inp.value || "").trim();
+
+    if (window.VCScenarioPremium?.checkAndRevealFromPseudo?.(next)){
+      setMsg("ok", "ui.profile_secret_angelique_revealed");
+      try { inp.value = ""; } catch(_) {}
+      openEdit(false);
+      try { await refreshEndingsSafe(); } catch(_) {}
+      try {
+        window.dispatchEvent(new CustomEvent("vc:secret_scenario_revealed", {
+          detail: { scenarioId: "grotte_angelique" }
+        }));
+      } catch(_) {}
+      try { window.dispatchEvent(new Event("vc:profile")); } catch(_) {}
+      return;
+    }
+
     if (!isValidUsername(next)){
       setMsg("err", "ui.profile_username_err_format");
       return;
@@ -304,7 +319,7 @@
     const st = window.VUserData?.load?.() || {};
     const uid = String(st.user_id || "");
     const unlocked = window.VUserData?.getUnlockedScenarios?.() || [];
-    const ids = SCENARIO_IDS.slice();
+    const ids = window.VCScenarioPremium?.getProfileScenarioIds?.(BASE_SCENARIO_IDS) || BASE_SCENARIO_IDS.slice();
 
     // cache local
     const cache = readEndingsCache();
