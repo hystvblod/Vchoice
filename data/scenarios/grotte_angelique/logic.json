@@ -1,0 +1,1051 @@
+{
+  "scenario_id": "grotte_angelique",
+  "version": 1,
+  "start_scene": "s01",
+
+  "images": {
+    "s01": { "file": "assets/scenarios/grotte_angelique/img/s01.webp", "alt": "Entrée de grotte au crépuscule" },
+    "s02": { "file": "assets/scenarios/grotte_angelique/img/s02.webp", "alt": "Avertissements effacés" },
+    "s03": { "file": "assets/scenarios/grotte_angelique/img/s03.webp", "alt": "Premier couloir sombre" },
+    "s04": { "file": "assets/scenarios/grotte_angelique/img/s04.webp", "alt": "Corniche vers une autre ouverture" },
+    "s05": { "file": "assets/scenarios/grotte_angelique/img/s05.webp", "alt": "Signes cassés et poussière noire" },
+    "s06": { "file": "assets/scenarios/grotte_angelique/img/s06.webp", "alt": "Griffures dans la roche" },
+    "s07": { "file": "assets/scenarios/grotte_angelique/img/s07.webp", "alt": "Fente noire et étroite" },
+    "s08": { "file": "assets/scenarios/grotte_angelique/img/s08.webp", "alt": "Boyau bas" },
+    "s09": { "file": "assets/scenarios/grotte_angelique/img/s09.webp", "alt": "Salle froide" },
+    "s10": { "file": "assets/scenarios/grotte_angelique/img/s10.webp", "alt": "Lumière du dehors déjà loin" },
+    "s11": { "file": "assets/scenarios/grotte_angelique/img/s11.webp", "alt": "Corniche au-dessus du vide" },
+    "s12": { "file": "assets/scenarios/grotte_angelique/img/s12.webp", "alt": "Ancrage rouillé" },
+    "s13": { "file": "assets/scenarios/grotte_angelique/img/s13.webp", "alt": "Marquage ancien" },
+    "s14": { "file": "assets/scenarios/grotte_angelique/img/s14.webp", "alt": "Courant d’air dans la fissure" },
+    "s15": { "file": "assets/scenarios/grotte_angelique/img/s15.webp", "alt": "Plan grossier sur le mur" },
+    "s16": { "file": "assets/scenarios/grotte_angelique/img/s16.webp", "alt": "Casque cassé" },
+    "s17": { "file": "assets/scenarios/grotte_angelique/img/s17.webp", "alt": "Tache sombre au sol" },
+    "s18": { "file": "assets/scenarios/grotte_angelique/img/s18.webp", "alt": "Fragment de schiste gravé" },
+    "s19": { "file": "assets/scenarios/grotte_angelique/img/s19.webp", "alt": "Voix lointaine" },
+    "s20": { "file": "assets/scenarios/grotte_angelique/img/s20.webp", "alt": "Niche de pierre" },
+    "s21": { "file": "assets/scenarios/grotte_angelique/img/s21.webp", "alt": "Passage serré" },
+    "s22": { "file": "assets/scenarios/grotte_angelique/img/s22.webp", "alt": "Salle des gouttes" },
+    "s23": { "file": "assets/scenarios/grotte_angelique/img/s23.webp", "alt": "Tas d’os" },
+    "s24": { "file": "assets/scenarios/grotte_angelique/img/s24.webp", "alt": "Vieille lampe" },
+    "s25": { "file": "assets/scenarios/grotte_angelique/img/s25.webp", "alt": "Rebord caché" },
+    "s26": { "file": "assets/scenarios/grotte_angelique/img/s26.webp", "alt": "Piton et paroi verticale" },
+    "s27": { "file": "assets/scenarios/grotte_angelique/img/s27.webp", "alt": "Sac de grimpe déchiré" },
+    "s28": { "file": "assets/scenarios/grotte_angelique/img/s28.webp", "alt": "Grande bifurcation" },
+    "s29": { "file": "assets/scenarios/grotte_angelique/img/s29.webp", "alt": "Pont de fortune" },
+    "s30": { "file": "assets/scenarios/grotte_angelique/img/s30.webp", "alt": "Flèche de survie" },
+    "s31": { "file": "assets/scenarios/grotte_angelique/img/s31.webp", "alt": "Squelette de grimpeur" },
+    "s32": { "file": "assets/scenarios/grotte_angelique/img/s32.webp", "alt": "Bouche de pierre" },
+    "s33": { "file": "assets/scenarios/grotte_angelique/img/s33.webp", "alt": "Schiste comparé au mur" },
+    "s34": { "file": "assets/scenarios/grotte_angelique/img/s34.webp", "alt": "Tunnel au souffle chaud" },
+    "s35": { "file": "assets/scenarios/grotte_angelique/img/s35.webp", "alt": "Suie ancienne" },
+    "s36": { "file": "assets/scenarios/grotte_angelique/img/s36.webp", "alt": "Prière rongée" },
+    "s37": { "file": "assets/scenarios/grotte_angelique/img/s37.webp", "alt": "Dôme noirci" },
+    "s38": { "file": "assets/scenarios/grotte_angelique/img/s38.webp", "alt": "Bassin noir" },
+    "s39": { "file": "assets/scenarios/grotte_angelique/img/s39.webp", "alt": "Couloir mouillé" },
+    "s40": { "file": "assets/scenarios/grotte_angelique/img/s40.webp", "alt": "Cercle d’os" },
+    "s41": { "file": "assets/scenarios/grotte_angelique/img/s41.webp", "alt": "Lanterne rouge" },
+    "s42": { "file": "assets/scenarios/grotte_angelique/img/s42.webp", "alt": "Faille verticale" },
+    "s43": { "file": "assets/scenarios/grotte_angelique/img/s43.webp", "alt": "Vieille ligne d’escalade" },
+    "s44": { "file": "assets/scenarios/grotte_angelique/img/s44.webp", "alt": "Carnet humide" },
+    "s45": { "file": "assets/scenarios/grotte_angelique/img/s45.webp", "alt": "Hall rocheux aveugle" },
+    "s46": { "file": "assets/scenarios/grotte_angelique/img/s46.webp", "alt": "Arche marquée" },
+    "s47": { "file": "assets/scenarios/grotte_angelique/img/s47.webp", "alt": "Centre du vide" },
+    "s48": { "file": "assets/scenarios/grotte_angelique/img/s48.webp", "alt": "Alcôve avec chaîne" },
+    "s49": { "file": "assets/scenarios/grotte_angelique/img/s49.webp", "alt": "Plaque de cuivre" },
+    "s50": { "file": "assets/scenarios/grotte_angelique/img/s50.webp", "alt": "Portail effondré" },
+    "s51": { "file": "assets/scenarios/grotte_angelique/img/s51.webp", "alt": "Couture dans le mur" },
+    "s52": { "file": "assets/scenarios/grotte_angelique/img/s52.webp", "alt": "Parois qui respirent" },
+    "s53": { "file": "assets/scenarios/grotte_angelique/img/s53.webp", "alt": "Galerie rouge" },
+    "s54": { "file": "assets/scenarios/grotte_angelique/img/s54.webp", "alt": "Ligne effacée" },
+    "s55": { "file": "assets/scenarios/grotte_angelique/img/s55.webp", "alt": "Grande coupole noire" },
+    "s56": { "file": "assets/scenarios/grotte_angelique/img/s56.webp", "alt": "Chaîne au-dessus de l’eau" },
+    "s57": { "file": "assets/scenarios/grotte_angelique/img/s57.webp", "alt": "Pierres noyées" },
+    "s58": { "file": "assets/scenarios/grotte_angelique/img/s58.webp", "alt": "Passage gorge" },
+    "s59": { "file": "assets/scenarios/grotte_angelique/img/s59.webp", "alt": "Lueur fixe" },
+    "s60": { "file": "assets/scenarios/grotte_angelique/img/s60.webp", "alt": "Cheminée de lumière" },
+    "s61": { "file": "assets/scenarios/grotte_angelique/img/s61.webp", "alt": "Porte de fer" },
+    "s62": { "file": "assets/scenarios/grotte_angelique/img/s62.webp", "alt": "Campement abandonné" },
+    "s63": { "file": "assets/scenarios/grotte_angelique/img/s63.webp", "alt": "Hall blanchi à la craie" },
+    "s64": { "file": "assets/scenarios/grotte_angelique/img/s64.webp", "alt": "Anneau gravé" },
+    "s65": { "file": "assets/scenarios/grotte_angelique/img/s65.webp", "alt": "Nid de pierre" },
+    "s66": { "file": "assets/scenarios/grotte_angelique/img/s66.webp", "alt": "Pont au milieu du vide" },
+    "s67": { "file": "assets/scenarios/grotte_angelique/img/s67.webp", "alt": "Cellule basse" },
+    "s68": { "file": "assets/scenarios/grotte_angelique/img/s68.webp", "alt": "Nom brisé" },
+    "s69": { "file": "assets/scenarios/grotte_angelique/img/s69.webp", "alt": "Grille tordue" },
+    "s70": { "file": "assets/scenarios/grotte_angelique/img/s70.webp", "alt": "Passage cousu" },
+    "s71": { "file": "assets/scenarios/grotte_angelique/img/s71.webp", "alt": "Salle ronde presque organique" },
+    "s72": { "file": "assets/scenarios/grotte_angelique/img/s72.webp", "alt": "Galerie rouge chaude" },
+    "s73": { "file": "assets/scenarios/grotte_angelique/img/s73.webp", "alt": "Autel usé" },
+    "s74": { "file": "assets/scenarios/grotte_angelique/img/s74.webp", "alt": "Texte complet sur le mur" },
+    "s75": { "file": "assets/scenarios/grotte_angelique/img/s75.webp", "alt": "Traversée tendue" },
+    "s76": { "file": "assets/scenarios/grotte_angelique/img/s76.webp", "alt": "Yeux dans l’eau" },
+    "s77": { "file": "assets/scenarios/grotte_angelique/img/s77.webp", "alt": "Lac souterrain" },
+    "s78": { "file": "assets/scenarios/grotte_angelique/img/s78.webp", "alt": "Fausse sortie" },
+    "s79": { "file": "assets/scenarios/grotte_angelique/img/s79.webp", "alt": "Abri scellé" },
+    "s80": { "file": "assets/scenarios/grotte_angelique/img/s80.webp", "alt": "Dernière halte humaine" },
+    "s81": { "file": "assets/scenarios/grotte_angelique/img/s81.webp", "alt": "Caisse ouverte" },
+    "s82": { "file": "assets/scenarios/grotte_angelique/img/s82.webp", "alt": "Grand hall d’écho" },
+    "s83": { "file": "assets/scenarios/grotte_angelique/img/s83.webp", "alt": "Cercle final" },
+    "s84": { "file": "assets/scenarios/grotte_angelique/img/s84.webp", "alt": "Salle du souffle d’Angélique" },
+
+    "good_end": { "file": "assets/scenarios/grotte_angelique/img/good_end.webp", "alt": "Vraie sortie retrouvée" },
+    "bad_end": { "file": "assets/scenarios/grotte_angelique/img/bad_end.webp", "alt": "Angélique trop proche" },
+    "secret_end": { "file": "assets/scenarios/grotte_angelique/img/secret_end.webp", "alt": "Rite ancien refermé" }
+  },
+
+  "state_model": {
+    "flags": ["saw_schiste", "got_chain", "read_vow"]
+  },
+
+  "scenes": {
+    "s01": {
+      "image_id": "s01",
+      "title_key": "ga.s01.title",
+      "body_key": "ga.s01.body",
+      "choices": [
+        { "choice_key": "ga.s01.c1", "next": "s02" },
+        { "choice_key": "ga.s01.c2", "next": "s03" },
+        { "choice_key": "ga.s01.c3", "next": "s04" }
+      ]
+    },
+
+    "s02": {
+      "image_id": "s02",
+      "title_key": "ga.s02.title",
+      "body_key": "ga.s02.body",
+      "choices": [
+        { "choice_key": "ga.s02.c1", "next": "s05" },
+        { "choice_key": "ga.s02.c2", "next": "s06" },
+        { "choice_key": "ga.s02.c3", "next": "s07" }
+      ]
+    },
+
+    "s03": {
+      "image_id": "s03",
+      "title_key": "ga.s03.title",
+      "body_key": "ga.s03.body",
+      "choices": [
+        { "choice_key": "ga.s03.c1", "next": "s08" },
+        { "choice_key": "ga.s03.c2", "next": "s09" },
+        { "choice_key": "ga.s03.c3", "next": "s10" }
+      ]
+    },
+
+    "s04": {
+      "image_id": "s04",
+      "title_key": "ga.s04.title",
+      "body_key": "ga.s04.body",
+      "choices": [
+        { "choice_key": "ga.s04.c1", "next": "s11" },
+        { "choice_key": "ga.s04.c2", "next": "s12" },
+        { "choice_key": "ga.s04.c3", "next": "s13" }
+      ]
+    },
+
+    "s05": {
+      "image_id": "s05",
+      "title_key": "ga.s05.title",
+      "body_key": "ga.s05.body",
+      "choices": [
+        { "choice_key": "ga.s05.c1", "next": "s14" },
+        { "choice_key": "ga.s05.c2", "next": "s15" },
+        { "choice_key": "ga.s05.c3", "next": "s16" }
+      ]
+    },
+
+    "s06": {
+      "image_id": "s06",
+      "title_key": "ga.s06.title",
+      "body_key": "ga.s06.body",
+      "choices": [
+        { "choice_key": "ga.s06.c1", "next": "s17" },
+        { "choice_key": "ga.s06.c2", "next": "s18" },
+        { "choice_key": "ga.s06.c3", "next": "s19" }
+      ]
+    },
+
+    "s07": {
+      "image_id": "s07",
+      "title_key": "ga.s07.title",
+      "body_key": "ga.s07.body",
+      "choices": [
+        { "choice_key": "ga.s07.c1", "next": "s08" },
+        { "choice_key": "ga.s07.c2", "next": "s20" },
+        { "choice_key": "ga.s07.c3", "next": "s21" }
+      ]
+    },
+
+    "s08": {
+      "image_id": "s08",
+      "title_key": "ga.s08.title",
+      "body_key": "ga.s08.body",
+      "choices": [
+        { "choice_key": "ga.s08.c1", "next": "s22" },
+        { "choice_key": "ga.s08.c2", "next": "s23" },
+        { "choice_key": "ga.s08.c3", "next": "s24" }
+      ]
+    },
+
+    "s09": {
+      "image_id": "s09",
+      "title_key": "ga.s09.title",
+      "body_key": "ga.s09.body",
+      "choices": [
+        { "choice_key": "ga.s09.c1", "next": "s19" },
+        { "choice_key": "ga.s09.c2", "next": "s22" },
+        { "choice_key": "ga.s09.c3", "next": "s25" }
+      ]
+    },
+
+    "s10": {
+      "image_id": "s10",
+      "title_key": "ga.s10.title",
+      "body_key": "ga.s10.body",
+      "choices": [
+        { "choice_key": "ga.s10.c1", "next": "s22" },
+        { "choice_key": "ga.s10.c2", "next": "s27" },
+        { "choice_key": "ga.s10.c3", "next": "s28" }
+      ]
+    },
+
+    "s11": {
+      "image_id": "s11",
+      "title_key": "ga.s11.title",
+      "body_key": "ga.s11.body",
+      "choices": [
+        { "choice_key": "ga.s11.c1", "next": "s25" },
+        { "choice_key": "ga.s11.c2", "next": "s29" },
+        { "choice_key": "ga.s11.c3", "next": "s30" }
+      ]
+    },
+
+    "s12": {
+      "image_id": "s12",
+      "title_key": "ga.s12.title",
+      "body_key": "ga.s12.body",
+      "choices": [
+        { "choice_key": "ga.s12.c1", "next": "s26" },
+        { "choice_key": "ga.s12.c2", "next": "s31" },
+        { "choice_key": "ga.s12.c3", "next": "s32" }
+      ]
+    },
+
+    "s13": {
+      "image_id": "s13",
+      "title_key": "ga.s13.title",
+      "body_key": "ga.s13.body",
+      "choices": [
+        { "choice_key": "ga.s13.c1", "next": "s15" },
+        { "choice_key": "ga.s13.c2", "next": "s33" },
+        { "choice_key": "ga.s13.c3", "next": "s34" }
+      ]
+    },
+
+    "s14": {
+      "image_id": "s14",
+      "title_key": "ga.s14.title",
+      "body_key": "ga.s14.body",
+      "choices": [
+        { "choice_key": "ga.s14.c1", "next": "s28" },
+        { "choice_key": "ga.s14.c2", "next": "s36" },
+        { "choice_key": "ga.s14.c3", "next": "s37" }
+      ]
+    },
+
+    "s15": {
+      "image_id": "s15",
+      "title_key": "ga.s15.title",
+      "body_key": "ga.s15.body",
+      "choices": [
+        { "choice_key": "ga.s15.c1", "next": "s28" },
+        { "choice_key": "ga.s15.c2", "next": "s38" },
+        { "choice_key": "ga.s15.c3", "next": "s39" }
+      ]
+    },
+
+    "s16": {
+      "image_id": "s16",
+      "title_key": "ga.s16.title",
+      "body_key": "ga.s16.body",
+      "choices": [
+        { "choice_key": "ga.s16.c1", "next": "s23" },
+        { "choice_key": "ga.s16.c2", "next": "s40" },
+        { "choice_key": "ga.s16.c3", "next": "s41" }
+      ]
+    },
+
+    "s17": {
+      "image_id": "s17",
+      "title_key": "ga.s17.title",
+      "body_key": "ga.s17.body",
+      "choices": [
+        { "choice_key": "ga.s17.c1", "next": "s42" },
+        { "choice_key": "ga.s17.c2", "next": "s43" },
+        { "choice_key": "ga.s17.c3", "next": "s44" }
+      ]
+    },
+
+    "s18": {
+      "image_id": "s18",
+      "title_key": "ga.s18.title",
+      "body_key": "ga.s18.body",
+      "choices": [
+        { "choice_key": "ga.s18.c1", "next": "s33", "set_flags": ["saw_schiste"] },
+        { "choice_key": "ga.s18.c2", "next": "s45" },
+        { "choice_key": "ga.s18.c3", "next": "s46" }
+      ]
+    },
+
+    "s19": {
+      "image_id": "s19",
+      "title_key": "ga.s19.title",
+      "body_key": "ga.s19.body",
+      "choices": [
+        { "choice_key": "ga.s19.c1", "next": "s47" },
+        { "choice_key": "ga.s19.c2", "next": "s48" },
+        { "choice_key": "ga.s19.c3", "next": "s49" }
+      ]
+    },
+
+    "s20": {
+      "image_id": "s20",
+      "title_key": "ga.s20.title",
+      "body_key": "ga.s20.body",
+      "choices": [
+        { "choice_key": "ga.s20.c1", "next": "s50" },
+        { "choice_key": "ga.s20.c2", "next": "s51" },
+        { "choice_key": "ga.s20.c3", "next": "s22" }
+      ]
+    },
+
+    "s21": {
+      "image_id": "s21",
+      "title_key": "ga.s21.title",
+      "body_key": "ga.s21.body",
+      "choices": [
+        { "choice_key": "ga.s21.c1", "next": "s52" },
+        { "choice_key": "ga.s21.c2", "next": "s53" },
+        { "choice_key": "ga.s21.c3", "next": "s54" }
+      ]
+    },
+
+    "s22": {
+      "image_id": "s22",
+      "title_key": "ga.s22.title",
+      "body_key": "ga.s22.body",
+      "choices": [
+        { "choice_key": "ga.s22.c1", "next": "s25" },
+        { "choice_key": "ga.s22.c2", "next": "s39" },
+        { "choice_key": "ga.s22.c3", "next": "s55" }
+      ]
+    },
+
+    "s23": {
+      "image_id": "s23",
+      "title_key": "ga.s23.title",
+      "body_key": "ga.s23.body",
+      "choices": [
+        { "choice_key": "ga.s23.c1", "next": "s31" },
+        { "choice_key": "ga.s23.c2", "next": "s40" },
+        { "choice_key": "ga.s23.c3", "next": "s56" }
+      ]
+    },
+
+    "s24": {
+      "image_id": "s24",
+      "title_key": "ga.s24.title",
+      "body_key": "ga.s24.body",
+      "choices": [
+        { "choice_key": "ga.s24.c1", "next": "s57" },
+        { "choice_key": "ga.s24.c2", "next": "s58" },
+        { "choice_key": "ga.s24.c3", "next": "s59" }
+      ]
+    },
+
+    "s25": {
+      "image_id": "s25",
+      "title_key": "ga.s25.title",
+      "body_key": "ga.s25.body",
+      "choices": [
+        { "choice_key": "ga.s25.c1", "next": "s29" },
+        { "choice_key": "ga.s25.c2", "next": "s47" },
+        { "choice_key": "ga.s25.c3", "next": "s60" }
+      ]
+    },
+
+    "s26": {
+      "image_id": "s26",
+      "title_key": "ga.s26.title",
+      "body_key": "ga.s26.body",
+      "choices": [
+        { "choice_key": "ga.s26.c1", "next": "s43" },
+        { "choice_key": "ga.s26.c2", "next": "s61" },
+        { "choice_key": "ga.s26.c3", "next": "s62" }
+      ]
+    },
+
+    "s27": {
+      "image_id": "s27",
+      "title_key": "ga.s27.title",
+      "body_key": "ga.s27.body",
+      "choices": [
+        { "choice_key": "ga.s27.c1", "next": "s44" },
+        { "choice_key": "ga.s27.c2", "next": "s63" },
+        { "choice_key": "ga.s27.c3", "next": "s64" }
+      ]
+    },
+
+    "s28": {
+      "image_id": "s28",
+      "title_key": "ga.s28.title",
+      "body_key": "ga.s28.body",
+      "choices": [
+        { "choice_key": "ga.s28.c1", "next": "s34" },
+        { "choice_key": "ga.s28.c2", "next": "s38" },
+        { "choice_key": "ga.s28.c3", "next": "s45" }
+      ]
+    },
+
+    "s29": {
+      "image_id": "s29",
+      "title_key": "ga.s29.title",
+      "body_key": "ga.s29.body",
+      "choices": [
+        { "choice_key": "ga.s29.c1", "next": "s56" },
+        { "choice_key": "ga.s29.c2", "next": "s66" },
+        { "choice_key": "ga.s29.c3", "next": "s57" }
+      ]
+    },
+
+    "s30": {
+      "image_id": "s30",
+      "title_key": "ga.s30.title",
+      "body_key": "ga.s30.body",
+      "choices": [
+        { "choice_key": "ga.s30.c1", "next": "s45" },
+        { "choice_key": "ga.s30.c2", "next": "s34" },
+        { "choice_key": "ga.s30.c3", "next": "s67" }
+      ]
+    },
+
+    "s31": {
+      "image_id": "s31",
+      "title_key": "ga.s31.title",
+      "body_key": "ga.s31.body",
+      "choices": [
+        { "choice_key": "ga.s31.c1", "next": "s44" },
+        { "choice_key": "ga.s31.c2", "next": "s68" },
+        { "choice_key": "ga.s31.c3", "next": "s41" }
+      ]
+    },
+
+    "s32": {
+      "image_id": "s32",
+      "title_key": "ga.s32.title",
+      "body_key": "ga.s32.body",
+      "choices": [
+        { "choice_key": "ga.s32.c1", "next": "s53" },
+        { "choice_key": "ga.s32.c2", "next": "s69" },
+        { "choice_key": "ga.s32.c3", "next": "s70" }
+      ]
+    },
+
+    "s33": {
+      "image_id": "s33",
+      "title_key": "ga.s33.title",
+      "body_key": "ga.s33.body",
+      "choices": [
+        { "choice_key": "ga.s33.c1", "next": "s36" },
+        { "choice_key": "ga.s33.c2", "next": "s46" },
+        { "choice_key": "ga.s33.c3", "next": "s71" }
+      ]
+    },
+
+    "s34": {
+      "image_id": "s34",
+      "title_key": "ga.s34.title",
+      "body_key": "ga.s34.body",
+      "choices": [
+        { "choice_key": "ga.s34.c1", "next": "s55" },
+        { "choice_key": "ga.s34.c2", "next": "s35" },
+        { "choice_key": "ga.s34.c3", "next": "s73" }
+      ]
+    },
+
+    "s35": {
+      "image_id": "s35",
+      "title_key": "ga.s35.title",
+      "body_key": "ga.s35.body",
+      "choices": [
+        { "choice_key": "ga.s35.c1", "next": "s37" },
+        { "choice_key": "ga.s35.c2", "next": "s72" },
+        { "choice_key": "ga.s35.c3", "next": "s74" }
+      ]
+    },
+
+    "s36": {
+      "image_id": "s36",
+      "title_key": "ga.s36.title",
+      "body_key": "ga.s36.body",
+      "choices": [
+        { "choice_key": "ga.s36.c1", "next": "s73" },
+        { "choice_key": "ga.s36.c2", "next": "s74" },
+        { "choice_key": "ga.s36.c3", "next": "s63" }
+      ]
+    },
+
+    "s37": {
+      "image_id": "s37",
+      "title_key": "ga.s37.title",
+      "body_key": "ga.s37.body",
+      "choices": [
+        { "choice_key": "ga.s37.c1", "next": "s55" },
+        { "choice_key": "ga.s37.c2", "next": "s65" },
+        { "choice_key": "ga.s37.c3", "next": "s72" }
+      ]
+    },
+
+    "s38": {
+      "image_id": "s38",
+      "title_key": "ga.s38.title",
+      "body_key": "ga.s38.body",
+      "choices": [
+        { "choice_key": "ga.s38.c1", "next": "s57" },
+        { "choice_key": "ga.s38.c2", "next": "s76" },
+        { "choice_key": "ga.s38.c3", "next": "s77" }
+      ]
+    },
+
+    "s39": {
+      "image_id": "s39",
+      "title_key": "ga.s39.title",
+      "body_key": "ga.s39.body",
+      "choices": [
+        { "choice_key": "ga.s39.c1", "next": "s58" },
+        { "choice_key": "ga.s39.c2", "next": "s77" },
+        { "choice_key": "ga.s39.c3", "next": "s60" }
+      ]
+    },
+
+    "s40": {
+      "image_id": "s40",
+      "title_key": "ga.s40.title",
+      "body_key": "ga.s40.body",
+      "choices": [
+        { "choice_key": "ga.s40.c1", "next": "s41" },
+        { "choice_key": "ga.s40.c2", "next": "s64" },
+        { "choice_key": "ga.s40.c3", "next": "s78" }
+      ]
+    },
+
+    "s41": {
+      "image_id": "s41",
+      "title_key": "ga.s41.title",
+      "body_key": "ga.s41.body",
+      "choices": [
+        { "choice_key": "ga.s41.c1", "next": "s63" },
+        { "choice_key": "ga.s41.c2", "next": "s72" },
+        { "choice_key": "ga.s41.c3", "next": "s79" }
+      ]
+    },
+
+    "s42": {
+      "image_id": "s42",
+      "title_key": "ga.s42.title",
+      "body_key": "ga.s42.body",
+      "choices": [
+        { "choice_key": "ga.s42.c1", "next": "s60" },
+        { "choice_key": "ga.s42.c2", "next": "s61" },
+        { "choice_key": "ga.s42.c3", "next": "s80" }
+      ]
+    },
+
+    "s43": {
+      "image_id": "s43",
+      "title_key": "ga.s43.title",
+      "body_key": "ga.s43.body",
+      "choices": [
+        { "choice_key": "ga.s43.c1", "next": "s60" },
+        { "choice_key": "ga.s43.c2", "next": "s62" },
+        { "choice_key": "ga.s43.c3", "next": "s79" }
+      ]
+    },
+
+    "s44": {
+      "image_id": "s44",
+      "title_key": "ga.s44.title",
+      "body_key": "ga.s44.body",
+      "choices": [
+        { "choice_key": "ga.s44.c1", "next": "s62" },
+        { "choice_key": "ga.s44.c2", "next": "s68" },
+        { "choice_key": "ga.s44.c3", "next": "s80" }
+      ]
+    },
+
+    "s45": {
+      "image_id": "s45",
+      "title_key": "ga.s45.title",
+      "body_key": "ga.s45.body",
+      "choices": [
+        { "choice_key": "ga.s45.c1", "next": "s46" },
+        { "choice_key": "ga.s45.c2", "next": "s50" },
+        { "choice_key": "ga.s45.c3", "next": "s81" }
+      ]
+    },
+
+"s46": {
+  "image_id": "s46",
+  "title_key": "ga.s46.title",
+  "body_key": "ga.s46.body",
+  "choices": [
+    { "choice_key": "ga.s46.c1", "next": "s64" },
+    { "choice_key": "ga.s46.c2", "next": "s73" },
+    { "choice_key": "ga.s46.c3", "next": "s47" }
+  ]
+},
+
+    "s47": {
+      "image_id": "s47",
+      "title_key": "ga.s47.title",
+      "body_key": "ga.s47.body",
+      "choices": [
+        { "choice_key": "ga.s47.c1", "next": "s66" },
+        { "choice_key": "ga.s47.c2", "next": "s48" },
+        { "choice_key": "ga.s47.c3", "next": "s82" }
+      ]
+    },
+
+    "s48": {
+      "image_id": "s48",
+      "title_key": "ga.s48.title",
+      "body_key": "ga.s48.body",
+      "choices": [
+        { "choice_key": "ga.s48.c1", "next": "s56", "set_flags": ["got_chain"] },
+        { "choice_key": "ga.s48.c2", "next": "s67" },
+        { "choice_key": "ga.s48.c3", "next": "s49" }
+      ]
+    },
+
+    "s49": {
+      "image_id": "s49",
+      "title_key": "ga.s49.title",
+      "body_key": "ga.s49.body",
+      "choices": [
+        { "choice_key": "ga.s49.c1", "next": "s68" },
+        { "choice_key": "ga.s49.c2", "next": "s64" },
+        { "choice_key": "ga.s49.c3", "next": "s82" }
+      ]
+    },
+
+    "s50": {
+      "image_id": "s50",
+      "title_key": "ga.s50.title",
+      "body_key": "ga.s50.body",
+      "choices": [
+        { "choice_key": "ga.s50.c1", "next": "s51" },
+        { "choice_key": "ga.s50.c2", "next": "s61" },
+        { "choice_key": "ga.s50.c3", "next": "s79" }
+      ]
+    },
+
+    "s51": {
+      "image_id": "s51",
+      "title_key": "ga.s51.title",
+      "body_key": "ga.s51.body",
+      "choices": [
+        { "choice_key": "ga.s51.c1", "next": "s70" },
+        { "choice_key": "ga.s51.c2", "next": "s62" },
+        { "choice_key": "ga.s51.c3", "next": "s83" }
+      ]
+    },
+
+    "s52": {
+      "image_id": "s52",
+      "title_key": "ga.s52.title",
+      "body_key": "ga.s52.body",
+      "choices": [
+        { "choice_key": "ga.s52.c1", "next": "s71" },
+        { "choice_key": "ga.s52.c2", "next": "s65" },
+        { "choice_key": "ga.s52.c3", "next": "s83" }
+      ]
+    },
+
+    "s53": {
+      "image_id": "s53",
+      "title_key": "ga.s53.title",
+      "body_key": "ga.s53.body",
+      "choices": [
+        { "choice_key": "ga.s53.c1", "next": "s72" },
+        { "choice_key": "ga.s53.c2", "next": "s73" },
+        { "choice_key": "ga.s53.c3", "next": "s84" }
+      ]
+    },
+
+    "s54": {
+      "image_id": "s54",
+      "title_key": "ga.s54.title",
+      "body_key": "ga.s54.body",
+      "choices": [
+        { "choice_key": "ga.s54.c1", "next": "s74" },
+        { "choice_key": "ga.s54.c2", "next": "s68" },
+        { "choice_key": "ga.s54.c3", "next": "s83" }
+      ]
+    },
+
+    "s55": {
+      "image_id": "s55",
+      "title_key": "ga.s55.title",
+      "body_key": "ga.s55.body",
+      "choices": [
+        { "choice_key": "ga.s55.c1", "next": "s65" },
+        { "choice_key": "ga.s55.c2", "next": "s72" },
+        { "choice_key": "ga.s55.c3", "next": "s84" }
+      ]
+    },
+
+    "s56": {
+      "image_id": "s56",
+      "title_key": "ga.s56.title",
+      "body_key": "ga.s56.body",
+      "choices": [
+        { "choice_key": "ga.s56.c1", "next": "s75", "requires_any_flags": ["got_chain"] },
+        { "choice_key": "ga.s56.c2", "next": "s76" },
+        { "choice_key": "ga.s56.c3", "next": "s77" }
+      ]
+    },
+
+    "s57": {
+      "image_id": "s57",
+      "title_key": "ga.s57.title",
+      "body_key": "ga.s57.body",
+      "choices": [
+        { "choice_key": "ga.s57.c1", "next": "s76" },
+        { "choice_key": "ga.s57.c2", "next": "s77" },
+        { "choice_key": "ga.s57.c3", "next": "s78" }
+      ]
+    },
+
+    "s58": {
+      "image_id": "s58",
+      "title_key": "ga.s58.title",
+      "body_key": "ga.s58.body",
+      "choices": [
+        { "choice_key": "ga.s58.c1", "next": "s77" },
+        { "choice_key": "ga.s58.c2", "next": "s79" },
+        { "choice_key": "ga.s58.c3", "next": "s80" }
+      ]
+    },
+
+    "s59": {
+      "image_id": "s59",
+      "title_key": "ga.s59.title",
+      "body_key": "ga.s59.body",
+      "choices": [
+        { "choice_key": "ga.s59.c1", "next": "s62" },
+        { "choice_key": "ga.s59.c2", "next": "s80" },
+        { "choice_key": "ga.s59.c3", "next": "s81" }
+      ]
+    },
+
+    "s60": {
+      "image_id": "s60",
+      "title_key": "ga.s60.title",
+      "body_key": "ga.s60.body",
+      "choices": [
+        { "choice_key": "ga.s60.c1", "next": "s78" },
+        { "choice_key": "ga.s60.c2", "next": "s79" },
+        { "choice_key": "ga.s60.c3", "next": "s82" }
+      ]
+    },
+
+    "s61": {
+      "image_id": "s61",
+      "title_key": "ga.s61.title",
+      "body_key": "ga.s61.body",
+      "choices": [
+        { "choice_key": "ga.s61.c1", "next": "s79" },
+        { "choice_key": "ga.s61.c2", "next": "s62" },
+        { "choice_key": "ga.s61.c3", "next": "s83" }
+      ]
+    },
+
+    "s62": {
+      "image_id": "s62",
+      "title_key": "ga.s62.title",
+      "body_key": "ga.s62.body",
+      "choices": [
+        { "choice_key": "ga.s62.c1", "next": "s80" },
+        { "choice_key": "ga.s62.c2", "next": "s81" },
+        { "choice_key": "ga.s62.c3", "next": "s83" }
+      ]
+    },
+
+    "s63": {
+      "image_id": "s63",
+      "title_key": "ga.s63.title",
+      "body_key": "ga.s63.body",
+      "choices": [
+        { "choice_key": "ga.s63.c1", "next": "s64" },
+        { "choice_key": "ga.s63.c2", "next": "s73" },
+        { "choice_key": "ga.s63.c3", "next": "s82" }
+      ]
+    },
+
+    "s64": {
+      "image_id": "s64",
+      "title_key": "ga.s64.title",
+      "body_key": "ga.s64.body",
+      "choices": [
+        { "choice_key": "ga.s64.c1", "next": "s67" },
+        { "choice_key": "ga.s64.c2", "next": "s74" },
+        { "choice_key": "ga.s64.c3", "next": "s83" }
+      ]
+    },
+
+    "s65": {
+      "image_id": "s65",
+      "title_key": "ga.s65.title",
+      "body_key": "ga.s65.body",
+      "choices": [
+        { "choice_key": "ga.s65.c1", "next": "s71" },
+        { "choice_key": "ga.s65.c2", "next": "s72" },
+        { "choice_key": "ga.s65.c3", "next": "s84" }
+      ]
+    },
+
+    "s66": {
+      "image_id": "s66",
+      "title_key": "ga.s66.title",
+      "body_key": "ga.s66.body",
+      "choices": [
+        { "choice_key": "ga.s66.c1", "next": "s75" },
+        { "choice_key": "ga.s66.c2", "next": "s82" },
+        { "choice_key": "ga.s66.c3", "next": "s84" }
+      ]
+    },
+
+    "s67": {
+      "image_id": "s67",
+      "title_key": "ga.s67.title",
+      "body_key": "ga.s67.body",
+      "choices": [
+        { "choice_key": "ga.s67.c1", "next": "s68" },
+        { "choice_key": "ga.s67.c2", "next": "s74" },
+        { "choice_key": "ga.s67.c3", "next": "s83" }
+      ]
+    },
+
+    "s68": {
+      "image_id": "s68",
+      "title_key": "ga.s68.title",
+      "body_key": "ga.s68.body",
+      "choices": [
+        { "choice_key": "ga.s68.c1", "next": "s74" },
+        { "choice_key": "ga.s68.c2", "next": "s82" },
+        { "choice_key": "ga.s68.c3", "next": "s83" }
+      ]
+    },
+
+    "s69": {
+      "image_id": "s69",
+      "title_key": "ga.s69.title",
+      "body_key": "ga.s69.body",
+      "choices": [
+        { "choice_key": "ga.s69.c1", "next": "s71" },
+        { "choice_key": "ga.s69.c2", "next": "s78" },
+        { "choice_key": "ga.s69.c3", "next": "s84" }
+      ]
+    },
+
+    "s70": {
+      "image_id": "s70",
+      "title_key": "ga.s70.title",
+      "body_key": "ga.s70.body",
+      "choices": [
+        { "choice_key": "ga.s70.c1", "next": "s71" },
+        { "choice_key": "ga.s70.c2", "next": "s79" },
+        { "choice_key": "ga.s70.c3", "next": "s83" }
+      ]
+    },
+
+    "s71": {
+      "image_id": "s71",
+      "title_key": "ga.s71.title",
+      "body_key": "ga.s71.body",
+      "choices": [
+        { "choice_key": "ga.s71.c1", "next": "s72" },
+        { "choice_key": "ga.s71.c2", "next": "s73" },
+        { "choice_key": "ga.s71.c3", "next": "s84" }
+      ]
+    },
+
+    "s72": {
+      "image_id": "s72",
+      "title_key": "ga.s72.title",
+      "body_key": "ga.s72.body",
+      "choices": [
+        { "choice_key": "ga.s72.c1", "next": "s73" },
+        { "choice_key": "ga.s72.c2", "next": "s82" },
+        { "choice_key": "ga.s72.c3", "next": "s84" }
+      ]
+    },
+
+    "s73": {
+      "image_id": "s73",
+      "title_key": "ga.s73.title",
+      "body_key": "ga.s73.body",
+      "choices": [
+        { "choice_key": "ga.s73.c1", "next": "s74" },
+        { "choice_key": "ga.s73.c2", "next": "s82" },
+        { "choice_key": "ga.s73.c3", "next": "s83" }
+      ]
+    },
+
+    "s74": {
+      "image_id": "s74",
+      "title_key": "ga.s74.title",
+      "body_key": "ga.s74.body",
+      "choices": [
+        { "choice_key": "ga.s74.c1", "next": "s82", "set_flags": ["read_vow"] },
+        { "choice_key": "ga.s74.c2", "next": "s83", "set_flags": ["read_vow"] },
+        { "choice_key": "ga.s74.c3", "next": "s84", "set_flags": ["read_vow"] }
+      ]
+    },
+
+    "s75": {
+      "image_id": "s75",
+      "title_key": "ga.s75.title",
+      "body_key": "ga.s75.body",
+      "choices": [
+        { "choice_key": "ga.s75.c1", "next": "s77" },
+        { "choice_key": "ga.s75.c2", "next": "s82" },
+        { "choice_key": "ga.s75.c3", "next": "s84" }
+      ]
+    },
+
+    "s76": {
+      "image_id": "s76",
+      "title_key": "ga.s76.title",
+      "body_key": "ga.s76.body",
+      "choices": [
+        { "choice_key": "ga.s76.c1", "next": "s77" },
+        { "choice_key": "ga.s76.c2", "next": "s78" },
+        { "choice_key": "ga.s76.c3", "next": "s84" }
+      ]
+    },
+
+    "s77": {
+      "image_id": "s77",
+      "title_key": "ga.s77.title",
+      "body_key": "ga.s77.body",
+      "choices": [
+        { "choice_key": "ga.s77.c1", "next": "s78" },
+        { "choice_key": "ga.s77.c2", "next": "s82" },
+        { "choice_key": "ga.s77.c3", "next": "s84" }
+      ]
+    },
+
+    "s78": {
+      "image_id": "s78",
+      "title_key": "ga.s78.title",
+      "body_key": "ga.s78.body",
+      "choices": [
+        { "choice_key": "ga.s78.c1", "next": "s79" },
+        { "choice_key": "ga.s78.c2", "next": "s82" },
+        { "choice_key": "ga.s78.c3", "next": "s84" }
+      ]
+    },
+
+    "s79": {
+      "image_id": "s79",
+      "title_key": "ga.s79.title",
+      "body_key": "ga.s79.body",
+      "choices": [
+        { "choice_key": "ga.s79.c1", "next": "s80" },
+        { "choice_key": "ga.s79.c2", "next": "s81" },
+        { "choice_key": "ga.s79.c3", "next": "s84" }
+      ]
+    },
+
+    "s80": {
+      "image_id": "s80",
+      "title_key": "ga.s80.title",
+      "body_key": "ga.s80.body",
+      "choices": [
+        { "choice_key": "ga.s80.c1", "next": "s81" },
+        { "choice_key": "ga.s80.c2", "next": "s83" },
+        { "choice_key": "ga.s80.c3", "next": "s84" }
+      ]
+    },
+
+    "s81": {
+      "image_id": "s81",
+      "title_key": "ga.s81.title",
+      "body_key": "ga.s81.body",
+      "choices": [
+        { "choice_key": "ga.s81.c1", "next": "s82" },
+        { "choice_key": "ga.s81.c2", "next": "s83" },
+        { "choice_key": "ga.s81.c3", "next": "s84" }
+      ]
+    },
+
+    "s82": {
+      "image_id": "s82",
+      "title_key": "ga.s82.title",
+      "body_key": "ga.s82.body",
+      "choices": [
+        { "choice_key": "ga.s82.c1", "next": "s83" },
+        { "choice_key": "ga.s82.c2", "next": "s84" },
+        { "choice_key": "ga.s82.c3", "next": "s81" }
+      ]
+    },
+
+    "s83": {
+      "image_id": "s83",
+      "title_key": "ga.s83.title",
+      "body_key": "ga.s83.body",
+      "choices": [
+        { "choice_key": "ga.s83.c1", "next": "s84" },
+        { "choice_key": "ga.s83.c2", "next": "s82" },
+        { "choice_key": "ga.s83.c3", "next": "s74" }
+      ]
+    },
+
+    "s84": {
+      "image_id": "s84",
+      "title_key": "ga.s84.title",
+      "body_key": "ga.s84.body",
+      "choices": [
+        { "choice_key": "ga.s84.c1", "next": "good_end" },
+        { "choice_key": "ga.s84.c2", "next": "bad_end" },
+        {
+          "choice_key": "ga.s84.c3",
+          "next": "secret_end",
+          "requires_all_flags": ["saw_schiste", "got_chain", "read_vow"]
+        }
+      ]
+    },
+
+    "good_end": {
+      "image_id": "good_end",
+      "title_key": "ga.good_end.title",
+      "body_key": "ga.good_end.body",
+      "choices": []
+    },
+
+    "bad_end": {
+      "image_id": "bad_end",
+      "title_key": "ga.bad_end.title",
+      "body_key": "ga.bad_end.body",
+      "choices": []
+    },
+
+    "secret_end": {
+      "image_id": "secret_end",
+      "title_key": "ga.secret_end.title",
+      "body_key": "ga.secret_end.body",
+      "choices": []
+    }
+  }
+}

@@ -1,0 +1,961 @@
+{
+  "scenario_id": "village_brume_noire",
+  "version": 1,
+  "start_scene": "s01",
+  "images": {
+    "cover": { "file": "assets/scenarios/village_brume_noire/img/cover.webp", "alt": "Village perdu noyé dans la brume au crépuscule" },
+
+    "s01": { "file": "assets/scenarios/village_brume_noire/img/s01.webp", "alt": "Route de montagne au-dessus du village perdu" },
+    "s02": { "file": "assets/scenarios/village_brume_noire/img/s02.webp", "alt": "Panneau rouillé à l’entrée du village" },
+    "s03": { "file": "assets/scenarios/village_brume_noire/img/s03.webp", "alt": "Place centrale vide et brumeuse" },
+    "s04": { "file": "assets/scenarios/village_brume_noire/img/s04.webp", "alt": "Rue de maisons fermées dans la brume" },
+    "s05": { "file": "assets/scenarios/village_brume_noire/img/s05.webp", "alt": "Carrefour étroit du village désert" },
+    "s06": { "file": "assets/scenarios/village_brume_noire/img/s06.webp", "alt": "Cabine ou borne inutile dans la rue vide" },
+    "s07": { "file": "assets/scenarios/village_brume_noire/img/s07.webp", "alt": "Maison à la fenêtre entrouverte" },
+    "s08": { "file": "assets/scenarios/village_brume_noire/img/s08.webp", "alt": "Fenêtre ouverte sur un intérieur vide" },
+    "s09": { "file": "assets/scenarios/village_brume_noire/img/s09.webp", "alt": "Porte ancienne marquée par l’humidité" },
+    "s10": { "file": "assets/scenarios/village_brume_noire/img/s10.webp", "alt": "Couloir d’entrée sombre et vide" },
+    "s11": { "file": "assets/scenarios/village_brume_noire/img/s11.webp", "alt": "Salon abandonné au temps figé" },
+    "s12": { "file": "assets/scenarios/village_brume_noire/img/s12.webp", "alt": "Table laissée comme après un repas interrompu" },
+    "s13": { "file": "assets/scenarios/village_brume_noire/img/s13.webp", "alt": "Photo ancienne du village aux visages flous" },
+    "s14": { "file": "assets/scenarios/village_brume_noire/img/s14.webp", "alt": "Miroir reflétant une silhouette derrière" },
+    "s15": { "file": "assets/scenarios/village_brume_noire/img/s15.webp", "alt": "Retour vers la rue et la brume plus lourde" },
+    "s16": { "file": "assets/scenarios/village_brume_noire/img/s16.webp", "alt": "Ruelle étroite aux murs serrés" },
+    "s17": { "file": "assets/scenarios/village_brume_noire/img/s17.webp", "alt": "Passage couvert très sombre" },
+    "s18": { "file": "assets/scenarios/village_brume_noire/img/s18.webp", "alt": "Cour arrière vide avec puits bouché" },
+    "s19": { "file": "assets/scenarios/village_brume_noire/img/s19.webp", "alt": "Boutique ancienne fermée" },
+    "s20": { "file": "assets/scenarios/village_brume_noire/img/s20.webp", "alt": "Intérieur de boutique figé et poussiéreux" },
+    "s21": { "file": "assets/scenarios/village_brume_noire/img/s21.webp", "alt": "Registre ouvert sur un comptoir" },
+    "s22": { "file": "assets/scenarios/village_brume_noire/img/s22.webp", "alt": "Note ancienne avec dessin de cloche" },
+    "s23": { "file": "assets/scenarios/village_brume_noire/img/s23.webp", "alt": "Rue menant vers une chapelle lointaine" },
+    "s24": { "file": "assets/scenarios/village_brume_noire/img/s24.webp", "alt": "Maison à étage avec rideau qui bouge" },
+    "s25": { "file": "assets/scenarios/village_brume_noire/img/s25.webp", "alt": "Escalier intérieur montant vers l’ombre" },
+    "s26": { "file": "assets/scenarios/village_brume_noire/img/s26.webp", "alt": "Chambre abandonnée marquée d’un signe noir" },
+    "s27": { "file": "assets/scenarios/village_brume_noire/img/s27.webp", "alt": "Symbole noir en cercle fendu sur un mur" },
+    "s28": { "file": "assets/scenarios/village_brume_noire/img/s28.webp", "alt": "Rue brumeuse avec silhouettes lointaines" },
+    "s29": { "file": "assets/scenarios/village_brume_noire/img/s29.webp", "alt": "Façade de la chapelle dans la brume" },
+    "s30": { "file": "assets/scenarios/village_brume_noire/img/s30.webp", "alt": "Intérieur vide de la chapelle" },
+    "s31": { "file": "assets/scenarios/village_brume_noire/img/s31.webp", "alt": "Cloche ancienne près de l’autel" },
+    "s32": { "file": "assets/scenarios/village_brume_noire/img/s32.webp", "alt": "Vitrail sombre montrant une procession" },
+    "s33": { "file": "assets/scenarios/village_brume_noire/img/s33.webp", "alt": "Porte latérale au fond de la chapelle" },
+    "s34": { "file": "assets/scenarios/village_brume_noire/img/s34.webp", "alt": "Petit cimetière derrière la chapelle" },
+    "s35": { "file": "assets/scenarios/village_brume_noire/img/s35.webp", "alt": "Stèle portant le même signe noir" },
+    "s36": { "file": "assets/scenarios/village_brume_noire/img/s36.webp", "alt": "Cloche ancienne devenue objet central" },
+    "s37": { "file": "assets/scenarios/village_brume_noire/img/s37.webp", "alt": "Allée du cimetière vers une grille" },
+    "s38": { "file": "assets/scenarios/village_brume_noire/img/s38.webp", "alt": "Grille fermée vers un sentier extérieur" },
+    "s39": { "file": "assets/scenarios/village_brume_noire/img/s39.webp", "alt": "Chemin de sortie qui boucle dans la brume" },
+    "s40": { "file": "assets/scenarios/village_brume_noire/img/s40.webp", "alt": "Retour sur la place centrale devenue plus sombre" },
+    "s41": { "file": "assets/scenarios/village_brume_noire/img/s41.webp", "alt": "Première vision claire de la parade noire" },
+    "s42": { "file": "assets/scenarios/village_brume_noire/img/s42.webp", "alt": "Silhouettes noires avançant sans regarder" },
+    "s43": { "file": "assets/scenarios/village_brume_noire/img/s43.webp", "alt": "Parade visible depuis une fenêtre intérieure" },
+    "s44": { "file": "assets/scenarios/village_brume_noire/img/s44.webp", "alt": "Silhouette plus proche que les autres" },
+    "s45": { "file": "assets/scenarios/village_brume_noire/img/s45.webp", "alt": "Rue vide après le passage de la parade" },
+    "s46": { "file": "assets/scenarios/village_brume_noire/img/s46.webp", "alt": "Auberge ancienne au centre du village" },
+    "s47": { "file": "assets/scenarios/village_brume_noire/img/s47.webp", "alt": "Hall vide de l’auberge abandonnée" },
+    "s48": { "file": "assets/scenarios/village_brume_noire/img/s48.webp", "alt": "Registre d’auberge resté ouvert" },
+    "s49": { "file": "assets/scenarios/village_brume_noire/img/s49.webp", "alt": "Escalier d’auberge et ombre en haut" },
+    "s50": { "file": "assets/scenarios/village_brume_noire/img/s50.webp", "alt": "Chambre d’auberge face à la brume" },
+    "s51": { "file": "assets/scenarios/village_brume_noire/img/s51.webp", "alt": "Armoire ouverte avec manteaux noirs" },
+    "s52": { "file": "assets/scenarios/village_brume_noire/img/s52.webp", "alt": "Miroir reflétant la parade alors que la rue est vide" },
+    "s53": { "file": "assets/scenarios/village_brume_noire/img/s53.webp", "alt": "Grenier ancien sous les toits" },
+    "s54": { "file": "assets/scenarios/village_brume_noire/img/s54.webp", "alt": "Malle ouverte pleine de papiers" },
+    "s55": { "file": "assets/scenarios/village_brume_noire/img/s55.webp", "alt": "Plan ancien du village et passage sous le lavoir" },
+    "s56": { "file": "assets/scenarios/village_brume_noire/img/s56.webp", "alt": "Lavoir de pierre à l’eau noire" },
+    "s57": { "file": "assets/scenarios/village_brume_noire/img/s57.webp", "alt": "Dalle déplacée sous le lavoir" },
+    "s58": { "file": "assets/scenarios/village_brume_noire/img/s58.webp", "alt": "Escalier de pierre descendant sous le village" },
+    "s59": { "file": "assets/scenarios/village_brume_noire/img/s59.webp", "alt": "Galerie souterraine étroite et humide" },
+    "s60": { "file": "assets/scenarios/village_brume_noire/img/s60.webp", "alt": "Salle souterraine avec niches murales" },
+    "s61": { "file": "assets/scenarios/village_brume_noire/img/s61.webp", "alt": "Fresque montrant le village et la procession" },
+    "s62": { "file": "assets/scenarios/village_brume_noire/img/s62.webp", "alt": "Tunnel souterrain qui se sépare en deux" },
+    "s63": { "file": "assets/scenarios/village_brume_noire/img/s63.webp", "alt": "Chambre rituelle simple sous terre" },
+    "s64": { "file": "assets/scenarios/village_brume_noire/img/s64.webp", "alt": "Crypte fermée par une dalle" },
+    "s65": { "file": "assets/scenarios/village_brume_noire/img/s65.webp", "alt": "Crypte ouverte sous le village" },
+    "s66": { "file": "assets/scenarios/village_brume_noire/img/s66.webp", "alt": "Sol de crypte gravé du symbole fendu" },
+    "s67": { "file": "assets/scenarios/village_brume_noire/img/s67.webp", "alt": "Petite porte basse au fond de la crypte" },
+    "s68": { "file": "assets/scenarios/village_brume_noire/img/s68.webp", "alt": "Salle profonde ouverte sur une lumière blanche" },
+    "s69": { "file": "assets/scenarios/village_brume_noire/img/s69.webp", "alt": "Faille lumineuse dans la roche" },
+    "s70": { "file": "assets/scenarios/village_brume_noire/img/s70.webp", "alt": "Tunnel montant vers une sortie" },
+    "s71": { "file": "assets/scenarios/village_brume_noire/img/s71.webp", "alt": "Vue en hauteur sur le village noyé dans la brume" },
+    "s72": { "file": "assets/scenarios/village_brume_noire/img/s72.webp", "alt": "Parade noire vue depuis les hauteurs" },
+    "s73": { "file": "assets/scenarios/village_brume_noire/img/s73.webp", "alt": "Pierre rituelle près d’un sentier" },
+    "s74": { "file": "assets/scenarios/village_brume_noire/img/s74.webp", "alt": "Sentier de sortie barré par la brume" },
+    "s75": { "file": "assets/scenarios/village_brume_noire/img/s75.webp", "alt": "Retour forcé vers le village depuis la brume" },
+    "s76": { "file": "assets/scenarios/village_brume_noire/img/s76.webp", "alt": "Cloche sonnée devant la pierre et la brume" },
+    "s77": { "file": "assets/scenarios/village_brume_noire/img/s77.webp", "alt": "Brume qui réagit et s’ouvre un peu" },
+    "s78": { "file": "assets/scenarios/village_brume_noire/img/s78.webp", "alt": "Silhouette quittant la parade pour s’approcher" },
+    "s79": { "file": "assets/scenarios/village_brume_noire/img/s79.webp", "alt": "Seuil final entre maison et rue brumeuse" },
+    "s80": { "file": "assets/scenarios/village_brume_noire/img/s80.webp", "alt": "Chemin réellement ouvert hors du village" },
+    "s81": { "file": "assets/scenarios/village_brume_noire/img/s81.webp", "alt": "Seuil où signe cloche et faille se répondent" },
+    "s82": { "file": "assets/scenarios/village_brume_noire/img/s82.webp", "alt": "Vision du village comme passage entre deux mondes" },
+    "s83": { "file": "assets/scenarios/village_brume_noire/img/s83.webp", "alt": "Silhouette presque absorbée par la parade" },
+    "s84": { "file": "assets/scenarios/village_brume_noire/img/s84.webp", "alt": "Dernier carrefour dans le brouillard" },
+
+    "good_end": { "file": "assets/scenarios/village_brume_noire/img/good_end.webp", "alt": "Route retrouvée à l’aube, village disparu" },
+    "bad_end": { "file": "assets/scenarios/village_brume_noire/img/bad_end.webp", "alt": "Parade noire avec une silhouette de plus" },
+    "secret_end": { "file": "assets/scenarios/village_brume_noire/img/secret_end.webp", "alt": "Village compris comme faille entre deux mondes" }
+  },
+  "state_model": {
+    "flags": ["saw_mark", "got_bell", "opened_crypt"]
+  },
+  "scenes": {
+    "s01": {
+      "image_id": "s01",
+      "title_key": "vbn.s01.title",
+      "body_key": "vbn.s01.body",
+      "choices": [
+        { "choice_key": "vbn.s01.c1", "next": "s02" },
+        { "choice_key": "vbn.s01.c2", "next": "s03" },
+        { "choice_key": "vbn.s01.c3", "next": "s04" }
+      ]
+    },
+    "s02": {
+      "image_id": "s02",
+      "title_key": "vbn.s02.title",
+      "body_key": "vbn.s02.body",
+      "choices": [
+        { "choice_key": "vbn.s02.c1", "next": "s05" },
+        { "choice_key": "vbn.s02.c2", "next": "s03" },
+        { "choice_key": "vbn.s02.c3", "next": "s06" }
+      ]
+    },
+    "s03": {
+      "image_id": "s03",
+      "title_key": "vbn.s03.title",
+      "body_key": "vbn.s03.body",
+      "choices": [
+        { "choice_key": "vbn.s03.c1", "next": "s07" },
+        { "choice_key": "vbn.s03.c2", "next": "s05" },
+        { "choice_key": "vbn.s03.c3", "next": "s04" }
+      ]
+    },
+    "s04": {
+      "image_id": "s04",
+      "title_key": "vbn.s04.title",
+      "body_key": "vbn.s04.body",
+      "choices": [
+        { "choice_key": "vbn.s04.c1", "next": "s05" },
+        { "choice_key": "vbn.s04.c2", "next": "s07" },
+        { "choice_key": "vbn.s04.c3", "next": "s06" }
+      ]
+    },
+    "s05": {
+      "image_id": "s05",
+      "title_key": "vbn.s05.title",
+      "body_key": "vbn.s05.body",
+      "choices": [
+        { "choice_key": "vbn.s05.c1", "next": "s07" },
+        { "choice_key": "vbn.s05.c2", "next": "s16" },
+        { "choice_key": "vbn.s05.c3", "next": "s23" }
+      ]
+    },
+    "s06": {
+      "image_id": "s06",
+      "title_key": "vbn.s06.title",
+      "body_key": "vbn.s06.body",
+      "choices": [
+        { "choice_key": "vbn.s06.c1", "next": "s03" },
+        { "choice_key": "vbn.s06.c2", "next": "s19" },
+        { "choice_key": "vbn.s06.c3", "next": "s05" }
+      ]
+    },
+    "s07": {
+      "image_id": "s07",
+      "title_key": "vbn.s07.title",
+      "body_key": "vbn.s07.body",
+      "choices": [
+        { "choice_key": "vbn.s07.c1", "next": "s08" },
+        { "choice_key": "vbn.s07.c2", "next": "s24" },
+        { "choice_key": "vbn.s07.c3", "next": "s16" }
+      ]
+    },
+    "s08": {
+      "image_id": "s08",
+      "title_key": "vbn.s08.title",
+      "body_key": "vbn.s08.body",
+      "choices": [
+        { "choice_key": "vbn.s08.c1", "next": "s09" },
+        { "choice_key": "vbn.s08.c2", "next": "s10" },
+        { "choice_key": "vbn.s08.c3", "next": "s15" }
+      ]
+    },
+    "s09": {
+      "image_id": "s09",
+      "title_key": "vbn.s09.title",
+      "body_key": "vbn.s09.body",
+      "choices": [
+        { "choice_key": "vbn.s09.c1", "next": "s10" },
+        { "choice_key": "vbn.s09.c2", "next": "s15" },
+        { "choice_key": "vbn.s09.c3", "next": "s18" }
+      ]
+    },
+    "s10": {
+      "image_id": "s10",
+      "title_key": "vbn.s10.title",
+      "body_key": "vbn.s10.body",
+      "choices": [
+        { "choice_key": "vbn.s10.c1", "next": "s11" },
+        { "choice_key": "vbn.s10.c2", "next": "s12" },
+        { "choice_key": "vbn.s10.c3", "next": "s14" }
+      ]
+    },
+    "s11": {
+      "image_id": "s11",
+      "title_key": "vbn.s11.title",
+      "body_key": "vbn.s11.body",
+      "choices": [
+        { "choice_key": "vbn.s11.c1", "next": "s12" },
+        { "choice_key": "vbn.s11.c2", "next": "s13" },
+        { "choice_key": "vbn.s11.c3", "next": "s15" }
+      ]
+    },
+    "s12": {
+      "image_id": "s12",
+      "title_key": "vbn.s12.title",
+      "body_key": "vbn.s12.body",
+      "choices": [
+        { "choice_key": "vbn.s12.c1", "next": "s13" },
+        { "choice_key": "vbn.s12.c2", "next": "s14" },
+        { "choice_key": "vbn.s12.c3", "next": "s15" }
+      ]
+    },
+    "s13": {
+      "image_id": "s13",
+      "title_key": "vbn.s13.title",
+      "body_key": "vbn.s13.body",
+      "choices": [
+        { "choice_key": "vbn.s13.c1", "next": "s14" },
+        { "choice_key": "vbn.s13.c2", "next": "s24" },
+        { "choice_key": "vbn.s13.c3", "next": "s15" }
+      ]
+    },
+    "s14": {
+      "image_id": "s14",
+      "title_key": "vbn.s14.title",
+      "body_key": "vbn.s14.body",
+      "choices": [
+        { "choice_key": "vbn.s14.c1", "next": "s15" },
+        { "choice_key": "vbn.s14.c2", "next": "s24" },
+        { "choice_key": "vbn.s14.c3", "next": "s28" }
+      ]
+    },
+    "s15": {
+      "image_id": "s15",
+      "title_key": "vbn.s15.title",
+      "body_key": "vbn.s15.body",
+      "choices": [
+        { "choice_key": "vbn.s15.c1", "next": "s16" },
+        { "choice_key": "vbn.s15.c2", "next": "s19" },
+        { "choice_key": "vbn.s15.c3", "next": "s23" }
+      ]
+    },
+    "s16": {
+      "image_id": "s16",
+      "title_key": "vbn.s16.title",
+      "body_key": "vbn.s16.body",
+      "choices": [
+        { "choice_key": "vbn.s16.c1", "next": "s17" },
+        { "choice_key": "vbn.s16.c2", "next": "s18" },
+        { "choice_key": "vbn.s16.c3", "next": "s19" }
+      ]
+    },
+    "s17": {
+      "image_id": "s17",
+      "title_key": "vbn.s17.title",
+      "body_key": "vbn.s17.body",
+      "choices": [
+        { "choice_key": "vbn.s17.c1", "next": "s18" },
+        { "choice_key": "vbn.s17.c2", "next": "s24" },
+        { "choice_key": "vbn.s17.c3", "next": "s28" }
+      ]
+    },
+    "s18": {
+      "image_id": "s18",
+      "title_key": "vbn.s18.title",
+      "body_key": "vbn.s18.body",
+      "choices": [
+        { "choice_key": "vbn.s18.c1", "next": "s19" },
+        { "choice_key": "vbn.s18.c2", "next": "s23" },
+        { "choice_key": "vbn.s18.c3", "next": "s28" }
+      ]
+    },
+    "s19": {
+      "image_id": "s19",
+      "title_key": "vbn.s19.title",
+      "body_key": "vbn.s19.body",
+      "choices": [
+        { "choice_key": "vbn.s19.c1", "next": "s20" },
+        { "choice_key": "vbn.s19.c2", "next": "s24" },
+        { "choice_key": "vbn.s19.c3", "next": "s23" }
+      ]
+    },
+    "s20": {
+      "image_id": "s20",
+      "title_key": "vbn.s20.title",
+      "body_key": "vbn.s20.body",
+      "choices": [
+        { "choice_key": "vbn.s20.c1", "next": "s21" },
+        { "choice_key": "vbn.s20.c2", "next": "s22" },
+        { "choice_key": "vbn.s20.c3", "next": "s46" }
+      ]
+    },
+    "s21": {
+      "image_id": "s21",
+      "title_key": "vbn.s21.title",
+      "body_key": "vbn.s21.body",
+      "choices": [
+        { "choice_key": "vbn.s21.c1", "next": "s22" },
+        { "choice_key": "vbn.s21.c2", "next": "s46" },
+        { "choice_key": "vbn.s21.c3", "next": "s23" }
+      ]
+    },
+    "s22": {
+      "image_id": "s22",
+      "title_key": "vbn.s22.title",
+      "body_key": "vbn.s22.body",
+      "choices": [
+        { "choice_key": "vbn.s22.c1", "next": "s23" },
+        { "choice_key": "vbn.s22.c2", "next": "s30" },
+        { "choice_key": "vbn.s22.c3", "next": "s46" }
+      ]
+    },
+    "s23": {
+      "image_id": "s23",
+      "title_key": "vbn.s23.title",
+      "body_key": "vbn.s23.body",
+      "choices": [
+        { "choice_key": "vbn.s23.c1", "next": "s29" },
+        { "choice_key": "vbn.s23.c2", "next": "s24" },
+        { "choice_key": "vbn.s23.c3", "next": "s41" }
+      ]
+    },
+    "s24": {
+      "image_id": "s24",
+      "title_key": "vbn.s24.title",
+      "body_key": "vbn.s24.body",
+      "choices": [
+        { "choice_key": "vbn.s24.c1", "next": "s25" },
+        { "choice_key": "vbn.s24.c2", "next": "s46" },
+        { "choice_key": "vbn.s24.c3", "next": "s23" }
+      ]
+    },
+    "s25": {
+      "image_id": "s25",
+      "title_key": "vbn.s25.title",
+      "body_key": "vbn.s25.body",
+      "choices": [
+        { "choice_key": "vbn.s25.c1", "next": "s26" },
+        { "choice_key": "vbn.s25.c2", "next": "s28" },
+        { "choice_key": "vbn.s25.c3", "next": "s46" }
+      ]
+    },
+    "s26": {
+      "image_id": "s26",
+      "title_key": "vbn.s26.title",
+      "body_key": "vbn.s26.body",
+      "choices": [
+        { "choice_key": "vbn.s26.c1", "next": "s27" },
+        { "choice_key": "vbn.s26.c2", "next": "s28" },
+        { "choice_key": "vbn.s26.c3", "next": "s46" }
+      ]
+    },
+    "s27": {
+      "image_id": "s27",
+      "title_key": "vbn.s27.title",
+      "body_key": "vbn.s27.body",
+      "choices": [
+        { "choice_key": "vbn.s27.c1", "next": "s28", "set_flags": ["saw_mark"] },
+        { "choice_key": "vbn.s27.c2", "next": "s35", "set_flags": ["saw_mark"] },
+        { "choice_key": "vbn.s27.c3", "next": "s46", "set_flags": ["saw_mark"] }
+      ]
+    },
+    "s28": {
+      "image_id": "s28",
+      "title_key": "vbn.s28.title",
+      "body_key": "vbn.s28.body",
+      "choices": [
+        { "choice_key": "vbn.s28.c1", "next": "s41" },
+        { "choice_key": "vbn.s28.c2", "next": "s29" },
+        { "choice_key": "vbn.s28.c3", "next": "s46" }
+      ]
+    },
+    "s29": {
+      "image_id": "s29",
+      "title_key": "vbn.s29.title",
+      "body_key": "vbn.s29.body",
+      "choices": [
+        { "choice_key": "vbn.s29.c1", "next": "s30" },
+        { "choice_key": "vbn.s29.c2", "next": "s34" },
+        { "choice_key": "vbn.s29.c3", "next": "s41" }
+      ]
+    },
+    "s30": {
+      "image_id": "s30",
+      "title_key": "vbn.s30.title",
+      "body_key": "vbn.s30.body",
+      "choices": [
+        { "choice_key": "vbn.s30.c1", "next": "s31" },
+        { "choice_key": "vbn.s30.c2", "next": "s32" },
+        { "choice_key": "vbn.s30.c3", "next": "s33" }
+      ]
+    },
+    "s31": {
+      "image_id": "s31",
+      "title_key": "vbn.s31.title",
+      "body_key": "vbn.s31.body",
+      "choices": [
+        { "choice_key": "vbn.s31.c1", "next": "s36", "set_flags": ["got_bell"] },
+        { "choice_key": "vbn.s31.c2", "next": "s32", "set_flags": ["got_bell"] },
+        { "choice_key": "vbn.s31.c3", "next": "s33", "set_flags": ["got_bell"] }
+      ]
+    },
+    "s32": {
+      "image_id": "s32",
+      "title_key": "vbn.s32.title",
+      "body_key": "vbn.s32.body",
+      "choices": [
+        { "choice_key": "vbn.s32.c1", "next": "s34" },
+        { "choice_key": "vbn.s32.c2", "next": "s41" },
+        { "choice_key": "vbn.s32.c3", "next": "s46" }
+      ]
+    },
+    "s33": {
+      "image_id": "s33",
+      "title_key": "vbn.s33.title",
+      "body_key": "vbn.s33.body",
+      "choices": [
+        { "choice_key": "vbn.s33.c1", "next": "s34" },
+        { "choice_key": "vbn.s33.c2", "next": "s37" },
+        { "choice_key": "vbn.s33.c3", "next": "s46" }
+      ]
+    },
+    "s34": {
+      "image_id": "s34",
+      "title_key": "vbn.s34.title",
+      "body_key": "vbn.s34.body",
+      "choices": [
+        { "choice_key": "vbn.s34.c1", "next": "s35" },
+        { "choice_key": "vbn.s34.c2", "next": "s37" },
+        { "choice_key": "vbn.s34.c3", "next": "s41" }
+      ]
+    },
+    "s35": {
+      "image_id": "s35",
+      "title_key": "vbn.s35.title",
+      "body_key": "vbn.s35.body",
+      "choices": [
+        { "choice_key": "vbn.s35.c1", "next": "s37" },
+        { "choice_key": "vbn.s35.c2", "next": "s36" },
+        { "choice_key": "vbn.s35.c3", "next": "s56" }
+      ]
+    },
+    "s36": {
+      "image_id": "s36",
+      "title_key": "vbn.s36.title",
+      "body_key": "vbn.s36.body",
+      "choices": [
+        { "choice_key": "vbn.s36.c1", "next": "s37" },
+        { "choice_key": "vbn.s36.c2", "next": "s56" },
+        { "choice_key": "vbn.s36.c3", "next": "s41" }
+      ]
+    },
+    "s37": {
+      "image_id": "s37",
+      "title_key": "vbn.s37.title",
+      "body_key": "vbn.s37.body",
+      "choices": [
+        { "choice_key": "vbn.s37.c1", "next": "s38" },
+        { "choice_key": "vbn.s37.c2", "next": "s56" },
+        { "choice_key": "vbn.s37.c3", "next": "s41" }
+      ]
+    },
+    "s38": {
+      "image_id": "s38",
+      "title_key": "vbn.s38.title",
+      "body_key": "vbn.s38.body",
+      "choices": [
+        { "choice_key": "vbn.s38.c1", "next": "s39" },
+        { "choice_key": "vbn.s38.c2", "next": "s56" },
+        { "choice_key": "vbn.s38.c3", "next": "s41" }
+      ]
+    },
+    "s39": {
+      "image_id": "s39",
+      "title_key": "vbn.s39.title",
+      "body_key": "vbn.s39.body",
+      "choices": [
+        { "choice_key": "vbn.s39.c1", "next": "s40" },
+        { "choice_key": "vbn.s39.c2", "next": "s56" },
+        { "choice_key": "vbn.s39.c3", "next": "s46" }
+      ]
+    },
+    "s40": {
+      "image_id": "s40",
+      "title_key": "vbn.s40.title",
+      "body_key": "vbn.s40.body",
+      "choices": [
+        { "choice_key": "vbn.s40.c1", "next": "s41" },
+        { "choice_key": "vbn.s40.c2", "next": "s46" },
+        { "choice_key": "vbn.s40.c3", "next": "s56" }
+      ]
+    },
+    "s41": {
+      "image_id": "s41",
+      "title_key": "vbn.s41.title",
+      "body_key": "vbn.s41.body",
+      "choices": [
+        { "choice_key": "vbn.s41.c1", "next": "s42" },
+        { "choice_key": "vbn.s41.c2", "next": "s43" },
+        { "choice_key": "vbn.s41.c3", "next": "s46" }
+      ]
+    },
+    "s42": {
+      "image_id": "s42",
+      "title_key": "vbn.s42.title",
+      "body_key": "vbn.s42.body",
+      "choices": [
+        { "choice_key": "vbn.s42.c1", "next": "s44" },
+        { "choice_key": "vbn.s42.c2", "next": "s45" },
+        { "choice_key": "vbn.s42.c3", "next": "s46" }
+      ]
+    },
+    "s43": {
+      "image_id": "s43",
+      "title_key": "vbn.s43.title",
+      "body_key": "vbn.s43.body",
+      "choices": [
+        { "choice_key": "vbn.s43.c1", "next": "s44" },
+        { "choice_key": "vbn.s43.c2", "next": "s46" },
+        { "choice_key": "vbn.s43.c3", "next": "s45" }
+      ]
+    },
+    "s44": {
+      "image_id": "s44",
+      "title_key": "vbn.s44.title",
+      "body_key": "vbn.s44.body",
+      "choices": [
+        { "choice_key": "vbn.s44.c1", "next": "s45" },
+        { "choice_key": "vbn.s44.c2", "next": "s78" },
+        { "choice_key": "vbn.s44.c3", "next": "s46" }
+      ]
+    },
+    "s45": {
+      "image_id": "s45",
+      "title_key": "vbn.s45.title",
+      "body_key": "vbn.s45.body",
+      "choices": [
+        { "choice_key": "vbn.s45.c1", "next": "s46" },
+        { "choice_key": "vbn.s45.c2", "next": "s56" },
+        { "choice_key": "vbn.s45.c3", "next": "s29" }
+      ]
+    },
+    "s46": {
+      "image_id": "s46",
+      "title_key": "vbn.s46.title",
+      "body_key": "vbn.s46.body",
+      "choices": [
+        { "choice_key": "vbn.s46.c1", "next": "s47" },
+        { "choice_key": "vbn.s46.c2", "next": "s56" },
+        { "choice_key": "vbn.s46.c3", "next": "s29" }
+      ]
+    },
+    "s47": {
+      "image_id": "s47",
+      "title_key": "vbn.s47.title",
+      "body_key": "vbn.s47.body",
+      "choices": [
+        { "choice_key": "vbn.s47.c1", "next": "s48" },
+        { "choice_key": "vbn.s47.c2", "next": "s49" },
+        { "choice_key": "vbn.s47.c3", "next": "s56" }
+      ]
+    },
+    "s48": {
+      "image_id": "s48",
+      "title_key": "vbn.s48.title",
+      "body_key": "vbn.s48.body",
+      "choices": [
+        { "choice_key": "vbn.s48.c1", "next": "s49" },
+        { "choice_key": "vbn.s48.c2", "next": "s53" },
+        { "choice_key": "vbn.s48.c3", "next": "s56" }
+      ]
+    },
+    "s49": {
+      "image_id": "s49",
+      "title_key": "vbn.s49.title",
+      "body_key": "vbn.s49.body",
+      "choices": [
+        { "choice_key": "vbn.s49.c1", "next": "s50" },
+        { "choice_key": "vbn.s49.c2", "next": "s53" },
+        { "choice_key": "vbn.s49.c3", "next": "s56" }
+      ]
+    },
+    "s50": {
+      "image_id": "s50",
+      "title_key": "vbn.s50.title",
+      "body_key": "vbn.s50.body",
+      "choices": [
+        { "choice_key": "vbn.s50.c1", "next": "s51" },
+        { "choice_key": "vbn.s50.c2", "next": "s52" },
+        { "choice_key": "vbn.s50.c3", "next": "s56" }
+      ]
+    },
+    "s51": {
+      "image_id": "s51",
+      "title_key": "vbn.s51.title",
+      "body_key": "vbn.s51.body",
+      "choices": [
+        { "choice_key": "vbn.s51.c1", "next": "s52" },
+        { "choice_key": "vbn.s51.c2", "next": "s53" },
+        { "choice_key": "vbn.s51.c3", "next": "s56" }
+      ]
+    },
+    "s52": {
+      "image_id": "s52",
+      "title_key": "vbn.s52.title",
+      "body_key": "vbn.s52.body",
+      "choices": [
+        { "choice_key": "vbn.s52.c1", "next": "s53" },
+        { "choice_key": "vbn.s52.c2", "next": "s78" },
+        { "choice_key": "vbn.s52.c3", "next": "s56" }
+      ]
+    },
+    "s53": {
+      "image_id": "s53",
+      "title_key": "vbn.s53.title",
+      "body_key": "vbn.s53.body",
+      "choices": [
+        { "choice_key": "vbn.s53.c1", "next": "s54" },
+        { "choice_key": "vbn.s53.c2", "next": "s56" },
+        { "choice_key": "vbn.s53.c3", "next": "s71" }
+      ]
+    },
+    "s54": {
+      "image_id": "s54",
+      "title_key": "vbn.s54.title",
+      "body_key": "vbn.s54.body",
+      "choices": [
+        { "choice_key": "vbn.s54.c1", "next": "s55" },
+        { "choice_key": "vbn.s54.c2", "next": "s71" },
+        { "choice_key": "vbn.s54.c3", "next": "s56" }
+      ]
+    },
+    "s55": {
+      "image_id": "s55",
+      "title_key": "vbn.s55.title",
+      "body_key": "vbn.s55.body",
+      "choices": [
+        { "choice_key": "vbn.s55.c1", "next": "s56" },
+        { "choice_key": "vbn.s55.c2", "next": "s71" },
+        { "choice_key": "vbn.s55.c3", "next": "s29" }
+      ]
+    },
+    "s56": {
+      "image_id": "s56",
+      "title_key": "vbn.s56.title",
+      "body_key": "vbn.s56.body",
+      "choices": [
+        { "choice_key": "vbn.s56.c1", "next": "s57" },
+        { "choice_key": "vbn.s56.c2", "next": "s71" },
+        { "choice_key": "vbn.s56.c3", "next": "s74" }
+      ]
+    },
+    "s57": {
+      "image_id": "s57",
+      "title_key": "vbn.s57.title",
+      "body_key": "vbn.s57.body",
+      "choices": [
+        { "choice_key": "vbn.s57.c1", "next": "s58" },
+        { "choice_key": "vbn.s57.c2", "next": "s71" },
+        { "choice_key": "vbn.s57.c3", "next": "s74" }
+      ]
+    },
+    "s58": {
+      "image_id": "s58",
+      "title_key": "vbn.s58.title",
+      "body_key": "vbn.s58.body",
+      "choices": [
+        { "choice_key": "vbn.s58.c1", "next": "s59" },
+        { "choice_key": "vbn.s58.c2", "next": "s71" },
+        { "choice_key": "vbn.s58.c3", "next": "s74" }
+      ]
+    },
+    "s59": {
+      "image_id": "s59",
+      "title_key": "vbn.s59.title",
+      "body_key": "vbn.s59.body",
+      "choices": [
+        { "choice_key": "vbn.s59.c1", "next": "s60" },
+        { "choice_key": "vbn.s59.c2", "next": "s62" },
+        { "choice_key": "vbn.s59.c3", "next": "s74" }
+      ]
+    },
+    "s60": {
+      "image_id": "s60",
+      "title_key": "vbn.s60.title",
+      "body_key": "vbn.s60.body",
+      "choices": [
+        { "choice_key": "vbn.s60.c1", "next": "s61" },
+        { "choice_key": "vbn.s60.c2", "next": "s62" },
+        { "choice_key": "vbn.s60.c3", "next": "s71" }
+      ]
+    },
+    "s61": {
+      "image_id": "s61",
+      "title_key": "vbn.s61.title",
+      "body_key": "vbn.s61.body",
+      "choices": [
+        { "choice_key": "vbn.s61.c1", "next": "s62" },
+        { "choice_key": "vbn.s61.c2", "next": "s64", "requires_any_flags": ["saw_mark"] },
+        { "choice_key": "vbn.s61.c3", "next": "s74" }
+      ]
+    },
+    "s62": {
+      "image_id": "s62",
+      "title_key": "vbn.s62.title",
+      "body_key": "vbn.s62.body",
+      "choices": [
+        { "choice_key": "vbn.s62.c1", "next": "s63" },
+        { "choice_key": "vbn.s62.c2", "next": "s64" },
+        { "choice_key": "vbn.s62.c3", "next": "s74" }
+      ]
+    },
+    "s63": {
+      "image_id": "s63",
+      "title_key": "vbn.s63.title",
+      "body_key": "vbn.s63.body",
+      "choices": [
+        { "choice_key": "vbn.s63.c1", "next": "s64", "requires_any_flags": ["got_bell"] },
+        { "choice_key": "vbn.s63.c2", "next": "s71" },
+        { "choice_key": "vbn.s63.c3", "next": "s74" }
+      ]
+    },
+    "s64": {
+      "image_id": "s64",
+      "title_key": "vbn.s64.title",
+      "body_key": "vbn.s64.body",
+      "choices": [
+        { "choice_key": "vbn.s64.c1", "next": "s65", "requires_all_flags": ["saw_mark", "got_bell"] },
+        { "choice_key": "vbn.s64.c2", "next": "s71" },
+        { "choice_key": "vbn.s64.c3", "next": "s74" }
+      ]
+    },
+    "s65": {
+      "image_id": "s65",
+      "title_key": "vbn.s65.title",
+      "body_key": "vbn.s65.body",
+      "choices": [
+        { "choice_key": "vbn.s65.c1", "next": "s66", "set_flags": ["opened_crypt"] },
+        { "choice_key": "vbn.s65.c2", "next": "s67", "set_flags": ["opened_crypt"] },
+        { "choice_key": "vbn.s65.c3", "next": "s71", "set_flags": ["opened_crypt"] }
+      ]
+    },
+    "s66": {
+      "image_id": "s66",
+      "title_key": "vbn.s66.title",
+      "body_key": "vbn.s66.body",
+      "choices": [
+        { "choice_key": "vbn.s66.c1", "next": "s67" },
+        { "choice_key": "vbn.s66.c2", "next": "s68" },
+        { "choice_key": "vbn.s66.c3", "next": "s71" }
+      ]
+    },
+    "s67": {
+      "image_id": "s67",
+      "title_key": "vbn.s67.title",
+      "body_key": "vbn.s67.body",
+      "choices": [
+        { "choice_key": "vbn.s67.c1", "next": "s68" },
+        { "choice_key": "vbn.s67.c2", "next": "s70" },
+        { "choice_key": "vbn.s67.c3", "next": "s71" }
+      ]
+    },
+    "s68": {
+      "image_id": "s68",
+      "title_key": "vbn.s68.title",
+      "body_key": "vbn.s68.body",
+      "choices": [
+        { "choice_key": "vbn.s68.c1", "next": "s69" },
+        { "choice_key": "vbn.s68.c2", "next": "s70" },
+        { "choice_key": "vbn.s68.c3", "next": "s71" }
+      ]
+    },
+    "s69": {
+      "image_id": "s69",
+      "title_key": "vbn.s69.title",
+      "body_key": "vbn.s69.body",
+      "choices": [
+        { "choice_key": "vbn.s69.c1", "next": "s80" },
+        { "choice_key": "vbn.s69.c2", "next": "s82", "requires_all_flags": ["saw_mark", "got_bell", "opened_crypt"] },
+        { "choice_key": "vbn.s69.c3", "next": "s71" }
+      ]
+    },
+    "s70": {
+      "image_id": "s70",
+      "title_key": "vbn.s70.title",
+      "body_key": "vbn.s70.body",
+      "choices": [
+        { "choice_key": "vbn.s70.c1", "next": "s71" },
+        { "choice_key": "vbn.s70.c2", "next": "s80" },
+        { "choice_key": "vbn.s70.c3", "next": "s74" }
+      ]
+    },
+    "s71": {
+      "image_id": "s71",
+      "title_key": "vbn.s71.title",
+      "body_key": "vbn.s71.body",
+      "choices": [
+        { "choice_key": "vbn.s71.c1", "next": "s72" },
+        { "choice_key": "vbn.s71.c2", "next": "s73" },
+        { "choice_key": "vbn.s71.c3", "next": "s74" }
+      ]
+    },
+    "s72": {
+      "image_id": "s72",
+      "title_key": "vbn.s72.title",
+      "body_key": "vbn.s72.body",
+      "choices": [
+        { "choice_key": "vbn.s72.c1", "next": "s73" },
+        { "choice_key": "vbn.s72.c2", "next": "s78" },
+        { "choice_key": "vbn.s72.c3", "next": "s74" }
+      ]
+    },
+    "s73": {
+      "image_id": "s73",
+      "title_key": "vbn.s73.title",
+      "body_key": "vbn.s73.body",
+      "choices": [
+        { "choice_key": "vbn.s73.c1", "next": "s76", "requires_any_flags": ["got_bell"] },
+        { "choice_key": "vbn.s73.c2", "next": "s74" },
+        { "choice_key": "vbn.s73.c3", "next": "s79" }
+      ]
+    },
+    "s74": {
+      "image_id": "s74",
+      "title_key": "vbn.s74.title",
+      "body_key": "vbn.s74.body",
+      "choices": [
+        { "choice_key": "vbn.s74.c1", "next": "s75" },
+        { "choice_key": "vbn.s74.c2", "next": "s79" },
+        { "choice_key": "vbn.s74.c3", "next": "s76", "requires_any_flags": ["got_bell"] }
+      ]
+    },
+    "s75": {
+      "image_id": "s75",
+      "title_key": "vbn.s75.title",
+      "body_key": "vbn.s75.body",
+      "choices": [
+        { "choice_key": "vbn.s75.c1", "next": "s79" },
+        { "choice_key": "vbn.s75.c2", "next": "s83" },
+        { "choice_key": "vbn.s75.c3", "next": "s76", "requires_any_flags": ["got_bell"] }
+      ]
+    },
+    "s76": {
+      "image_id": "s76",
+      "title_key": "vbn.s76.title",
+      "body_key": "vbn.s76.body",
+      "choices": [
+        { "choice_key": "vbn.s76.c1", "next": "s77" },
+        { "choice_key": "vbn.s76.c2", "next": "s79" },
+        { "choice_key": "vbn.s76.c3", "next": "s81", "requires_all_flags": ["saw_mark", "got_bell", "opened_crypt"] }
+      ]
+    },
+    "s77": {
+      "image_id": "s77",
+      "title_key": "vbn.s77.title",
+      "body_key": "vbn.s77.body",
+      "choices": [
+        { "choice_key": "vbn.s77.c1", "next": "s80" },
+        { "choice_key": "vbn.s77.c2", "next": "s78" },
+        { "choice_key": "vbn.s77.c3", "next": "s79" }
+      ]
+    },
+    "s78": {
+      "image_id": "s78",
+      "title_key": "vbn.s78.title",
+      "body_key": "vbn.s78.body",
+      "choices": [
+        { "choice_key": "vbn.s78.c1", "next": "s79" },
+        { "choice_key": "vbn.s78.c2", "next": "s83" },
+        { "choice_key": "vbn.s78.c3", "next": "s81", "requires_all_flags": ["saw_mark", "got_bell", "opened_crypt"] }
+      ]
+    },
+    "s79": {
+      "image_id": "s79",
+      "title_key": "vbn.s79.title",
+      "body_key": "vbn.s79.body",
+      "choices": [
+        { "choice_key": "vbn.s79.c1", "next": "s80" },
+        { "choice_key": "vbn.s79.c2", "next": "s83" },
+        { "choice_key": "vbn.s79.c3", "next": "s84" }
+      ]
+    },
+    "s80": {
+      "image_id": "s80",
+      "title_key": "vbn.s80.title",
+      "body_key": "vbn.s80.body",
+      "choices": [
+        { "choice_key": "vbn.s80.c1", "next": "end_good" },
+        { "choice_key": "vbn.s80.c2", "next": "s83" },
+        { "choice_key": "vbn.s80.c3", "next": "s84" }
+      ]
+    },
+    "s81": {
+      "image_id": "s81",
+      "title_key": "vbn.s81.title",
+      "body_key": "vbn.s81.body",
+      "choices": [
+        { "choice_key": "vbn.s81.c1", "next": "s82", "requires_all_flags": ["saw_mark", "got_bell", "opened_crypt"] },
+        { "choice_key": "vbn.s81.c2", "next": "s83" },
+        { "choice_key": "vbn.s81.c3", "next": "s84" }
+      ]
+    },
+    "s82": {
+      "image_id": "s82",
+      "title_key": "vbn.s82.title",
+      "body_key": "vbn.s82.body",
+      "choices": [
+        { "choice_key": "vbn.s82.c1", "next": "end_secret", "requires_all_flags": ["saw_mark", "got_bell", "opened_crypt"] },
+        { "choice_key": "vbn.s82.c2", "next": "s80" },
+        { "choice_key": "vbn.s82.c3", "next": "s84" }
+      ]
+    },
+    "s83": {
+      "image_id": "s83",
+      "title_key": "vbn.s83.title",
+      "body_key": "vbn.s83.body",
+      "choices": [
+        { "choice_key": "vbn.s83.c1", "next": "end_bad" },
+        { "choice_key": "vbn.s83.c2", "next": "s84" },
+        { "choice_key": "vbn.s83.c3", "next": "s80" }
+      ]
+    },
+    "s84": {
+      "image_id": "s84",
+      "title_key": "vbn.s84.title",
+      "body_key": "vbn.s84.body",
+      "choices": [
+        { "choice_key": "vbn.s84.c1", "next": "s80" },
+        { "choice_key": "vbn.s84.c2", "next": "s83" },
+        { "choice_key": "vbn.s84.c3", "next": "s81", "requires_all_flags": ["saw_mark", "got_bell", "opened_crypt"] }
+      ]
+    },
+
+    "end_good": {
+      "image_id": "good_end",
+      "title_key": "vbn.end_good.title",
+      "body_key": "vbn.end_good.body",
+      "choices": []
+    },
+    "end_bad": {
+      "image_id": "bad_end",
+      "title_key": "vbn.end_bad.title",
+      "body_key": "vbn.end_bad.body",
+      "choices": []
+    },
+    "end_secret": {
+      "image_id": "secret_end",
+      "title_key": "vbn.end_secret.title",
+      "body_key": "vbn.end_secret.body",
+      "choices": []
+    }
+  }
+}

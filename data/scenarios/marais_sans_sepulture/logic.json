@@ -1,0 +1,957 @@
+{
+  "scenario_id": "marais_sans_sepulture",
+  "version": 3,
+  "start_scene": "s01",
+  "images": {
+    "s01": { "file": "assets/scenarios/marais_sans_sepulture/img/s01.webp", "alt": "Entrée du marais à la fin du jour" },
+    "s02": { "file": "assets/scenarios/marais_sans_sepulture/img/s02.webp", "alt": "Chemin étroit entre les roseaux" },
+    "s03": { "file": "assets/scenarios/marais_sans_sepulture/img/s03.webp", "alt": "Bord d’eau noire immobile" },
+    "s04": { "file": "assets/scenarios/marais_sans_sepulture/img/s04.webp", "alt": "Butte de terre humide" },
+    "s05": { "file": "assets/scenarios/marais_sans_sepulture/img/s05.webp", "alt": "Panneau de sortie pourri" },
+    "s06": { "file": "assets/scenarios/marais_sans_sepulture/img/s06.webp", "alt": "Tissu blanc dans les roseaux" },
+    "s07": { "file": "assets/scenarios/marais_sans_sepulture/img/s07.webp", "alt": "Chemin de retour déjà perdu" },
+    "s08": { "file": "assets/scenarios/marais_sans_sepulture/img/s08.webp", "alt": "Passerelle de bois fendue" },
+    "s09": { "file": "assets/scenarios/marais_sans_sepulture/img/s09.webp", "alt": "Petit îlot plus sec" },
+    "s10": { "file": "assets/scenarios/marais_sans_sepulture/img/s10.webp", "alt": "Mare noire et bulles lentes" },
+    "s11": { "file": "assets/scenarios/marais_sans_sepulture/img/s11.webp", "alt": "Vieille clôture avalée par les herbes" },
+    "s12": { "file": "assets/scenarios/marais_sans_sepulture/img/s12.webp", "alt": "Forme blanche floue" },
+    "s13": { "file": "assets/scenarios/marais_sans_sepulture/img/s13.webp", "alt": "Saule mort penché sur l’eau" },
+    "s14": { "file": "assets/scenarios/marais_sans_sepulture/img/s14.webp", "alt": "Barque à moitié coulée" },
+    "s15": { "file": "assets/scenarios/marais_sans_sepulture/img/s15.webp", "alt": "Cabane abandonnée sur pilotis" },
+    "s16": { "file": "assets/scenarios/marais_sans_sepulture/img/s16.webp", "alt": "Intérieur de cabane humide" },
+    "s17": { "file": "assets/scenarios/marais_sans_sepulture/img/s17.webp", "alt": "Carte du marais au mur" },
+    "s18": { "file": "assets/scenarios/marais_sans_sepulture/img/s18.webp", "alt": "Objets suspendus dans la cabane" },
+    "s19": { "file": "assets/scenarios/marais_sans_sepulture/img/s19.webp", "alt": "Poteau des anciennes crues" },
+    "s20": { "file": "assets/scenarios/marais_sans_sepulture/img/s20.webp", "alt": "Couloir de roseaux serrés" },
+    "s21": { "file": "assets/scenarios/marais_sans_sepulture/img/s21.webp", "alt": "Petit autel sur une souche" },
+    "s22": { "file": "assets/scenarios/marais_sans_sepulture/img/s22.webp", "alt": "Ruban rouge humide" },
+    "s23": { "file": "assets/scenarios/marais_sans_sepulture/img/s23.webp", "alt": "Chemin de planches instables" },
+    "s24": { "file": "assets/scenarios/marais_sans_sepulture/img/s24.webp", "alt": "Petit cairn de pierres noires" },
+    "s25": { "file": "assets/scenarios/marais_sans_sepulture/img/s25.webp", "alt": "Entrée du hameau noyé" },
+    "s26": { "file": "assets/scenarios/marais_sans_sepulture/img/s26.webp", "alt": "Place centrale avec puits" },
+    "s27": { "file": "assets/scenarios/marais_sans_sepulture/img/s27.webp", "alt": "Bâtiment bas fermé" },
+    "s28": { "file": "assets/scenarios/marais_sans_sepulture/img/s28.webp", "alt": "Ancienne poste abandonnée" },
+    "s29": { "file": "assets/scenarios/marais_sans_sepulture/img/s29.webp", "alt": "Intérieur de la poste" },
+    "s30": { "file": "assets/scenarios/marais_sans_sepulture/img/s30.webp", "alt": "Lettres humides au sol" },
+    "s31": { "file": "assets/scenarios/marais_sans_sepulture/img/s31.webp", "alt": "Écurie vide et sombre" },
+    "s32": { "file": "assets/scenarios/marais_sans_sepulture/img/s32.webp", "alt": "Façade de petite chapelle" },
+    "s33": { "file": "assets/scenarios/marais_sans_sepulture/img/s33.webp", "alt": "Intérieur de la chapelle" },
+    "s34": { "file": "assets/scenarios/marais_sans_sepulture/img/s34.webp", "alt": "Pièce latérale de la chapelle" },
+    "s35": { "file": "assets/scenarios/marais_sans_sepulture/img/s35.webp", "alt": "Petite cloche ancienne" },
+    "s36": { "file": "assets/scenarios/marais_sans_sepulture/img/s36.webp", "alt": "Mur de noms gravés" },
+    "s37": { "file": "assets/scenarios/marais_sans_sepulture/img/s37.webp", "alt": "Cimetière noyé" },
+    "s38": { "file": "assets/scenarios/marais_sans_sepulture/img/s38.webp", "alt": "Tombe ancienne ouverte" },
+    "s39": { "file": "assets/scenarios/marais_sans_sepulture/img/s39.webp", "alt": "Passage d’os blanchis" },
+    "s40": { "file": "assets/scenarios/marais_sans_sepulture/img/s40.webp", "alt": "Base d’une plateforme de guet" },
+    "s41": { "file": "assets/scenarios/marais_sans_sepulture/img/s41.webp", "alt": "Vue haute sur le marais" },
+    "s42": { "file": "assets/scenarios/marais_sans_sepulture/img/s42.webp", "alt": "Plan gravé dans le bois" },
+    "s43": { "file": "assets/scenarios/marais_sans_sepulture/img/s43.webp", "alt": "Ligne de pierres dans l’eau" },
+    "s44": { "file": "assets/scenarios/marais_sans_sepulture/img/s44.webp", "alt": "Maison des pompes isolée" },
+    "s45": { "file": "assets/scenarios/marais_sans_sepulture/img/s45.webp", "alt": "Salle des pompes rouillée" },
+    "s46": { "file": "assets/scenarios/marais_sans_sepulture/img/s46.webp", "alt": "Vannes et chaînes mouillées" },
+    "s47": { "file": "assets/scenarios/marais_sans_sepulture/img/s47.webp", "alt": "Petit bureau des pompes" },
+    "s48": { "file": "assets/scenarios/marais_sans_sepulture/img/s48.webp", "alt": "Étagère de vieux registres" },
+    "s49": { "file": "assets/scenarios/marais_sans_sepulture/img/s49.webp", "alt": "Page humide avec nom manquant" },
+    "s50": { "file": "assets/scenarios/marais_sans_sepulture/img/s50.webp", "alt": "Passage métallique étroit" },
+    "s51": { "file": "assets/scenarios/marais_sans_sepulture/img/s51.webp", "alt": "Petite écluse ancienne" },
+    "s52": { "file": "assets/scenarios/marais_sans_sepulture/img/s52.webp", "alt": "Chemin secret de planches fines" },
+    "s53": { "file": "assets/scenarios/marais_sans_sepulture/img/s53.webp", "alt": "Cercle de formes blanches" },
+    "s54": { "file": "assets/scenarios/marais_sans_sepulture/img/s54.webp", "alt": "Grande pierre dressée" },
+    "s55": { "file": "assets/scenarios/marais_sans_sepulture/img/s55.webp", "alt": "Noms gravés dans une pierre mouillée" },
+    "s56": { "file": "assets/scenarios/marais_sans_sepulture/img/s56.webp", "alt": "Vieux chêne creux" },
+    "s57": { "file": "assets/scenarios/marais_sans_sepulture/img/s57.webp", "alt": "Poteau d’amarrage ancien" },
+    "s58": { "file": "assets/scenarios/marais_sans_sepulture/img/s58.webp", "alt": "Chaîne sombre dans l’eau" },
+    "s59": { "file": "assets/scenarios/marais_sans_sepulture/img/s59.webp", "alt": "Passage étroit entre eau et vase" },
+    "s60": { "file": "assets/scenarios/marais_sans_sepulture/img/s60.webp", "alt": "Petite rive plus sèche" },
+    "s61": { "file": "assets/scenarios/marais_sans_sepulture/img/s61.webp", "alt": "Butte centrale du marais" },
+    "s62": { "file": "assets/scenarios/marais_sans_sepulture/img/s62.webp", "alt": "Porte de pierre dans la butte" },
+    "s63": { "file": "assets/scenarios/marais_sans_sepulture/img/s63.webp", "alt": "Couloir bas sous la butte" },
+    "s64": { "file": "assets/scenarios/marais_sans_sepulture/img/s64.webp", "alt": "Salle enterrée aux brancards" },
+    "s65": { "file": "assets/scenarios/marais_sans_sepulture/img/s65.webp", "alt": "Mur de plaques de noms" },
+    "s66": { "file": "assets/scenarios/marais_sans_sepulture/img/s66.webp", "alt": "Bassin de pierre sombre" },
+    "s67": { "file": "assets/scenarios/marais_sans_sepulture/img/s67.webp", "alt": "Ouverture ronde qui souffle" },
+    "s68": { "file": "assets/scenarios/marais_sans_sepulture/img/s68.webp", "alt": "Eau montant dans le souterrain" },
+    "s69": { "file": "assets/scenarios/marais_sans_sepulture/img/s69.webp", "alt": "Deux couloirs qui se séparent" },
+    "s70": { "file": "assets/scenarios/marais_sans_sepulture/img/s70.webp", "alt": "Fine ligne claire au loin" },
+    "s71": { "file": "assets/scenarios/marais_sans_sepulture/img/s71.webp", "alt": "Roseaux plus clairs" },
+    "s72": { "file": "assets/scenarios/marais_sans_sepulture/img/s72.webp", "alt": "Visages blancs dans la brume" },
+    "s73": { "file": "assets/scenarios/marais_sans_sepulture/img/s73.webp", "alt": "Grand cairn noir" },
+    "s74": { "file": "assets/scenarios/marais_sans_sepulture/img/s74.webp", "alt": "Air immobile autour du cairn" },
+    "s75": { "file": "assets/scenarios/marais_sans_sepulture/img/s75.webp", "alt": "Dalle entrouverte et anneau rouillé" },
+    "s76": { "file": "assets/scenarios/marais_sans_sepulture/img/s76.webp", "alt": "Cloche utilisée près du cairn" },
+    "s77": { "file": "assets/scenarios/marais_sans_sepulture/img/s77.webp", "alt": "Chemin repartant vers le cœur du marais" },
+    "s78": { "file": "assets/scenarios/marais_sans_sepulture/img/s78.webp", "alt": "Roseaux marqués de rouge" },
+    "s79": { "file": "assets/scenarios/marais_sans_sepulture/img/s79.webp", "alt": "Plaque d’eau au reflet trop clair" },
+    "s80": { "file": "assets/scenarios/marais_sans_sepulture/img/s80.webp", "alt": "Bande de terre presque hors du marais" },
+    "s81": { "file": "assets/scenarios/marais_sans_sepulture/img/s81.webp", "alt": "Seuil final entre fuite et rituel" },
+    "s82": { "file": "assets/scenarios/marais_sans_sepulture/img/s82.webp", "alt": "Le nom qui remonte du marais" },
+    "s83": { "file": "assets/scenarios/marais_sans_sepulture/img/s83.webp", "alt": "Dernier chemin étroit" },
+    "s84": { "file": "assets/scenarios/marais_sans_sepulture/img/s84.webp", "alt": "Dernier carrefour" },
+    "good_end": { "file": "assets/scenarios/marais_sans_sepulture/img/good_end.webp", "alt": "Sortie du marais à l’aube" },
+    "bad_end": { "file": "assets/scenarios/marais_sans_sepulture/img/bad_end.webp", "alt": "Le marais garde une silhouette de plus" },
+    "secret_end": { "file": "assets/scenarios/marais_sans_sepulture/img/secret_end.webp", "alt": "Repos rendu aux morts sans sépulture" }
+  },
+  "state_model": {
+    "flags": ["has_red_thread", "has_bell", "has_name_page"]
+  },
+  "scenes": {
+    "s01": {
+      "image_id": "s01",
+      "title_key": "ms.s01.title",
+      "body_key": "ms.s01.body",
+      "choices": [
+        { "choice_key": "ms.s01.c1", "next": "s02" },
+        { "choice_key": "ms.s01.c2", "next": "s03" },
+        { "choice_key": "ms.s01.c3", "next": "s04" }
+      ]
+    },
+    "s02": {
+      "image_id": "s02",
+      "title_key": "ms.s02.title",
+      "body_key": "ms.s02.body",
+      "choices": [
+        { "choice_key": "ms.s02.c1", "next": "s05" },
+        { "choice_key": "ms.s02.c2", "next": "s06" },
+        { "choice_key": "ms.s02.c3", "next": "s07" }
+      ]
+    },
+    "s03": {
+      "image_id": "s03",
+      "title_key": "ms.s03.title",
+      "body_key": "ms.s03.body",
+      "choices": [
+        { "choice_key": "ms.s03.c1", "next": "s06" },
+        { "choice_key": "ms.s03.c2", "next": "s08" },
+        { "choice_key": "ms.s03.c3", "next": "s09" }
+      ]
+    },
+    "s04": {
+      "image_id": "s04",
+      "title_key": "ms.s04.title",
+      "body_key": "ms.s04.body",
+      "choices": [
+        { "choice_key": "ms.s04.c1", "next": "s07" },
+        { "choice_key": "ms.s04.c2", "next": "s09" },
+        { "choice_key": "ms.s04.c3", "next": "s10" }
+      ]
+    },
+    "s05": {
+      "image_id": "s05",
+      "title_key": "ms.s05.title",
+      "body_key": "ms.s05.body",
+      "choices": [
+        { "choice_key": "ms.s05.c1", "next": "s11" },
+        { "choice_key": "ms.s05.c2", "next": "s12" },
+        { "choice_key": "ms.s05.c3", "next": "s13" }
+      ]
+    },
+    "s06": {
+      "image_id": "s06",
+      "title_key": "ms.s06.title",
+      "body_key": "ms.s06.body",
+      "choices": [
+        { "choice_key": "ms.s06.c1", "next": "s12" },
+        { "choice_key": "ms.s06.c2", "next": "s13" },
+        { "choice_key": "ms.s06.c3", "next": "s14" }
+      ]
+    },
+    "s07": {
+      "image_id": "s07",
+      "title_key": "ms.s07.title",
+      "body_key": "ms.s07.body",
+      "choices": [
+        { "choice_key": "ms.s07.c1", "next": "s13" },
+        { "choice_key": "ms.s07.c2", "next": "s14" },
+        { "choice_key": "ms.s07.c3", "next": "s15" }
+      ]
+    },
+    "s08": {
+      "image_id": "s08",
+      "title_key": "ms.s08.title",
+      "body_key": "ms.s08.body",
+      "choices": [
+        { "choice_key": "ms.s08.c1", "next": "s14" },
+        { "choice_key": "ms.s08.c2", "next": "s15" },
+        { "choice_key": "ms.s08.c3", "next": "s19" }
+      ]
+    },
+    "s09": {
+      "image_id": "s09",
+      "title_key": "ms.s09.title",
+      "body_key": "ms.s09.body",
+      "choices": [
+        { "choice_key": "ms.s09.c1", "next": "s15" },
+        { "choice_key": "ms.s09.c2", "next": "s19" },
+        { "choice_key": "ms.s09.c3", "next": "s17" }
+      ]
+    },
+    "s10": {
+      "image_id": "s10",
+      "title_key": "ms.s10.title",
+      "body_key": "ms.s10.body",
+      "choices": [
+        { "choice_key": "ms.s10.c1", "next": "s16" },
+        { "choice_key": "ms.s10.c2", "next": "s17" },
+        { "choice_key": "ms.s10.c3", "next": "s21" }
+      ]
+    },
+    "s11": {
+      "image_id": "s11",
+      "title_key": "ms.s11.title",
+      "body_key": "ms.s11.body",
+      "choices": [
+        { "choice_key": "ms.s11.c1", "next": "s18" },
+        { "choice_key": "ms.s11.c2", "next": "s19" },
+        { "choice_key": "ms.s11.c3", "next": "s20" }
+      ]
+    },
+    "s12": {
+      "image_id": "s12",
+      "title_key": "ms.s12.title",
+      "body_key": "ms.s12.body",
+      "choices": [
+        { "choice_key": "ms.s12.c1", "next": "s19" },
+        { "choice_key": "ms.s12.c2", "next": "s20" },
+        { "choice_key": "ms.s12.c3", "next": "s21" }
+      ]
+    },
+    "s13": {
+      "image_id": "s13",
+      "title_key": "ms.s13.title",
+      "body_key": "ms.s13.body",
+      "choices": [
+        { "choice_key": "ms.s13.c1", "next": "s21" },
+        { "choice_key": "ms.s13.c2", "next": "s23" },
+        { "choice_key": "ms.s13.c3", "next": "s24" }
+      ]
+    },
+    "s14": {
+      "image_id": "s14",
+      "title_key": "ms.s14.title",
+      "body_key": "ms.s14.body",
+      "choices": [
+        { "choice_key": "ms.s14.c1", "next": "s15" },
+        { "choice_key": "ms.s14.c2", "next": "s23" },
+        { "choice_key": "ms.s14.c3", "next": "s24" }
+      ]
+    },
+    "s15": {
+      "image_id": "s15",
+      "title_key": "ms.s15.title",
+      "body_key": "ms.s15.body",
+      "choices": [
+        { "choice_key": "ms.s15.c1", "next": "s16" },
+        { "choice_key": "ms.s15.c2", "next": "s19" },
+        { "choice_key": "ms.s15.c3", "next": "s23" }
+      ]
+    },
+    "s16": {
+      "image_id": "s16",
+      "title_key": "ms.s16.title",
+      "body_key": "ms.s16.body",
+      "choices": [
+        { "choice_key": "ms.s16.c1", "next": "s17" },
+        { "choice_key": "ms.s16.c2", "next": "s18" },
+        { "choice_key": "ms.s16.c3", "next": "s25" }
+      ]
+    },
+    "s17": {
+      "image_id": "s17",
+      "title_key": "ms.s17.title",
+      "body_key": "ms.s17.body",
+      "choices": [
+        { "choice_key": "ms.s17.c1", "next": "s18" },
+        { "choice_key": "ms.s17.c2", "next": "s20" },
+        { "choice_key": "ms.s17.c3", "next": "s21" }
+      ]
+    },
+    "s18": {
+      "image_id": "s18",
+      "title_key": "ms.s18.title",
+      "body_key": "ms.s18.body",
+      "choices": [
+        { "choice_key": "ms.s18.c1", "next": "s21" },
+        { "choice_key": "ms.s18.c2", "next": "s23" },
+        { "choice_key": "ms.s18.c3", "next": "s25" }
+      ]
+    },
+    "s19": {
+      "image_id": "s19",
+      "title_key": "ms.s19.title",
+      "body_key": "ms.s19.body",
+      "choices": [
+        { "choice_key": "ms.s19.c1", "next": "s23" },
+        { "choice_key": "ms.s19.c2", "next": "s24" },
+        { "choice_key": "ms.s19.c3", "next": "s25" }
+      ]
+    },
+    "s20": {
+      "image_id": "s20",
+      "title_key": "ms.s20.title",
+      "body_key": "ms.s20.body",
+      "choices": [
+        { "choice_key": "ms.s20.c1", "next": "s21" },
+        { "choice_key": "ms.s20.c2", "next": "s24" },
+        { "choice_key": "ms.s20.c3", "next": "s25" }
+      ]
+    },
+    "s21": {
+      "image_id": "s21",
+      "title_key": "ms.s21.title",
+      "body_key": "ms.s21.body",
+      "choices": [
+        { "choice_key": "ms.s21.c1", "next": "s22", "set_flags": ["has_red_thread"] },
+        { "choice_key": "ms.s21.c2", "next": "s24" },
+        { "choice_key": "ms.s21.c3", "next": "s23" }
+      ]
+    },
+    "s22": {
+      "image_id": "s22",
+      "title_key": "ms.s22.title",
+      "body_key": "ms.s22.body",
+      "choices": [
+        { "choice_key": "ms.s22.c1", "next": "s24" },
+        { "choice_key": "ms.s22.c2", "next": "s25" },
+        { "choice_key": "ms.s22.c3", "next": "s26" }
+      ]
+    },
+    "s23": {
+      "image_id": "s23",
+      "title_key": "ms.s23.title",
+      "body_key": "ms.s23.body",
+      "choices": [
+        { "choice_key": "ms.s23.c1", "next": "s24" },
+        { "choice_key": "ms.s23.c2", "next": "s25" },
+        { "choice_key": "ms.s23.c3", "next": "s26" }
+      ]
+    },
+    "s24": {
+      "image_id": "s24",
+      "title_key": "ms.s24.title",
+      "body_key": "ms.s24.body",
+      "choices": [
+        { "choice_key": "ms.s24.c1", "next": "s25" },
+        { "choice_key": "ms.s24.c2", "next": "s26" },
+        { "choice_key": "ms.s24.c3", "next": "s27" }
+      ]
+    },
+    "s25": {
+      "image_id": "s25",
+      "title_key": "ms.s25.title",
+      "body_key": "ms.s25.body",
+      "choices": [
+        { "choice_key": "ms.s25.c1", "next": "s26" },
+        { "choice_key": "ms.s25.c2", "next": "s28" },
+        { "choice_key": "ms.s25.c3", "next": "s32" }
+      ]
+    },
+    "s26": {
+      "image_id": "s26",
+      "title_key": "ms.s26.title",
+      "body_key": "ms.s26.body",
+      "choices": [
+        { "choice_key": "ms.s26.c1", "next": "s27" },
+        { "choice_key": "ms.s26.c2", "next": "s28" },
+        { "choice_key": "ms.s26.c3", "next": "s31" }
+      ]
+    },
+    "s27": {
+      "image_id": "s27",
+      "title_key": "ms.s27.title",
+      "body_key": "ms.s27.body",
+      "choices": [
+        { "choice_key": "ms.s27.c1", "next": "s28" },
+        { "choice_key": "ms.s27.c2", "next": "s30" },
+        { "choice_key": "ms.s27.c3", "next": "s31" }
+      ]
+    },
+    "s28": {
+      "image_id": "s28",
+      "title_key": "ms.s28.title",
+      "body_key": "ms.s28.body",
+      "choices": [
+        { "choice_key": "ms.s28.c1", "next": "s29" },
+        { "choice_key": "ms.s28.c2", "next": "s30" },
+        { "choice_key": "ms.s28.c3", "next": "s32" }
+      ]
+    },
+    "s29": {
+      "image_id": "s29",
+      "title_key": "ms.s29.title",
+      "body_key": "ms.s29.body",
+      "choices": [
+        { "choice_key": "ms.s29.c1", "next": "s30" },
+        { "choice_key": "ms.s29.c2", "next": "s32" },
+        { "choice_key": "ms.s29.c3", "next": "s26" }
+      ]
+    },
+    "s30": {
+      "image_id": "s30",
+      "title_key": "ms.s30.title",
+      "body_key": "ms.s30.body",
+      "choices": [
+        { "choice_key": "ms.s30.c1", "next": "s31" },
+        { "choice_key": "ms.s30.c2", "next": "s32" },
+        { "choice_key": "ms.s30.c3", "next": "s34" }
+      ]
+    },
+    "s31": {
+      "image_id": "s31",
+      "title_key": "ms.s31.title",
+      "body_key": "ms.s31.body",
+      "choices": [
+        { "choice_key": "ms.s31.c1", "next": "s32" },
+        { "choice_key": "ms.s31.c2", "next": "s37" },
+        { "choice_key": "ms.s31.c3", "next": "s40" }
+      ]
+    },
+    "s32": {
+      "image_id": "s32",
+      "title_key": "ms.s32.title",
+      "body_key": "ms.s32.body",
+      "choices": [
+        { "choice_key": "ms.s32.c1", "next": "s33" },
+        { "choice_key": "ms.s32.c2", "next": "s34" },
+        { "choice_key": "ms.s32.c3", "next": "s37" }
+      ]
+    },
+    "s33": {
+      "image_id": "s33",
+      "title_key": "ms.s33.title",
+      "body_key": "ms.s33.body",
+      "choices": [
+        { "choice_key": "ms.s33.c1", "next": "s35", "set_flags": ["has_bell"] },
+        { "choice_key": "ms.s33.c2", "next": "s36" },
+        { "choice_key": "ms.s33.c3", "next": "s34" }
+      ]
+    },
+    "s34": {
+      "image_id": "s34",
+      "title_key": "ms.s34.title",
+      "body_key": "ms.s34.body",
+      "choices": [
+        { "choice_key": "ms.s34.c1", "next": "s35", "set_flags": ["has_bell"] },
+        { "choice_key": "ms.s34.c2", "next": "s36" },
+        { "choice_key": "ms.s34.c3", "next": "s37" }
+      ]
+    },
+    "s35": {
+      "image_id": "s35",
+      "title_key": "ms.s35.title",
+      "body_key": "ms.s35.body",
+      "choices": [
+        { "choice_key": "ms.s35.c1", "next": "s36" },
+        { "choice_key": "ms.s35.c2", "next": "s37" },
+        { "choice_key": "ms.s35.c3", "next": "s38" }
+      ]
+    },
+    "s36": {
+      "image_id": "s36",
+      "title_key": "ms.s36.title",
+      "body_key": "ms.s36.body",
+      "choices": [
+        { "choice_key": "ms.s36.c1", "next": "s37" },
+        { "choice_key": "ms.s36.c2", "next": "s38" },
+        { "choice_key": "ms.s36.c3", "next": "s40" }
+      ]
+    },
+    "s37": {
+      "image_id": "s37",
+      "title_key": "ms.s37.title",
+      "body_key": "ms.s37.body",
+      "choices": [
+        { "choice_key": "ms.s37.c1", "next": "s38" },
+        { "choice_key": "ms.s37.c2", "next": "s39" },
+        { "choice_key": "ms.s37.c3", "next": "s40" }
+      ]
+    },
+    "s38": {
+      "image_id": "s38",
+      "title_key": "ms.s38.title",
+      "body_key": "ms.s38.body",
+      "choices": [
+        { "choice_key": "ms.s38.c1", "next": "s39" },
+        { "choice_key": "ms.s38.c2", "next": "s40" },
+        { "choice_key": "ms.s38.c3", "next": "s41" }
+      ]
+    },
+    "s39": {
+      "image_id": "s39",
+      "title_key": "ms.s39.title",
+      "body_key": "ms.s39.body",
+      "choices": [
+        { "choice_key": "ms.s39.c1", "next": "s40" },
+        { "choice_key": "ms.s39.c2", "next": "s41" },
+        { "choice_key": "ms.s39.c3", "next": "s42" }
+      ]
+    },
+    "s40": {
+      "image_id": "s40",
+      "title_key": "ms.s40.title",
+      "body_key": "ms.s40.body",
+      "choices": [
+        { "choice_key": "ms.s40.c1", "next": "s41" },
+        { "choice_key": "ms.s40.c2", "next": "s42" },
+        { "choice_key": "ms.s40.c3", "next": "s43" }
+      ]
+    },
+    "s41": {
+      "image_id": "s41",
+      "title_key": "ms.s41.title",
+      "body_key": "ms.s41.body",
+      "choices": [
+        { "choice_key": "ms.s41.c1", "next": "s42" },
+        { "choice_key": "ms.s41.c2", "next": "s43" },
+        { "choice_key": "ms.s41.c3", "next": "s44" }
+      ]
+    },
+    "s42": {
+      "image_id": "s42",
+      "title_key": "ms.s42.title",
+      "body_key": "ms.s42.body",
+      "choices": [
+        { "choice_key": "ms.s42.c1", "next": "s43" },
+        { "choice_key": "ms.s42.c2", "next": "s44" },
+        { "choice_key": "ms.s42.c3", "next": "s47" }
+      ]
+    },
+    "s43": {
+      "image_id": "s43",
+      "title_key": "ms.s43.title",
+      "body_key": "ms.s43.body",
+      "choices": [
+        { "choice_key": "ms.s43.c1", "next": "s44" },
+        { "choice_key": "ms.s43.c2", "next": "s52" },
+        { "choice_key": "ms.s43.c3", "next": "s56" }
+      ]
+    },
+    "s44": {
+      "image_id": "s44",
+      "title_key": "ms.s44.title",
+      "body_key": "ms.s44.body",
+      "choices": [
+        { "choice_key": "ms.s44.c1", "next": "s45" },
+        { "choice_key": "ms.s44.c2", "next": "s47" },
+        { "choice_key": "ms.s44.c3", "next": "s50" }
+      ]
+    },
+    "s45": {
+      "image_id": "s45",
+      "title_key": "ms.s45.title",
+      "body_key": "ms.s45.body",
+      "choices": [
+        { "choice_key": "ms.s45.c1", "next": "s46" },
+        { "choice_key": "ms.s45.c2", "next": "s47" },
+        { "choice_key": "ms.s45.c3", "next": "s51" }
+      ]
+    },
+    "s46": {
+      "image_id": "s46",
+      "title_key": "ms.s46.title",
+      "body_key": "ms.s46.body",
+      "choices": [
+        { "choice_key": "ms.s46.c1", "next": "s47" },
+        { "choice_key": "ms.s46.c2", "next": "s50" },
+        { "choice_key": "ms.s46.c3", "next": "s51" }
+      ]
+    },
+    "s47": {
+      "image_id": "s47",
+      "title_key": "ms.s47.title",
+      "body_key": "ms.s47.body",
+      "choices": [
+        { "choice_key": "ms.s47.c1", "next": "s48" },
+        { "choice_key": "ms.s47.c2", "next": "s49", "set_flags": ["has_name_page"] },
+        { "choice_key": "ms.s47.c3", "next": "s50" }
+      ]
+    },
+    "s48": {
+      "image_id": "s48",
+      "title_key": "ms.s48.title",
+      "body_key": "ms.s48.body",
+      "choices": [
+        { "choice_key": "ms.s48.c1", "next": "s49", "set_flags": ["has_name_page"] },
+        { "choice_key": "ms.s48.c2", "next": "s47" },
+        { "choice_key": "ms.s48.c3", "next": "s50" }
+      ]
+    },
+    "s49": {
+      "image_id": "s49",
+      "title_key": "ms.s49.title",
+      "body_key": "ms.s49.body",
+      "choices": [
+        { "choice_key": "ms.s49.c1", "next": "s50" },
+        { "choice_key": "ms.s49.c2", "next": "s54" },
+        { "choice_key": "ms.s49.c3", "next": "s45" }
+      ]
+    },
+    "s50": {
+      "image_id": "s50",
+      "title_key": "ms.s50.title",
+      "body_key": "ms.s50.body",
+      "choices": [
+        { "choice_key": "ms.s50.c1", "next": "s51" },
+        { "choice_key": "ms.s50.c2", "next": "s52" },
+        { "choice_key": "ms.s50.c3", "next": "s53" }
+      ]
+    },
+    "s51": {
+      "image_id": "s51",
+      "title_key": "ms.s51.title",
+      "body_key": "ms.s51.body",
+      "choices": [
+        { "choice_key": "ms.s51.c1", "next": "s52" },
+        { "choice_key": "ms.s51.c2", "next": "s53" },
+        { "choice_key": "ms.s51.c3", "next": "s54" }
+      ]
+    },
+    "s52": {
+      "image_id": "s52",
+      "title_key": "ms.s52.title",
+      "body_key": "ms.s52.body",
+      "choices": [
+        { "choice_key": "ms.s52.c1", "next": "s53" },
+        { "choice_key": "ms.s52.c2", "next": "s54" },
+        { "choice_key": "ms.s52.c3", "next": "s56" }
+      ]
+    },
+    "s53": {
+      "image_id": "s53",
+      "title_key": "ms.s53.title",
+      "body_key": "ms.s53.body",
+      "choices": [
+        { "choice_key": "ms.s53.c1", "next": "s54" },
+        { "choice_key": "ms.s53.c2", "next": "s55" },
+        { "choice_key": "ms.s53.c3", "next": "s57" }
+      ]
+    },
+    "s54": {
+      "image_id": "s54",
+      "title_key": "ms.s54.title",
+      "body_key": "ms.s54.body",
+      "choices": [
+        { "choice_key": "ms.s54.c1", "next": "s55" },
+        { "choice_key": "ms.s54.c2", "next": "s56" },
+        { "choice_key": "ms.s54.c3", "next": "s58" }
+      ]
+    },
+    "s55": {
+      "image_id": "s55",
+      "title_key": "ms.s55.title",
+      "body_key": "ms.s55.body",
+      "choices": [
+        { "choice_key": "ms.s55.c1", "next": "s56" },
+        { "choice_key": "ms.s55.c2", "next": "s59" },
+        { "choice_key": "ms.s55.c3", "next": "s61" }
+      ]
+    },
+    "s56": {
+      "image_id": "s56",
+      "title_key": "ms.s56.title",
+      "body_key": "ms.s56.body",
+      "choices": [
+        { "choice_key": "ms.s56.c1", "next": "s57" },
+        { "choice_key": "ms.s56.c2", "next": "s58" },
+        { "choice_key": "ms.s56.c3", "next": "s60" }
+      ]
+    },
+    "s57": {
+      "image_id": "s57",
+      "title_key": "ms.s57.title",
+      "body_key": "ms.s57.body",
+      "choices": [
+        { "choice_key": "ms.s57.c1", "next": "s58" },
+        { "choice_key": "ms.s57.c2", "next": "s59" },
+        { "choice_key": "ms.s57.c3", "next": "s60" }
+      ]
+    },
+    "s58": {
+      "image_id": "s58",
+      "title_key": "ms.s58.title",
+      "body_key": "ms.s58.body",
+      "choices": [
+        { "choice_key": "ms.s58.c1", "next": "s59" },
+        { "choice_key": "ms.s58.c2", "next": "s60" },
+        { "choice_key": "ms.s58.c3", "next": "s61" }
+      ]
+    },
+    "s59": {
+      "image_id": "s59",
+      "title_key": "ms.s59.title",
+      "body_key": "ms.s59.body",
+      "choices": [
+        { "choice_key": "ms.s59.c1", "next": "s60" },
+        { "choice_key": "ms.s59.c2", "next": "s61" },
+        { "choice_key": "ms.s59.c3", "next": "s62" }
+      ]
+    },
+    "s60": {
+      "image_id": "s60",
+      "title_key": "ms.s60.title",
+      "body_key": "ms.s60.body",
+      "choices": [
+        { "choice_key": "ms.s60.c1", "next": "s61" },
+        { "choice_key": "ms.s60.c2", "next": "s62" },
+        { "choice_key": "ms.s60.c3", "next": "s70" }
+      ]
+    },
+    "s61": {
+      "image_id": "s61",
+      "title_key": "ms.s61.title",
+      "body_key": "ms.s61.body",
+      "choices": [
+        { "choice_key": "ms.s61.c1", "next": "s62" },
+        { "choice_key": "ms.s61.c2", "next": "s63" },
+        { "choice_key": "ms.s61.c3", "next": "s73" }
+      ]
+    },
+    "s62": {
+      "image_id": "s62",
+      "title_key": "ms.s62.title",
+      "body_key": "ms.s62.body",
+      "choices": [
+        { "choice_key": "ms.s62.c1", "next": "s63" },
+        { "choice_key": "ms.s62.c2", "next": "s73" },
+        { "choice_key": "ms.s62.c3", "next": "s71" }
+      ]
+    },
+    "s63": {
+      "image_id": "s63",
+      "title_key": "ms.s63.title",
+      "body_key": "ms.s63.body",
+      "choices": [
+        { "choice_key": "ms.s63.c1", "next": "s64" },
+        { "choice_key": "ms.s63.c2", "next": "s66" },
+        { "choice_key": "ms.s63.c3", "next": "s69" }
+      ]
+    },
+    "s64": {
+      "image_id": "s64",
+      "title_key": "ms.s64.title",
+      "body_key": "ms.s64.body",
+      "choices": [
+        { "choice_key": "ms.s64.c1", "next": "s65" },
+        { "choice_key": "ms.s64.c2", "next": "s66" },
+        { "choice_key": "ms.s64.c3", "next": "s67" }
+      ]
+    },
+    "s65": {
+      "image_id": "s65",
+      "title_key": "ms.s65.title",
+      "body_key": "ms.s65.body",
+      "choices": [
+        { "choice_key": "ms.s65.c1", "next": "s66" },
+        { "choice_key": "ms.s65.c2", "next": "s67" },
+        { "choice_key": "ms.s65.c3", "next": "s68" }
+      ]
+    },
+    "s66": {
+      "image_id": "s66",
+      "title_key": "ms.s66.title",
+      "body_key": "ms.s66.body",
+      "choices": [
+        { "choice_key": "ms.s66.c1", "next": "s67" },
+        { "choice_key": "ms.s66.c2", "next": "s68" },
+        { "choice_key": "ms.s66.c3", "next": "s69" }
+      ]
+    },
+    "s67": {
+      "image_id": "s67",
+      "title_key": "ms.s67.title",
+      "body_key": "ms.s67.body",
+      "choices": [
+        { "choice_key": "ms.s67.c1", "next": "s68" },
+        { "choice_key": "ms.s67.c2", "next": "s69" },
+        { "choice_key": "ms.s67.c3", "next": "s72" }
+      ]
+    },
+    "s68": {
+      "image_id": "s68",
+      "title_key": "ms.s68.title",
+      "body_key": "ms.s68.body",
+      "choices": [
+        { "choice_key": "ms.s68.c1", "next": "s69" },
+        { "choice_key": "ms.s68.c2", "next": "s70" },
+        { "choice_key": "ms.s68.c3", "next": "s71" }
+      ]
+    },
+    "s69": {
+      "image_id": "s69",
+      "title_key": "ms.s69.title",
+      "body_key": "ms.s69.body",
+      "choices": [
+        { "choice_key": "ms.s69.c1", "next": "s70" },
+        { "choice_key": "ms.s69.c2", "next": "s71" },
+        { "choice_key": "ms.s69.c3", "next": "s72" }
+      ]
+    },
+    "s70": {
+      "image_id": "s70",
+      "title_key": "ms.s70.title",
+      "body_key": "ms.s70.body",
+      "choices": [
+        { "choice_key": "ms.s70.c1", "next": "s71" },
+        { "choice_key": "ms.s70.c2", "next": "s73" },
+        { "choice_key": "ms.s70.c3", "next": "s80" }
+      ]
+    },
+    "s71": {
+      "image_id": "s71",
+      "title_key": "ms.s71.title",
+      "body_key": "ms.s71.body",
+      "choices": [
+        { "choice_key": "ms.s71.c1", "next": "s72" },
+        { "choice_key": "ms.s71.c2", "next": "s78" },
+        { "choice_key": "ms.s71.c3", "next": "s80" }
+      ]
+    },
+    "s72": {
+      "image_id": "s72",
+      "title_key": "ms.s72.title",
+      "body_key": "ms.s72.body",
+      "choices": [
+        { "choice_key": "ms.s72.c1", "next": "s73" },
+        { "choice_key": "ms.s72.c2", "next": "s74" },
+        { "choice_key": "ms.s72.c3", "next": "s81" }
+      ]
+    },
+    "s73": {
+      "image_id": "s73",
+      "title_key": "ms.s73.title",
+      "body_key": "ms.s73.body",
+      "choices": [
+        { "choice_key": "ms.s73.c1", "next": "s74" },
+        { "choice_key": "ms.s73.c2", "next": "s75" },
+        { "choice_key": "ms.s73.c3", "next": "s82" }
+      ]
+    },
+    "s74": {
+      "image_id": "s74",
+      "title_key": "ms.s74.title",
+      "body_key": "ms.s74.body",
+      "choices": [
+        { "choice_key": "ms.s74.c1", "next": "s76", "requires_all_flags": ["has_bell"] },
+        { "choice_key": "ms.s74.c2", "next": "s75" },
+        { "choice_key": "ms.s74.c3", "next": "s77" }
+      ]
+    },
+    "s75": {
+      "image_id": "s75",
+      "title_key": "ms.s75.title",
+      "body_key": "ms.s75.body",
+      "choices": [
+        { "choice_key": "ms.s75.c1", "next": "s81" },
+        { "choice_key": "ms.s75.c2", "next": "s82" },
+        { "choice_key": "ms.s75.c3", "next": "s77" }
+      ]
+    },
+    "s76": {
+      "image_id": "s76",
+      "title_key": "ms.s76.title",
+      "body_key": "ms.s76.body",
+      "choices": [
+        { "choice_key": "ms.s76.c1", "next": "s78" },
+        { "choice_key": "ms.s76.c2", "next": "s81" },
+        { "choice_key": "ms.s76.c3", "next": "s80" }
+      ]
+    },
+    "s77": {
+      "image_id": "s77",
+      "title_key": "ms.s77.title",
+      "body_key": "ms.s77.body",
+      "choices": [
+        { "choice_key": "ms.s77.c1", "next": "s78" },
+        { "choice_key": "ms.s77.c2", "next": "s79" },
+        { "choice_key": "ms.s77.c3", "next": "s81" }
+      ]
+    },
+    "s78": {
+      "image_id": "s78",
+      "title_key": "ms.s78.title",
+      "body_key": "ms.s78.body",
+      "choices": [
+        { "choice_key": "ms.s78.c1", "next": "s79", "requires_all_flags": ["has_red_thread"] },
+        { "choice_key": "ms.s78.c2", "next": "s83" },
+        { "choice_key": "ms.s78.c3", "next": "s81" }
+      ]
+    },
+    "s79": {
+      "image_id": "s79",
+      "title_key": "ms.s79.title",
+      "body_key": "ms.s79.body",
+      "choices": [
+        { "choice_key": "ms.s79.c1", "next": "s82" },
+        { "choice_key": "ms.s79.c2", "next": "s80" },
+        { "choice_key": "ms.s79.c3", "next": "s84" }
+      ]
+    },
+    "s80": {
+      "image_id": "s80",
+      "title_key": "ms.s80.title",
+      "body_key": "ms.s80.body",
+      "choices": [
+        { "choice_key": "ms.s80.c1", "next": "good_end" },
+        { "choice_key": "ms.s80.c2", "next": "bad_end" },
+        { "choice_key": "ms.s80.c3", "next": "s84" }
+      ]
+    },
+    "s81": {
+      "image_id": "s81",
+      "title_key": "ms.s81.title",
+      "body_key": "ms.s81.body",
+      "choices": [
+        { "choice_key": "ms.s81.c1", "next": "s83" },
+        { "choice_key": "ms.s81.c2", "next": "s82" },
+        { "choice_key": "ms.s81.c3", "next": "bad_end" }
+      ]
+    },
+    "s82": {
+      "image_id": "s82",
+      "title_key": "ms.s82.title",
+      "body_key": "ms.s82.body",
+      "choices": [
+        { "choice_key": "ms.s82.c1", "next": "s84", "requires_all_flags": ["has_name_page"] },
+        { "choice_key": "ms.s82.c2", "next": "s80" },
+        { "choice_key": "ms.s82.c3", "next": "s81" }
+      ]
+    },
+    "s83": {
+      "image_id": "s83",
+      "title_key": "ms.s83.title",
+      "body_key": "ms.s83.body",
+      "choices": [
+        { "choice_key": "ms.s83.c1", "next": "s80" },
+        { "choice_key": "ms.s83.c2", "next": "bad_end" },
+        { "choice_key": "ms.s83.c3", "next": "s84" }
+      ]
+    },
+    "s84": {
+      "image_id": "s84",
+      "title_key": "ms.s84.title",
+      "body_key": "ms.s84.body",
+      "choices": [
+        { "choice_key": "ms.s84.c1", "next": "good_end" },
+        { "choice_key": "ms.s84.c2", "next": "bad_end" },
+        { "choice_key": "ms.s84.c3", "next": "secret_end", "requires_all_flags": ["has_red_thread", "has_bell", "has_name_page"] }
+      ]
+    },
+    "good_end": {
+      "image_id": "good_end",
+      "title_key": "ms.good_end.title",
+      "body_key": "ms.good_end.body",
+      "choices": []
+    },
+    "bad_end": {
+      "image_id": "bad_end",
+      "title_key": "ms.bad_end.title",
+      "body_key": "ms.bad_end.body",
+      "choices": []
+    },
+    "secret_end": {
+      "image_id": "secret_end",
+      "title_key": "ms.secret_end.title",
+      "body_key": "ms.secret_end.body",
+      "choices": []
+    }
+  }
+}
