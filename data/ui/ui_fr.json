@@ -160,6 +160,11 @@
     "settings_help_title": "Aide",
     "settings_help_email_label": "Contact :",
     "settings_help_email": "help.vboldstudio@gmail.com",
+    "settings_remote_faq_title": "Scénarios premium",
+    "settings_remote_faq_q1": "Pourquoi certains scénarios sont téléchargés séparément ?",
+    "settings_remote_faq_a1": "Pour garder l’application plus légère. La couverture reste dans l’app, puis les images complètes du scénario sont récupérées après déblocage.",
+    "settings_remote_faq_q2": "Pourquoi y a-t-il une FAQ dédiée ?",
+    "settings_remote_faq_a2": "Parce que ces scénarios utilisent un fonctionnement spécial avec achat, déblocage et téléchargement séparé.",
     "lang_name": {
       "en": "English",
       "fr": "Français",
