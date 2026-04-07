@@ -116,6 +116,19 @@
   applyUltraUnlockOverride();
 
   const PRICES_BY_ID = Object.create(null);
+  function getDisplayPrice(p){
+    try{
+      const formatted =
+        p?.pricing?.formattedPrice ||
+        p?.pricing?.priceString ||
+        (typeof p?.price === "string" ? p.price : "") ||
+        (typeof p?.pricing?.price === "string" ? p.pricing.price : "");
+
+      return String(formatted || "").trim();
+    }catch(_){
+      return "";
+    }
+  }
   const IN_FLIGHT_TX = new Set();
   const FINISHED_TX  = new Set();
 
@@ -487,12 +500,7 @@
           .productUpdated((p) => {
             try{
               const id = p?.id;
-              const price =
-                p?.pricing?.price ||
-                p?.pricing?.formattedPrice ||
-                p?.price ||
-                p?.pricing?.priceString ||
-                null;
+              const price = getDisplayPrice(p) || null;
 
               if (id && price){
                 PRICES_BY_ID[id] = String(price);
@@ -587,12 +595,7 @@
             try{
               Object.keys(SKU).forEach((id) => {
                 const p = S.get ? S.get(id, GP) : (S.products?.byId?.[id]);
-                const price =
-                  p?.pricing?.price ||
-                  p?.price ||
-                  p?.pricing?.formattedPrice ||
-                  p?.pricing?.priceString ||
-                  null;
+                const price = getDisplayPrice(p) || null;
 
                 if (price) PRICES_BY_ID[id] = String(price);
               });

@@ -132,7 +132,10 @@
       "err_buy_failed": "Purchase canceled or failed.",
       "err_unlock_after_iap": "Purchase confirmed, but the scenario could not be opened.",
       "premium_desc": "This premium scenario is locked. You can unlock it with VCoins or buy it directly. See the FAQ for how it works.",
-      "open_faq": "Open FAQ"
+      "open_faq": "Open FAQ",
+      "premium_pay_suffix": "{price} + reward",
+      "premium_iap_with_price": "Unlock: {price} without reward",
+      "premium_iap_no_price": "Unlock via store without reward"
     },
     "update_banner_title": "Update available",
     "update_banner_desc": "A new version of the app is available.",

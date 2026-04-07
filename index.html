@@ -897,7 +897,6 @@
 
         <button id="vc-buy-iap" class="vc-buy-btn primary" type="button"></button>
         <button id="vc-buy-getcoins" class="vc-buy-btn ghost" type="button"></button>
-        <button id="vc-buy-faq" class="vc-buy-btn ghost" type="button"></button>
         <button id="vc-buy-cancel" class="vc-buy-btn" type="button"></button>
       </div>
 
@@ -1002,6 +1001,22 @@
 
     function getScenarioStoreButtonLabel(scenarioId){
       const storePrice = currentScenarioIapPrice(scenarioId);
+      const isPremium = !!window.VCScenarioPremium?.isPremiumScenario?.(scenarioId);
+
+      if (isPremium){
+        if (storePrice){
+          return _t(
+            "ui.scenario_buy.premium_iap_with_price",
+            "Débloquer : {price} sans reward",
+            { price: storePrice }
+          ).trim();
+        }
+
+        return _t(
+          "ui.scenario_buy.premium_iap_no_price",
+          "Débloquer via le store sans reward"
+        ).trim();
+      }
 
       const customWithPrice = _t(
         "ui.scenario_buy.unlock_direct",
@@ -1153,7 +1168,6 @@
     const buyPay         = document.getElementById("vc-buy-pay");
     const buyIap         = document.getElementById("vc-buy-iap");
     const buyGet         = document.getElementById("vc-buy-getcoins");
-    const buyFaq         = document.getElementById("vc-buy-faq");
     const buyCancel      = document.getElementById("vc-buy-cancel");
     const buyErr         = document.getElementById("vc-buy-error");
     const buyPayPrefix   = document.getElementById("vc-buy-pay-prefix");
@@ -1181,13 +1195,26 @@
       const isPremium = !!window.VCScenarioPremium?.isPremiumScenario?.(scenarioId);
 
       buyTitle.textContent = _t("scenarios." + scenarioId + ".title", "");
-      buyDesc.textContent = _t(
-        isPremium ? "ui.scenario_buy.premium_desc" : "ui.scenario_buy.desc",
-        ""
-      );
+      if (buyDesc){
+        if (isPremium){
+          buyDesc.textContent = "";
+          buyDesc.style.display = "none";
+        } else {
+          buyDesc.textContent = _t("ui.scenario_buy.desc", "");
+          buyDesc.style.display = "";
+        }
+      }
 
-      buyPayPrefix.textContent = _t("ui.scenario_buy.pay_prefix", "");
-      buyPayPrice.textContent = String(PRICE);
+      buyPayPrefix.textContent = _t("ui.scenario_buy.pay_prefix", "Débloquer :");
+      if (isPremium){
+        buyPayPrice.textContent = _t(
+          "ui.scenario_buy.premium_pay_suffix",
+          "{price} + reward",
+          { price: PRICE }
+        );
+      } else {
+        buyPayPrice.textContent = String(PRICE);
+      }
       buyPayBalance.textContent = _t(
         "ui.scenario_buy.pay_balance_inline",
         "",
@@ -1199,11 +1226,6 @@
       if (buyGet){
         buyGet.textContent = _t("ui.scenario_buy.open_shop", "");
         buyGet.style.display = isPremium ? "none" : "";
-      }
-
-      if (buyFaq){
-        buyFaq.textContent = _t("ui.scenario_buy.open_faq", "FAQ");
-        buyFaq.style.display = isPremium ? "" : "none";
       }
 
       buyCancel.textContent = _t("common.cancel", "");
@@ -1324,10 +1346,6 @@
     if (buyGet) buyGet.addEventListener("click", () => {
       if (pendingScenarioId) setShopFocusScenario(pendingScenarioId);
       window.location.href = "shop.html";
-    });
-
-    if (buyFaq) buyFaq.addEventListener("click", () => {
-      window.location.href = window.VCScenarioPremium?.getFaqUrl?.() || "settings.html#faq-remote-scenarios";
     });
 
     if (buyCancel) buyCancel.addEventListener("click", closeBuyPopup);
