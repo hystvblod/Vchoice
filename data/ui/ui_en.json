@@ -159,6 +159,11 @@
     "settings_help_title": "Help",
     "settings_help_email_label": "Contact:",
     "settings_help_email": "help.vboldstudio@gmail.com",
+    "settings_remote_faq_title": "Premium scenarios",
+    "settings_remote_faq_q1": "Why are some scenarios downloaded separately?",
+    "settings_remote_faq_a1": "To keep the app lighter. The cover stays inside the app, then the full scenario images are fetched after unlock.",
+    "settings_remote_faq_q2": "Why is there a dedicated FAQ?",
+    "settings_remote_faq_a2": "Because these scenarios use a special flow with purchase, unlock and separate download.",
     "lang_name": {
       "en": "English",
       "fr": "French",
