@@ -123,7 +123,7 @@
     "scenario_buy": {
       "desc": "Ce scénario est verrouillé. Tu peux le débloquer avec des VCoins, l’acheter directement au prix du store, ou ouvrir la boutique.",
       "pay_prefix": "Débloquer :",
-      "pay_balance_inline": "(solde actuel {balance})",
+      "pay_balance_inline": "",
       "iap_direct": "Débloquer : {price}",
       "open_shop": "Ouvrir la boutique",
       "err_unlock": "Impossible de débloquer le scénario.",
@@ -135,8 +135,8 @@
       "premium_desc": "Ce scénario premium est verrouillé. Tu peux le débloquer avec des VCoins ou l’acheter directement. Voir la FAQ pour le fonctionnement.",
       "open_faq": "Voir la FAQ",
       "premium_pay_suffix": "{price} + reward",
-      "premium_iap_with_price": "Débloquer : {price} sans reward",
-      "premium_iap_no_price": "Débloquer via le store sans reward"
+      "premium_iap_with_price": "Débloquer : {price}",
+      "premium_iap_no_price": "Débloquer via le store"
     },
     "update_banner_title": "Mise à jour disponible",
     "update_banner_desc": "Une nouvelle version de l’application est disponible.",

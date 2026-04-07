@@ -1007,14 +1007,14 @@
         if (storePrice){
           return _t(
             "ui.scenario_buy.premium_iap_with_price",
-            "Débloquer : {price} sans reward",
+            "Débloquer : {price}",
             { price: storePrice }
           ).trim();
         }
 
         return _t(
           "ui.scenario_buy.premium_iap_no_price",
-          "Débloquer via le store sans reward"
+          "Débloquer via le store"
         ).trim();
       }
 
@@ -1215,11 +1215,8 @@
       } else {
         buyPayPrice.textContent = String(PRICE);
       }
-      buyPayBalance.textContent = _t(
-        "ui.scenario_buy.pay_balance_inline",
-        "",
-        { balance }
-      );
+      buyPayBalance.textContent = "";
+      buyPayBalance.style.display = "none";
 
       buyIap.textContent = getScenarioStoreButtonLabel(scenarioId);
 
