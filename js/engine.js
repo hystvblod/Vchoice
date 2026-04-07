@@ -330,6 +330,84 @@ function getEndingLabel(type){
   return tUI("end_title");
 }
 
+function readEndingProgressMap(){
+  try{
+    const st = window.VUserData?.load?.() || {};
+    const endings = st?.endings;
+    if(endings && typeof endings === "object"){
+      const map = {};
+      for(const rawSid of Object.keys(endings)){
+        const sid = String(rawSid || "").trim().toLowerCase();
+        if(!sid) continue;
+        const v = endings[rawSid] || {};
+        map[sid] = {
+          good: !!v.good,
+          bad: !!v.bad,
+          secret: !!v.secret
+        };
+      }
+      if(Object.keys(map).length) return map;
+    }
+  }catch(_){}
+
+  try{
+    const raw = localStorage.getItem("vchoice_endings_cache_v1");
+    const parsed = JSON.parse(raw || "null");
+    if(parsed && parsed.map && typeof parsed.map === "object"){
+      return parsed.map;
+    }
+  }catch(_){}
+
+  return {};
+}
+
+function getScenarioEndingProgress(scenarioId){
+  const sid = String(scenarioId || "").trim().toLowerCase();
+  const map = readEndingProgressMap();
+  const row = map[sid] || {};
+
+  const flags = {
+    good: !!row.good,
+    bad: !!row.bad,
+    secret: !!row.secret
+  };
+
+  const unlockedCount = ["good", "bad", "secret"].filter(k => flags[k]).length;
+  const remainingCount = Math.max(0, 3 - unlockedCount);
+
+  return { flags, unlockedCount, remainingCount };
+}
+
+function wasEndingAlreadyUnlocked(scenarioId, endingType){
+  const p = getScenarioEndingProgress(scenarioId);
+  return !!p.flags[String(endingType || "").toLowerCase()];
+}
+
+function getEndingUnlockText(type, alreadyDone){
+  const t = String(type || "").toLowerCase();
+  if(t === "good") return tUI(alreadyDone ? "end_unlock_good_done" : "end_unlock_good_new");
+  if(t === "bad") return tUI(alreadyDone ? "end_unlock_bad_done" : "end_unlock_bad_new");
+  if(t === "secret") return tUI(alreadyDone ? "end_unlock_secret_done" : "end_unlock_secret_new");
+  return alreadyDone
+    ? tUI("end_already_done_line", { ending: getEndingLabel(type) })
+    : tUI("end_unlock_line", { ending: getEndingLabel(type) });
+}
+
+function getEndingBadgeText(type, alreadyDone){
+  const t = String(type || "").toLowerCase();
+  if(t === "good") return tUI(alreadyDone ? "end_badge_good_done" : "end_badge_good_new");
+  if(t === "bad") return tUI(alreadyDone ? "end_badge_bad_done" : "end_badge_bad_new");
+  if(t === "secret") return tUI(alreadyDone ? "end_badge_secret_done" : "end_badge_secret_new");
+  return "";
+}
+
+function getRemainingEndingsText(count){
+  const n = Math.max(0, Number(count || 0));
+  if(n <= 0) return tUI("end_all_found_line");
+  if(n === 1) return tUI("end_remaining_one");
+  return tUI("end_remaining_many", { count: n });
+}
+
 function getEndingRewardAmount(payload){
   const candidates = [
     payload?.reward_vcoins,
@@ -2456,6 +2534,7 @@ async function handleEnding(type, endScene){
 
   /* ===== FINS NORMALES INLINE ===== */
   const endingKey = `${String(currentScenarioId || "")}:${String(endScene?.id || endingType)}`;
+  const endingAlreadyUnlockedBefore = wasEndingAlreadyUnlocked(currentScenarioId, endingType);
 
   if(ENDING_STATE.key !== endingKey){
     ENDING_STATE = {
@@ -2474,6 +2553,8 @@ async function handleEnding(type, endScene){
   }
 
   const rewardAmount = Number(ENDING_STATE.reward || 300);
+  const endingProgress = getScenarioEndingProgress(currentScenarioId);
+  const remainingEndingsCount = endingProgress.remainingCount;
 
   let title = tUI("end_title");
   if(endingType === "good") title = tUI("end_title_good");
@@ -2522,9 +2603,15 @@ async function handleEnding(type, endScene){
 
     const unlock = document.createElement("span");
     unlock.className = "vc-end-unlock";
-    unlock.textContent = tUI("end_unlock_line", {
-      ending: getEndingLabel(endingType)
-    });
+    unlock.textContent = getEndingUnlockText(endingType, endingAlreadyUnlockedBefore);
+
+    const badge = document.createElement("span");
+    badge.className = "vc-end-unlock";
+    badge.textContent = getEndingBadgeText(endingType, endingAlreadyUnlockedBefore);
+
+    const remaining = document.createElement("span");
+    remaining.className = "vc-end-unlock";
+    remaining.textContent = getRemainingEndingsText(remainingEndingsCount);
 
     const reward = document.createElement("span");
     reward.className = "vc-end-reward-line";
@@ -2543,6 +2630,8 @@ async function handleEnding(type, endScene){
 
     wrap.appendChild(copy);
     wrap.appendChild(unlock);
+    wrap.appendChild(badge);
+    wrap.appendChild(remaining);
     wrap.appendChild(reward);
 
     bodyEl.appendChild(wrap);
