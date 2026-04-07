@@ -1429,7 +1429,18 @@ function hideHintModal(){
   modal.classList.add("hidden");
   modal.setAttribute("aria-hidden","true");
 
+  modal.classList.remove("vc-stuck-modal");
+
+  const title = $("hintTitle");
+  const body = $("hintBody");
+  const actions = $("hintActions");
+  const msg = $("vcStuckMsg");
   const close = $("hintClose");
+
+  if(title) title.classList.remove("vc-stuck-title");
+  if(body) body.classList.remove("vc-stuck-body");
+  if(actions) actions.classList.remove("vc-stuck-actions");
+  if(msg) msg.classList.remove("vc-stuck-msg");
   if(close) close.style.display = "";
 }
 
@@ -1693,33 +1704,36 @@ async function startFullGuideAssist(){
 }
 
 function showStuckAssistModal(){
+  const modal = $("hintModal");
+  const titleEl = $("hintTitle");
+  const bodyEl = $("hintBody");
+
+  if(modal) modal.classList.add("vc-stuck-modal");
+  if(titleEl) titleEl.classList.add("vc-stuck-title");
+  if(bodyEl) bodyEl.classList.add("vc-stuck-body");
+
   showHintModalWithActionsRich(
     tUI("stuck_title"),
     (root) => {
       const p = document.createElement("div");
-      p.className = "vc-modal-prewrap";
+      p.className = "vc-modal-prewrap vc-stuck-copy";
       p.textContent = tUI("stuck_body", { count: STUCK_REPEAT_THRESHOLD });
       root.appendChild(p);
 
       const msg = document.createElement("div");
       msg.id = "vcStuckMsg";
-      msg.className = "vc-lock-msg";
+      msg.className = "vc-lock-msg vc-stuck-msg";
       msg.textContent = "";
       root.appendChild(msg);
     },
     (actionsWrap) => {
-      const msg = () => $("vcStuckMsg");
+      actionsWrap.className = "modal__actions modal__actions--center vc-stuck-actions";
 
-      const btnContinue = document.createElement("button");
-      btnContinue.type = "button";
-      btnContinue.className = "btn btn--ghost";
-      btnContinue.textContent = tUI("stuck_continue");
-      btnContinue.onclick = () => hideHintModal();
-      actionsWrap.appendChild(btnContinue);
+      const msg = () => $("vcStuckMsg");
 
       const btnMini = document.createElement("button");
       btnMini.type = "button";
-      btnMini.className = "btn";
+      btnMini.className = "btn vc-stuck-btn vc-stuck-btn--pulse";
       if(getJetonBalance() >= 1){
         setChoiceButtonContentWithIcon(btnMini, UI_JETON_ICON_WEBP, tUI("stuck_mini_guide"));
       }else{
@@ -1748,7 +1762,7 @@ function showStuckAssistModal(){
 
       const btnFull = document.createElement("button");
       btnFull.type = "button";
-      btnFull.className = "btn";
+      btnFull.className = "btn vc-stuck-btn";
       setChoiceButtonContentWithIcon(btnFull, UI_JETON_ICON_WEBP, tUI("stuck_full_guide"));
       btnFull.onclick = async () => {
         try{
@@ -1769,10 +1783,17 @@ function showStuckAssistModal(){
 
       const btnShop = document.createElement("button");
       btnShop.type = "button";
-      btnShop.className = "btn btn--ghost";
+      btnShop.className = "btn vc-stuck-btn btn--ghost";
       btnShop.textContent = tUI("stuck_get_jetons");
       btnShop.onclick = () => openShopPage();
       actionsWrap.appendChild(btnShop);
+
+      const btnContinue = document.createElement("button");
+      btnContinue.type = "button";
+      btnContinue.className = "btn vc-stuck-btn btn--ghost vc-stuck-btn--last";
+      btnContinue.textContent = tUI("stuck_continue");
+      btnContinue.onclick = () => hideHintModal();
+      actionsWrap.appendChild(btnContinue);
     }
   );
 }

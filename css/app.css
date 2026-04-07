@@ -1360,3 +1360,108 @@ body.page-game .scene__hud .choice_btn{
   color: #fff !important;
   text-shadow: none !important;
 }
+
+/* ===== Popup bloqué : version plus lisible ===== */
+.vc-stuck-modal .modal__content{
+  width:min(760px, calc(100% - 24px));
+}
+
+.vc-stuck-modal .modal__head,
+.vc-stuck-modal .modal__header{
+  position:relative;
+  justify-content:center;
+  padding:18px 56px 16px;
+}
+
+.vc-stuck-modal .modal__close{
+  position:absolute;
+  right:16px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.vc-stuck-title{
+  width:100%;
+  text-align:center;
+  font-size:24px;
+  line-height:1.15;
+  font-weight:900;
+  letter-spacing:.2px;
+}
+
+.vc-stuck-body{
+  text-align:center;
+  padding:18px 18px 10px;
+  font-size:17px;
+  line-height:1.7;
+}
+
+.vc-stuck-copy{
+  text-align:center;
+  font-size:17px;
+  line-height:1.7;
+  max-width:560px;
+  margin:0 auto;
+}
+
+.vc-stuck-msg{
+  text-align:center;
+  font-size:15px;
+  line-height:1.5;
+  margin:10px auto 0;
+  max-width:560px;
+}
+
+.vc-stuck-actions{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:12px;
+  padding:4px 18px 18px;
+}
+
+.vc-stuck-btn{
+  width:100%;
+  min-height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  text-align:center;
+  font-size:16px;
+  font-weight:800;
+  line-height:1.35;
+  border-radius:16px;
+  padding:14px 16px;
+}
+
+.vc-stuck-btn img,
+.vc-stuck-btn .choice-btn-icon{
+  width:20px;
+  height:20px;
+  flex:0 0 20px;
+}
+
+.vc-stuck-btn--last{
+  margin-top:2px;
+}
+
+.vc-stuck-btn--pulse{
+  animation: vcStuckPulse 1.6s ease-in-out infinite;
+  box-shadow: 0 0 0 rgba(255,255,255,0);
+}
+
+@keyframes vcStuckPulse{
+  0%{
+    transform:scale(1);
+    box-shadow: 0 0 0 0 rgba(255,255,255,.22);
+  }
+  50%{
+    transform:scale(1.025);
+    box-shadow: 0 0 0 10px rgba(255,255,255,0);
+  }
+  100%{
+    transform:scale(1);
+    box-shadow: 0 0 0 0 rgba(255,255,255,0);
+  }
+}
