@@ -29,23 +29,23 @@
     .topbar{ display:none !important; }
 
     :root{
-      --vc-bg0:#05060a;
-      --vc-bg1:#090b13;
-      --vc-bg2:#0b1226;
+      --vc-bg0:#101426;
+      --vc-bg1:#171d34;
+      --vc-bg2:#1d2947;
       --vc-accent:#ff3b3b;
       --vc-accent2:#b71b1b;
       --vc-card-r:18px;
-      --vc-border:rgba(255,255,255,.10);
-      --vc-text:rgba(255,255,255,.94);
-      --vc-muted:rgba(255,255,255,.68);
+      --vc-border:rgba(255,255,255,.12);
+      --vc-text:rgba(255,255,255,.96);
+      --vc-muted:rgba(255,255,255,.78);
     }
 
     body{
       background:
-        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
-        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
-        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
-        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
+        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.22), transparent 60%),
+        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.14), transparent 55%),
+        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.14), transparent 60%),
+        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 46%, var(--vc-bg2));
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
@@ -69,7 +69,7 @@
       inset: -60px;
       pointer-events:none;
       z-index: 0;
-      background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
+      background: radial-gradient(circle at 50% 40%, transparent 0 48%, rgba(0,0,0,.22) 76%, rgba(0,0,0,.38) 100%);
     }
 
     .page{
@@ -194,9 +194,9 @@
       position:absolute;
       inset:0;
       background:
-        linear-gradient(90deg, rgba(0,0,0,.58), rgba(0,0,0,.18) 55%, rgba(0,0,0,.55)),
-        radial-gradient(700px 120px at 15% 50%, rgba(255,59,59,.14), transparent 60%),
-        rgba(0,0,0,.10);
+        linear-gradient(90deg, rgba(0,0,0,.40), rgba(0,0,0,.10) 55%, rgba(0,0,0,.40)),
+        radial-gradient(700px 120px at 15% 50%, rgba(255,59,59,.18), transparent 60%),
+        rgba(255,255,255,.03);
       pointer-events:none;
       z-index:1;
     }
