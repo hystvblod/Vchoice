@@ -1840,25 +1840,33 @@ async function openScenario(scenarioId, opts = {}){
 
   const sceneLoadingText = document.getElementById("sceneLoadingText");
 
-  if (
-    window.VCScenarioPremium?.isPremiumScenario?.(scenarioId) &&
-    window.ensurePremiumScenarioReady
-  ) {
-    const prepared = await window.ensurePremiumScenarioReady(
-      scenarioId,
-      baseLogic,
-      (phase) => {
-        const txt = document.getElementById("sceneLoadingText");
-        if (!txt) return;
-        txt.classList.remove("hidden");
-        txt.textContent =
-          phase === "download"
-            ? "Téléchargement..."
-            : "Extraction...";
+  if (window.VCScenarioPremium?.isPremiumScenario?.(scenarioId)) {
+    try {
+      if (!window.ensurePremiumScenarioReady) {
+        throw new Error("premium_loader_missing");
       }
-    );
 
-    LOGIC = prepared.logic;
+      const prepared = await window.ensurePremiumScenarioReady(
+        scenarioId,
+        baseLogic,
+        (phase) => {
+          const txt = document.getElementById("sceneLoadingText");
+          if (!txt) return;
+          txt.classList.remove("hidden");
+          txt.textContent =
+            phase === "download"
+              ? "Téléchargement..."
+              : "Extraction...";
+        }
+      );
+
+      LOGIC = prepared.logic;
+    } catch (err) {
+      console.warn("[premium scenario]", err);
+      alert("Ce scénario premium est disponible uniquement dans l'application installée.");
+      window.location.href = "index.html";
+      return;
+    }
   } else {
     LOGIC = baseLogic;
   }
