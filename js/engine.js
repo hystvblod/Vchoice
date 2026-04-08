@@ -1863,6 +1863,13 @@ async function openScenario(scenarioId, opts = {}){
       LOGIC = prepared.logic;
     } catch (err) {
       console.warn("[premium scenario]", err);
+
+      if (sceneLoadingText) {
+        sceneLoadingText.classList.add("hidden");
+        sceneLoadingText.textContent = "";
+      }
+
+      showSceneLoading(false);
       alert("Le scénario premium n'a pas pu être chargé.");
       return;
     }

@@ -92,9 +92,12 @@
     const images = logic?.images || {};
 
     Object.keys(images).forEach((key) => {
+      if (key === "cover") return;
+
       const item = images[key];
       const file = typeof item === "string" ? item : item?.file;
       const name = basename(file);
+
       if (!name || seen.has(name)) return;
       seen.add(name);
       out.push(name);
@@ -225,7 +228,10 @@
 
     for (const fileName of imageNames) {
       const entryKey = findZipEntry(zip, fileName);
-      if (!entryKey) throw new Error(`zip_entry_missing:${fileName}`);
+      if (!entryKey) {
+        console.warn("[premium zip] missing entry:", fileName);
+        continue;
+      }
       const blob = await zip.files[entryKey].async("blob");
       map[fileName] = URL.createObjectURL(blob);
     }
