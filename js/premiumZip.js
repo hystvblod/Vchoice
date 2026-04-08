@@ -3,6 +3,8 @@
 
   const STORE_KEY = "vchoice_premium_zip_v1";
   const DATA_DIR = "DATA";
+  const WEB_ZIP_CACHE = new Map();
+  let JSZIP_PROMISE = null;
 
   function getCap() {
     return window.Capacitor || null;
@@ -101,7 +103,31 @@
     return out;
   }
 
+  async function ensureSupabaseAuth() {
+    try { await window.vcWaitBootstrap?.(); } catch (_) {}
+    try { await window.bootstrapAuthAndProfile?.(); } catch (_) {}
+
+    if (!window.sb) {
+      throw new Error("supabase_missing");
+    }
+
+    try {
+      const { data } = await window.sb.auth.getSession();
+      if (data?.session) return data.session;
+    } catch (_) {}
+
+    const res = await window.sb.auth.signInAnonymously();
+    if (res?.data?.session) return res.data.session;
+
+    const { data: last } = await window.sb.auth.getSession();
+    if (last?.session) return last.session;
+
+    throw new Error("anon_session_missing");
+  }
+
   async function getRemoteRow(scenarioId) {
+    await ensureSupabaseAuth();
+
     const { data, error } = await window.sb
       .from("scenario_asset_versions")
       .select("scenario_id, version, bucket_name, object_path, active")
@@ -118,6 +144,8 @@
   }
 
   async function signedUrl(bucketName, objectPath, expiresIn = 3600) {
+    await ensureSupabaseAuth();
+
     const { data, error } = await window.sb.storage
       .from(bucketName)
       .createSignedUrl(objectPath, expiresIn);
@@ -129,33 +157,70 @@
     return url;
   }
 
-  async function signedUrls(bucketName, objectPaths, expiresIn = 3600) {
-    const { data, error } = await window.sb.storage
-      .from(bucketName)
-      .createSignedUrls(objectPaths, expiresIn);
+  function findZipEntry(zip, fileName) {
+    const entries = Object.keys(zip.files || {});
+    const wanted = String(fileName || "").trim();
+    if (!wanted) return null;
 
-    if (error) throw error;
+    for (const key of entries) {
+      const entry = zip.files[key];
+      if (!entry || entry.dir) continue;
+      if (key === wanted) return key;
+      if (key.endsWith(`/${wanted}`)) return key;
+      if (key.endsWith(`\\${wanted}`)) return key;
+    }
 
-    return Array.isArray(data) ? data : [];
+    return null;
   }
 
-  function stripZipName(objectPath) {
-    return String(objectPath || "").replace(/\/?images\.zip$/i, "");
-  }
-
-  async function buildWebSignedMap(bucketName, zipObjectPath, imageNames) {
-    const map = {};
-    const base = stripZipName(zipObjectPath).replace(/\/+$/, "");
-    const paths = imageNames.map((fileName) => `${base}/img/${fileName}`);
-
-    const rows = await signedUrls(bucketName, paths, 3600);
-
-    rows.forEach((row, i) => {
-      const fileName = imageNames[i];
-      const url = row?.signedUrl || "";
-      if (fileName && url) map[fileName] = url;
+  function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = true;
+      s.onload = () => resolve(true);
+      s.onerror = () => reject(new Error(`script_load_failed:${src}`));
+      document.head.appendChild(s);
     });
+  }
 
+  async function ensureJSZip() {
+    if (window.JSZip) return window.JSZip;
+    if (JSZIP_PROMISE) return JSZIP_PROMISE;
+
+    JSZIP_PROMISE = (async () => {
+      await loadScript("https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js");
+      if (!window.JSZip) throw new Error("jszip_missing");
+      return window.JSZip;
+    })();
+
+    return JSZIP_PROMISE;
+  }
+
+  async function buildWebMapFromZip(bucketName, zipObjectPath, imageNames) {
+    const cacheKey = `${bucketName}::${zipObjectPath}`;
+    if (WEB_ZIP_CACHE.has(cacheKey)) {
+      return WEB_ZIP_CACHE.get(cacheKey);
+    }
+
+    await ensureJSZip();
+
+    const zipUrl = await signedUrl(bucketName, zipObjectPath, 3600);
+    const res = await fetch(zipUrl, { cache: "no-store" });
+    if (!res.ok) throw new Error(`zip_fetch_failed:${res.status}`);
+
+    const ab = await res.arrayBuffer();
+    const zip = await window.JSZip.loadAsync(ab);
+    const map = {};
+
+    for (const fileName of imageNames) {
+      const entryKey = findZipEntry(zip, fileName);
+      if (!entryKey) throw new Error(`zip_entry_missing:${fileName}`);
+      const blob = await zip.files[entryKey].async("blob");
+      map[fileName] = URL.createObjectURL(blob);
+    }
+
+    WEB_ZIP_CACHE.set(cacheKey, map);
     return map;
   }
 
@@ -201,6 +266,13 @@
     return uri;
   }
 
+  async function firstExistingPath(paths) {
+    for (const p of paths) {
+      if (await exists(p)) return p;
+    }
+    return null;
+  }
+
   async function downloadZip(zipUrl, zipPath) {
     const Filesystem = getFilesystem();
     const FileTransfer = getFileTransfer();
@@ -243,7 +315,14 @@
     const map = {};
 
     for (const fileName of imageNames) {
-      const rel = `premium_scenarios/${scenarioId}/${version}/files/img/${fileName}`;
+      const rel = await firstExistingPath([
+        `premium_scenarios/${scenarioId}/${version}/files/img/${fileName}`,
+        `premium_scenarios/${scenarioId}/${version}/files/${fileName}`,
+        `premium_scenarios/${scenarioId}/${version}/files/${scenarioId}/img/${fileName}`
+      ]);
+
+      if (!rel) throw new Error(`native_file_missing:${fileName}`);
+
       const nativeUri = await uriFor(rel);
       map[fileName] = localWebUrl(nativeUri);
     }
@@ -290,7 +369,8 @@
     const imageNames = getRemoteImageNames(logic);
 
     if (!isNative()) {
-      const webMap = await buildWebSignedMap(bucketName, zipObjectPath, imageNames);
+      onProgress?.("download");
+      const webMap = await buildWebMapFromZip(bucketName, zipObjectPath, imageNames);
       const patchedLogic = patchLogic(logic, webMap);
 
       return {
@@ -313,7 +393,11 @@
     const alreadyReady =
       prev &&
       prev.version === version &&
-      await exists(`${extractDir}/img/${probeFile}`);
+      await firstExistingPath([
+        `${extractDir}/img/${probeFile}`,
+        `${extractDir}/${probeFile}`,
+        `${extractDir}/${id}/img/${probeFile}`
+      ]);
 
     if (!alreadyReady) {
       await ensureDir(baseDir);
