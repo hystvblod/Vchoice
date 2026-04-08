@@ -163,25 +163,12 @@
     }
 
     .vc-grid::after{
-      content:"";
-      display:block;
-      grid-column:1 / -1;
-      height:78px;
-      margin-top:-2px;
-      border-radius: 0 0 24px 24px;
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,255,255,.02) 0%,
-          rgba(255,59,59,.05) 16%,
-          rgba(123,56,171,.10) 42%,
-          rgba(16,20,38,.88) 100%
-        );
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,.04),
-        0 18px 40px rgba(0,0,0,.18);
-      pointer-events:none;
-      opacity:.92;
+      content:none;
+      display:none;
+    }
+
+    #vc-secret-scenario-slot{
+      display:none;
     }
 
     .vc-card{
@@ -654,8 +641,8 @@
   }
 
   .vc-grid::after{
-    height:110px;
-    border-radius:0 0 30px 30px;
+    content:none;
+    display:none;
   }
 
   .vc-card{
