@@ -117,24 +117,43 @@
     return row;
   }
 
-  function publicUrl(bucketName, objectPath) {
-    const r = window.sb.storage.from(bucketName).getPublicUrl(objectPath);
-    const url = r?.data?.publicUrl || "";
-    if (!url) throw new Error("missing_public_url");
+  async function signedUrl(bucketName, objectPath, expiresIn = 3600) {
+    const { data, error } = await window.sb.storage
+      .from(bucketName)
+      .createSignedUrl(objectPath, expiresIn);
+
+    if (error) throw error;
+
+    const url = data?.signedUrl || "";
+    if (!url) throw new Error("missing_signed_url");
     return url;
+  }
+
+  async function signedUrls(bucketName, objectPaths, expiresIn = 3600) {
+    const { data, error } = await window.sb.storage
+      .from(bucketName)
+      .createSignedUrls(objectPaths, expiresIn);
+
+    if (error) throw error;
+
+    return Array.isArray(data) ? data : [];
   }
 
   function stripZipName(objectPath) {
     return String(objectPath || "").replace(/\/?images\.zip$/i, "");
   }
 
-  function buildWebPublicMap(bucketName, zipObjectPath, imageNames) {
+  async function buildWebSignedMap(bucketName, zipObjectPath, imageNames) {
     const map = {};
     const base = stripZipName(zipObjectPath).replace(/\/+$/, "");
+    const paths = imageNames.map((fileName) => `${base}/img/${fileName}`);
 
-    imageNames.forEach((fileName) => {
-      const objectPath = `${base}/img/${fileName}`;
-      map[fileName] = publicUrl(bucketName, objectPath);
+    const rows = await signedUrls(bucketName, paths, 3600);
+
+    rows.forEach((row, i) => {
+      const fileName = imageNames[i];
+      const url = row?.signedUrl || "";
+      if (fileName && url) map[fileName] = url;
     });
 
     return map;
@@ -271,7 +290,7 @@
     const imageNames = getRemoteImageNames(logic);
 
     if (!isNative()) {
-      const webMap = buildWebPublicMap(bucketName, zipObjectPath, imageNames);
+      const webMap = await buildWebSignedMap(bucketName, zipObjectPath, imageNames);
       const patchedLogic = patchLogic(logic, webMap);
 
       return {
@@ -282,7 +301,7 @@
       };
     }
 
-    const zipUrl = publicUrl(bucketName, zipObjectPath);
+    const zipUrl = await signedUrl(bucketName, zipObjectPath, 3600);
     const baseDir = `premium_scenarios/${id}/${version}`;
     const zipPath = `${baseDir}/images.zip`;
     const extractDir = `${baseDir}/files`;
