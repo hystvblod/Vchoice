@@ -53,11 +53,7 @@
   }
 
   function getZipPlugin() {
-    return (
-      getPlugin("CapacitorZip") ||
-      getPlugin("Zip") ||
-      null
-    );
+    return getPlugin("CapacitorZip") || getPlugin("Zip") || null;
   }
 
   function loadStore() {
@@ -126,6 +122,22 @@
     const url = r?.data?.publicUrl || "";
     if (!url) throw new Error("missing_public_url");
     return url;
+  }
+
+  function stripZipName(objectPath) {
+    return String(objectPath || "").replace(/\/?images\.zip$/i, "");
+  }
+
+  function buildWebPublicMap(bucketName, zipObjectPath, imageNames) {
+    const map = {};
+    const base = stripZipName(zipObjectPath).replace(/\/+$/, "");
+
+    imageNames.forEach((fileName) => {
+      const objectPath = `${base}/img/${fileName}`;
+      map[fileName] = publicUrl(bucketName, objectPath);
+    });
+
+    return map;
   }
 
   async function ensureDir(path) {
@@ -245,10 +257,6 @@
   }
 
   async function ensurePremiumScenarioReady(scenarioId, logic, onProgress) {
-    if (!isNative()) {
-      throw new Error("premium_native_only");
-    }
-
     const id = norm(scenarioId);
     const row = await getRemoteRow(id);
 
@@ -260,15 +268,27 @@
       throw new Error("remote_path_is_not_zip");
     }
 
+    const imageNames = getRemoteImageNames(logic);
+
+    if (!isNative()) {
+      const webMap = buildWebPublicMap(bucketName, zipObjectPath, imageNames);
+      const patchedLogic = patchLogic(logic, webMap);
+
+      return {
+        ok: true,
+        logic: patchedLogic,
+        version,
+        mode: "web"
+      };
+    }
+
     const zipUrl = publicUrl(bucketName, zipObjectPath);
     const baseDir = `premium_scenarios/${id}/${version}`;
     const zipPath = `${baseDir}/images.zip`;
     const extractDir = `${baseDir}/files`;
 
-    const imageNames = getRemoteImageNames(logic);
     const store = loadStore();
     const prev = store[id];
-
     const probeFile = imageNames[0] || "s01.webp";
 
     const alreadyReady =
@@ -300,7 +320,8 @@
     return {
       ok: true,
       logic: patchedLogic,
-      version
+      version,
+      mode: "native"
     };
   }
 
