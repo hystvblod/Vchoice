@@ -934,6 +934,7 @@
   <script src="js/crossPromo.js"></script>
   <script src="js/referral.js"></script>
   <script src="js/scenarioPremium.js"></script>
+  <script src="js/premiumZip.js"></script>
   <script>
     window.addEventListener("load", async function () {
       try {
@@ -1020,7 +1021,7 @@
 
         return _t(
           "ui.scenario_buy.premium_iap_no_price",
-          "Débloquer via le store"
+          "Débloquer"
         ).trim();
       }
 
@@ -1148,6 +1149,132 @@
       requestAnimationFrame(() => {
         window.location.href = `game.html?scenario=${encodeURIComponent(scenarioId)}`;
       });
+    }
+
+    function isNativeRuntime(){
+      try {
+        if (typeof window.Capacitor?.isNativePlatform === "function") {
+          return !!window.Capacitor.isNativePlatform();
+        }
+      } catch (_) {}
+
+      try {
+        if (typeof window.Capacitor?.getPlatform === "function") {
+          return window.Capacitor.getPlatform() !== "web";
+        }
+      } catch (_) {}
+
+      return false;
+    }
+
+    async function fetchScenarioLogicForPreload(scenarioId){
+      const sid = String(scenarioId || "").trim();
+      const res = await fetch(`data/scenarios/${sid}/logic.json`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`logic_fetch_failed:${res.status}`);
+      return await res.json();
+    }
+
+    async function preloadPremiumScenarioOnIndex(scenarioId){
+      const sid = String(scenarioId || "").trim();
+      if (!sid) return { ok:false, reason:"invalid_scenario" };
+
+      if (!window.VCScenarioPremium?.isPremiumScenario?.(sid)) {
+        return { ok:true, skipped:true };
+      }
+
+      if (typeof window.ensurePremiumScenarioReady !== "function") {
+        return { ok:false, reason:"premium_loader_missing" };
+      }
+
+      const baseLogic = await fetchScenarioLogicForPreload(sid);
+      await window.ensurePremiumScenarioReady(sid, baseLogic);
+
+      return { ok:true };
+    }
+
+    let premiumUnlockBusy = false;
+
+    async function tryUnlockPremiumWithVcoinsAndReward(scenarioId){
+      if (premiumUnlockBusy) return;
+      premiumUnlockBusy = true;
+
+      showBuyError("");
+
+      try {
+        let refreshed = false;
+        try {
+          refreshed = await window.VUserData?.refresh?.().catch(() => false);
+        } catch (_) {}
+
+        if (!refreshed){
+          showBuyError(_t("ui.scenario_buy.err_unlock", ""));
+          return;
+        }
+
+        const balance = getCurrentVCoins();
+        if (balance < PRICE){
+          showBuyError(
+            _t(
+              "ui.scenario_buy.err_unlock_insufficient",
+              "",
+              { balance, price: PRICE }
+            )
+          );
+          return;
+        }
+
+        const preloadPromise = preloadPremiumScenarioOnIndex(scenarioId).catch((e) => {
+          console.warn("[premium preload before unlock]", e);
+          return { ok:false, error:e };
+        });
+
+        if (isNativeRuntime()){
+          if (!window.VAds || typeof window.VAds.showRewarded !== "function"){
+            showBuyError(_t("ui.scenario_buy.err_not_ready", "La pub récompensée n'est pas prête."));
+            return;
+          }
+
+          const ad = await window.VAds.showRewarded();
+          if (!ad?.ok){
+            showBuyError(_t("ui.scenario_buy.err_buy_failed", "La pub récompensée a échoué."));
+            return;
+          }
+        }
+
+        const res = await window.VUserData?.unlockScenario?.(scenarioId);
+
+        if (!res?.ok){
+          const reason = String(
+            res?.reason ||
+            res?.error?.message ||
+            "rpc_error"
+          ).toLowerCase();
+
+          if (reason.includes("insufficient_vcoins")){
+            showBuyError(
+              _t(
+                "ui.scenario_buy.err_unlock_insufficient",
+                "",
+                { balance: getCurrentVCoins(), price: PRICE }
+              )
+            );
+            return;
+          }
+
+          console.warn("[unlockScenario premium vcoins]", reason);
+          showBuyError(_t("ui.scenario_buy.err_unlock", ""));
+          return;
+        }
+
+        await Promise.allSettled([preloadPromise]);
+        await window.VUserData?.refresh?.().catch(() => false);
+
+        applyLocks();
+        closeBuyPopup();
+        launchScenario(scenarioId);
+      } finally {
+        premiumUnlockBusy = false;
+      }
     }
 
     const hintModal = document.getElementById("hintModal");
@@ -1339,7 +1466,17 @@
     }
 
     if (buyPay) buyPay.addEventListener("click", () => {
-      if (pendingScenarioId) tryUnlockWithVcoins(pendingScenarioId);
+      if (!pendingScenarioId) return;
+
+      const sid = pendingScenarioId;
+      const isPremium = !!window.VCScenarioPremium?.isPremiumScenario?.(sid);
+
+      if (isPremium) {
+        tryUnlockPremiumWithVcoinsAndReward(sid);
+        return;
+      }
+
+      tryUnlockWithVcoins(sid);
     });
 
     if (buyIap) buyIap.addEventListener("click", () => {
@@ -1380,6 +1517,16 @@
         if (!ok){
           showBuyError(_t("ui.scenario_buy.err_unlock_after_iap", ""));
           return;
+        }
+
+        const isPremium = !!window.VCScenarioPremium?.isPremiumScenario?.(target);
+
+        if (isPremium){
+          try {
+            await preloadPremiumScenarioOnIndex(target);
+          } catch (e) {
+            console.warn("[premium preload after iap]", e);
+          }
         }
 
         applyLocks();
