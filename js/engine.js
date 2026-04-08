@@ -1834,11 +1834,40 @@ async function openScenario(scenarioId, opts = {}){
   GAMEPLAY_SESSION_REWARDED_SEEN = false;
   syncAdWeightedTime();
 
-  const logicPromise = fetchJSON(PATHS.scenarioLogic(scenarioId));
+  const baseLogic = await fetchJSON(PATHS.scenarioLogic(scenarioId));
   const textPromise = fetchJSON(PATHS.scenarioText(scenarioId, LANG))
     .catch(() => fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG)));
 
-  LOGIC = await logicPromise;
+  const sceneLoadingText = document.getElementById("sceneLoadingText");
+
+  if (
+    window.VCScenarioPremium?.isPremiumScenario?.(scenarioId) &&
+    window.ensurePremiumScenarioReady
+  ) {
+    const prepared = await window.ensurePremiumScenarioReady(
+      scenarioId,
+      baseLogic,
+      (phase) => {
+        const txt = document.getElementById("sceneLoadingText");
+        if (!txt) return;
+        txt.classList.remove("hidden");
+        txt.textContent =
+          phase === "download"
+            ? "Téléchargement..."
+            : "Extraction...";
+      }
+    );
+
+    LOGIC = prepared.logic;
+  } else {
+    LOGIC = baseLogic;
+  }
+
+  if(sceneLoadingText){
+    sceneLoadingText.classList.add("hidden");
+    sceneLoadingText.textContent = "";
+  }
+
   try{
     const uni = (LOGIC?.meta?.universe || scenarioId || "").trim();
     if (uni && window.VCAudio?.setUniverse) window.VCAudio.setUniverse(uni);

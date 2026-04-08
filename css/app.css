@@ -532,6 +532,18 @@ body{
   box-shadow: 0 10px 30px rgba(0,0,0,.35);
 }
 
+
+.scene_loading__text{
+  position:relative;
+  z-index:1;
+  margin-top:72px;
+  font-weight:700;
+  font-size:14px;
+  letter-spacing:.2px;
+  color:rgba(255,255,255,.92);
+  text-shadow:0 4px 16px rgba(0,0,0,.55);
+}
+
 @keyframes vcSceneSpin{
   to{ transform: rotate(360deg); }
 }
