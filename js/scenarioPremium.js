@@ -113,9 +113,11 @@
 
     if (!isAngeliqueRevealed()){
       host.innerHTML = "";
+      host.style.display = "none";
       return;
     }
 
+    host.style.display = "block";
     host.innerHTML = buildSecretScenarioCardHtml();
 
     try {
