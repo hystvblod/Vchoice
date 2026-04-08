@@ -116,8 +116,8 @@
       if (data?.session) return data.session;
     } catch (_) {}
 
-    const res = await window.sb.auth.signInAnonymously();
-    if (res?.data?.session) return res.data.session;
+    const r = await window.sb.auth.signInAnonymously();
+    if (r?.data?.session) return r.data.session;
 
     const { data: last } = await window.sb.auth.getSession();
     if (last?.session) return last.session;
@@ -155,6 +155,19 @@
     const url = data?.signedUrl || "";
     if (!url) throw new Error("missing_signed_url");
     return url;
+  }
+
+  async function downloadPrivateBlob(bucketName, objectPath) {
+    await ensureSupabaseAuth();
+
+    const { data, error } = await window.sb.storage
+      .from(bucketName)
+      .download(objectPath);
+
+    if (error) throw error;
+    if (!data) throw new Error("download_empty");
+
+    return data;
   }
 
   function findZipEntry(zip, fileName) {
@@ -205,11 +218,8 @@
 
     await ensureJSZip();
 
-    const zipUrl = await signedUrl(bucketName, zipObjectPath, 3600);
-    const res = await fetch(zipUrl, { cache: "no-store" });
-    if (!res.ok) throw new Error(`zip_fetch_failed:${res.status}`);
-
-    const ab = await res.arrayBuffer();
+    const blob = await downloadPrivateBlob(bucketName, zipObjectPath);
+    const ab = await blob.arrayBuffer();
     const zip = await window.JSZip.loadAsync(ab);
     const map = {};
 
