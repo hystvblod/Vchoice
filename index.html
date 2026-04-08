@@ -58,19 +58,41 @@
         linear-gradient(
           180deg,
           #101426 0%,
-          #13203a 22%,
-          #173057 46%,
-          #1a2f56 62%,
-          #21264a 78%,
-          #2a1638 100%
+          #11192d 10%,
+          #13213b 22%,
+          #152a4a 34%,
+          #17345a 46%,
+          #18395f 56%,
+          #193b60 64%,
+          #1a395d 72%,
+          #1c3557 80%,
+          #1f304f 88%,
+          #222947 94%,
+          #261f3d 100%
         );
       background-repeat:no-repeat;
-      background-size:100% 100%;
+      background-attachment:scroll;
     }
 
     body::before{
-      content:none;
-      display:none;
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      z-index:0;
+      opacity:.035;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,.08) 0 1px,
+          transparent 1px 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          rgba(0,0,0,.08) 0 1px,
+          transparent 1px 4px
+        );
+      mix-blend-mode:soft-light;
     }
 
     body::after{
