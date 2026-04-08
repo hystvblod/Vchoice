@@ -1863,8 +1863,7 @@ async function openScenario(scenarioId, opts = {}){
       LOGIC = prepared.logic;
     } catch (err) {
       console.warn("[premium scenario]", err);
-      alert("Ce scénario premium est disponible uniquement dans l'application installée.");
-      window.location.href = "index.html";
+      alert("Le scénario premium n'a pas pu être chargé.");
       return;
     }
   } else {
