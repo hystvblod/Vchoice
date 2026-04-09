@@ -1141,6 +1141,7 @@ async function boot(){
 
   bindTopbar();
   bindJetonHud();
+  try{ window.VRMajorDecisionUI?.init?.(); }catch(_){ }
 
   if(hasMenuPage()){
     await renderMenu();
@@ -2906,6 +2907,180 @@ function renderScene(){
     }
   }
 }
+
+const SCENARIOS_PATH = "data/scenarios";
+
+function normalizeScenarioLang(lang){
+  const l = String(lang || "").toLowerCase();
+  if(l === "ptbr") return "ptbr";
+  if(l === "jp") return "ja";
+  return SUPPORTED_LANGS.includes(l) ? l : "en";
+}
+
+function __vrClamp(v, min, max){
+  return Math.min(max, Math.max(min, Number(v)));
+}
+
+window.VREventsLoader = window.VREventsLoader || {};
+window.VREventsLoader.loadUniverseMajorDecisions = async function(universeId, lang){
+  const logicPromise = this._loadMajorDecisionsLogic(universeId);
+  const textsPromise = this._loadMajorDecisionsTexts(universeId, lang);
+
+  const [logic, texts] = await Promise.all([logicPromise, textsPromise]);
+
+  return { majorLogic: logic, majorTexts: texts };
+};
+
+window.VREventsLoader._loadMajorDecisionsLogic = async function(universeId){
+  const url = `${SCENARIOS_PATH}/${universeId}/logic_major_decisions.json`;
+  const res = await fetch(url, { cache: "no-cache" });
+
+  if(!res.ok){
+    throw new Error(`[VREventsLoader] Impossible de charger les décisions majeures de ${universeId}`);
+  }
+
+  return res.json();
+};
+
+window.VREventsLoader._loadMajorDecisionsTexts = async function(universeId, lang){
+  const fileLang = normalizeScenarioLang(lang);
+  const tries = [
+    `${SCENARIOS_PATH}/${universeId}/major_decisions_${fileLang}.json`,
+    fileLang !== "en" ? `${SCENARIOS_PATH}/${universeId}/major_decisions_en.json` : "",
+    fileLang !== "fr" ? `${SCENARIOS_PATH}/${universeId}/major_decisions_fr.json` : ""
+  ].filter(Boolean);
+
+  for(const url of tries){
+    try{
+      const res = await fetch(url, { cache: "no-cache" });
+      if(res.ok) return await res.json();
+    }catch(_){ }
+  }
+
+  throw new Error(`[VREventsLoader] Impossible de charger les textes de décisions majeures pour ${universeId} en ${fileLang}`);
+};
+
+window.VRState = window.VRState || {
+  alive: true,
+  lastDeath: null,
+  gauges: {},
+  isAlive(){ return this.alive !== false; },
+  applyDeltas(){}
+};
+
+window.VRState.applySetGauge = function(setMap){
+  if(!this.alive) return;
+
+  Object.entries(setMap || {}).forEach(([gaugeId, value]) => {
+    this.gauges[gaugeId] = __vrClamp(Number(value ?? 50), 0, 100);
+  });
+
+  this.lastDeath = null;
+  this.alive = true;
+
+  for(const gaugeId of Object.keys(this.gauges)){
+    const v = this.gauges[gaugeId];
+    if(v <= 0){ this.alive = false; this.lastDeath = { gaugeId, direction: "down" }; break; }
+    if(v >= 100){ this.alive = false; this.lastDeath = { gaugeId, direction: "up" }; break; }
+  }
+};
+
+window.VRState.applyScaleGauge = function(scaleMap){
+  if(!this.alive) return;
+
+  Object.entries(scaleMap || {}).forEach(([gaugeId, ratio]) => {
+    const current = Number(this.gauges[gaugeId] ?? 50);
+    const factor = Number(ratio ?? 1);
+    const next = __vrClamp(current * factor, 0, 100);
+    this.gauges[gaugeId] = next;
+  });
+
+  this.lastDeath = null;
+  this.alive = true;
+
+  for(const gaugeId of Object.keys(this.gauges)){
+    const v = this.gauges[gaugeId];
+    if(v <= 0){ this.alive = false; this.lastDeath = { gaugeId, direction: "down" }; break; }
+    if(v >= 100){ this.alive = false; this.lastDeath = { gaugeId, direction: "up" }; break; }
+  }
+};
+
+window.VRState.forceGameOver = function(){
+  this.alive = false;
+  this.lastDeath = { gaugeId: "major_decision", direction: "down" };
+};
+
+window.VRMajorDecisionUI = {
+  _resolver: null,
+
+  _els(){
+    return {
+      overlay: document.getElementById("vr-major-overlay"),
+      title: document.getElementById("vr-major-title"),
+      body: document.getElementById("vr-major-body"),
+      hint: document.getElementById("vr-major-preview-hint"),
+      image: document.getElementById("vr-major-image"),
+      yesBtn: document.getElementById("vr-major-yes-btn"),
+      noBtn: document.getElementById("vr-major-no-btn")
+    };
+  },
+
+  init(){
+    const els = this._els();
+    if(!els.overlay || !els.yesBtn || !els.noBtn) return;
+
+    if(els.yesBtn.dataset.boundMajor === "1") return;
+    els.yesBtn.dataset.boundMajor = "1";
+    els.noBtn.dataset.boundMajor = "1";
+
+    els.yesBtn.addEventListener("click", () => this._close("yes"));
+    els.noBtn.addEventListener("click", () => this._close("no"));
+  },
+
+  async show(universeId, payload = {}){
+    const els = this._els();
+    if(!els.overlay) return null;
+
+    const guideImageMap = {
+      hell_king: "assets/img/guides/hell_king.webp",
+      heaven_king: "assets/img/guides/heaven_king.webp",
+      vampire_lord: "assets/img/guides/vampire_lord.webp",
+      mega_corp_ceo: "assets/img/guides/mega_corp_ceo.webp",
+      western_president: "assets/img/guides/western_president.webp",
+      new_world_explorer: "assets/img/guides/new_world_explorer.webp"
+    };
+
+    if(els.title) els.title.textContent = payload.title || "";
+    if(els.body) els.body.textContent = payload.body || "";
+    if(els.hint) els.hint.textContent = payload.preview_hint || "Utiliser un jeton pour voir les effets";
+    if(els.yesBtn) els.yesBtn.textContent = payload.yes_label || "Oui";
+    if(els.noBtn) els.noBtn.textContent = payload.no_label || "Non";
+
+    if(els.image){
+      els.image.src = guideImageMap[String(universeId || "").trim()] || "";
+      els.image.alt = "";
+    }
+
+    els.overlay.style.display = "flex";
+    els.overlay.setAttribute("aria-hidden", "false");
+
+    return new Promise((resolve) => {
+      this._resolver = resolve;
+    });
+  },
+
+  _close(result){
+    const els = this._els();
+    if(!els.overlay) return;
+
+    els.overlay.setAttribute("aria-hidden", "true");
+    els.overlay.style.display = "none";
+
+    const resolve = this._resolver;
+    this._resolver = null;
+    if(resolve) resolve(result);
+  }
+};
 
 /* =========================
    PUBLIC API
