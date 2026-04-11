@@ -1,71 +1,253 @@
-// FILE: www/js/onesignal.js
-// VChronicles - OneSignal init (Cordova plugin inside Capacitor)
-// - Init on deviceready
-// - Optional: link OneSignal user to Supabase uid (external id) if VUserData exists
-// - Request permission once (for testing)
-
+// js/onesignal.js
 (function () {
   "use strict";
 
   const ONESIGNAL_APP_ID = "5be55174-857b-4300-9180-37c1b076885b";
-  const PERM_FLAG_KEY = "vc_onesignal_perm_prompted_v1";
 
-  let __inited = false;
+  const K_PROMPT_DONE = "vc_os_native_prompt_done_v2";
+  const K_PENDING_INDEX = "vc_os_native_prompt_pending_v2";
 
-  async function initOneSignal() {
-    if (__inited) return;
+  let initialized = false;
+  let bootPromise = null;
+  let requestInFlight = null;
 
-    const os =
-      (window.plugins && window.plugins.OneSignal) ? window.plugins.OneSignal :
-      (window.OneSignal ? window.OneSignal : null);
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
-    if (!os || typeof os.initialize !== "function") {
-      console.warn("[OneSignal] SDK not ready (window.plugins.OneSignal missing).");
-      return;
-    }
-
-    __inited = true;
-
+  function getOS() {
     try {
-      if (os.Debug && typeof os.Debug.setLogLevel === "function") {
-        os.Debug.setLogLevel(6); // verbose (à enlever en prod)
-      }
+      if (window.plugins && window.plugins.OneSignal) return window.plugins.OneSignal;
     } catch (_) {}
-
     try {
-      os.initialize(ONESIGNAL_APP_ID);
-    } catch (e) {
-      console.error("[OneSignal] initialize failed:", e);
-      return;
-    }
+      if (window.OneSignal) return window.OneSignal;
+    } catch (_) {}
+    return null;
+  }
 
-    // (Optionnel) Lier à ton uid Supabase si dispo
+  function isNative() {
+    try {
+      if (window.Capacitor && typeof window.Capacitor.isNativePlatform === "function") {
+        return !!window.Capacitor.isNativePlatform();
+      }
+      if (window.cordova) return true;
+    } catch (_) {}
+    return false;
+  }
+
+  function isIndexPage() {
+    try {
+      const p = String(window.location.pathname || "").toLowerCase();
+      return p.endsWith("/index.html") || p.endsWith("index.html") || p === "/" || p === "";
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function lsGet(key) {
+    try { return localStorage.getItem(key); } catch (_) { return null; }
+  }
+
+  function lsSet(key, value) {
+    try { localStorage.setItem(key, value); } catch (_) {}
+  }
+
+  function lsDel(key) {
+    try { localStorage.removeItem(key); } catch (_) {}
+  }
+
+  async function getUidBestEffort() {
     try {
       if (window.VUserData && typeof window.VUserData.ensureAuth === "function") {
         const uid = await window.VUserData.ensureAuth();
-        if (uid) {
-          if (typeof os.login === "function") os.login(String(uid));
-          else if (typeof os.setExternalUserId === "function") os.setExternalUserId(String(uid));
-        }
-      }
-    } catch (e) {
-      console.warn("[OneSignal] external id link skipped:", e);
-    }
-
-    // Demande permission (TEST). OneSignal recommande de ne pas le faire en prod au lancement.
-    try {
-      if (!localStorage.getItem(PERM_FLAG_KEY) &&
-          os.Notifications && typeof os.Notifications.requestPermission === "function") {
-        localStorage.setItem(PERM_FLAG_KEY, "1");
-        os.Notifications.requestPermission(false).then(function (accepted) {
-          console.log("[OneSignal] User accepted notifications:", accepted);
-        }).catch(function (err) {
-          console.warn("[OneSignal] requestPermission error:", err);
-        });
+        if (uid) return String(uid);
       }
     } catch (_) {}
+
+    try {
+      if (window.sb && window.sb.auth && typeof window.sb.auth.getUser === "function") {
+        const res = await window.sb.auth.getUser();
+        const uid = res?.data?.user?.id;
+        if (uid) return String(uid);
+      }
+    } catch (_) {}
+
+    return null;
   }
 
-  document.addEventListener("deviceready", initOneSignal, false);
-  setTimeout(initOneSignal, 3000); // fallback si la page se charge après deviceready
+  async function syncExternalId() {
+    const OS = getOS();
+    if (!OS) return false;
+
+    const uid = await getUidBestEffort();
+    if (!uid) return false;
+
+    try {
+      if (typeof OS.login === "function") {
+        await OS.login(uid);
+        return true;
+      }
+    } catch (_) {}
+
+    try {
+      if (typeof OS.setExternalUserId === "function") {
+        await OS.setExternalUserId(uid);
+        return true;
+      }
+    } catch (_) {}
+
+    return false;
+  }
+
+  async function initOneSignal() {
+    if (initialized) return true;
+
+    const OS = getOS();
+    if (!OS) {
+      console.warn("[OneSignal] window.plugins.OneSignal introuvable");
+      return false;
+    }
+
+    try {
+      if (OS.Debug && typeof OS.Debug.setLogLevel === "function") {
+        OS.Debug.setLogLevel(6);
+      }
+
+      if (typeof OS.initialize === "function") {
+        OS.initialize(ONESIGNAL_APP_ID);
+      } else if (typeof OS.setAppId === "function") {
+        OS.setAppId(ONESIGNAL_APP_ID);
+      } else {
+        console.warn("[OneSignal] initialize/setAppId introuvable sur window.plugins.OneSignal", Object.keys(OS || {}));
+        return false;
+      }
+
+      initialized = true;
+      await syncExternalId();
+      return true;
+    } catch (e) {
+      console.warn("[OneSignal] initOneSignal() error", e);
+      return false;
+    }
+  }
+
+  async function bootOneSignal() {
+    if (initialized) return true;
+    if (!isNative()) return false;
+    if (bootPromise) return bootPromise;
+
+    bootPromise = (async function () {
+      try {
+        for (let i = 0; i < 20; i++) {
+          const ok = await initOneSignal();
+          if (ok) return true;
+          await sleep(400);
+        }
+        return false;
+      } finally {
+        if (!initialized) bootPromise = null;
+      }
+    })();
+
+    return bootPromise;
+  }
+
+  async function requestNativePermission() {
+    const bootOk = await bootOneSignal();
+    if (!bootOk) {
+      console.warn("[OneSignal] bootOneSignal() failed");
+      return { attempted: false, accepted: false };
+    }
+
+    const OS = getOS();
+    if (!OS) {
+      console.warn("[OneSignal] getOS() returned null");
+      return { attempted: false, accepted: false };
+    }
+
+    try {
+      if (OS.Notifications && typeof OS.Notifications.requestPermission === "function") {
+        const accepted = await OS.Notifications.requestPermission(false);
+        console.log("[OneSignal] Native permission result:", accepted);
+        return { attempted: true, accepted: !!accepted };
+      }
+    } catch (e) {
+      console.warn("[OneSignal] Notifications.requestPermission failed", e);
+    }
+
+    try {
+      if (typeof OS.promptForPushNotificationsWithUserResponse === "function") {
+        const accepted = await new Promise((resolve) => {
+          OS.promptForPushNotificationsWithUserResponse(function (ok) {
+            resolve(!!ok);
+          });
+        });
+        console.log("[OneSignal] Legacy native permission result:", accepted);
+        return { attempted: true, accepted: !!accepted };
+      }
+    } catch (e) {
+      console.warn("[OneSignal] Legacy prompt failed", e);
+    }
+
+    console.warn("[OneSignal] No native permission API available");
+    return { attempted: false, accepted: false };
+  }
+
+  function markPromptPendingOnNextIndex() {
+    if (lsGet(K_PROMPT_DONE) === "1") return false;
+    lsSet(K_PENDING_INDEX, "1");
+    return true;
+  }
+
+  function clearPendingPrompt() {
+    lsDel(K_PENDING_INDEX);
+  }
+
+  async function maybePromptNativeAfterAdmobOnIndex() {
+    if (!isIndexPage()) return false;
+    if (lsGet(K_PROMPT_DONE) === "1") return false;
+    if (lsGet(K_PENDING_INDEX) !== "1") return false;
+
+    if (requestInFlight) return requestInFlight;
+
+    requestInFlight = (async function () {
+      try {
+        const result = await requestNativePermission();
+
+        if (result && result.attempted) {
+          lsSet(K_PROMPT_DONE, "1");
+          clearPendingPrompt();
+        }
+
+        return !!result?.accepted;
+      } catch (e) {
+        console.warn("[OneSignal] maybePromptNativeAfterAdmobOnIndex failed", e);
+        return false;
+      } finally {
+        requestInFlight = null;
+      }
+    })();
+
+    return requestInFlight;
+  }
+
+  window.VROneSignal = {
+    boot: bootOneSignal,
+    syncExternalId: syncExternalId,
+    requestNativePermission: requestNativePermission,
+    markPromptPendingOnNextIndex: markPromptPendingOnNextIndex,
+    clearPendingPrompt: clearPendingPrompt,
+    maybePromptNativeAfterAdmobOnIndex: maybePromptNativeAfterAdmobOnIndex,
+    isReady: function () {
+      return initialized;
+    }
+  };
+
+  document.addEventListener("deviceready", async function () {
+    await bootOneSignal();
+  }, false);
+
+  document.addEventListener("resume", function () {
+    syncExternalId();
+  }, false);
 })();
