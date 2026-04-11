@@ -36,6 +36,8 @@
   const LAST_INTERSTITIAL_AT_KEY = "vchoice_ads_last_interstitial_at_v1";
   const INTERSTITIAL_GLOBAL_TIME_KEY = "vchoice_ads_ingame_time_ms_v1";
   const INTRO_FINISHED_FLOW_KEY = "vchoice_intro_just_finished";
+  const CONSENT_RETRY_KEY = "vchoice_admob_consent_retry_v1";
+  const CONSENT_STOP_KEY = "vchoice_admob_consent_stop_v1";
 
   let _weightedTimerStartedAt = 0;
   let _umpConsentInfo = null;
@@ -235,6 +237,40 @@
     return "";
   }
 
+  function _writeLSString(key, value) {
+    try {
+      localStorage.setItem(key, String(value || ""));
+    } catch (_) {}
+  }
+
+  function _removeLS(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (_) {}
+  }
+
+  function _isConsentRetryPending() {
+    return _readLSString(CONSENT_RETRY_KEY) === "1";
+  }
+
+  function _isConsentStopFlagSet() {
+    return _readLSString(CONSENT_STOP_KEY) === "1";
+  }
+
+  function _setConsentRetryPending(on) {
+    if (on) _writeLSString(CONSENT_RETRY_KEY, "1");
+    else _removeLS(CONSENT_RETRY_KEY);
+  }
+
+  function _setConsentStopFlag(on) {
+    if (on) _writeLSString(CONSENT_STOP_KEY, "1");
+    else _removeLS(CONSENT_STOP_KEY);
+  }
+
+  function _clearIntroFlowFlag() {
+    _removeLS(INTRO_FINISHED_FLOW_KEY);
+  }
+
   function _emptyConsentInfo() {
     return {
       status: "UNKNOWN",
@@ -284,23 +320,57 @@
 
   async function maybeShowGoogleConsentFormOnIndexAfterIntro() {
     try {
-      const introJustFinished = _readLSString(INTRO_FINISHED_FLOW_KEY) === "1";
-      if (!introJustFinished) return false;
       if (!isNativeMobile()) return false;
+      if (_isConsentStopFlagSet()) return false;
+
+      const introJustFinished = _readLSString(INTRO_FINISHED_FLOW_KEY) === "1";
+      const retryPending = _isConsentRetryPending();
+
+      if (!introJustFinished && !retryPending) return false;
 
       const plugin = getPlugin();
-      if (!plugin) return false;
-      if (typeof plugin.requestConsentInfo !== "function") return false;
-      if (typeof plugin.showConsentForm !== "function") return false;
+      if (!plugin) {
+        _setConsentRetryPending(true);
+        return false;
+      }
 
-      const info = await refreshGoogleConsentInfo();
+      if (typeof plugin.requestConsentInfo !== "function" || typeof plugin.showConsentForm !== "function") {
+        _setConsentRetryPending(true);
+        return false;
+      }
 
-      if (info.canRequestAds) return false;
+      const beforeInfo = await refreshGoogleConsentInfo();
 
-      await plugin.showConsentForm();
-      await refreshGoogleConsentInfo();
-      return true;
+      if (beforeInfo && beforeInfo.canRequestAds) {
+        _setConsentStopFlag(true);
+        _setConsentRetryPending(false);
+        _clearIntroFlowFlag();
+        return false;
+      }
+
+      let shown = false;
+
+      try {
+        await plugin.showConsentForm();
+        shown = true;
+      } catch (_) {
+        shown = false;
+      }
+
+      const afterInfo = await refreshGoogleConsentInfo();
+
+      if (afterInfo && afterInfo.canRequestAds) {
+        _setConsentStopFlag(true);
+        _setConsentRetryPending(false);
+        _clearIntroFlowFlag();
+      } else {
+        _setConsentRetryPending(true);
+        _clearIntroFlowFlag();
+      }
+
+      return shown;
     } catch (_) {
+      _setConsentRetryPending(true);
       return false;
     }
   }
@@ -316,10 +386,27 @@
 
       const info = await refreshGoogleConsentInfo();
 
+      if (info && info.canRequestAds) {
+        _setConsentStopFlag(true);
+        _setConsentRetryPending(false);
+        _clearIntroFlowFlag();
+        return false;
+      }
+
       if (info.privacyOptionsRequirementStatus !== "REQUIRED") return false;
 
       await plugin.showPrivacyOptionsForm();
-      await refreshGoogleConsentInfo();
+
+      const afterInfo = await refreshGoogleConsentInfo();
+
+      _setConsentStopFlag(true);
+      _setConsentRetryPending(false);
+      _clearIntroFlowFlag();
+
+      if (afterInfo && afterInfo.canRequestAds) {
+        return true;
+      }
+
       return true;
     } catch (_) {
       return false;

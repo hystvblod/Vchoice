@@ -938,17 +938,9 @@
   <script>
     window.addEventListener("load", async function () {
       try {
-        const introJustFinished = localStorage.getItem("vchoice_intro_just_finished") === "1";
-
-        if (introJustFinished) {
-          try {
-            await window.VAds?.maybeShowGoogleConsentFormOnIndexAfterIntro?.();
-          } catch (_) {}
-
-          try {
-            localStorage.removeItem("vchoice_intro_just_finished");
-          } catch (_) {}
-        }
+        try {
+          await window.VAds?.maybeShowGoogleConsentFormOnIndexAfterIntro?.();
+        } catch (_) {}
 
         try {
           await window.VROneSignal?.maybePromptNativeAfterAdmobOnIndex?.();
