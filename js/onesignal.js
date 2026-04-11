@@ -19,9 +19,6 @@
     try {
       if (window.plugins && window.plugins.OneSignal) return window.plugins.OneSignal;
     } catch (_) {}
-    try {
-      if (window.OneSignal) return window.OneSignal;
-    } catch (_) {}
     return null;
   }
 
@@ -60,7 +57,7 @@
     try {
       if (window.VUserData && typeof window.VUserData.ensureAuth === "function") {
         const uid = await window.VUserData.ensureAuth();
-        if (uid) return String(uid);
+        if (uid) return uid;
       }
     } catch (_) {}
 
@@ -68,7 +65,7 @@
       if (window.sb && window.sb.auth && typeof window.sb.auth.getUser === "function") {
         const res = await window.sb.auth.getUser();
         const uid = res?.data?.user?.id;
-        if (uid) return String(uid);
+        if (uid) return uid;
       }
     } catch (_) {}
 
@@ -143,6 +140,7 @@
           if (ok) return true;
           await sleep(400);
         }
+
         return false;
       } finally {
         if (!initialized) bootPromise = null;
