@@ -314,6 +314,25 @@
       transform: translateX(22px);
     }
 
+    .vc-inlineBtn{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      border-radius:14px;
+      padding:10px 14px;
+      font-weight:900;
+      font-size:13px;
+      line-height:1;
+      cursor:pointer;
+      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+      flex:0 0 auto;
+    }
+
+    .vc-inlineBtn:active{
+      transform:scale(.99);
+    }
+
     /* ====== Aide / email ======
        ✅ centré
        ✅ pas de carré
@@ -528,6 +547,12 @@
     transform: translateX(28px);
   }
 
+  .vc-inlineBtn{
+    padding:12px 18px;
+    font-size:16px;
+    border-radius:16px;
+  }
+
   .helpLine,
   .dangerLine,
   .versionLine,
@@ -584,6 +609,15 @@
                 <input id="adsPersonalized" type="checkbox" />
                 <span class="switchUi"></span>
               </label>
+            </div>
+
+            <div class="toggleRow">
+              <div class="toggleText">
+                <p id="privacyOptionsLabel" class="toggleLabel"></p>
+                <p id="privacyOptionsDesc" class="toggleDesc"></p>
+              </div>
+
+              <button id="btnPrivacyOptions" class="vc-inlineBtn" type="button"></button>
             </div>
           </div>
 
@@ -746,15 +780,22 @@
       const grid = $("settingsLangGrid");
       if(grid) grid.setAttribute("aria-label", t("ui.language", "Language"));
 
-      const adsTitle = $("settingsAdsTitle");
-      const adsLabel = $("adsLabel");
-      const adsDesc  = $("adsDesc");
-      const adsSw    = $("adsSwitch");
+      const adsTitle      = $("settingsAdsTitle");
+      const adsLabel      = $("adsLabel");
+      const adsDesc       = $("adsDesc");
+      const adsSw         = $("adsSwitch");
+      const privacyLabel  = $("privacyOptionsLabel");
+      const privacyDesc   = $("privacyOptionsDesc");
+      const privacyBtn    = $("btnPrivacyOptions");
 
       if(adsTitle) adsTitle.textContent = t("ui.settings_ads_title", "Ads");
       if(adsLabel) adsLabel.textContent = t("ui.settings_ads_personalized_label", "Personalized ads");
       if(adsDesc)  adsDesc.textContent  = t("ui.settings_ads_personalized_desc", "");
       if(adsSw)    adsSw.setAttribute("aria-label", t("ui.settings_ads_personalized_label", "Personalized ads"));
+
+      if(privacyLabel) privacyLabel.textContent = t("ui.settings_privacy_options_label", "Privacy choices");
+      if(privacyDesc)  privacyDesc.textContent  = t("ui.settings_privacy_options_desc", "Open the Google form to review or change your ad choices.");
+      if(privacyBtn)   privacyBtn.textContent   = t("ui.settings_privacy_options_button", "Open");
 
       const helpTitle = $("settingsHelpTitle");
       const helpLab   = $("helpEmailLabel");
@@ -900,6 +941,20 @@
       }
     }
 
+    async function openPrivacyOptions(){
+      let ok = false;
+      try{
+        ok = !!(await window.VAds?.openGooglePrivacyOptionsForm?.());
+      }catch(_){}
+
+      const msg = $("settingsMsg");
+      if(msg){
+        msg.textContent = ok
+          ? t("ui.settings_privacy_options_opened", "Options de confidentialité ouvertes.")
+          : t("ui.settings_privacy_options_unavailable", "Aucune option de confidentialité n’est disponible pour le moment.");
+      }
+    }
+
     try { await window.bootstrapAuthAndProfile?.(); } catch(e) {}
     try { await window.VUserData?.init?.(); } catch(e) {}
     try { await window.VRI18n?.initI18n?.(); } catch(e) {}
@@ -922,6 +977,11 @@
     if(adsBox){
       adsBox.checked = getAdsPref();
       adsBox.addEventListener("change", () => setAdsPref(adsBox.checked, { showMsg:true }));
+    }
+
+    const privacyBtn = $("btnPrivacyOptions");
+    if(privacyBtn){
+      privacyBtn.addEventListener("click", openPrivacyOptions);
     }
 
     try{ window.VAds?.setPersonalized?.(getAdsPref()); }catch(_){}
