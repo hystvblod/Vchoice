@@ -393,7 +393,12 @@
         return false;
       }
 
-      if (info.privacyOptionsRequirementStatus !== "REQUIRED") return false;
+      if (info.privacyOptionsRequirementStatus !== "REQUIRED") {
+  _setConsentStopFlag(true);
+  _setConsentRetryPending(false);
+  _clearIntroFlowFlag();
+  return false;
+}
 
       await plugin.showPrivacyOptionsForm();
 
