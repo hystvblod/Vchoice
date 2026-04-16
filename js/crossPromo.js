@@ -718,7 +718,28 @@
       setContext(context) {
         try {
           sessionStorage.setItem(CONTEXT_KEY, String(context || ""));
-        } catch (_) {}
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
+
+      queueOfferVBlocksAfterLoss() {
+        try {
+          sessionStorage.setItem(CONTEXT_KEY, "offer_vblocks_after_loss");
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
+
+      queueOfferVUniverseAfterStory() {
+        try {
+          sessionStorage.setItem(CONTEXT_KEY, "offer_vuniverse_after_story");
+          return true;
+        } catch (_) {
+          return false;
+        }
       }
     };
   }
