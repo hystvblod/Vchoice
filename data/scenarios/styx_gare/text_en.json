@@ -418,5 +418,11 @@
     "styx.clue.saw_clock_0317.title": "Saw Clock 03:17",
     "styx.clue.saw_destinations.title": "Saw Destinations",
     "styx.clue.saw_return_line.title": "Saw Return Line"
-  }
+  },
+  "styx.s42.body": "The notebook is a control journal. Plain lines: schedules, passages, inspections.\n\nThe last entry is fresh: \"STYX — Inspection: IN PROGRESS.\" And just below: \"Exception: RETURN — proof required.\"",
+  "styx.s54.body": "Everything falls into place: the frozen time, the return line, the control journal, and your black ticket.\n\nYou suddenly understand that the station has classified you.",
+  "styx.s42.c1": "Take the journal as proof",
+  "styx.h.s39.strong": "A control journal can serve as proof: search the console.",
+  "styx.h.s42.strong": "Keep that journal. With 03:17 + the return line + the ticket, you can trigger the exit.",
+  "styx.h.s54.strong": "If you have the journal + 03:17 + the return line + the ticket, you can trigger the white departure."
 }

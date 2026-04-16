@@ -418,5 +418,11 @@
     "styx.clue.saw_clock_0317.title": "Uhr 03:17 gesehen",
     "styx.clue.saw_destinations.title": "Ziele gesehen",
     "styx.clue.saw_return_line.title": "Rückkehrzeile gesehen"
-  }
+  },
+  "styx.s42.body": "Das Notizbuch ist ein Kontrollprotokoll. Nüchterne Zeilen: Fahrpläne, Durchfahrten, Inspektionen.\n\nDie letzte Zeile ist frisch: „STYX — Kontrolle: LÄUFT“. Und direkt darunter: „Ausnahme: RÜCKKEHR — Nachweis erforderlich“.",
+  "styx.s54.body": "Alles fügt sich zusammen: die feststehende Uhrzeit, die Rückkehrzeile, das Kontrollprotokoll und dein schwarzes Ticket.\n\nPlötzlich begreifst du, dass der Bahnhof dich eingeordnet hat.",
+  "styx.s42.c1": "Das Protokoll als Beweis nehmen",
+  "styx.h.s39.strong": "Ein Kontrollprotokoll kann als Beweis dienen: Durchsuche das Pult.",
+  "styx.h.s42.strong": "Behalte dieses Protokoll. Mit 03:17 + Rückkehrzeile + Ticket kannst du den Ausgang auslösen.",
+  "styx.h.s54.strong": "Wenn du das Protokoll + 03:17 + die Rückkehrzeile + das Ticket hast, kannst du die weiße Abfahrt auslösen."
 }

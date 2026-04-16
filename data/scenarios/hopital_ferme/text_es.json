@@ -277,5 +277,8 @@
     "hf.h.s37.strong": "Coge el expediente: es la prueba más fuerte y una llave para la verdad completa.",
     "hf.h.s47.soft": "Puedes terminar rápido… o ir más lejos.",
     "hf.h.s47.strong": "Final secreto = cinta + grabación + expediente."
-  }
+  },
+  "hf.tagline": "En un hospital cerrado desde hace años, tu nombre ya aparece en los registros. Entre una credencial de admisión, una pulsera de paciente, la habitación 14 y salas todavía iluminadas, todo indica que tu llegada estaba prevista.",
+  "hf.s11.body": "La cama está deshecha, todavía tibia cerca de la almohada. Sobre la mesilla: una pulsera de paciente. El monitor cardíaco está apagado, pero sus luces indicadoras parpadean lentamente.",
+  "hf.s24.c1": "Pasar la credencial y entrar"
 }

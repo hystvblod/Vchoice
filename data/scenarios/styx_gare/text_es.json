@@ -418,5 +418,11 @@
     "styx.clue.saw_clock_0317.title": "Reloj 03:17 visto",
     "styx.clue.saw_destinations.title": "Destinos vistos",
     "styx.clue.saw_return_line.title": "Línea de regreso vista"
-  }
+  },
+  "styx.s42.body": "El cuaderno es un registro de control. Líneas sobrias: horarios, pasos, inspecciones.\n\nLa última línea está reciente: « STYX — Control: EN CURSO ». Y justo debajo: « Excepción: REGRESO — prueba requerida ».",
+  "styx.s54.body": "Todo encaja: la hora detenida, la línea de regreso, el registro de control y tu billete negro.\n\nComprendes de repente que la estación te ha clasificado.",
+  "styx.s42.c1": "Tomar el registro como prueba",
+  "styx.h.s39.strong": "Un registro de control puede servir como prueba: registra el pupitre.",
+  "styx.h.s42.strong": "Guarda este registro. Con 03:17 + línea de regreso + billete, puedes activar la salida.",
+  "styx.h.s54.strong": "Si tienes el registro + 03:17 + la línea de regreso + el billete, puedes activar la salida blanca."
 }

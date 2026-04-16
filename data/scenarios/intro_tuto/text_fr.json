@@ -1,4 +1,4 @@
-{
+﻿{
   "meta": {
     "lang": "fr",
     "scenario_id": "intro_tuto",
@@ -37,5 +37,6 @@
     "it.end_bad.title": "Fin — tu as fui",
     "it.end_bad.body": "Tu recules d’un coup et tu fuis.\n\nDerrière toi, le cri recommence… mais cette fois, il semble te suivre.\n\n✅ Récompense du tuto :\n• +2 Jetons\n• +100 VCoins\n\nLes **VCoins** servent à débloquer de nouveaux scénarios.\nLes **Jetons** servent à :\n• débloquer un objet oublié\n• revenir en arrière\n• activer le guide vers une fin (bonne / mauvaise / secrète)\n\nChaque scénario a plusieurs fins : une bonne, une mauvaise, et parfois une ou plusieurs secrètes.\n\nAstuce : si une option est verrouillée, tu peux souvent trouver l’objet… ou le débloquer avec 1 jeton.",
     "it.h.clue.it_key.title": "Clé rouillée"
-  }
+  },
+  "it.s3.c3": "Essayer de l’ouvrir en tapant dessus"
 }

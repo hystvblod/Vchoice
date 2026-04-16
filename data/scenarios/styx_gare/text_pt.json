@@ -418,5 +418,11 @@
     "styx.clue.saw_clock_0317.title": "Relógio 03:17 visto",
     "styx.clue.saw_destinations.title": "Destinos vistos",
     "styx.clue.saw_return_line.title": "Linha de regresso vista"
-  }
+  },
+  "styx.s42.body": "O caderno é um registo de controlo. Linhas sóbrias: horários, passagens, inspeções.\n\nA última linha é recente: «STYX — Controlo: EM CURSO». E logo por baixo: «Exceção: REGRESSO — prova necessária».",
+  "styx.s54.body": "Tudo se encaixa: a hora parada, a linha de regresso, o registo de controlo e o teu bilhete negro.\n\nPercebes de repente que a estação te classificou.",
+  "styx.s42.c1": "Levar o registo como prova",
+  "styx.h.s39.strong": "Um registo de controlo pode servir de prova: vasculha a consola.",
+  "styx.h.s42.strong": "Guarda este registo. Com 03:17 + linha de regresso + bilhete, podes desbloquear a saída.",
+  "styx.h.s54.strong": "Se tens o registo + 03:17 + a linha de regresso + o bilhete, podes desencadear a partida branca."
 }

@@ -1,4 +1,4 @@
-{
+﻿{
   "meta": {
     "scenario_id": "hopital_ferme",
     "language": "fr",
@@ -277,5 +277,8 @@
     "hf.h.s37.strong": "Prends le dossier : c’est la preuve la plus forte, et une clé pour la vérité complète.",
     "hf.h.s47.soft": "Tu peux finir vite… ou aller plus loin.",
     "hf.h.s47.strong": "Fin secrète = cassette + enregistrement + dossier."
-  }
+  },
+  "hf.tagline": "Dans un hôpital fermé depuis des années, ton nom apparaît déjà dans les registres. Entre badge d’admission, bracelet patient, chambre 14 et salles encore allumées, tout indique que ta venue était prévue.",
+  "hf.s11.body": "Le lit est défait, encore tiède près de l’oreiller. Sur la tablette : un bracelet patient. Le moniteur cardiaque est éteint, mais ses voyants clignotent lentement.",
+  "hf.s24.c1": "Passer le badge et entrer"
 }
