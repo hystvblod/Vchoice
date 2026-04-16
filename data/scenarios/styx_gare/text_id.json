@@ -418,5 +418,11 @@
     "styx.clue.saw_clock_0317.title": "Melihat jam 03:17",
     "styx.clue.saw_destinations.title": "Melihat tujuan",
     "styx.clue.saw_return_line.title": "Melihat jalur kembali"
-  }
+  },
+  "styx.s42.body": "Buku catatan itu adalah catatan kontrol. Baris-baris sederhana: jadwal, lintasan, inspeksi.\n\nBaris terakhir masih segar: « STYX — Pemeriksaan: BERLANGSUNG ». Dan tepat di bawahnya: « Pengecualian: KEMBALI — bukti diperlukan ».",
+  "styx.s54.body": "Semuanya menyatu: waktu yang membeku, jalur kembali, catatan kontrol, dan tiket hitammu.\n\nKamu tiba-tiba mengerti bahwa stasiun ini telah mengklasifikasikanmu.",
+  "styx.s42.c1": "Mengambil catatan itu sebagai bukti",
+  "styx.h.s39.strong": "Sebuah catatan kontrol bisa menjadi bukti: periksa meja kendali.",
+  "styx.h.s42.strong": "Simpan catatan ini. Dengan 03:17 + jalur kembali + tiket, kamu bisa memicu jalan keluar.",
+  "styx.h.s54.strong": "Jika kamu punya catatan itu + 03:17 + jalur kembali + tiket, kamu bisa memicu keberangkatan putih."
 }

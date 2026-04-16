@@ -277,5 +277,8 @@
     "hf.h.s37.strong": "Take the file: it is the strongest proof, and a key to the full truth.",
     "hf.h.s47.soft": "You can finish quickly... or go further.",
     "hf.h.s47.strong": "Secret ending = cassette + recording + file."
-  }
+  },
+  "hf.tagline": "In a hospital closed for years, your name is already in the records. Between an admission badge, a patient wristband, Room 14, and rooms still lit up, everything suggests your arrival was expected.",
+  "hf.s11.body": "The bed is unmade, still warm near the pillow. On the bedside table: a patient wristband. The heart monitor is off, but its indicator lights are blinking slowly.",
+  "hf.s24.c1": "Scan the badge and enter"
 }

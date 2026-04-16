@@ -418,5 +418,11 @@
     "styx.clue.saw_clock_0317.title": "Orologio 03:17 visto",
     "styx.clue.saw_destinations.title": "Destinazioni viste",
     "styx.clue.saw_return_line.title": "Linea di ritorno vista"
-  }
+  },
+  "styx.s42.body": "Il registro è un registro di controllo. Righe sobrie: orari, passaggi, ispezioni.\n\nL’ultima riga è fresca: « STIGE — Controllo: IN CORSO ». E subito sotto: « Eccezione: RITORNO — prova richiesta ».",
+  "styx.s54.body": "Tutto si mette a posto: l’ora ferma, la linea di ritorno, il registro di controllo e il tuo biglietto nero.\n\nCapisci all’improvviso che la stazione ti ha classificato.",
+  "styx.s42.c1": "Prendere il registro come prova",
+  "styx.h.s39.strong": "Un registro di controllo può servire come prova: fruga nella consolle.",
+  "styx.h.s42.strong": "Tieni questo registro. Con 03:17 + linea di ritorno + biglietto, puoi attivare l’uscita.",
+  "styx.h.s54.strong": "Se hai il registro + 03:17 + la linea di ritorno + il biglietto, puoi attivare la partenza bianca."
 }

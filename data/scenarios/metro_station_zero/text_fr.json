@@ -1,4 +1,4 @@
-{
+﻿{
   "meta": {
     "scenario_id": "metro_station_zero",
     "language": "fr",
@@ -409,5 +409,6 @@
     "msz.clue.has_phone_recording.title": "Vidéo enregistrée",
     "msz.clue.has_service_key.title": "Clé de service",
     "msz.clue.has_zero_ticket.title": "Ticket Zéro"
-  }
+  },
+  "msz.s39.c2": "Chercher une porte vers la salle de contrôle"
 }

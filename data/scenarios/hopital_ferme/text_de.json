@@ -277,5 +277,8 @@
     "hf.h.s37.strong": "Nimm die Akte: Sie ist der stärkste Beweis und ein Schlüssel zur ganzen Wahrheit.",
     "hf.h.s47.soft": "Du kannst schnell beenden… oder weitergehen.",
     "hf.h.s47.strong": "Geheimes Ende = Kassette + Aufnahme + Akte."
-  }
+  },
+  "hf.tagline": "In einem seit Jahren geschlossenen Krankenhaus steht dein Name bereits in den Registern. Zwischen Aufnahmeausweis, Patientenarmband, Zimmer 14 und noch beleuchteten Räumen deutet alles darauf hin, dass deine Ankunft geplant war.",
+  "hf.s11.body": "Das Bett ist zerwühlt, neben dem Kissen noch warm. Auf dem Nachttisch liegt ein Patientenarmband. Der Herzmonitor ist aus, aber seine Anzeigen blinken langsam.",
+  "hf.s24.c1": "Die Karte benutzen und eintreten"
 }

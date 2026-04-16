@@ -1,4 +1,4 @@
-{
+﻿{
   "meta": {
     "scenario_id": "styx_gare",
     "language": "fr",
@@ -418,5 +418,11 @@
     "styx.clue.saw_clock_0317.title": "Horloge 03:17 vue",
     "styx.clue.saw_destinations.title": "Destinations vues",
     "styx.clue.saw_return_line.title": "Ligne de retour vue"
-  }
+  },
+  "styx.s42.body": "Le carnet est un journal de contrôle. Des lignes sobres : horaires, passages, inspections.\n\nLa dernière ligne est fraîche : « STYX — Contrôle : EN COURS ». Et juste dessous : « Exception : RETOUR — preuve requise ».",
+  "styx.s54.body": "Tout se met en place : l’heure figée, la ligne de retour, le journal de contrôle et ton billet noir.\n\nTu comprends soudain que la gare t’a classé.",
+  "styx.s42.c1": "Prendre le journal comme preuve",
+  "styx.h.s39.strong": "Un journal de contrôle peut servir de preuve : fouille le pupitre.",
+  "styx.h.s42.strong": "Garde ce journal. Avec 03:17 + ligne de retour + billet, tu peux déclencher la sortie.",
+  "styx.h.s54.strong": "Si tu as le journal + 03:17 + la ligne de retour + le billet, tu peux déclencher le départ blanc."
 }
