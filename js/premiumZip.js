@@ -119,11 +119,13 @@
       if (data?.session) return data.session;
     } catch (_) {}
 
-    const r = await window.sb.auth.signInAnonymously();
-    if (r?.data?.session) return r.data.session;
-
-    const { data: last } = await window.sb.auth.getSession();
-    if (last?.session) return last.session;
+    try {
+      const { data } = await window.sb.auth.getUser();
+      if (data?.user) {
+        const { data: s2 } = await window.sb.auth.getSession();
+        if (s2?.session) return s2.session;
+      }
+    } catch (_) {}
 
     throw new Error("anon_session_missing");
   }
