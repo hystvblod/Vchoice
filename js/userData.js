@@ -492,18 +492,14 @@ ensureAuth: async function(){
     }
 
     try {
-      const r = await sb.auth.signInAnonymously();
-      return r?.data?.user?.id || r?.data?.session?.user?.id || null;
+      const u2 = await sb.auth.getUser();
+      const uidRetryUser = u2?.data?.user?.id || null;
+      if (uidRetryUser) return uidRetryUser;
     } catch (e) {
-      _reportRemoteError("ensureAuth.signInAnonymously", e);
+      _reportRemoteError("ensureAuth.getUser.retry", e);
     }
 
-    try {
-      const s3 = await sb.auth.getSession();
-      return s3?.data?.session?.user?.id || null;
-    } catch (_) {
-      return null;
-    }
+    return null;
   })();
 
   try {
