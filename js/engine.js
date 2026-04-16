@@ -1368,6 +1368,7 @@ function showEndModal(title, bodyOrBuilder, onBack, onReplay){
     btnBack.onclick = () => {
       hideEndModal();
       try{ localStorage.setItem("vchoice_intro_just_finished", "1"); }catch(_){}
+      try{ window.VCCrossPromo?.queueOfferVUniverseAfterStory?.(); }catch(_){}
       try{ window.VROneSignal?.markPromptPendingOnNextIndex?.(); }catch(_){}
       location.href = "index.html";
     };
@@ -2795,6 +2796,7 @@ async function handleEnding(type, endScene){
     btnBack.textContent = tUI("btn_back");
     btnBack.onclick = async () => {
       ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
+      try{ window.VCCrossPromo?.queueOfferVBlocksAfterLoss?.(); }catch(_){}
       await maybeShowInterstitialOnReturnToIndex();
       try{ window.VROneSignal?.markPromptPendingOnNextIndex?.(); }catch(_){}
       location.href = "index.html";
