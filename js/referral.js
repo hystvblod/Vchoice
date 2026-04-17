@@ -7,7 +7,7 @@
   const LOCAL_INVITER_CREDITS_KEY = "vchronicles_referral_local_inviter_credits_v1";
   const LOCAL_INVITER_LIMIT = 5;
 
-  const INVITE_BASE_URL = "https://hystvblod.github.io/vchronicles-invite/invite.html";
+  const INVITE_BASE_URL = "https://vboldcompany.github.io/VChronicles-invite/invite.html";
 
   function t(key, fallback) {
     try {
