@@ -686,6 +686,7 @@ function normalizeLang(raw){
     "es_us": "eslatam",
     "es-419": "eslatam",
     "es_419": "eslatam",
+    "eslatam": "eslatam",
     "pt-br": "ptbr",
     "pt_br": "ptbr",
     "pt-pt": "pt",

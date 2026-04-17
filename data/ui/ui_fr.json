@@ -355,7 +355,8 @@
     "share_title": "Inviter un ami",
     "share_text": "Télécharge VChronicles ici : {url}",
     "link_copied": "Lien copié",
-    "crosspromo_reward_label": "Parrainage",
+    "crosspromo_reward_label": "Gagner",
+    "crosspromo_reward_value": "200 points",
     "crosspromo_desc": "Invite un ami à installer VChronicles et gagne 200 VCoins par installation validée, jusqu’à 5 invitations.",
     "profile_desc": "Partage ton lien d’invitation et gagne des VCoins quand une installation est validée.",
     "android_only_popup": {

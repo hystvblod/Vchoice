@@ -197,6 +197,7 @@
     const map = {
       "es-us": "eslatam",
       "es-419": "eslatam",
+      "eslatam": "eslatam",
       "pt-br": "ptbr",
       "pt-pt": "pt",
       "ja-jp": "ja",

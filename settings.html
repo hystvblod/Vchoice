@@ -224,12 +224,16 @@
       flex-direction:column;
       align-items:center;
       justify-content:flex-start;
-      gap:2px;
-      min-height:32px;
+      width:100%;
+      min-height:24px;
       margin-top:6px;
-      text-align:center;
-      line-height:1.12;
+      font-size:10px;
+      font-weight:800;
+      line-height:1.15;
       color:rgba(255,255,255,.96);
+      text-align:center;
+      white-space:normal;
+      word-break:break-word;
     }
 
     .langCode{
@@ -238,9 +242,6 @@
 
     .langName{
       max-width:100%;
-      font-size:11px;
-      font-weight:800;
-      word-break:break-word;
     }
 
     /* ====== Sections ====== */
@@ -284,6 +285,18 @@
       opacity: .78;
       font-size: 12px;
       line-height: 1.25;
+    }
+
+    .privacyBtn{
+      min-height:38px;
+      padding:0 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.08);
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      flex:0 0 auto;
     }
 
     .switch{
@@ -627,9 +640,7 @@
                 <p id="adsDesc" class="toggleDesc"></p>
               </div>
 
-              <button id="btnPrivacyOptions" type="button" class="vc-icon-button" aria-label="" style="width:auto;height:42px;padding:0 14px;border-radius:12px;">
-                <span id="btnPrivacyOptionsText" style="font-weight:900;font-size:13px;letter-spacing:.2px;">Open</span>
-              </button>
+              <button id="btnPrivacyOptions" type="button" class="privacyBtn"></button>
             </div>
           </div>
 
@@ -812,13 +823,14 @@
       const adsLabel = $("adsLabel");
       const adsDesc  = $("adsDesc");
       const adsBtn   = $("btnPrivacyOptions");
-      const adsBtnText = $("btnPrivacyOptionsText");
 
       if(adsTitle) adsTitle.textContent = t("ui.settings_ads_title", "Ads");
       if(adsLabel) adsLabel.textContent = t("ui.settings_privacy_options_label", "Privacy choices");
       if(adsDesc)  adsDesc.textContent  = t("ui.settings_privacy_options_desc", "Open Google's form to review or change your ad choices.");
-      if(adsBtn)   adsBtn.setAttribute("aria-label", t("ui.settings_privacy_options_label", "Privacy choices"));
-      if(adsBtnText) adsBtnText.textContent = t("ui.settings_privacy_options_button", "Open");
+      if(adsBtn){
+        adsBtn.textContent = t("ui.settings_privacy_options_button", "Open");
+        adsBtn.setAttribute("aria-label", t("ui.settings_privacy_options_label", "Privacy choices"));
+      }
 
       const helpTitle = $("settingsHelpTitle");
       const helpLab   = $("helpEmailLabel");
@@ -975,7 +987,9 @@
 
     const adsBtn = $("btnPrivacyOptions");
     if(adsBtn){
-      adsBtn.addEventListener("click", openPrivacyOptions);
+      adsBtn.addEventListener("click", () => {
+        void openPrivacyOptions();
+      });
     }
   })();
   </script>
