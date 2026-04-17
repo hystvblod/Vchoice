@@ -174,42 +174,42 @@
     .langBtn{
       width:100%;
       display:flex;
+      flex-direction:column;
       align-items:center;
-      justify-content:center;
-      gap:0;
-      padding: 8px 6px;
-      border-radius: 14px;
-      border: 0 !important;
-      background: transparent !important;
-      color: inherit;
+      justify-content:flex-start;
+      gap:7px;
+      padding:10px 4px 8px;
+      border-radius:14px;
+      border:0 !important;
+      background:transparent !important;
+      box-shadow:none !important;
+      color:inherit;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
       text-align:center;
-      box-shadow: none !important;
-      min-height: 48px;
     }
 
-    .langBtn:active{ transform: scale(.98); }
+    .langBtn:active{
+      transform: scale(.98);
+    }
 
-    /* ✅ état actif : pas de carré, juste un glow discret */
     .langBtn.isActive{
-      outline: 0;
+      outline:0;
       box-shadow: 0 0 0 2px rgba(255,255,255,.22), 0 14px 34px rgba(0,0,0,.26) !important;
-      background: transparent !important;
-      border: 0 !important;
+      background:transparent !important;
+      border:0 !important;
     }
 
-    /* ✅ FLAGS : SANS encadré */
     .flag{
-      width: 46px;
-      height: 32px;
-      border-radius: 8px;
+      width:46px;
+      height:32px;
+      border-radius:8px;
       overflow:hidden;
-      flex: 0 0 auto;
-      border: 0 !important;
-      outline: 0 !important;
-      box-shadow: none !important;
-      background: transparent !important;
+      border:0 !important;
+      outline:0 !important;
+      box-shadow:none !important;
+      background:transparent !important;
+      flex:0 0 auto;
     }
 
     .flag svg{
@@ -218,15 +218,10 @@
       display:block;
     }
 
-    /* ✅ noms des langues sous les drapeaux */
     .langText{
-      display:flex !important;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-start;
+      display:block !important;
       width:100%;
       min-height:24px;
-      margin-top:6px;
       font-size:10px;
       font-weight:800;
       line-height:1.15;
@@ -236,12 +231,9 @@
       word-break:break-word;
     }
 
-    .langCode{
-      display:none !important;
-    }
-
+    .langCode,
     .langName{
-      max-width:100%;
+      display:none !important;
     }
 
     /* ====== Sections ====== */
@@ -683,17 +675,17 @@
   (async () => {
     const LangStorageKey = "vchoice_lang";
     const LANGS = [
-      { code:"en",      ui:"EN",      nameKey:"ui.lang_name.en"      },
-      { code:"fr",      ui:"FR",      nameKey:"ui.lang_name.fr"      },
-      { code:"de",      ui:"DE",      nameKey:"ui.lang_name.de"      },
-      { code:"es",      ui:"ES",      nameKey:"ui.lang_name.es"      },
-      { code:"eslatam", ui:"ESLATAM", nameKey:"ui.lang_name.eslatam" },
-      { code:"pt",      ui:"PT",      nameKey:"ui.lang_name.pt"      },
-      { code:"ptbr",    ui:"PTBR",    nameKey:"ui.lang_name.ptbr"    },
-      { code:"it",      ui:"IT",      nameKey:"ui.lang_name.it"      },
-      { code:"ko",      ui:"KO",      nameKey:"ui.lang_name.ko"      },
-      { code:"ja",      ui:"JP",      nameKey:"ui.lang_name.ja"      },
-      { code:"id",      ui:"ID",      nameKey:"ui.lang_name.id"      }
+      { code:"en",      ui:"EN",      nameKey:"ui.lang_name.en",      label:"English" },
+      { code:"fr",      ui:"FR",      nameKey:"ui.lang_name.fr",      label:"Français" },
+      { code:"de",      ui:"DE",      nameKey:"ui.lang_name.de",      label:"Deutsch" },
+      { code:"es",      ui:"ES",      nameKey:"ui.lang_name.es",      label:"Español" },
+      { code:"eslatam", ui:"ESLATAM", nameKey:"ui.lang_name.eslatam", label:"Español LATAM" },
+      { code:"pt",      ui:"PT",      nameKey:"ui.lang_name.pt",      label:"Português" },
+      { code:"ptbr",    ui:"PTBR",    nameKey:"ui.lang_name.ptbr",    label:"Português BR" },
+      { code:"it",      ui:"IT",      nameKey:"ui.lang_name.it",      label:"Italiano" },
+      { code:"ko",      ui:"KO",      nameKey:"ui.lang_name.ko",      label:"한국어" },
+      { code:"ja",      ui:"JP",      nameKey:"ui.lang_name.ja",      label:"日本語" },
+      { code:"id",      ui:"ID",      nameKey:"ui.lang_name.id",      label:"Bahasa Indonesia" }
     ];
 
     function $(id){ return document.getElementById(id); }
@@ -883,23 +875,14 @@
 
         const txt = document.createElement("div");
         txt.className = "langText";
-
-        const code = document.createElement("div");
-        code.className = "langCode";
-        code.textContent = L.ui;
-
-        const name = document.createElement("div");
-        name.className = "langName";
-        name.textContent = t(L.nameKey, L.ui);
-
-        txt.appendChild(code);
-        txt.appendChild(name);
+        txt.textContent = L.label || t(L.nameKey) || L.ui;
 
         btn.appendChild(flag);
         btn.appendChild(txt);
 
-        const aria = t("ui.settings_choose_lang_aria", "Choisir la langue : {code}").replace("{code}", L.ui);
-        btn.setAttribute("aria-label", aria);
+        const visibleLabel = L.label || t(L.nameKey) || L.ui;
+        const ariaTpl = t("ui.settings_choose_lang_aria", "Choose language: {code}");
+        btn.setAttribute("aria-label", ariaTpl ? ariaTpl.replace("{code}", visibleLabel) : visibleLabel);
 
         btn.addEventListener("click", () => setLanguage(L.code, { showMsg:true }));
         grid.appendChild(btn);

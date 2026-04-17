@@ -403,19 +403,18 @@
         display:flex;
         flex-direction:column;
         align-items:center;
-        justify-content:center;
-        gap:10px;
-        padding:14px 10px 12px;
-        border-radius:16px;
+        justify-content:flex-start;
+        gap:8px;
+        padding:10px 6px 12px;
+        border-radius:14px;
         border:0 !important;
-        background:rgba(255,255,255,.04) !important;
+        background:transparent !important;
         box-shadow:none !important;
         color:inherit;
         cursor:pointer;
-        -webkit-tap-highlight-color:transparent;
+        -webkit-tap-highlight-color: transparent;
         text-align:center;
         appearance:none;
-        transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
       }
 
       .vrLangOverlay .vr-langBtn:active{
@@ -423,16 +422,16 @@
       }
 
       .vrLangOverlay .vr-langBtn.isActive{
-        background:rgba(255,255,255,.08) !important;
-        box-shadow:
-          0 0 0 2px rgba(255,255,255,.22),
-          0 14px 34px rgba(0,0,0,.26) !important;
+        outline:0;
+        box-shadow:0 0 0 2px rgba(255,255,255,.22), 0 14px 34px rgba(0,0,0,.26) !important;
+        background:transparent !important;
+        border:0 !important;
       }
 
       .vrLangOverlay .vr-flagBox{
-        width:56px;
-        height:38px;
-        border-radius:10px;
+        width:46px;
+        height:32px;
+        border-radius:8px;
         overflow:hidden;
         border:0 !important;
         outline:0 !important;
@@ -452,7 +451,7 @@
         align-items:center;
         justify-content:center;
         min-height:30px;
-        font-size:clamp(12px, 2.9vw, 14px);
+        font-size:clamp(11px,2.8vw,13px);
         font-weight:800;
         line-height:1.15;
         color:rgba(255,255,255,.96);

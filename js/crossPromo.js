@@ -650,7 +650,7 @@
         '    <img src="' + escapeHtml(app.cover) + '" alt="" draggable="false" />',
         "  </div>",
         '  <div class="vc-crosspromo-content">',
-        '    <div class="vc-crosspromo-head">',
+      '    <div class="vc-crosspromo-head vc-crosspromo-head--reward-only">',
         '      <div class="vc-crosspromo-reward">',
         '        <span class="vc-crosspromo-reward-label">' + escapeHtml(rewardLabel) + "</span>",
         '        <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" />',
