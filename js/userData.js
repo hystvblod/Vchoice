@@ -22,7 +22,7 @@
   const UNLOCKED_CACHE_KEY = "vchoice_unlocked_cache_v1";
 
   // Langs supportées côté app (device -> local -> supabase)
-  const SUPPORTED_LANGS = ["fr", "en", "de", "es", "pt", "ptbr", "it", "ko", "ja", "id"];
+  const SUPPORTED_LANGS = ["fr", "en", "de", "es", "eslatam", "pt", "ptbr", "it", "ko", "ja", "id"];
 
   let _uiPaused = true;
   let _pendingEmit = false;
@@ -58,6 +58,10 @@
     if (!s) return "";
 
     const map = {
+      "es-us": "eslatam",
+      "es_us": "eslatam",
+      "es-419": "eslatam",
+      "es_419": "eslatam",
       "pt-br": "ptbr",
       "pt_br": "ptbr",
       "pt-pt": "pt",
@@ -73,6 +77,7 @@
     const exact = map[s] || s;
     const base = exact.split(/[-_]/)[0] || "";
 
+    if (base === "es" && (exact.includes("419") || exact.includes("latam") || exact.includes("us"))) return "eslatam";
     if (SUPPORTED_LANGS.includes(exact)) return exact;
     if (SUPPORTED_LANGS.includes(base)) return base;
     return "";

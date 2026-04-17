@@ -9,8 +9,6 @@
 (function () {
   "use strict";
 
-  const AdsPrefKey = "vchoice_ads_personalized"; // "1" / "0"
-
   const TEST_IDS = {
     android: {
       banner: "ca-app-pub-3940256099942544/6300978111",
@@ -165,29 +163,12 @@
     _flushWeightedTimer();
   });
 
-  function _readPersonalized() {
-    try {
-      const v = localStorage.getItem(AdsPrefKey);
-      if (v === "1") return true;
-      if (v === "0") return false;
-    } catch (_) {}
+  function getPersonalized() {
     return false;
   }
 
-  function _writePersonalized(on) {
-    try {
-      localStorage.setItem(AdsPrefKey, on ? "1" : "0");
-    } catch (_) {}
-  }
-
-  function getPersonalized() {
-    return _readPersonalized();
-  }
-
-  async function setPersonalized(on) {
-    const v = !!on;
-    _writePersonalized(v);
-    return v;
+  async function setPersonalized() {
+    return false;
   }
 
   function withTimeout(p, ms, errCode) {
@@ -456,7 +437,6 @@
       {
         adId: ids.rewarded,
         isTesting: true,
-        npa: !getPersonalized(),
         immersiveMode: true,
       },
       extra || {}
@@ -469,7 +449,6 @@
       {
         adId: ids.interstitial,
         isTesting: true,
-        npa: !getPersonalized(),
         immersiveMode: true,
       },
       extra || {}
@@ -607,9 +586,6 @@
     },
   };
 
-  try {
-    setPersonalized(getPersonalized());
-  } catch (_) {}
 
   try {
     _startWeightedTimer();
