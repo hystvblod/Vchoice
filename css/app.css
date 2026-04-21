@@ -1356,6 +1356,128 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   #jetonModal .btn{ font-size: 14.8px; }
 }
 
+#emptyJetonModal .modal__body{
+  padding: 8px 12px 10px;
+  line-height: 1.25;
+}
+
+#emptyJetonModal .modal__head{
+  padding: 10px 12px;
+  justify-content: center;
+  position: relative;
+}
+
+#emptyJetonModal .modal__title{
+  text-align: center;
+  width: 100%;
+  font-size: 18px;
+  letter-spacing: .2px;
+}
+
+#emptyJetonModal .modal__close{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#emptyJetonModal .jeton_top{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+#emptyJetonModal .jeton_top__coin{
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  display:block;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+  flex: 0 0 auto;
+}
+
+#emptyJetonModal .jeton_top__info_inline{
+  display:flex;
+  align-items: center;
+  gap:8px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+#emptyJetonModal .jeton_top__label{
+  font-weight: 850;
+  opacity: .92;
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+#emptyJetonModal .jeton_top__count{
+  font-weight: 950;
+  font-size: 19px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+#emptyJetonModal .modal__actions{
+  padding: 0 12px 10px;
+  justify-content: center;
+}
+
+#emptyJetonModal .btn{
+  padding: 10px 14px;
+  font-size: 15px;
+  border-radius: 14px;
+}
+
+#emptyJetonModal .jeton_msg{
+  opacity:.85;
+  font-size:14.5px;
+  line-height: 1.35;
+  text-align:center;
+  padding: 4px 0 2px;
+}
+
+@media (max-width: 520px){
+  #emptyJetonModal .modal__title{ font-size: 17px; }
+  #emptyJetonModal .jeton_top__coin{ width: 76px; height: 76px; }
+  #emptyJetonModal .jeton_top__label{ font-size: 14.5px; }
+  #emptyJetonModal .jeton_top__count{ font-size: 18px; }
+  #emptyJetonModal .btn{ font-size: 14.8px; }
+}
+
+@media (min-width: 768px){
+  #emptyJetonModal .modal__panel,
+  #emptyJetonModal .modal__content{
+    width: min(720px, calc(100vw - 48px));
+  }
+
+  #emptyJetonModal .modal__title{
+    font-size: 24px;
+  }
+
+  #emptyJetonModal .jeton_top__coin{
+    width: 96px;
+    height: 96px;
+  }
+
+  #emptyJetonModal .jeton_top__label{
+    font-size: 18px;
+  }
+
+  #emptyJetonModal .jeton_top__count{
+    font-size: 26px;
+  }
+
+  #emptyJetonModal .btn,
+  #emptyJetonModal .jeton_msg{
+    font-size: 18px;
+  }
+}
+
 /* disabled only */
 .choice_btn:disabled{ opacity: .45 !important; }
 body.page-game .scene__hud .choice_btn:disabled{ opacity: .42 !important; }
@@ -1586,4 +1708,3 @@ body.page-game .scene__hud .choice_btn{
     border-radius: 18px;
   }
 }
-
