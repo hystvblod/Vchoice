@@ -267,8 +267,7 @@
     "no_jeton_iap_wait": "Opening purchase...",
     "no_jeton_body_short": "You have no tokens left.\nGet more.",
     "no_jeton_ad_label_short": "Token",
-    "no_jeton_reward_badge": "Reward",
-    "no_jeton_buy12_label_short": "Tokens",
+    "no_jeton_reward_badge_short": "Ad",
     "no_jeton_iap_fail": "Purchase unavailable or cancelled."
   },
   "common": {

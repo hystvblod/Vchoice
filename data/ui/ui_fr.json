@@ -268,8 +268,7 @@
     "no_jeton_iap_wait": "Ouverture de l’achat...",
     "no_jeton_body_short": "Tu n’as plus de jeton.\nObtiens-en.",
     "no_jeton_ad_label_short": "Jeton",
-    "no_jeton_reward_badge": "Reward",
-    "no_jeton_buy12_label_short": "Jetons",
+    "no_jeton_reward_badge_short": "Pub",
     "no_jeton_iap_fail": "Achat indisponible ou annulé."
   },
   "common": {

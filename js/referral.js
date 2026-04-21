@@ -319,8 +319,8 @@
 
             <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
               <span style="font-size:17px;font-weight:900;">${t("referral.invite_and_earn_title", "Inviter et gagner")}</span>
-              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:22px;height:22px;object-fit:contain;">
-              <span style="font-weight:900;font-size:18px;">+200</span>
+              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:30px;height:30px;object-fit:contain;">
+              <span style="font-weight:900;font-size:20px;">200</span>
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -369,11 +369,25 @@
       if (mainBtn) {
         mainBtn.onclick = async () => {
           try {
-            await showAndroidOnlyInvitePopup();
             await shareInvite();
           } catch (_) {}
           close();
         };
+
+        if (mainBtn.animate) {
+          mainBtn.animate(
+            [
+              { transform: "scale(1)", boxShadow: "0 12px 26px rgba(255,75,75,.34)" },
+              { transform: "scale(1.03)", boxShadow: "0 16px 34px rgba(255,75,75,.46)" },
+              { transform: "scale(1)", boxShadow: "0 12px 26px rgba(255,75,75,.34)" }
+            ],
+            {
+              duration: 1400,
+              iterations: Infinity,
+              easing: "ease-in-out"
+            }
+          );
+        }
       }
 
       root.style.display = "flex";
@@ -412,16 +426,16 @@
 
             <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
               <span style="font-size:17px;font-weight:900;">${t("referral.invite_and_earn_title", "Inviter et gagner")}</span>
-              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:22px;height:22px;object-fit:contain;">
-              <span style="font-weight:900;font-size:18px;">+200</span>
+              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:30px;height:30px;object-fit:contain;">
+              <span style="font-weight:900;font-size:20px;">200</span>
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
               <button id="vc-referral-invite-popup-main" type="button" style="flex:1 1 220px;min-height:54px;border:0;border-radius:16px;background:linear-gradient(135deg,#ff8a8a,#ff4b4b);color:#fff;font-weight:900;font-size:18px;letter-spacing:.2px;cursor:pointer;box-shadow:0 12px 26px rgba(255,75,75,.34);">
-                ${t("referral.invite_btn", "Inviter")}
+                ${t("referral.invite_and_earn_btn", "Inviter et gagner")}
               </button>
               <button id="vc-referral-invite-popup-later" type="button" style="flex:1 1 120px;min-height:48px;border:1px solid rgba(255,255,255,.14);border-radius:16px;background:rgba(255,255,255,.06);color:#fff;font-weight:800;font-size:14px;cursor:pointer;">
-                ${t("common.later", "Plus tard")}
+                ${t("common.cancel", "Plus tard")}
               </button>
             </div>
           </div>
@@ -465,26 +479,25 @@
           try { await shareInvite(); } catch (_) {}
           close();
         };
+
+        if (mainBtn.animate) {
+          mainBtn.animate(
+            [
+              { transform: "scale(1)", boxShadow: "0 12px 26px rgba(255,75,75,.34)" },
+              { transform: "scale(1.03)", boxShadow: "0 16px 34px rgba(255,75,75,.46)" },
+              { transform: "scale(1)", boxShadow: "0 12px 26px rgba(255,75,75,.34)" }
+            ],
+            {
+              duration: 1400,
+              iterations: Infinity,
+              easing: "ease-in-out"
+            }
+          );
+        }
       }
 
       root.style.display = "flex";
       document.addEventListener("keydown", onKeyDown);
-
-      if (mainBtn?.animate) {
-        mainBtn.animate(
-          [
-            { transform: "scale(1)", boxShadow: "0 12px 26px rgba(255,75,75,.34)" },
-            { transform: "scale(1.03)", boxShadow: "0 16px 34px rgba(255,75,75,.46)" },
-            { transform: "scale(1)", boxShadow: "0 12px 26px rgba(255,75,75,.34)" }
-          ],
-          {
-            duration: 1400,
-            iterations: Infinity,
-            easing: "ease-in-out"
-          }
-        );
-      }
-
       setTimeout(() => mainBtn?.focus?.(), 0);
     });
   }
