@@ -33,6 +33,8 @@
   const LAST_REWARDED_AT_KEY = "vchoice_ads_last_rewarded_at_v1";
   const LAST_INTERSTITIAL_AT_KEY = "vchoice_ads_last_interstitial_at_v1";
   const INTERSTITIAL_GLOBAL_TIME_KEY = "vchoice_ads_ingame_time_ms_v1";
+  const REWARDED_TOTAL_COUNT_KEY = "vchoice_ads_rewarded_total_v1";
+  const INTERSTITIAL_TOTAL_COUNT_KEY = "vchoice_ads_interstitial_total_v1";
   const INTRO_FINISHED_FLOW_KEY = "vchoice_intro_just_finished";
   const CONSENT_RETRY_KEY = "vchoice_admob_consent_retry_v1";
   const CONSENT_STOP_KEY = "vchoice_admob_consent_stop_v1";
@@ -55,6 +57,13 @@
   function _writeTs(key, value) {
     try {
       const n = Math.max(0, Number(value || 0) || 0);
+      localStorage.setItem(key, String(n));
+    } catch (_) {}
+  }
+
+  function _incCounter(key) {
+    try {
+      const n = Math.max(0, Math.floor(Number(localStorage.getItem(key) || 0))) + 1;
       localStorage.setItem(key, String(n));
     } catch (_) {}
   }
@@ -489,6 +498,7 @@
       );
 
       markRewardedShown();
+      _incCounter(REWARDED_TOTAL_COUNT_KEY);
 
       return {
         ok: true,
@@ -542,6 +552,7 @@
       );
 
       markInterstitialShown();
+      _incCounter(INTERSTITIAL_TOTAL_COUNT_KEY);
       return { ok: true };
     } catch (e) {
       return {

@@ -255,7 +255,18 @@
     "faq_q6": "Comment révéler le scénario caché ?",
     "faq_a6": "Va dans le profil, ouvre la modification du pseudo et saisis Angélique.",
     "faq_q7": "Un scénario premium reste-t-il débloqué ensuite ?",
-    "faq_a7": "Oui. Une fois débloqué sur ton profil, il reste disponible sur ce compte."
+    "faq_a7": "Oui. Une fois débloqué sur ton profil, il reste disponible sur ce compte.",
+    "btn_yes": "Oui",
+    "btn_no": "Non",
+    "major_preview_hint": "Utiliser un jeton pour voir les effets",
+    "no_jeton_title": "Tu n’as plus de jeton",
+    "no_jeton_body": "Regarde une pub pour gagner 1 jeton, ou achète directement 12 jetons pour continuer tout de suite.",
+    "no_jeton_ad_btn": "Gagner x1 jeton",
+    "no_jeton_buy12_btn": "Acheter x12 jetons",
+    "no_jeton_buy12_btn_with_price": "Acheter x12 jetons • {price}",
+    "no_jeton_ad_fail": "Publicité indisponible pour le moment.",
+    "no_jeton_iap_wait": "Ouverture de l’achat...",
+    "no_jeton_iap_fail": "Achat indisponible ou annulé."
   },
   "common": {
     "cancel": "Annuler"
@@ -361,6 +372,8 @@
     "profile_desc": "Partage ton lien d’invitation et gagne des VCoins quand une installation est validée.",
     "android_only_popup": {
       "text": "Seule la version Android est disponible pour le moment."
-    }
+    },
+    "last_ending_popup_title": "Bravo, tu as débloqué la dernière fin disponible",
+    "last_ending_popup_body": "Tu as trouvé les 3 fins de ce scénario. Tu penses que tes amis y arriveraient aussi ? Invite-les et gagne des VCoins quand une installation est validée."
   }
 }

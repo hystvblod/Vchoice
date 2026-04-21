@@ -36,6 +36,9 @@ const SUPPORTED_LANGS = ["fr","en","de","es","eslatam","pt","ptbr","it","ko","ja
 const ONBOARD_DONE_KEY   = "vchoice_onboarding_done_v1";
 const INTRO_REWARD_KEY   = "vchoice_intro_rewarded_v1";
 const INTRO_SCENARIO_ID  = "intro_tuto";
+const EMPTY_JETON_IAP_PRODUCT_ID = "vchoice_jetons_12";
+const LAST_ENDING_SHARE_PROMPT_COUNT_KEY = "vchron_last_ending_share_prompt_count_v1";
+const LAST_ENDING_SHARE_PROMPT_MAX = 2;
 
 // Intro tuto: popup jeton forcée
 const INTRO_FORCED_JETON_USED_KEY   = "vchoice_intro_forced_jeton_used_v1";
@@ -297,6 +300,12 @@ function setLabelWithTrailingIcon(el, labelText, iconSrc){
 
 function tUI(key, params){
   let v = deepGet(UI, `ui.${key}`);
+  if(v == null) v = "";
+  return params ? format(v, params) : v;
+}
+
+function tRef(key, params){
+  let v = deepGet(UI, `referral.${key}`);
   if(v == null) v = "";
   return params ? format(v, params) : v;
 }
@@ -968,6 +977,14 @@ function applyStaticI18n(){
     jetonClose.setAttribute("aria-label", tUI("hint_close_aria"));
     jetonClose.textContent = tUI("symbol_close");
   }
+
+  const emptyJetonX = $("emptyJetonX");
+  if(emptyJetonX){
+    emptyJetonX.setAttribute("aria-label", tUI("hint_close_aria"));
+    emptyJetonX.textContent = tUI("symbol_close");
+  }
+
+  updateEmptyJetonOfferUI();
 }
 
 /* =========================
@@ -1001,6 +1018,178 @@ function updateJetonGuideUI(){
   }
 }
 
+function updateEmptyJetonModalCount(){
+  const el = $("emptyJetonCount");
+  if(el) el.textContent = String(getJetonBalance());
+}
+
+function getEmptyJetonIapPrice(){
+  try{
+    const api = window.VCIAP || window.VRIAP || null;
+    return String(api?.getPrice?.(EMPTY_JETON_IAP_PRODUCT_ID) || "").trim();
+  }catch(_){
+    return "";
+  }
+}
+
+function updateEmptyJetonOfferUI(){
+  updateEmptyJetonModalCount();
+
+  const title = $("emptyJetonTitle");
+  if(title) title.textContent = tUI("no_jeton_title");
+
+  const label = $("emptyJetonLabel");
+  if(label) label.textContent = tUI("jeton_balance_label");
+
+  const body = $("emptyJetonBodyText");
+  if(body) body.textContent = tUI("no_jeton_body");
+
+  const adBtn = $("btnEmptyJetonAd");
+  if(adBtn) setLabelWithTrailingIcon(adBtn, tUI("no_jeton_ad_btn"), UI_JETON_ICON_WEBP);
+
+  const buyBtn = $("btnEmptyJetonBuy12");
+  if(buyBtn){
+    const price = getEmptyJetonIapPrice();
+    buyBtn.textContent = price
+      ? tUI("no_jeton_buy12_btn_with_price", { price })
+      : tUI("no_jeton_buy12_btn");
+  }
+
+  const closeBtn = $("btnEmptyJetonClose");
+  if(closeBtn) closeBtn.textContent = tUI("btn_close");
+
+  const msg = $("emptyJetonMsg");
+  if(msg) msg.textContent = "";
+}
+
+function showEmptyJetonModal(){
+  const modal = $("emptyJetonModal");
+  if(!modal) return;
+  updateEmptyJetonOfferUI();
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden","false");
+}
+
+function hideEmptyJetonModal(){
+  const modal = $("emptyJetonModal");
+  if(!modal) return;
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden","true");
+}
+
+function waitForIapOutcome(productId){
+  return new Promise((resolve) => {
+    let done = false;
+
+    const finish = (payload) => {
+      if(done) return;
+      done = true;
+      clearTimeout(timeoutId);
+      window.removeEventListener("vc:iap_credited", onCredited);
+      window.removeEventListener("vc:iap_order_failed", onFailed);
+      window.removeEventListener("vc:iap_unavailable", onUnavailable);
+      resolve(payload || { ok:false, reason:"unknown" });
+    };
+
+    const onCredited = (ev) => {
+      const d = ev?.detail || {};
+      if(String(d.productId || "") !== productId) return;
+      finish({ ok:true, detail:d });
+    };
+
+    const onFailed = (ev) => {
+      const d = ev?.detail || {};
+      if(String(d.productId || "") !== productId) return;
+      finish({ ok:false, reason:String(d.error || "order_failed") });
+    };
+
+    const onUnavailable = (ev) => {
+      const d = ev?.detail || {};
+      if(String(d.productId || "") !== productId) return;
+      finish({ ok:false, reason:"iap_unavailable" });
+    };
+
+    const timeoutId = setTimeout(() => {
+      finish({ ok:false, reason:"timeout" });
+    }, 25000);
+
+    window.addEventListener("vc:iap_credited", onCredited);
+    window.addEventListener("vc:iap_order_failed", onFailed);
+    window.addEventListener("vc:iap_unavailable", onUnavailable);
+  });
+}
+
+async function handleEmptyJetonReward(){
+  const msg = $("emptyJetonMsg");
+  const adBtn = $("btnEmptyJetonAd");
+  const buyBtn = $("btnEmptyJetonBuy12");
+
+  if(adBtn) adBtn.disabled = true;
+  if(buyBtn) buyBtn.disabled = true;
+  if(msg) msg.textContent = "";
+
+  try{
+    const ad = await window.VAds?.showRewarded?.();
+    if(!ad?.ok){
+      if(msg) msg.textContent = tUI("no_jeton_ad_fail");
+      return;
+    }
+
+    try{ await window.VUserData?.addJetons?.(1); }catch(_){}
+
+    updateHudJetons();
+    updateJetonModalCount();
+    updateEmptyJetonModalCount();
+
+    hideEmptyJetonModal();
+    showJetonModal();
+  }catch(_){
+    if(msg) msg.textContent = tUI("no_jeton_ad_fail");
+  } finally {
+    if(adBtn) adBtn.disabled = false;
+    if(buyBtn) buyBtn.disabled = false;
+  }
+}
+
+async function handleEmptyJetonBuy12(){
+  const msg = $("emptyJetonMsg");
+  const adBtn = $("btnEmptyJetonAd");
+  const buyBtn = $("btnEmptyJetonBuy12");
+
+  if(adBtn) adBtn.disabled = true;
+  if(buyBtn) buyBtn.disabled = true;
+  if(msg) msg.textContent = tUI("no_jeton_iap_wait");
+
+  try{
+    const api = window.VCIAP || window.VRIAP || null;
+    if(!api || typeof api.order !== "function"){
+      if(msg) msg.textContent = tUI("no_jeton_iap_fail");
+      return;
+    }
+
+    const waitPromise = waitForIapOutcome(EMPTY_JETON_IAP_PRODUCT_ID);
+    await api.order(EMPTY_JETON_IAP_PRODUCT_ID);
+    const result = await waitPromise;
+
+    if(!result?.ok){
+      if(msg) msg.textContent = tUI("no_jeton_iap_fail");
+      return;
+    }
+
+    updateHudJetons();
+    updateJetonModalCount();
+    updateEmptyJetonModalCount();
+
+    hideEmptyJetonModal();
+    showJetonModal();
+  }catch(_){
+    if(msg) msg.textContent = tUI("no_jeton_iap_fail");
+  } finally {
+    if(adBtn) adBtn.disabled = false;
+    if(buyBtn) buyBtn.disabled = false;
+  }
+}
+
 function showJetonModal(){
   const modal = $("jetonModal");
   if(!modal) return;
@@ -1024,8 +1213,36 @@ function hideJetonModal(){
 function bindJetonHud(){
   const btn = $("btnJetonBack");
   if(btn){
-    btn.onclick = () => { showJetonModal(); };
+    btn.onclick = () => {
+      if(getJetonBalance() <= 0){
+        showEmptyJetonModal();
+        return;
+      }
+      showJetonModal();
+    };
   }
+
+  const emptyBd = $("emptyJetonBackdrop");
+  if(emptyBd) emptyBd.addEventListener("click", hideEmptyJetonModal);
+
+  const emptyX = $("emptyJetonX");
+  if(emptyX) emptyX.addEventListener("click", hideEmptyJetonModal);
+
+  const emptyClose = $("btnEmptyJetonClose");
+  if(emptyClose) emptyClose.addEventListener("click", hideEmptyJetonModal);
+
+  const emptyAd = $("btnEmptyJetonAd");
+  if(emptyAd) emptyAd.addEventListener("click", handleEmptyJetonReward);
+
+  const emptyBuy = $("btnEmptyJetonBuy12");
+  if(emptyBuy) emptyBuy.addEventListener("click", handleEmptyJetonBuy12);
+
+  window.addEventListener("vc:iap_price", (ev) => {
+    const pid = String(ev?.detail?.productId || "");
+    if(pid === EMPTY_JETON_IAP_PRODUCT_ID){
+      updateEmptyJetonOfferUI();
+    }
+  });
 
   const bd = $("jetonBackdrop");
   if(bd) bd.addEventListener("click", hideJetonModal);
@@ -1114,10 +1331,20 @@ function bindJetonHud(){
     });
   }
 
-  window.addEventListener("vr:profile", () => { updateHudJetons(); updateJetonModalCount(); });
-  window.addEventListener("vc:profile", () => { updateHudJetons(); updateJetonModalCount(); });
+  window.addEventListener("vr:profile", () => {
+    updateHudJetons();
+    updateJetonModalCount();
+    updateEmptyJetonModalCount();
+  });
+
+  window.addEventListener("vc:profile", () => {
+    updateHudJetons();
+    updateJetonModalCount();
+    updateEmptyJetonModalCount();
+  });
 
   updateHudJetons();
+  updateEmptyJetonModalCount();
 }
 
 async function boot(){
@@ -2816,7 +3043,51 @@ async function handleEnding(type, endScene){
     choicesEl.appendChild(btnBonus);
     choicesEl.appendChild(btnRestart);
     choicesEl.appendChild(btnBack);
+
+    maybePromptShareAfterLastEnding({
+      remainingEndingsCount,
+      endingAlreadyUnlockedBefore
+    });
   }
+}
+
+function getLastEndingSharePromptCount(){
+  try{
+    const n = Number(localStorage.getItem(LAST_ENDING_SHARE_PROMPT_COUNT_KEY) || 0);
+    return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+  }catch(_){
+    return 0;
+  }
+}
+
+function markLastEndingSharePromptShown(){
+  try{
+    const next = getLastEndingSharePromptCount() + 1;
+    localStorage.setItem(LAST_ENDING_SHARE_PROMPT_COUNT_KEY, String(next));
+  }catch(_){}
+}
+
+function canShowLastEndingSharePrompt(){
+  return getLastEndingSharePromptCount() < LAST_ENDING_SHARE_PROMPT_MAX;
+}
+
+function maybePromptShareAfterLastEnding({ remainingEndingsCount = 0, endingAlreadyUnlockedBefore = false } = {}){
+  if(Number(remainingEndingsCount) !== 0) return;
+  if(endingAlreadyUnlockedBefore) return;
+  if(!canShowLastEndingSharePrompt()) return;
+
+  setTimeout(() => {
+    try{
+      if(!window.VReferral?.showSharePromptPopup) return;
+
+      markLastEndingSharePromptShown();
+
+      window.VReferral.showSharePromptPopup({
+        title: tRef("last_ending_popup_title"),
+        body: tRef("last_ending_popup_body")
+      });
+    }catch(_){}
+  }, 220);
 }
 
 /* =========================
@@ -3065,9 +3336,9 @@ window.VRMajorDecisionUI = {
 
     if(els.title) els.title.textContent = payload.title || "";
     if(els.body) els.body.textContent = payload.body || "";
-    if(els.hint) els.hint.textContent = payload.preview_hint || "Utiliser un jeton pour voir les effets";
-    if(els.yesBtn) els.yesBtn.textContent = payload.yes_label || "Oui";
-    if(els.noBtn) els.noBtn.textContent = payload.no_label || "Non";
+    if(els.hint) els.hint.textContent = payload.preview_hint || tUI("major_preview_hint");
+    if(els.yesBtn) els.yesBtn.textContent = payload.yes_label || tUI("btn_yes");
+    if(els.noBtn) els.noBtn.textContent = payload.no_label || tUI("btn_no");
 
     if(els.image){
       els.image.src = guideImageMap[String(universeId || "").trim()] || "";
