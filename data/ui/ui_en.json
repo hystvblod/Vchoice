@@ -254,7 +254,18 @@
     "faq_q6": "How do I reveal the hidden scenario?",
     "faq_a6": "Go to the profile, open username editing and enter Angelique or Baudelaire.",
     "faq_q7": "Does a premium scenario stay unlocked afterward?",
-    "faq_a7": "Yes. Once it is unlocked on your profile, it stays available on that account."
+    "faq_a7": "Yes. Once it is unlocked on your profile, it stays available on that account.",
+    "btn_yes": "Yes",
+    "btn_no": "No",
+    "major_preview_hint": "Use a token to preview the effects",
+    "no_jeton_title": "You have no tokens left",
+    "no_jeton_body": "Watch an ad to earn 1 token, or buy 12 tokens directly to continue right away.",
+    "no_jeton_ad_btn": "Get x1 token",
+    "no_jeton_buy12_btn": "Buy x12 tokens",
+    "no_jeton_buy12_btn_with_price": "Buy x12 tokens • {price}",
+    "no_jeton_ad_fail": "Ad unavailable for the moment.",
+    "no_jeton_iap_wait": "Opening purchase...",
+    "no_jeton_iap_fail": "Purchase unavailable or cancelled."
   },
   "common": {
     "cancel": "Cancel"
@@ -356,6 +367,8 @@
     "profile_desc": "Share your invite link and earn VCoins when an install is validated.",
     "android_only_popup": {
       "text": "Only the Android version is available for now."
-    }
+    },
+    "last_ending_popup_title": "Great, you unlocked the last available ending",
+    "last_ending_popup_body": "You found the 3 endings of this scenario. Do you think your friends could do it too? Invite them and earn VCoins when an install is validated."
   }
 }

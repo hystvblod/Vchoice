@@ -586,12 +586,11 @@
             <div
               id="vr-major-preview-hint"
               style="margin-top:14px;font-weight:800;font-size:13px;line-height:1.2;text-align:center;opacity:.95;">
-              Utiliser un jeton pour voir les effets
             </div>
 
             <div class="vr-guide-actions" style="margin-top:14px;display:flex;gap:10px;justify-content:center;">
-              <button id="vr-major-no-btn" class="vr-guide-next-btn" type="button">Non</button>
-              <button id="vr-major-yes-btn" class="vr-guide-next-btn" type="button">Oui</button>
+              <button id="vr-major-no-btn" class="vr-guide-next-btn" type="button"></button>
+              <button id="vr-major-yes-btn" class="vr-guide-next-btn" type="button"></button>
             </div>
           </div>
         </div>
@@ -641,6 +640,44 @@
         </div>
       </div>
     </div>
+
+    <div id="emptyJetonModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
+      <div id="emptyJetonBackdrop" class="modal__backdrop"></div>
+      <div class="modal__panel">
+        <div class="modal__head">
+          <div id="emptyJetonTitle" class="modal__title"></div>
+          <button id="emptyJetonX" class="modal__close" type="button" aria-label=""></button>
+        </div>
+
+        <div class="modal__body">
+          <div class="jeton_top">
+            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
+
+            <div class="jeton_top__info_inline">
+              <div class="jeton_top__label">
+                <span id="emptyJetonLabel"></span>
+              </div>
+              <div class="jeton_top__count">
+                <span id="emptyJetonCount">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="emptyJetonBodyText" class="vc-modal-prewrap"></div>
+
+          <div class="modal__actions">
+            <button id="btnEmptyJetonAd" class="btn" type="button"></button>
+            <button id="btnEmptyJetonBuy12" class="btn btn--ghost" type="button"></button>
+          </div>
+
+          <div class="modal__actions">
+            <button id="btnEmptyJetonClose" class="btn btn--ghost" type="button"></button>
+          </div>
+
+          <div id="emptyJetonMsg" class="jeton_msg"></div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="iosGate" class="vc-iosgate hidden" aria-hidden="true" role="dialog" aria-modal="true">
@@ -673,6 +710,8 @@
   <script src="js/audio.js"></script>
   <script src="js/scenarioPremium.js"></script>
   <script src="js/premiumZip.js"></script>
+  <script src="js/purchases.js"></script>
+  <script src="js/referral.js"></script>
   <script src="js/engine.js"></script>
 
   <script>
