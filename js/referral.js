@@ -317,10 +317,10 @@
               <div id="vc-referral-share-popup-body" style="font-size:14px;line-height:1.5;color:rgba(255,255,255,.9);margin-bottom:14px;text-align:center;"></div>
             </div>
 
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
+            <div style="display:flex;align-items:flex-end;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
               <span style="font-size:17px;font-weight:900;">${t("referral.invite_and_earn_title", "Inviter et gagner")}</span>
-              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:30px;height:30px;object-fit:contain;">
-              <span style="font-weight:900;font-size:20px;">200</span>
+              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:40px;height:40px;object-fit:contain;transform:translateY(6px);">
+              <span style="font-weight:900;font-size:22px;line-height:1;">200</span>
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -424,10 +424,10 @@
               <div id="vc-referral-invite-popup-body" style="font-size:14px;line-height:1.5;color:rgba(255,255,255,.9);margin-bottom:14px;text-align:center;"></div>
             </div>
 
-            <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
+            <div style="display:flex;align-items:flex-end;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
               <span style="font-size:17px;font-weight:900;">${t("referral.invite_and_earn_title", "Inviter et gagner")}</span>
-              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:30px;height:30px;object-fit:contain;">
-              <span style="font-weight:900;font-size:20px;">200</span>
+              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:40px;height:40px;object-fit:contain;transform:translateY(6px);">
+              <span style="font-weight:900;font-size:22px;line-height:1;">200</span>
             </div>
 
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
