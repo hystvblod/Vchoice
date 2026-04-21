@@ -1045,9 +1045,6 @@ function updateEmptyJetonOfferUI(){
   const body = $("emptyJetonBodyText");
   if(body) body.textContent = tUI("no_jeton_body_short");
 
-  const adBadge = $("emptyJetonAdBadge");
-  if(adBadge) adBadge.textContent = tUI("no_jeton_reward_badge_short");
-
   const buyPrice = $("emptyJetonBuy12Price");
   if(buyPrice){
     const price = getEmptyJetonIapPrice();

@@ -1712,11 +1712,11 @@ body.page-game .scene__hud .choice_btn{
 
 #emptyJetonModal .modal__panel,
 #emptyJetonModal .modal__content{
-  width:min(420px,92vw);
+  width:min(390px,92vw);
 }
 
 #emptyJetonModal .modal__head{
-  padding:10px 12px;
+  padding:10px 12px 8px;
   justify-content:center;
   position:relative;
 }
@@ -1729,14 +1729,14 @@ body.page-game .scene__hud .choice_btn{
 }
 
 #emptyJetonModal .modal__close{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
+  display:none;
 }
 
 #emptyJetonModal .modal__body{
-  padding:10px 12px 10px;
+  padding:6px 12px 10px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 
 #emptyJetonModal .jeton_top{
@@ -1744,12 +1744,12 @@ body.page-game .scene__hud .choice_btn{
   align-items:center;
   justify-content:center;
   gap:8px;
-  margin:0 0 8px;
+  margin:0;
 }
 
 #emptyJetonModal .jeton_top__coin{
-  width:46px;
-  height:46px;
+  width:40px;
+  height:40px;
   object-fit:contain;
 }
 
@@ -1769,9 +1769,9 @@ body.page-game .scene__hud .choice_btn{
 .empty-jeton-body-text{
   text-align:center;
   font-weight:900;
-  font-size:15px;
-  line-height:1.15;
-  margin:0 0 10px;
+  font-size:14px;
+  line-height:1.12;
+  margin:0;
   white-space:pre-line;
 }
 
@@ -1779,36 +1779,34 @@ body.page-game .scene__hud .choice_btn{
   display:flex;
   flex-direction:column;
   gap:8px;
-  margin:0 0 8px;
+  margin:0;
 }
 
 .empty-jeton-card{
   width:100%;
-  min-height:62px;
+  min-height:58px;
   border:1px solid rgba(255,255,255,.12);
   border-radius:16px;
   background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
   color:#fff;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  gap:10px;
+  justify-content:center;
   padding:10px 14px;
   cursor:pointer;
 }
 
-.empty-jeton-card__left{
+.empty-jeton-card__inline{
   display:flex;
   align-items:center;
   justify-content:center;
   gap:10px;
-  flex:1;
-  min-width:0;
+  width:100%;
 }
 
 .empty-jeton-card__coin{
-  width:34px;
-  height:34px;
+  width:28px;
+  height:28px;
   object-fit:contain;
   flex:0 0 auto;
 }
@@ -1819,43 +1817,39 @@ body.page-game .scene__hud .choice_btn{
   line-height:1;
 }
 
-.empty-jeton-card__label{
-  display:none;
-}
-
-.empty-jeton-card__badge,
-.empty-jeton-card__price{
-  font-size:15px;
+.empty-jeton-card__sep{
+  font-size:18px;
   font-weight:900;
-  white-space:nowrap;
-  flex:0 0 auto;
-}
-
-.empty-jeton-card__badge{
-  color:#ffd166;
+  line-height:1;
 }
 
 .empty-jeton-card__price{
-  color:#ffffff;
+  font-size:17px;
+  font-weight:900;
+  line-height:1;
+  white-space:nowrap;
 }
 
 .empty-jeton-close-wrap{
-  justify-content:center;
+  justify-content:stretch;
   padding:0;
-  margin-top:2px;
+  margin:0;
 }
 
-#emptyJetonModal .btn{
-  padding:9px 14px;
-  font-size:15px;
-  border-radius:14px;
+.empty-jeton-close-wrap .btn{
+  width:100%;
+  min-height:58px;
+  padding:10px 14px;
+  font-size:16px;
+  border-radius:16px;
 }
 
 #emptyJetonModal .jeton_msg{
   opacity:.85;
-  font-size:13.5px;
-  line-height:1.25;
+  font-size:13px;
+  line-height:1.2;
   text-align:center;
-  padding:2px 0 0;
-  min-height:16px;
+  padding:0;
+  min-height:0;
+  margin-top:2px;
 }
