@@ -382,6 +382,113 @@
     });
   }
 
+  function showInvitePromptPopup(options = {}) {
+    return new Promise((resolve) => {
+      let root = document.getElementById("vc-referral-invite-popup");
+
+      if (!root) {
+        root = document.createElement("div");
+        root.id = "vc-referral-invite-popup";
+        root.style.cssText = [
+          "position:fixed",
+          "inset:0",
+          "z-index:100260",
+          "display:none",
+          "align-items:center",
+          "justify-content:center",
+          "padding:18px",
+          "background:rgba(5,10,18,.72)",
+          "backdrop-filter:blur(10px)"
+        ].join(";");
+
+        root.innerHTML = `
+          <div role="dialog" aria-modal="true" style="position:relative;width:min(460px,94vw);border-radius:24px;padding:20px 18px;background:linear-gradient(180deg, rgba(22,31,54,.98), rgba(12,18,34,.98));border:1px solid rgba(255,255,255,.12);box-shadow:0 22px 56px rgba(0,0,0,.42);color:#fff;overflow:hidden;">
+            <button id="vc-referral-invite-popup-close" type="button" style="position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;font-weight:900;font-size:18px;cursor:pointer;">×</button>
+
+            <div style="padding:0 34px 0 34px;">
+              <div id="vc-referral-invite-popup-title" style="font-size:24px;font-weight:900;line-height:1.15;margin-bottom:10px;text-align:center;"></div>
+              <div id="vc-referral-invite-popup-body" style="font-size:14px;line-height:1.5;color:rgba(255,255,255,.9);margin-bottom:14px;text-align:center;"></div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
+              <span style="font-size:17px;font-weight:900;">${t("referral.invite_and_earn_title", "Inviter et gagner")}</span>
+              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:22px;height:22px;object-fit:contain;">
+              <span style="font-weight:900;font-size:18px;">+200</span>
+            </div>
+
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button id="vc-referral-invite-popup-main" type="button" style="flex:1 1 220px;min-height:54px;border:0;border-radius:16px;background:linear-gradient(135deg,#ff8a8a,#ff4b4b);color:#fff;font-weight:900;font-size:18px;letter-spacing:.2px;cursor:pointer;box-shadow:0 12px 26px rgba(255,75,75,.34);">
+                ${t("referral.invite_btn", "Inviter")}
+              </button>
+              <button id="vc-referral-invite-popup-later" type="button" style="flex:1 1 120px;min-height:48px;border:1px solid rgba(255,255,255,.14);border-radius:16px;background:rgba(255,255,255,.06);color:#fff;font-weight:800;font-size:14px;cursor:pointer;">
+                ${t("common.later", "Plus tard")}
+              </button>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(root);
+      }
+
+      const titleEl = document.getElementById("vc-referral-invite-popup-title");
+      const bodyEl = document.getElementById("vc-referral-invite-popup-body");
+      const closeBtn = document.getElementById("vc-referral-invite-popup-close");
+      const mainBtn = document.getElementById("vc-referral-invite-popup-main");
+      const laterBtn = document.getElementById("vc-referral-invite-popup-later");
+
+      if (titleEl) titleEl.textContent = String(options.title || t("referral.invite_popup_title", "Tu aimes VChronicles ?"));
+      if (bodyEl) bodyEl.textContent = String(options.body || t("referral.invite_popup_body", "Invite un ami à essayer l’histoire et gagne des VCoins quand une invitation est validée."));
+
+      const close = () => {
+        root.style.display = "none";
+        root.onclick = null;
+        if (closeBtn) closeBtn.onclick = null;
+        if (mainBtn) mainBtn.onclick = null;
+        if (laterBtn) laterBtn.onclick = null;
+        document.removeEventListener("keydown", onKeyDown);
+        resolve(true);
+      };
+
+      const onKeyDown = (e) => {
+        if (e.key === "Escape") close();
+      };
+
+      root.onclick = (e) => {
+        if (e.target === root) close();
+      };
+
+      if (closeBtn) closeBtn.onclick = close;
+      if (laterBtn) laterBtn.onclick = close;
+
+      if (mainBtn) {
+        mainBtn.onclick = async () => {
+          try { await shareInvite(); } catch (_) {}
+          close();
+        };
+      }
+
+      root.style.display = "flex";
+      document.addEventListener("keydown", onKeyDown);
+
+      if (mainBtn?.animate) {
+        mainBtn.animate(
+          [
+            { transform: "scale(1)", boxShadow: "0 12px 26px rgba(255,75,75,.34)" },
+            { transform: "scale(1.03)", boxShadow: "0 16px 34px rgba(255,75,75,.46)" },
+            { transform: "scale(1)", boxShadow: "0 12px 26px rgba(255,75,75,.34)" }
+          ],
+          {
+            duration: 1400,
+            iterations: Infinity,
+            easing: "ease-in-out"
+          }
+        );
+      }
+
+      setTimeout(() => mainBtn?.focus?.(), 0);
+    });
+  }
+
   function bindInviteButtons() {
     const ids = ["pf_invite_btn", "cp_invite_btn"];
 
@@ -391,7 +498,6 @@
 
       btn.dataset.referralBound = "1";
       btn.addEventListener("click", async () => {
-        await showAndroidOnlyInvitePopup();
         await shareInvite();
       });
     });
@@ -407,6 +513,7 @@
 
   window.VReferral = {
     shareInvite,
+    showInvitePromptPopup,
     showSharePromptPopup,
     bootReferral
   };

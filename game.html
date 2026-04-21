@@ -663,14 +663,33 @@
             </div>
           </div>
 
-          <div id="emptyJetonBodyText" class="vc-modal-prewrap"></div>
+          <div id="emptyJetonBodyText" class="empty-jeton-body-text"></div>
 
-          <div class="modal__actions">
-            <button id="btnEmptyJetonAd" class="btn" type="button"></button>
-            <button id="btnEmptyJetonBuy12" class="btn btn--ghost" type="button"></button>
+          <div class="empty-jeton-offers">
+            <button id="btnEmptyJetonAd" class="empty-jeton-card" type="button">
+              <div class="empty-jeton-card__left">
+                <img src="assets/img/ui/jeton.webp" alt="" class="empty-jeton-card__coin" />
+                <div class="empty-jeton-card__texts">
+                  <div class="empty-jeton-card__count">1</div>
+                  <div id="emptyJetonAdLabel" class="empty-jeton-card__label"></div>
+                </div>
+              </div>
+              <div id="emptyJetonAdBadge" class="empty-jeton-card__badge"></div>
+            </button>
+
+            <button id="btnEmptyJetonBuy12" class="empty-jeton-card" type="button">
+              <div class="empty-jeton-card__left">
+                <img src="assets/img/ui/jeton.webp" alt="" class="empty-jeton-card__coin" />
+                <div class="empty-jeton-card__texts">
+                  <div class="empty-jeton-card__count">12</div>
+                  <div id="emptyJetonBuy12Label" class="empty-jeton-card__label"></div>
+                </div>
+              </div>
+              <div id="emptyJetonBuy12Price" class="empty-jeton-card__price"></div>
+            </button>
           </div>
 
-          <div class="modal__actions">
+          <div class="modal__actions empty-jeton-close-wrap">
             <button id="btnEmptyJetonClose" class="btn btn--ghost" type="button"></button>
           </div>
 
