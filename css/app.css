@@ -1710,104 +1710,125 @@ body.page-game .scene__hud .choice_btn{
 }
 
 
+#emptyJetonModal .modal__panel,
+#emptyJetonModal .modal__content{
+  width:min(420px,92vw);
+}
+
+#emptyJetonModal .modal__head{
+  padding:10px 12px;
+  justify-content:center;
+  position:relative;
+}
+
+#emptyJetonModal .modal__title{
+  text-align:center;
+  width:100%;
+  font-size:18px;
+  letter-spacing:.2px;
+}
+
+#emptyJetonModal .modal__close{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
 #emptyJetonModal .modal__body{
-  padding: 14px 14px 12px;
+  padding:10px 12px 10px;
 }
 
 #emptyJetonModal .jeton_top{
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:10px;
-  margin: 0 0 12px;
+  gap:8px;
+  margin:0 0 8px;
 }
 
 #emptyJetonModal .jeton_top__coin{
-  width: 58px;
-  height: 58px;
-  object-fit: contain;
+  width:46px;
+  height:46px;
+  object-fit:contain;
 }
 
 #emptyJetonModal .jeton_top__info_inline{
   display:flex;
   align-items:center;
-  gap:8px;
+  gap:6px;
 }
 
 #emptyJetonModal .jeton_top__label,
 #emptyJetonModal .jeton_top__count{
   font-weight:900;
+  font-size:14px;
+  line-height:1;
 }
 
 .empty-jeton-body-text{
   text-align:center;
-  font-weight:800;
-  font-size:18px;
-  line-height:1.25;
-  margin: 0 0 16px;
-  white-space: pre-line;
+  font-weight:900;
+  font-size:15px;
+  line-height:1.15;
+  margin:0 0 10px;
+  white-space:pre-line;
 }
 
 .empty-jeton-offers{
   display:flex;
   flex-direction:column;
-  gap:12px;
-  margin-bottom:14px;
+  gap:8px;
+  margin:0 0 8px;
 }
 
 .empty-jeton-card{
   width:100%;
-  min-height:74px;
+  min-height:62px;
   border:1px solid rgba(255,255,255,.12);
-  border-radius:18px;
+  border-radius:16px;
   background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
   color:#fff;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:14px;
-  padding:14px 16px;
+  gap:10px;
+  padding:10px 14px;
   cursor:pointer;
 }
 
 .empty-jeton-card__left{
   display:flex;
   align-items:center;
-  gap:12px;
+  justify-content:center;
+  gap:10px;
+  flex:1;
+  min-width:0;
 }
 
 .empty-jeton-card__coin{
-  width:42px;
-  height:42px;
+  width:34px;
+  height:34px;
   object-fit:contain;
   flex:0 0 auto;
 }
 
-.empty-jeton-card__texts{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-start;
-  gap:2px;
-}
-
 .empty-jeton-card__count{
-  font-size:26px;
+  font-size:20px;
   font-weight:950;
   line-height:1;
 }
 
 .empty-jeton-card__label{
-  font-size:13px;
-  font-weight:800;
-  opacity:.92;
-  line-height:1.2;
+  display:none;
 }
 
 .empty-jeton-card__badge,
 .empty-jeton-card__price{
-  font-size:14px;
+  font-size:15px;
   font-weight:900;
   white-space:nowrap;
+  flex:0 0 auto;
 }
 
 .empty-jeton-card__badge{
@@ -1821,5 +1842,20 @@ body.page-game .scene__hud .choice_btn{
 .empty-jeton-close-wrap{
   justify-content:center;
   padding:0;
-  margin-top:4px;
+  margin-top:2px;
+}
+
+#emptyJetonModal .btn{
+  padding:9px 14px;
+  font-size:15px;
+  border-radius:14px;
+}
+
+#emptyJetonModal .jeton_msg{
+  opacity:.85;
+  font-size:13.5px;
+  line-height:1.25;
+  text-align:center;
+  padding:2px 0 0;
+  min-height:16px;
 }

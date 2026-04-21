@@ -1045,19 +1045,13 @@ function updateEmptyJetonOfferUI(){
   const body = $("emptyJetonBodyText");
   if(body) body.textContent = tUI("no_jeton_body_short");
 
-  const adLabel = $("emptyJetonAdLabel");
-  if(adLabel) adLabel.textContent = tUI("no_jeton_ad_label_short");
-
   const adBadge = $("emptyJetonAdBadge");
-  if(adBadge) adBadge.textContent = tUI("no_jeton_reward_badge");
-
-  const buyLabel = $("emptyJetonBuy12Label");
-  if(buyLabel) buyLabel.textContent = tUI("no_jeton_buy12_label_short");
+  if(adBadge) adBadge.textContent = tUI("no_jeton_reward_badge_short");
 
   const buyPrice = $("emptyJetonBuy12Price");
   if(buyPrice){
     const price = getEmptyJetonIapPrice();
-    buyPrice.textContent = price || tUI("shop_buy");
+    buyPrice.textContent = price || "...";
   }
 
   const closeBtn = $("btnEmptyJetonClose");
