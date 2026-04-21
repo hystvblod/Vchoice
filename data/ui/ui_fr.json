@@ -266,6 +266,10 @@
     "no_jeton_buy12_btn_with_price": "Acheter x12 jetons • {price}",
     "no_jeton_ad_fail": "Publicité indisponible pour le moment.",
     "no_jeton_iap_wait": "Ouverture de l’achat...",
+    "no_jeton_body_short": "Tu n’as plus de jeton.\nObtiens-en.",
+    "no_jeton_ad_label_short": "Jeton",
+    "no_jeton_reward_badge": "Reward",
+    "no_jeton_buy12_label_short": "Jetons",
     "no_jeton_iap_fail": "Achat indisponible ou annulé."
   },
   "common": {
@@ -374,6 +378,8 @@
       "text": "Seule la version Android est disponible pour le moment."
     },
     "last_ending_popup_title": "Bravo, tu as débloqué la dernière fin disponible",
+    "invite_popup_title": "Tu aimes VChronicles ?",
+    "invite_popup_body": "Invite un ami à essayer l’histoire et gagne des VCoins quand une invitation est validée.",
     "last_ending_popup_body": "Tu as trouvé les 3 fins de ce scénario. Tu penses que tes amis y arriveraient aussi ? Invite-les et gagne des VCoins quand une installation est validée."
   }
 }

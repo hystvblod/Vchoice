@@ -38,6 +38,7 @@ const INTRO_REWARD_KEY   = "vchoice_intro_rewarded_v1";
 const INTRO_SCENARIO_ID  = "intro_tuto";
 const EMPTY_JETON_IAP_PRODUCT_ID = "vchoice_jetons_12";
 const LAST_ENDING_SHARE_PROMPT_COUNT_KEY = "vchron_last_ending_share_prompt_count_v1";
+const LIKE_GAME_SHARE_PROMPT_SHOWN_KEY = "vchron_like_game_share_prompt_shown_v1";
 const LAST_ENDING_SHARE_PROMPT_MAX = 2;
 
 // Intro tuto: popup jeton forcée
@@ -1042,17 +1043,21 @@ function updateEmptyJetonOfferUI(){
   if(label) label.textContent = tUI("jeton_balance_label");
 
   const body = $("emptyJetonBodyText");
-  if(body) body.textContent = tUI("no_jeton_body");
+  if(body) body.textContent = tUI("no_jeton_body_short");
 
-  const adBtn = $("btnEmptyJetonAd");
-  if(adBtn) setLabelWithTrailingIcon(adBtn, tUI("no_jeton_ad_btn"), UI_JETON_ICON_WEBP);
+  const adLabel = $("emptyJetonAdLabel");
+  if(adLabel) adLabel.textContent = tUI("no_jeton_ad_label_short");
 
-  const buyBtn = $("btnEmptyJetonBuy12");
-  if(buyBtn){
+  const adBadge = $("emptyJetonAdBadge");
+  if(adBadge) adBadge.textContent = tUI("no_jeton_reward_badge");
+
+  const buyLabel = $("emptyJetonBuy12Label");
+  if(buyLabel) buyLabel.textContent = tUI("no_jeton_buy12_label_short");
+
+  const buyPrice = $("emptyJetonBuy12Price");
+  if(buyPrice){
     const price = getEmptyJetonIapPrice();
-    buyBtn.textContent = price
-      ? tUI("no_jeton_buy12_btn_with_price", { price })
-      : tUI("no_jeton_buy12_btn");
+    buyPrice.textContent = price || tUI("shop_buy");
   }
 
   const closeBtn = $("btnEmptyJetonClose");
@@ -3044,6 +3049,11 @@ async function handleEnding(type, endScene){
     choicesEl.appendChild(btnRestart);
     choicesEl.appendChild(btnBack);
 
+    maybePromptLikeGameShare({
+      remainingEndingsCount,
+      endingAlreadyUnlockedBefore
+    });
+
     maybePromptShareAfterLastEnding({
       remainingEndingsCount,
       endingAlreadyUnlockedBefore
@@ -3085,6 +3095,40 @@ function maybePromptShareAfterLastEnding({ remainingEndingsCount = 0, endingAlre
       window.VReferral.showSharePromptPopup({
         title: tRef("last_ending_popup_title"),
         body: tRef("last_ending_popup_body")
+      });
+    }catch(_){}
+  }, 220);
+}
+
+
+function hasShownLikeGameSharePrompt(){
+  try{
+    return localStorage.getItem(LIKE_GAME_SHARE_PROMPT_SHOWN_KEY) === "1";
+  }catch(_){
+    return false;
+  }
+}
+
+function markLikeGameSharePromptShown(){
+  try{
+    localStorage.setItem(LIKE_GAME_SHARE_PROMPT_SHOWN_KEY, "1");
+  }catch(_){}
+}
+
+function maybePromptLikeGameShare({ endingAlreadyUnlockedBefore = false, remainingEndingsCount = 0 } = {}){
+  if (endingAlreadyUnlockedBefore) return;
+  if (remainingEndingsCount === 0) return;
+  if (hasShownLikeGameSharePrompt()) return;
+
+  setTimeout(() => {
+    try{
+      if(!window.VReferral?.showInvitePromptPopup) return;
+
+      markLikeGameSharePromptShown();
+
+      window.VReferral.showInvitePromptPopup({
+        title: tRef("invite_popup_title"),
+        body: tRef("invite_popup_body")
       });
     }catch(_){}
   }, 220);
