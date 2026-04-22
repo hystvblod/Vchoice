@@ -979,12 +979,6 @@ function applyStaticI18n(){
     jetonClose.textContent = tUI("symbol_close");
   }
 
-  const emptyJetonX = $("emptyJetonX");
-  if(emptyJetonX){
-    emptyJetonX.setAttribute("aria-label", tUI("hint_close_aria"));
-    emptyJetonX.textContent = tUI("symbol_close");
-  }
-
   updateEmptyJetonOfferUI();
 }
 
@@ -1217,12 +1211,6 @@ function bindJetonHud(){
       showJetonModal();
     };
   }
-
-  const emptyBd = $("emptyJetonBackdrop");
-  if(emptyBd) emptyBd.addEventListener("click", hideEmptyJetonModal);
-
-  const emptyX = $("emptyJetonX");
-  if(emptyX) emptyX.addEventListener("click", hideEmptyJetonModal);
 
   const emptyClose = $("btnEmptyJetonClose");
   if(emptyClose) emptyClose.addEventListener("click", hideEmptyJetonModal);
