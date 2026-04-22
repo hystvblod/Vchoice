@@ -1,4 +1,4 @@
-{
+﻿{
   "ui": {
     "app_title": "VChronicles",
     "app_subtitle": "Interactive story",
@@ -265,9 +265,11 @@
     "no_jeton_buy12_btn_with_price": "Buy x12 tokens • {price}",
     "no_jeton_ad_fail": "Ad unavailable for the moment.",
     "no_jeton_iap_wait": "Opening purchase...",
-    "no_jeton_body_short": "You have no tokens left.\nGet more.",
+    "no_jeton_body_short": "Watch an ad to get 1 token\nor go to the shop.",
+    "no_jeton_watch_ad_btn": "Watch an ad",
     "no_jeton_ad_label_short": "Token",
     "no_jeton_reward_badge_short": "Ad",
+    "btn_cancel": "Cancel",
     "no_jeton_iap_fail": "Purchase unavailable or cancelled."
   },
   "common": {

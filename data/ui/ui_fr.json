@@ -1,4 +1,4 @@
-{
+﻿{
   "ui": {
     "app_title": "VChronicles",
     "app_subtitle": "Histoire interactive",
@@ -266,9 +266,11 @@
     "no_jeton_buy12_btn_with_price": "Acheter x12 jetons • {price}",
     "no_jeton_ad_fail": "Publicité indisponible pour le moment.",
     "no_jeton_iap_wait": "Ouverture de l’achat...",
-    "no_jeton_body_short": "Tu n’as plus de jeton.\nObtiens-en.",
+    "no_jeton_body_short": "Regarde une pub pour obtenir 1 jeton\nou va à la boutique.",
+    "no_jeton_watch_ad_btn": "Regarder une pub",
     "no_jeton_ad_label_short": "Jeton",
     "no_jeton_reward_badge_short": "Pub",
+    "btn_cancel": "Annuler",
     "no_jeton_iap_fail": "Achat indisponible ou annulé."
   },
   "common": {
