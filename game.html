@@ -644,48 +644,30 @@
     <div id="emptyJetonModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true">
       <div id="emptyJetonBackdrop" class="modal__backdrop"></div>
       <div class="modal__panel">
-        <div class="modal__head">
+        <div class="modal__head empty-jeton-head">
           <div id="emptyJetonTitle" class="modal__title"></div>
-          <button id="emptyJetonX" class="modal__close" type="button" aria-label=""></button>
         </div>
 
-        <div class="modal__body">
-          <div class="jeton_top">
-            <img src="assets/img/ui/jeton.webp" alt="" class="jeton_top__coin" />
-
-            <div class="jeton_top__info_inline">
-              <div class="jeton_top__label">
-                <span id="emptyJetonLabel"></span>
-              </div>
-              <div class="jeton_top__count">
-                <span id="emptyJetonCount">0</span>
-              </div>
-            </div>
-          </div>
-
+        <div class="modal__body empty-jeton-body">
           <div id="emptyJetonBodyText" class="empty-jeton-body-text"></div>
 
-          <div class="empty-jeton-offers">
-            <button id="btnEmptyJetonAd" class="empty-jeton-card" type="button">
-              <div class="empty-jeton-card__inline">
-                <img src="assets/img/ui/jeton.webp" alt="" class="empty-jeton-card__coin" />
-                <span class="empty-jeton-card__count">1</span>
-              </div>
-            </button>
-
-            <button id="btnEmptyJetonBuy12" class="empty-jeton-card" type="button">
-              <div class="empty-jeton-card__inline">
-                <img src="assets/img/ui/jeton.webp" alt="" class="empty-jeton-card__coin" />
-                <span class="empty-jeton-card__count">12</span>
-                <span class="empty-jeton-card__sep">:</span>
-                <span id="emptyJetonBuy12Price" class="empty-jeton-card__price"></span>
-              </div>
-            </button>
-
-            <div class="modal__actions empty-jeton-close-wrap">
-              <button id="btnEmptyJetonClose" class="btn btn--ghost" type="button"></button>
-            </div>
+          <div class="empty-jeton-reward-row">
+            <img src="assets/img/ui/jeton.webp" alt="" class="empty-jeton-reward-coin" />
+            <span class="empty-jeton-reward-count" id="emptyJetonCount">0</span>
           </div>
+
+          <button id="btnEmptyJetonAd" class="empty-jeton-main-btn empty-jeton-main-btn--ad" type="button"></button>
+
+          <button id="btnEmptyJetonBuy12" class="empty-jeton-main-btn empty-jeton-main-btn--buy" type="button">
+            <span class="empty-jeton-buy-inline">
+              <img src="assets/img/ui/jeton.webp" alt="" class="empty-jeton-buy-coin" />
+              <span class="empty-jeton-buy-count">12</span>
+              <span class="empty-jeton-buy-dot">•</span>
+              <span id="emptyJetonBuy12Price" class="empty-jeton-buy-price"></span>
+            </span>
+          </button>
+
+          <button id="btnEmptyJetonClose" class="empty-jeton-cancel-btn" type="button"></button>
 
           <div id="emptyJetonMsg" class="jeton_msg"></div>
         </div>

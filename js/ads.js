@@ -30,6 +30,16 @@
   let _rewardBusy = false;
   let _interstitialBusy = false;
 
+  let _rewardedReady = false;
+  let _rewardedLoading = null;
+  let _rewardedPreloadTimer = null;
+
+  let _currentAdKind = null;
+  let _showLock = false;
+  let _gameRewardSeenThisRun = false;
+
+  window.__ads_active = false;
+
   const LAST_REWARDED_AT_KEY = "vchoice_ads_last_rewarded_at_v1";
   const LAST_INTERSTITIAL_AT_KEY = "vchoice_ads_last_interstitial_at_v1";
   const INTERSTITIAL_GLOBAL_TIME_KEY = "vchoice_ads_ingame_time_ms_v1";
@@ -431,6 +441,8 @@
         await plugin.initialize();
       }
 
+      scheduleRewardedPreload(700);
+
       return { ok: true };
     })().catch((e) => {
       _initPromise = null;
@@ -440,11 +452,18 @@
     return _initPromise;
   }
 
+  function getInterstitialUnitId() {
+    return getTestIds().interstitial;
+  }
+
+  function getRewardedUnitId() {
+    return getTestIds().rewarded;
+  }
+
   function rewardedOptions(extra) {
-    const ids = getTestIds();
     return Object.assign(
       {
-        adId: ids.rewarded,
+        adId: getRewardedUnitId(),
         isTesting: true,
         immersiveMode: true,
       },
@@ -453,10 +472,9 @@
   }
 
   function interstitialOptions(extra) {
-    const ids = getTestIds();
     return Object.assign(
       {
-        adId: ids.interstitial,
+        adId: getInterstitialUnitId(),
         isTesting: true,
         immersiveMode: true,
       },
@@ -464,12 +482,85 @@
     );
   }
 
-  async function showRewarded() {
-    if (_rewardBusy) {
+  function preShowAdCleanup() {
+    try { window.__ads_active = true; } catch (_) {}
+  }
+
+  function postAdCleanup() {
+    try { window.__ads_active = false; } catch (_) {}
+  }
+
+  function markGameRewardSeen() {
+    _gameRewardSeenThisRun = true;
+  }
+
+  function resetGameRewardSeen() {
+    _gameRewardSeenThisRun = false;
+  }
+
+  async function preloadRewardedAd() {
+    try {
+      if (!isNativeMobile()) return false;
+
+      const plugin = getPlugin();
+      if (!plugin || typeof plugin.prepareRewardVideoAd !== "function") return false;
+
+      if (!(await canRequestAdsNowWithConsent())) return false;
+
+      if (_rewardedReady) return true;
+      if (_rewardedLoading) return _rewardedLoading;
+
+      _rewardedLoading = (async () => {
+        try {
+          await withTimeout(
+            plugin.prepareRewardVideoAd(rewardedOptions()),
+            45000,
+            "rewarded_prepare_timeout"
+          );
+          _rewardedReady = true;
+          return true;
+        } catch (_) {
+          _rewardedReady = false;
+          return false;
+        } finally {
+          _rewardedLoading = null;
+        }
+      })();
+
+      return _rewardedLoading;
+    } catch (_) {
+      _rewardedLoading = null;
+      _rewardedReady = false;
+      return false;
+    }
+  }
+
+  function scheduleRewardedPreload(delayMs) {
+    const d = Math.max(0, Number(delayMs || 0) || 0);
+
+    if (_rewardedPreloadTimer) {
+      clearTimeout(_rewardedPreloadTimer);
+      _rewardedPreloadTimer = null;
+    }
+
+    _rewardedPreloadTimer = setTimeout(() => {
+      _rewardedPreloadTimer = null;
+      if (_rewardedReady || _rewardedLoading) return;
+      preloadRewardedAd().catch(() => {});
+    }, d);
+  }
+
+  async function showRewarded(opts) {
+    opts = opts || {};
+
+    if (_rewardBusy || _showLock || window.__ads_active) {
       return { ok: false, reason: "rewarded_busy" };
     }
 
     _rewardBusy = true;
+    _showLock = true;
+    _currentAdKind = "rewarded";
+
     try {
       const plugin = getPlugin();
       if (!plugin) {
@@ -485,11 +576,12 @@
         return { ok: false, reason: "rewarded_api_missing" };
       }
 
-      await withTimeout(
-        plugin.prepareRewardVideoAd(rewardedOptions()),
-        45000,
-        "rewarded_prepare_timeout"
-      );
+      const okPreload = await preloadRewardedAd();
+      if (!okPreload) {
+        return { ok: false, reason: "rewarded_prepare_failed" };
+      }
+
+      preShowAdCleanup();
 
       const rewardItem = await withTimeout(
         plugin.showRewardVideoAd(),
@@ -498,24 +590,35 @@
       );
 
       markRewardedShown();
+      markGameRewardSeen();
       _incCounter(REWARDED_TOTAL_COUNT_KEY);
+
+      _rewardedReady = false;
+      scheduleRewardedPreload(500);
 
       return {
         ok: true,
         reward: rewardItem || null,
+        placement: String(opts.placement || "rewarded")
       };
     } catch (e) {
+      _rewardedReady = false;
+      scheduleRewardedPreload(800);
+
       return {
         ok: false,
-        reason: e?.message || "rewarded_exception",
+        reason: e?.message || "rewarded_exception"
       };
     } finally {
+      postAdCleanup();
       _rewardBusy = false;
+      _showLock = false;
+      _currentAdKind = null;
     }
   }
 
   async function showInterstitial() {
-    if (_interstitialBusy) {
+    if (_interstitialBusy || _showLock || window.__ads_active) {
       return { ok: false, reason: "interstitial_busy" };
     }
 
@@ -524,6 +627,9 @@
     }
 
     _interstitialBusy = true;
+    _showLock = true;
+    _currentAdKind = "interstitial";
+
     try {
       const plugin = getPlugin();
       if (!plugin) {
@@ -533,6 +639,10 @@
       const initState = await init();
       if (!initState || !initState.ok) {
         return { ok: false, reason: initState?.reason || "init_failed" };
+      }
+
+      if (!(await canRequestAdsNowWithConsent())) {
+        return { ok: false, reason: "consent_blocked" };
       }
 
       if (typeof plugin.prepareInterstitial !== "function" || typeof plugin.showInterstitial !== "function") {
@@ -545,6 +655,8 @@
         "interstitial_prepare_timeout"
       );
 
+      preShowAdCleanup();
+
       await withTimeout(
         plugin.showInterstitial(),
         45000,
@@ -553,14 +665,26 @@
 
       markInterstitialShown();
       _incCounter(INTERSTITIAL_TOTAL_COUNT_KEY);
+
       return { ok: true };
     } catch (e) {
       return {
         ok: false,
-        reason: e?.message || "interstitial_exception",
+        reason: e?.message || "interstitial_exception"
       };
     } finally {
+      postAdCleanup();
       _interstitialBusy = false;
+      _showLock = false;
+      _currentAdKind = null;
+
+      setTimeout(() => {
+        try {
+          const plugin = getPlugin();
+          if (!plugin || typeof plugin.prepareInterstitial !== "function") return;
+          plugin.prepareInterstitial(interstitialOptions()).catch(() => {});
+        } catch (_) {}
+      }, 1200);
     }
   }
 
@@ -577,6 +701,10 @@
     init,
     showRewarded,
     showInterstitial,
+    scheduleRewardedPreload,
+    isRewardedReady: () => !!_rewardedReady,
+    markGameRewardSeen,
+    resetGameRewardSeen,
     getPersonalized,
     setPersonalized,
     isInterstitialAllowed,

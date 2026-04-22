@@ -979,12 +979,6 @@ function applyStaticI18n(){
     jetonClose.textContent = tUI("symbol_close");
   }
 
-  const emptyJetonX = $("emptyJetonX");
-  if(emptyJetonX){
-    emptyJetonX.setAttribute("aria-label", tUI("hint_close_aria"));
-    emptyJetonX.textContent = tUI("symbol_close");
-  }
-
   updateEmptyJetonOfferUI();
 }
 
@@ -1039,11 +1033,11 @@ function updateEmptyJetonOfferUI(){
   const title = $("emptyJetonTitle");
   if(title) title.textContent = tUI("no_jeton_title");
 
-  const label = $("emptyJetonLabel");
-  if(label) label.textContent = tUI("jeton_balance_label");
-
   const body = $("emptyJetonBodyText");
   if(body) body.textContent = tUI("no_jeton_body_short");
+
+  const adBtn = $("btnEmptyJetonAd");
+  if(adBtn) adBtn.textContent = tUI("no_jeton_watch_ad_btn") || tUI("no_jeton_ad_btn");
 
   const buyPrice = $("emptyJetonBuy12Price");
   if(buyPrice){
@@ -1052,7 +1046,7 @@ function updateEmptyJetonOfferUI(){
   }
 
   const closeBtn = $("btnEmptyJetonClose");
-  if(closeBtn) closeBtn.textContent = tUI("btn_close");
+  if(closeBtn) closeBtn.textContent = tUI("btn_cancel") || tUI("btn_close");
 
   const msg = $("emptyJetonMsg");
   if(msg) msg.textContent = "";
@@ -1217,12 +1211,6 @@ function bindJetonHud(){
       showJetonModal();
     };
   }
-
-  const emptyBd = $("emptyJetonBackdrop");
-  if(emptyBd) emptyBd.addEventListener("click", hideEmptyJetonModal);
-
-  const emptyX = $("emptyJetonX");
-  if(emptyX) emptyX.addEventListener("click", hideEmptyJetonModal);
 
   const emptyClose = $("btnEmptyJetonClose");
   if(emptyClose) emptyClose.addEventListener("click", hideEmptyJetonModal);
