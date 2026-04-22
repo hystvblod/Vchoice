@@ -319,7 +319,7 @@
 
             <div style="display:flex;align-items:flex-end;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
               <span style="font-size:17px;font-weight:900;">${t("referral.invite_and_earn_title", "Inviter et gagner")}</span>
-              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:40px;height:40px;object-fit:contain;transform:translateY(6px);">
+              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:40px;height:40px;object-fit:contain;position:relative;top:10px;">
               <span style="font-weight:900;font-size:22px;line-height:1;">200</span>
             </div>
 
@@ -360,9 +360,6 @@
         if (e.key === "Escape") close();
       };
 
-      root.onclick = (e) => {
-        if (e.target === root) close();
-      };
       if (closeBtn) closeBtn.onclick = close;
       if (laterBtn) laterBtn.onclick = close;
 
@@ -426,7 +423,7 @@
 
             <div style="display:flex;align-items:flex-end;justify-content:center;gap:10px;margin-bottom:16px;text-align:center;flex-wrap:wrap;">
               <span style="font-size:17px;font-weight:900;">${t("referral.invite_and_earn_title", "Inviter et gagner")}</span>
-              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:40px;height:40px;object-fit:contain;transform:translateY(6px);">
+              <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" style="width:40px;height:40px;object-fit:contain;position:relative;top:10px;">
               <span style="font-weight:900;font-size:22px;line-height:1;">200</span>
             </div>
 
@@ -465,10 +462,6 @@
 
       const onKeyDown = (e) => {
         if (e.key === "Escape") close();
-      };
-
-      root.onclick = (e) => {
-        if (e.target === root) close();
       };
 
       if (closeBtn) closeBtn.onclick = close;
