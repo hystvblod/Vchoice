@@ -379,42 +379,73 @@
     if (!btn) return;
     btn.disabled = !!on;
     btn.classList.toggle("is-busy", !!on);
+
     if (on){
       btn.textContent = t(I18N.loading);
     } else {
-      // remet le texte via i18n
       btn.textContent = t("ui.shop_watch_ad");
     }
   }
 
-  async function rewardJeton(){
-    try{
-      setAdBusy("jeton", true);
-      const r = await window.VAds?.showRewarded?.();
-      if (!r || !r.ok) return;
+  async function doRewarded(which){
+    const cfgMap = {
+      jeton:  { kind: "jetons", amount: 1,   placement: "shop_jeton" },
+      vcoins: { kind: "vcoins", amount: 100, placement: "shop_vcoins" }
+    };
 
-      if (window.VUserData?.addJetons){
-        await window.VUserData.addJetons(1);
+    const cfg = cfgMap[String(which || "")];
+    if (!cfg) return false;
+
+    try{
+      setAdBusy(which, true);
+
+      const before =
+        cfg.kind === "jetons"
+          ? Number(window.VUserData?.getJetons?.() || 0)
+          : Number(window.VUserData?.getVCoins?.() || 0);
+
+      const r = await window.VAds?.showRewarded?.({ placement: cfg.placement });
+      if (!r || !r.ok) return false;
+
+      if (cfg.kind === "jetons"){
+        if (typeof window.VUserData?.addJetons !== "function") return false;
+        await window.VUserData.addJetons(cfg.amount);
+      } else {
+        if (typeof window.VUserData?.addVCoins !== "function") return false;
+        await window.VUserData.addVCoins(cfg.amount);
       }
-    }catch(_){ }
-    finally{
-      setAdBusy("jeton", false);
+
+      try { await window.VUserData?.refresh?.(); } catch(_) {}
+
+      const after =
+        cfg.kind === "jetons"
+          ? Number(window.VUserData?.getJetons?.() || 0)
+          : Number(window.VUserData?.getVCoins?.() || 0);
+
+      if (after < before + cfg.amount){
+        return false;
+      }
+
+      try { window.VAds?.markGameRewardSeen?.(); } catch(_) {}
+
+      refreshEntitlementsUI();
+      refreshAllPrices();
+      applyI18nNow();
+
+      return true;
+    }catch(_){
+      return false;
+    }finally{
+      setAdBusy(which, false);
     }
   }
 
-  async function rewardVCoins(){
-    try{
-      setAdBusy("vcoins", true);
-      const r = await window.VAds?.showRewarded?.();
-      if (!r || !r.ok) return;
+  async function rewardJeton(){
+    return doRewarded("jeton");
+  }
 
-      if (window.VUserData?.addVCoins){
-        await window.VUserData.addVCoins(100);
-      }
-    }catch(_){ }
-    finally{
-      setAdBusy("vcoins", false);
-    }
+  async function rewardVCoins(){
+    return doRewarded("vcoins");
   }
 
   // =========================
