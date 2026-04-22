@@ -1356,127 +1356,6 @@ body.page-game .scene__hud .choice_btn.is_guide::after{
   #jetonModal .btn{ font-size: 14.8px; }
 }
 
-#emptyJetonModal .modal__body{
-  padding: 8px 12px 10px;
-  line-height: 1.25;
-}
-
-#emptyJetonModal .modal__head{
-  padding: 10px 12px;
-  justify-content: center;
-  position: relative;
-}
-
-#emptyJetonModal .modal__title{
-  text-align: center;
-  width: 100%;
-  font-size: 18px;
-  letter-spacing: .2px;
-}
-
-#emptyJetonModal .modal__close{
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#emptyJetonModal .jeton_top{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  margin: 0 0 10px;
-  padding: 0;
-}
-
-#emptyJetonModal .jeton_top__coin{
-  width: 72px;
-  height: 72px;
-  object-fit: contain;
-  display:block;
-  filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
-  flex: 0 0 auto;
-}
-
-#emptyJetonModal .jeton_top__info_inline{
-  display:flex;
-  align-items: center;
-  gap:8px;
-  flex: 0 0 auto;
-  min-width: 0;
-}
-
-#emptyJetonModal .jeton_top__label{
-  font-weight: 850;
-  opacity: .92;
-  font-size: 15px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-#emptyJetonModal .jeton_top__count{
-  font-weight: 950;
-  font-size: 19px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-#emptyJetonModal .modal__actions{
-  padding: 0 12px 10px;
-  justify-content: center;
-}
-
-#emptyJetonModal .btn{
-  padding: 10px 14px;
-  font-size: 15px;
-  border-radius: 14px;
-}
-
-#emptyJetonModal .jeton_msg{
-  opacity:.85;
-  font-size:14.5px;
-  line-height: 1.35;
-  text-align:center;
-  padding: 4px 0 2px;
-}
-
-@media (max-width: 520px){
-  #emptyJetonModal .modal__title{ font-size: 17px; }
-  #emptyJetonModal .jeton_top__coin{ width: 76px; height: 76px; }
-  #emptyJetonModal .jeton_top__label{ font-size: 14.5px; }
-  #emptyJetonModal .jeton_top__count{ font-size: 18px; }
-  #emptyJetonModal .btn{ font-size: 14.8px; }
-}
-
-@media (min-width: 768px){
-  #emptyJetonModal .modal__panel,
-  #emptyJetonModal .modal__content{
-    width: min(720px, calc(100vw - 48px));
-  }
-
-  #emptyJetonModal .modal__title{
-    font-size: 24px;
-  }
-
-  #emptyJetonModal .jeton_top__coin{
-    width: 96px;
-    height: 96px;
-  }
-
-  #emptyJetonModal .jeton_top__label{
-    font-size: 18px;
-  }
-
-  #emptyJetonModal .jeton_top__count{
-    font-size: 26px;
-  }
-
-  #emptyJetonModal .btn,
-  #emptyJetonModal .jeton_msg{
-    font-size: 18px;
-  }
-}
 
 /* disabled only */
 .choice_btn:disabled{ opacity: .45 !important; }
@@ -1712,144 +1591,174 @@ body.page-game .scene__hud .choice_btn{
 
 #emptyJetonModal .modal__panel,
 #emptyJetonModal .modal__content{
-  width:min(390px,92vw);
+  width:min(560px, calc(100vw - 32px));
+  max-width:560px;
+  border-radius:28px;
+  overflow:hidden;
 }
 
-#emptyJetonModal .modal__head{
-  padding:10px 12px 8px;
+.empty-jeton-head{
   justify-content:center;
-  position:relative;
+  padding:24px 24px 8px;
 }
 
 #emptyJetonModal .modal__title{
-  text-align:center;
   width:100%;
-  font-size:18px;
+  text-align:center;
+  font-size:28px;
+  line-height:1.15;
+  font-weight:900;
   letter-spacing:.2px;
 }
 
-#emptyJetonModal .modal__close{
-  display:none;
-}
-
-#emptyJetonModal .modal__body{
-  padding:6px 12px 10px;
+.empty-jeton-body{
   display:flex;
   flex-direction:column;
-  gap:8px;
-}
-
-#emptyJetonModal .jeton_top{
-  display:flex;
   align-items:center;
-  justify-content:center;
-  gap:8px;
-  margin:0;
-}
-
-#emptyJetonModal .jeton_top__coin{
-  width:40px;
-  height:40px;
-  object-fit:contain;
-}
-
-#emptyJetonModal .jeton_top__info_inline{
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-
-#emptyJetonModal .jeton_top__label,
-#emptyJetonModal .jeton_top__count{
-  font-weight:900;
-  font-size:14px;
-  line-height:1;
+  gap:18px;
+  padding:6px 22px 26px;
 }
 
 .empty-jeton-body-text{
   text-align:center;
-  font-weight:900;
-  font-size:14px;
-  line-height:1.12;
-  margin:0;
+  font-size:18px;
+  line-height:1.45;
+  font-weight:500;
+  max-width:430px;
   white-space:pre-line;
-}
-
-.empty-jeton-offers{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
   margin:0;
 }
 
-.empty-jeton-card{
-  width:100%;
-  min-height:58px;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:16px;
-  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-  color:#fff;
+.empty-jeton-reward-row{
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:10px 14px;
-  cursor:pointer;
+  gap:12px;
+  margin-top:2px;
+  margin-bottom:4px;
 }
 
-.empty-jeton-card__inline{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  width:100%;
-}
-
-.empty-jeton-card__coin{
-  width:28px;
-  height:28px;
+.empty-jeton-reward-coin{
+  width:42px;
+  height:42px;
   object-fit:contain;
-  flex:0 0 auto;
 }
 
-.empty-jeton-card__count{
-  font-size:20px;
-  font-weight:950;
+.empty-jeton-reward-count{
+  font-size:28px;
+  font-weight:900;
   line-height:1;
 }
 
-.empty-jeton-card__sep{
+.empty-jeton-main-btn{
+  width:100%;
+  min-height:72px;
+  border:none;
+  border-radius:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-size:20px;
+  font-weight:900;
+  color:#fff;
+  cursor:pointer;
+  padding:14px 18px;
+  box-shadow:0 0 18px rgba(147,255,178,.22);
+}
+
+.empty-jeton-main-btn--ad{
+  background:linear-gradient(180deg, #a8783f 0%, #9b713a 100%);
+}
+
+.empty-jeton-main-btn--buy{
+  background:linear-gradient(180deg, #5f96e8 0%, #558ce2 100%);
+}
+
+.empty-jeton-buy-inline{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:nowrap;
+}
+
+.empty-jeton-buy-coin{
+  width:34px;
+  height:34px;
+  object-fit:contain;
+}
+
+.empty-jeton-buy-count,
+.empty-jeton-buy-dot,
+.empty-jeton-buy-price{
+  font-size:20px;
+  font-weight:900;
+  line-height:1;
+}
+
+.empty-jeton-cancel-btn{
+  min-width:140px;
+  min-height:58px;
+  border:none;
+  border-radius:18px;
+  padding:12px 22px;
   font-size:18px;
   font-weight:900;
-  line-height:1;
-}
-
-.empty-jeton-card__price{
-  font-size:17px;
-  font-weight:900;
-  line-height:1;
-  white-space:nowrap;
-}
-
-.empty-jeton-close-wrap{
-  justify-content:stretch;
-  padding:0;
-  margin:0;
-}
-
-.empty-jeton-close-wrap .btn{
-  width:100%;
-  min-height:58px;
-  padding:10px 14px;
-  font-size:16px;
-  border-radius:16px;
+  color:#fff;
+  cursor:pointer;
+  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  box-shadow:0 0 14px rgba(147,255,178,.18);
 }
 
 #emptyJetonModal .jeton_msg{
-  opacity:.85;
+  min-height:18px;
+  text-align:center;
   font-size:13px;
   line-height:1.2;
-  text-align:center;
+  opacity:.9;
+  margin:0;
   padding:0;
-  min-height:0;
-  margin-top:2px;
+}
+
+@media (max-width: 560px){
+  #emptyJetonModal .modal__panel,
+  #emptyJetonModal .modal__content{
+    width:min(92vw, 460px);
+    border-radius:24px;
+  }
+
+  .empty-jeton-head{
+    padding:20px 18px 8px;
+  }
+
+  #emptyJetonModal .modal__title{
+    font-size:24px;
+  }
+
+  .empty-jeton-body{
+    padding:6px 16px 22px;
+    gap:16px;
+  }
+
+  .empty-jeton-body-text{
+    font-size:16px;
+  }
+
+  .empty-jeton-main-btn{
+    min-height:68px;
+    font-size:18px;
+    border-radius:20px;
+  }
+
+  .empty-jeton-buy-count,
+  .empty-jeton-buy-dot,
+  .empty-jeton-buy-price{
+    font-size:18px;
+  }
+
+  .empty-jeton-cancel-btn{
+    min-height:54px;
+    font-size:17px;
+  }
 }
