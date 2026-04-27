@@ -610,32 +610,6 @@
         es: "ASIN_BOOK_12_ES",
         it: "ASIN_BOOK_12_IT"
       }
-    },
-    {
-      id: "book_13",
-      cover: "assets/img/books/book_13.webp",
-      titleKey: "ui.book_13_title",
-      descKey: "ui.book_13_desc",
-      asins: {
-        fr: "ASIN_BOOK_13_FR",
-        en: "ASIN_BOOK_13_EN",
-        de: "ASIN_BOOK_13_DE",
-        es: "ASIN_BOOK_13_ES",
-        it: "ASIN_BOOK_13_IT"
-      }
-    },
-    {
-      id: "book_14",
-      cover: "assets/img/books/book_14.webp",
-      titleKey: "ui.book_14_title",
-      descKey: "ui.book_14_desc",
-      asins: {
-        fr: "ASIN_BOOK_14_FR",
-        en: "ASIN_BOOK_14_EN",
-        de: "ASIN_BOOK_14_DE",
-        es: "ASIN_BOOK_14_ES",
-        it: "ASIN_BOOK_14_IT"
-      }
     }
   ];
 

@@ -318,12 +318,8 @@
     "ui.book_10_desc": "Die Langfassung des Szenarios Tempel Mictlan. Ein creepy Abenteuerroman in Mexiko, rund um einen verschütteten Tempel, eine vergessene Anomalie und eine Entdeckung, die mit der Herrin der Toten verbunden ist.",
     "ui.book_11_title": "Dorf des schwarzen Nebels",
     "ui.book_11_desc": "Die Langfassung des Szenarios Dorf des schwarzen Nebels. Ein beunruhigender Roman in einem Dorf, das auf keiner Karte steht, in dem der Nebel zu atmen scheint und jede Straße die Flucht schwieriger macht.",
-    "ui.book_12_title": "Titel von Szenario 12",
-    "ui.book_12_desc": "Die Langfassung von Szenario 12. Vorläufige Zusammenfassung, die ersetzt werden muss, sobald der endgültige Titel und das Thema des Szenarios feststehen.",
-    "ui.book_13_title": "Titel von Szenario 13",
-    "ui.book_13_desc": "Die Langfassung von Szenario 13. Vorläufige Zusammenfassung, die ersetzt werden muss, sobald der endgültige Titel und das Thema des Szenarios feststehen.",
-    "ui.book_14_title": "Geschichten und Legenden aus dem Jenseits",
-    "ui.book_14_desc": "Eine lange, immersive Sammlung dunkler, geheimnisvoller und übernatürlicher Geschichten. Mehrere Legenden aus dem Jenseits werden als längere Erzählungen mit einer unheimlichen, zugänglichen und verstörenden Atmosphäre entwickelt."
+    "ui.book_12_title": "Geschichten und Legenden aus dem Jenseits",
+    "ui.book_12_desc": "Eine lange, immersive Sammlung dunkler, geheimnisvoller und übernatürlicher Geschichten. Mehrere Legenden aus dem Jenseits werden als längere Erzählungen mit einer unheimlichen, zugänglichen und verstörenden Atmosphäre entwickelt."
   },
   "common": {
     "cancel": "Abbrechen"

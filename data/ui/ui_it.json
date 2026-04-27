@@ -318,12 +318,8 @@
     "ui.book_10_desc": "La versione lunga dello scenario Tempio Mictlan. Un romanzo d’avventura creepy ambientato in Messico, attorno a un tempio sepolto, un’anomalia dimenticata e una scoperta legata alla Signora dei Morti.",
     "ui.book_11_title": "Villaggio della nebbia nera",
     "ui.book_11_desc": "La versione lunga dello scenario Villaggio della nebbia nera. Un romanzo inquietante in un villaggio assente dalle mappe, dove la nebbia sembra respirare e ogni strada rende più difficile fuggire.",
-    "ui.book_12_title": "Titolo dello scenario 12",
-    "ui.book_12_desc": "La versione lunga dello scenario 12. Riassunto provvisorio da sostituire quando il titolo esatto e il tema finale dello scenario saranno confermati.",
-    "ui.book_13_title": "Titolo dello scenario 13",
-    "ui.book_13_desc": "La versione lunga dello scenario 13. Riassunto provvisorio da sostituire quando il titolo esatto e il tema finale dello scenario saranno confermati.",
-    "ui.book_14_title": "Storie e leggende dell’aldilà",
-    "ui.book_14_desc": "Una raccolta lunga e immersiva di storie oscure, misteriose e soprannaturali. Diverse leggende dell’aldilà vengono sviluppate in racconti più lunghi, con un’atmosfera creepy, accessibile e inquietante."
+    "ui.book_12_title": "Storie e leggende dell’aldilà",
+    "ui.book_12_desc": "Una raccolta lunga e immersiva di storie oscure, misteriose e soprannaturali. Diverse leggende dell’aldilà vengono sviluppate in racconti più lunghi, con un’atmosfera creepy, accessibile e inquietante."
   },
   "common": {
     "cancel": "Annulla"
