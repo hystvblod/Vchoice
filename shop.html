@@ -33,37 +33,54 @@
       touch-action: none;
     }
 
+    html,
     body{
-      background:
-        radial-gradient(1200px 700px at 50% -120px, rgba(255,59,59,.16), transparent 60%),
-        radial-gradient(900px 600px at 80% 15%, rgba(110,40,190,.10), transparent 55%),
-        radial-gradient(1000px 700px at 20% 45%, rgba(18,110,140,.10), transparent 60%),
-        linear-gradient(180deg, var(--vc-bg0), var(--vc-bg1) 45%, var(--vc-bg2));
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
       margin:0;
+      padding:0;
+      height:auto;
+      min-height:100%;
+    }
+
+    html{
+      background:#101426;
+    }
+
+    body{
+      min-height:100dvh;
+      position:relative;
+      overflow-x:hidden;
+      background:none;
+      isolation:isolate;
     }
 
     body::before{
       content:"";
-      position: fixed;
-      inset: 0;
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
       pointer-events:none;
-      z-index: 0;
-      opacity: .08;
-      background-image: url("assets/img/ui/noise.png");
-      background-size: 260px 260px;
-      mix-blend-mode: overlay;
+      z-index:0;
+      background:
+        linear-gradient(
+          180deg,
+          #101426 0%,
+          #11203a 14%,
+          #15305a 30%,
+          #183765 46%,
+          #1b3a66 58%,
+          #213861 70%,
+          #29355a 82%,
+          #312f54 92%,
+          #382a4d 100%
+        );
+      background-repeat:no-repeat;
     }
 
     body::after{
-      content:"";
-      position: fixed;
-      inset: -60px;
-      pointer-events:none;
-      z-index: 0;
-      background: radial-gradient(circle at 50% 40%, transparent 0 42%, rgba(0,0,0,.55) 72%, rgba(0,0,0,.78) 100%);
+      content:none;
+      display:none;
     }
 
     .page{
