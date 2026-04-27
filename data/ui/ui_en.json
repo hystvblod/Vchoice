@@ -317,12 +317,8 @@
     "ui.book_10_desc": "The long-form version of the Mictlan Temple scenario. A creepy adventure novel set in Mexico, around a buried temple, a forgotten anomaly, and a discovery linked to the Lady of the Dead.",
     "ui.book_11_title": "Village of the Black Fog",
     "ui.book_11_desc": "The long-form version of the Village of the Black Fog scenario. An unsettling novel set in a village missing from every map, where the fog seems to breathe and every street makes escape harder.",
-    "ui.book_12_title": "Scenario 12 Title",
-    "ui.book_12_desc": "The long-form version of scenario 12. Temporary summary to replace once the final title and theme of the scenario are confirmed.",
-    "ui.book_13_title": "Scenario 13 Title",
-    "ui.book_13_desc": "The long-form version of scenario 13. Temporary summary to replace once the final title and theme of the scenario are confirmed.",
-    "ui.book_14_title": "Stories and Legends from the Beyond",
-    "ui.book_14_desc": "A long and immersive collection of dark, mysterious, and supernatural stories. Several legends from the beyond are expanded into longer tales with a creepy, accessible, and unsettling atmosphere."
+    "ui.book_12_title": "Stories and Legends from the Beyond",
+    "ui.book_12_desc": "A long and immersive collection of dark, mysterious, and supernatural stories. Several legends from the beyond are expanded into longer tales with a creepy, accessible, and unsettling atmosphere."
   },
   "common": {
     "cancel": "Cancel"

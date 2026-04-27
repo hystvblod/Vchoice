@@ -318,12 +318,8 @@
     "ui.book_10_desc": "La versión larga del escenario Templo Mictlán. Una novela de aventura creepy ambientada en México, alrededor de un templo enterrado, una anomalía olvidada y un descubrimiento ligado a la Dama de los Muertos.",
     "ui.book_11_title": "Pueblo de la niebla negra",
     "ui.book_11_desc": "La versión larga del escenario Pueblo de la niebla negra. Una novela inquietante en un pueblo ausente de los mapas, donde la niebla parece respirar y cada calle vuelve más difícil escapar.",
-    "ui.book_12_title": "Título del escenario 12",
-    "ui.book_12_desc": "La versión larga del escenario 12. Resumen provisional que debe reemplazarse cuando se confirme el título exacto y el tema final del escenario.",
-    "ui.book_13_title": "Título del escenario 13",
-    "ui.book_13_desc": "La versión larga del escenario 13. Resumen provisional que debe reemplazarse cuando se confirme el título exacto y el tema final del escenario.",
-    "ui.book_14_title": "Historias y leyendas del más allá",
-    "ui.book_14_desc": "Una colección larga e inmersiva de historias oscuras, misteriosas y sobrenaturales. Varias leyendas del más allá se desarrollan en relatos más largos, con una atmósfera creepy, accesible e inquietante."
+    "ui.book_12_title": "Historias y leyendas del más allá",
+    "ui.book_12_desc": "Una colección larga e inmersiva de historias oscuras, misteriosas y sobrenaturales. Varias leyendas del más allá se desarrollan en relatos más largos, con una atmósfera creepy, accesible e inquietante."
   },
   "common": {
     "cancel": "Cancelar"

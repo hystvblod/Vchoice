@@ -318,12 +318,8 @@
     "ui.book_10_desc": "A versão longa do cenário Templo Mictlan. Um romance de aventura creepy passado no México, em torno de um templo enterrado, uma anomalia esquecida e uma descoberta ligada à Senhora dos Mortos.",
     "ui.book_11_title": "Aldeia do nevoeiro negro",
     "ui.book_11_desc": "A versão longa do cenário Aldeia do nevoeiro negro. Um romance inquietante numa aldeia ausente dos mapas, onde o nevoeiro parece respirar e cada rua torna a fuga mais difícil.",
-    "ui.book_12_title": "Título do cenário 12",
-    "ui.book_12_desc": "A versão longa do cenário 12. Resumo provisório a substituir assim que o título exato e o tema final do cenário forem confirmados.",
-    "ui.book_13_title": "Título do cenário 13",
-    "ui.book_13_desc": "A versão longa do cenário 13. Resumo provisório a substituir assim que o título exato e o tema final do cenário forem confirmados.",
-    "ui.book_14_title": "Histórias e lendas do além",
-    "ui.book_14_desc": "Uma coletânea longa e imersiva de histórias sombrias, misteriosas e sobrenaturais. Várias lendas do além são desenvolvidas em relatos mais longos, com uma atmosfera creepy, acessível e inquietante."
+    "ui.book_12_title": "Histórias e lendas do além",
+    "ui.book_12_desc": "Uma coletânea longa e imersiva de histórias sombrias, misteriosas e sobrenaturais. Várias lendas do além são desenvolvidas em relatos mais longos, com uma atmosfera creepy, acessível e inquietante."
   },
   "common": {
     "cancel": "Cancelar"
