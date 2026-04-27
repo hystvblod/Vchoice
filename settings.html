@@ -794,8 +794,11 @@
       document.title = t("ui.settings_title", "Settings");
 
       const back = $("btnBackHome");
+      const cross = $("btnGoCrosspromo");
       const prof = $("btnGoProfile");
+
       if(back) back.setAttribute("aria-label", t("ui.settings_back_home_aria", "Back to home"));
+      if(cross) cross.setAttribute("aria-label", t("crosspromo.open_page_aria", "Découvrir les autres jeux"));
       if(prof) prof.setAttribute("aria-label", t("ui.settings_open_profile_aria", "Open profile"));
 
       const grid = $("settingsLangGrid");
