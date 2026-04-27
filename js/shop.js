@@ -449,10 +449,767 @@
   }
 
   // =========================
+  // Books / Amazon
+  // =========================
+
+  const BOOK_MARKET_STORAGE_KEY = "vchoice_book_market";
+
+  const BOOKS = [
+    {
+      id: "book_01",
+      cover: "assets/img/books/book_01.webp",
+      titleKey: "ui.book_01_title",
+      descKey: "ui.book_01_desc",
+      asins: {
+        fr: "ASIN_BOOK_01_FR",
+        en: "ASIN_BOOK_01_EN",
+        de: "ASIN_BOOK_01_DE",
+        es: "ASIN_BOOK_01_ES",
+        it: "ASIN_BOOK_01_IT"
+      }
+    },
+    {
+      id: "book_02",
+      cover: "assets/img/books/book_02.webp",
+      titleKey: "ui.book_02_title",
+      descKey: "ui.book_02_desc",
+      asins: {
+        fr: "ASIN_BOOK_02_FR",
+        en: "ASIN_BOOK_02_EN",
+        de: "ASIN_BOOK_02_DE",
+        es: "ASIN_BOOK_02_ES",
+        it: "ASIN_BOOK_02_IT"
+      }
+    },
+    {
+      id: "book_03",
+      cover: "assets/img/books/book_03.webp",
+      titleKey: "ui.book_03_title",
+      descKey: "ui.book_03_desc",
+      asins: {
+        fr: "ASIN_BOOK_03_FR",
+        en: "ASIN_BOOK_03_EN",
+        de: "ASIN_BOOK_03_DE",
+        es: "ASIN_BOOK_03_ES",
+        it: "ASIN_BOOK_03_IT"
+      }
+    },
+    {
+      id: "book_04",
+      cover: "assets/img/books/book_04.webp",
+      titleKey: "ui.book_04_title",
+      descKey: "ui.book_04_desc",
+      asins: {
+        fr: "ASIN_BOOK_04_FR",
+        en: "ASIN_BOOK_04_EN",
+        de: "ASIN_BOOK_04_DE",
+        es: "ASIN_BOOK_04_ES",
+        it: "ASIN_BOOK_04_IT"
+      }
+    },
+    {
+      id: "book_05",
+      cover: "assets/img/books/book_05.webp",
+      titleKey: "ui.book_05_title",
+      descKey: "ui.book_05_desc",
+      asins: {
+        fr: "ASIN_BOOK_05_FR",
+        en: "ASIN_BOOK_05_EN",
+        de: "ASIN_BOOK_05_DE",
+        es: "ASIN_BOOK_05_ES",
+        it: "ASIN_BOOK_05_IT"
+      }
+    },
+    {
+      id: "book_06",
+      cover: "assets/img/books/book_06.webp",
+      titleKey: "ui.book_06_title",
+      descKey: "ui.book_06_desc",
+      asins: {
+        fr: "ASIN_BOOK_06_FR",
+        en: "ASIN_BOOK_06_EN",
+        de: "ASIN_BOOK_06_DE",
+        es: "ASIN_BOOK_06_ES",
+        it: "ASIN_BOOK_06_IT"
+      }
+    },
+    {
+      id: "book_07",
+      cover: "assets/img/books/book_07.webp",
+      titleKey: "ui.book_07_title",
+      descKey: "ui.book_07_desc",
+      asins: {
+        fr: "ASIN_BOOK_07_FR",
+        en: "ASIN_BOOK_07_EN",
+        de: "ASIN_BOOK_07_DE",
+        es: "ASIN_BOOK_07_ES",
+        it: "ASIN_BOOK_07_IT"
+      }
+    },
+    {
+      id: "book_08",
+      cover: "assets/img/books/book_08.webp",
+      titleKey: "ui.book_08_title",
+      descKey: "ui.book_08_desc",
+      asins: {
+        fr: "ASIN_BOOK_08_FR",
+        en: "ASIN_BOOK_08_EN",
+        de: "ASIN_BOOK_08_DE",
+        es: "ASIN_BOOK_08_ES",
+        it: "ASIN_BOOK_08_IT"
+      }
+    },
+    {
+      id: "book_09",
+      cover: "assets/img/books/book_09.webp",
+      titleKey: "ui.book_09_title",
+      descKey: "ui.book_09_desc",
+      asins: {
+        fr: "ASIN_BOOK_09_FR",
+        en: "ASIN_BOOK_09_EN",
+        de: "ASIN_BOOK_09_DE",
+        es: "ASIN_BOOK_09_ES",
+        it: "ASIN_BOOK_09_IT"
+      }
+    },
+    {
+      id: "book_10",
+      cover: "assets/img/books/book_10.webp",
+      titleKey: "ui.book_10_title",
+      descKey: "ui.book_10_desc",
+      asins: {
+        fr: "ASIN_BOOK_10_FR",
+        en: "ASIN_BOOK_10_EN",
+        de: "ASIN_BOOK_10_DE",
+        es: "ASIN_BOOK_10_ES",
+        it: "ASIN_BOOK_10_IT"
+      }
+    },
+    {
+      id: "book_11",
+      cover: "assets/img/books/book_11.webp",
+      titleKey: "ui.book_11_title",
+      descKey: "ui.book_11_desc",
+      asins: {
+        fr: "ASIN_BOOK_11_FR",
+        en: "ASIN_BOOK_11_EN",
+        de: "ASIN_BOOK_11_DE",
+        es: "ASIN_BOOK_11_ES",
+        it: "ASIN_BOOK_11_IT"
+      }
+    },
+    {
+      id: "book_12",
+      cover: "assets/img/books/book_12.webp",
+      titleKey: "ui.book_12_title",
+      descKey: "ui.book_12_desc",
+      asins: {
+        fr: "ASIN_BOOK_12_FR",
+        en: "ASIN_BOOK_12_EN",
+        de: "ASIN_BOOK_12_DE",
+        es: "ASIN_BOOK_12_ES",
+        it: "ASIN_BOOK_12_IT"
+      }
+    },
+    {
+      id: "book_13",
+      cover: "assets/img/books/book_13.webp",
+      titleKey: "ui.book_13_title",
+      descKey: "ui.book_13_desc",
+      asins: {
+        fr: "ASIN_BOOK_13_FR",
+        en: "ASIN_BOOK_13_EN",
+        de: "ASIN_BOOK_13_DE",
+        es: "ASIN_BOOK_13_ES",
+        it: "ASIN_BOOK_13_IT"
+      }
+    },
+    {
+      id: "book_14",
+      cover: "assets/img/books/book_14.webp",
+      titleKey: "ui.book_14_title",
+      descKey: "ui.book_14_desc",
+      asins: {
+        fr: "ASIN_BOOK_14_FR",
+        en: "ASIN_BOOK_14_EN",
+        de: "ASIN_BOOK_14_DE",
+        es: "ASIN_BOOK_14_ES",
+        it: "ASIN_BOOK_14_IT"
+      }
+    }
+  ];
+
+  const BOOK_MARKETS = [
+    {
+      id: "fr_FR",
+      labelKey: "ui.book_market_fr_fr",
+      domain: "amazon.fr",
+      lang: "fr",
+      localeMatches: ["fr-FR"],
+      regionMatches: ["FR"]
+    },
+    {
+      id: "fr_BE",
+      labelKey: "ui.book_market_fr_be",
+      domain: "amazon.com.be",
+      lang: "fr",
+      localeMatches: ["fr-BE"],
+      regionMatches: ["BE"]
+    },
+    {
+      id: "fr_CH",
+      labelKey: "ui.book_market_fr_ch",
+      domain: "amazon.fr",
+      lang: "fr",
+      localeMatches: ["fr-CH"],
+      regionMatches: []
+    },
+    {
+      id: "fr_LU",
+      labelKey: "ui.book_market_fr_lu",
+      domain: "amazon.fr",
+      lang: "fr",
+      localeMatches: ["fr-LU"],
+      regionMatches: []
+    },
+    {
+      id: "fr_MC",
+      labelKey: "ui.book_market_fr_mc",
+      domain: "amazon.fr",
+      lang: "fr",
+      localeMatches: ["fr-MC"],
+      regionMatches: ["MC"]
+    },
+
+    {
+      id: "en_GB",
+      labelKey: "ui.book_market_en_gb",
+      domain: "amazon.co.uk",
+      lang: "en",
+      localeMatches: ["en-GB"],
+      regionMatches: ["GB"]
+    },
+    {
+      id: "en_IE",
+      labelKey: "ui.book_market_en_ie",
+      domain: "amazon.ie",
+      lang: "en",
+      localeMatches: ["en-IE"],
+      regionMatches: ["IE"]
+    },
+    {
+      id: "en_US",
+      labelKey: "ui.book_market_en_us",
+      domain: "amazon.com",
+      lang: "en",
+      localeMatches: ["en-US"],
+      regionMatches: ["US"]
+    },
+    {
+      id: "en_CA",
+      labelKey: "ui.book_market_en_ca",
+      domain: "amazon.ca",
+      lang: "en",
+      localeMatches: ["en-CA"],
+      regionMatches: ["CA"]
+    },
+    {
+      id: "en_AU",
+      labelKey: "ui.book_market_en_au",
+      domain: "amazon.com.au",
+      lang: "en",
+      localeMatches: ["en-AU"],
+      regionMatches: ["AU"]
+    },
+    {
+      id: "en_NL",
+      labelKey: "ui.book_market_en_nl",
+      domain: "amazon.nl",
+      lang: "en",
+      localeMatches: ["nl-NL", "en-NL"],
+      regionMatches: ["NL"]
+    },
+
+    {
+      id: "de_DE",
+      labelKey: "ui.book_market_de_de",
+      domain: "amazon.de",
+      lang: "de",
+      localeMatches: ["de-DE"],
+      regionMatches: ["DE"]
+    },
+    {
+      id: "de_AT",
+      labelKey: "ui.book_market_de_at",
+      domain: "amazon.de",
+      lang: "de",
+      localeMatches: ["de-AT"],
+      regionMatches: ["AT"]
+    },
+    {
+      id: "de_CH",
+      labelKey: "ui.book_market_de_ch",
+      domain: "amazon.de",
+      lang: "de",
+      localeMatches: ["de-CH"],
+      regionMatches: []
+    },
+    {
+      id: "de_LU",
+      labelKey: "ui.book_market_de_lu",
+      domain: "amazon.de",
+      lang: "de",
+      localeMatches: ["de-LU"],
+      regionMatches: []
+    },
+
+    {
+      id: "it_IT",
+      labelKey: "ui.book_market_it_it",
+      domain: "amazon.it",
+      lang: "it",
+      localeMatches: ["it-IT"],
+      regionMatches: ["IT"]
+    },
+    {
+      id: "it_CH",
+      labelKey: "ui.book_market_it_ch",
+      domain: "amazon.it",
+      lang: "it",
+      localeMatches: ["it-CH"],
+      regionMatches: []
+    },
+
+    {
+      id: "es_ES",
+      labelKey: "ui.book_market_es_es",
+      domain: "amazon.es",
+      lang: "es",
+      localeMatches: ["es-ES"],
+      regionMatches: ["ES"]
+    }
+  ];
+
+  const BOOK_LANGUAGE_FALLBACKS = {
+    fr: "fr_FR",
+    en: "en_US",
+    de: "de_DE",
+    es: "es_ES",
+    it: "it_IT",
+    nl: "en_NL"
+  };
+
+  function normalizeLocaleTag(tag){
+    return String(tag || "")
+      .trim()
+      .replace(/_/g, "-");
+  }
+
+  function getLocaleLanguage(tag){
+    const safeTag = normalizeLocaleTag(tag);
+    if (!safeTag) return "";
+    return safeTag.split("-")[0].toLowerCase();
+  }
+
+  function getRegionFromLocale(tag){
+    const safeTag = normalizeLocaleTag(tag);
+    if (!safeTag) return "";
+
+    try{
+      const loc = new Intl.Locale(safeTag);
+      if (loc && loc.region) return String(loc.region).toUpperCase();
+
+      const max = loc.maximize ? loc.maximize() : null;
+      if (max && max.region) return String(max.region).toUpperCase();
+    }catch(_){}
+
+    const parts = safeTag.split("-");
+    if (parts.length >= 2){
+      const last = parts[parts.length - 1];
+      if (/^[a-zA-Z]{2}$/.test(last)) return last.toUpperCase();
+    }
+
+    return "";
+  }
+
+  function getLocaleCandidates(){
+    const out = [];
+
+    try{
+      if (Array.isArray(navigator.languages)){
+        navigator.languages.forEach(v => {
+          const n = normalizeLocaleTag(v);
+          if (n) out.push(n);
+        });
+      }
+    }catch(_){}
+
+    try{
+      const n = normalizeLocaleTag(navigator.language);
+      if (n) out.push(n);
+    }catch(_){}
+
+    return out.filter(Boolean);
+  }
+
+  function getBookMarketById(id){
+    return BOOK_MARKETS.find(m => String(m.id) === String(id)) || null;
+  }
+
+  function getSavedBookMarket(){
+    try{
+      const saved = localStorage.getItem(BOOK_MARKET_STORAGE_KEY);
+      if (!saved) return null;
+      return getBookMarketById(saved);
+    }catch(_){
+      return null;
+    }
+  }
+
+  function saveBookMarket(marketId){
+    try{
+      localStorage.setItem(BOOK_MARKET_STORAGE_KEY, String(marketId || ""));
+    }catch(_){}
+  }
+
+  function detectBookMarketFromPhone(){
+    const locales = getLocaleCandidates();
+
+    for (const locale of locales){
+      const normalized = normalizeLocaleTag(locale);
+
+      const exactMarket = BOOK_MARKETS.find(m => {
+        return Array.isArray(m.localeMatches) && m.localeMatches.includes(normalized);
+      });
+
+      if (exactMarket) return exactMarket;
+    }
+
+    for (const locale of locales){
+      const region = getRegionFromLocale(locale);
+
+      if (!region) continue;
+
+      const regionMarket = BOOK_MARKETS.find(m => {
+        return Array.isArray(m.regionMatches) && m.regionMatches.includes(region);
+      });
+
+      if (regionMarket) return regionMarket;
+    }
+
+    for (const locale of locales){
+      const lang = getLocaleLanguage(locale);
+      const fallbackMarketId = BOOK_LANGUAGE_FALLBACKS[lang];
+
+      if (!fallbackMarketId) continue;
+
+      const fallbackMarket = getBookMarketById(fallbackMarketId);
+      if (fallbackMarket) return fallbackMarket;
+    }
+
+    return null;
+  }
+
+  function getBookMarket(){
+    return getSavedBookMarket() || detectBookMarketFromPhone();
+  }
+
+  function isPlaceholderAsin(asin){
+    const safe = String(asin || "").trim();
+    return !safe || safe.includes("ASIN_BOOK_");
+  }
+
+  function buildAmazonBookUrl(book){
+    const market = getBookMarket();
+    if (!market || !market.domain || !market.lang) return "";
+
+    const asin = String(book?.asins?.[market.lang] || "").trim();
+
+    if (isPlaceholderAsin(asin)) return "";
+
+    return `https://www.${market.domain}/dp/${encodeURIComponent(asin)}`;
+  }
+
+  function getBookById(id){
+    return BOOKS.find(b => String(b.id) === String(id)) || null;
+  }
+
+  function openAmazonUrl(url){
+    const safeUrl = String(url || "").trim();
+    if (!safeUrl) return;
+
+    try{
+      window.open(safeUrl, "_blank", "noopener,noreferrer");
+    }catch(_){
+      try{ window.location.href = safeUrl; }catch(__){}
+    }
+  }
+
+  function getBookMarketLabel(){
+    const market = getBookMarket();
+    if (!market) return "";
+
+    return t("ui.book_market_note", {
+      market: String(market.domain || "")
+    });
+  }
+
+  const bookModal = $("#bookModal");
+  const bookModalCover = $("#bookModalCover");
+  const bookModalTitle = $("#bookModalTitle");
+  const bookModalDesc = $("#bookModalDesc");
+  const bookModalCountry = $("#bookModalCountry");
+  const bookModalAmazon = $("#bookModalAmazon");
+  const bookModalCancel = $("#bookModalCancel");
+  const bookChangeMarket = $("#bookChangeMarket");
+
+  const bookMarketModal = $("#bookMarketModal");
+  const bookMarketList = $("#bookMarketList");
+  const bookMarketCancel = $("#bookMarketCancel");
+
+  let currentBookModalId = "";
+
+  function closeBookModal(){
+    if (!bookModal) return;
+
+    bookModal.setAttribute("aria-hidden", "true");
+    bookModal.classList.remove("is-open");
+
+    if (bookModalAmazon) bookModalAmazon.setAttribute("data-book-amazon", "");
+
+    currentBookModalId = "";
+    _lockScroll(false);
+  }
+
+  function openBookModal(bookId){
+    const book = getBookById(bookId);
+    if (!book || !bookModal) return;
+
+    const url = buildAmazonBookUrl(book);
+    if (!url) return;
+
+    currentBookModalId = bookId;
+
+    if (bookModalCover){
+      bookModalCover.src = book.cover || "";
+      bookModalCover.alt = "";
+    }
+
+    if (bookModalTitle) bookModalTitle.textContent = t(book.titleKey);
+    if (bookModalDesc) bookModalDesc.textContent = t(book.descKey);
+    if (bookModalCountry) bookModalCountry.textContent = getBookMarketLabel();
+
+    if (bookModalAmazon){
+      bookModalAmazon.textContent = t("ui.book_buy_amazon");
+      bookModalAmazon.setAttribute("data-book-amazon", url);
+    }
+
+    bookModal.setAttribute("aria-hidden", "false");
+    bookModal.classList.add("is-open");
+    _lockScroll(true);
+  }
+
+  function closeBookMarketModal(){
+    if (!bookMarketModal) return;
+
+    bookMarketModal.setAttribute("aria-hidden", "true");
+    bookMarketModal.classList.remove("is-open");
+
+    if (bookModal && bookModal.classList.contains("is-open")){
+      _lockScroll(true);
+    }else{
+      _lockScroll(false);
+    }
+  }
+
+  function openBookMarketModal(){
+    renderBookMarketList();
+
+    if (!bookMarketModal) return;
+
+    bookMarketModal.setAttribute("aria-hidden", "false");
+    bookMarketModal.classList.add("is-open");
+    _lockScroll(true);
+  }
+
+  function renderBookMarketList(){
+    if (!bookMarketList) return;
+
+    const activeMarket = getBookMarket();
+
+    bookMarketList.innerHTML = BOOK_MARKETS.map(market => {
+      const activeClass = activeMarket && activeMarket.id === market.id ? " is-active" : "";
+
+      return `
+        <button class="book-market-option${activeClass}" type="button" data-book-market="${market.id}">
+          ${t(market.labelKey)}
+        </button>
+      `;
+    }).join("");
+  }
+
+  function refreshOpenBookModalAfterMarketChange(){
+    if (!currentBookModalId) return;
+
+    const book = getBookById(currentBookModalId);
+    if (!book) return;
+
+    const url = buildAmazonBookUrl(book);
+
+    if (!url){
+      closeBookModal();
+      return;
+    }
+
+    if (bookModalCountry) bookModalCountry.textContent = getBookMarketLabel();
+
+    if (bookModalAmazon){
+      bookModalAmazon.textContent = t("ui.book_buy_amazon");
+      bookModalAmazon.setAttribute("data-book-amazon", url);
+    }
+  }
+
+  function renderBooks(){
+    const grid = $("#bookGrid");
+    const section = $("#booksSection");
+    const divider = $("#booksDivider");
+
+    if (!grid) return;
+
+    const market = getBookMarket();
+
+    if (!market){
+      grid.innerHTML = "";
+      if (section) section.style.display = "none";
+      if (divider) divider.style.display = "none";
+      return;
+    }
+
+    const availableBooks = BOOKS
+      .map(book => {
+        return {
+          book,
+          url: buildAmazonBookUrl(book)
+        };
+      })
+      .filter(item => !!item.url);
+
+    if (!availableBooks.length){
+      grid.innerHTML = "";
+      if (section) section.style.display = "none";
+      if (divider) divider.style.display = "none";
+      return;
+    }
+
+    if (section) section.style.display = "";
+    if (divider) divider.style.display = "";
+
+    grid.innerHTML = availableBooks.map(item => {
+      const book = item.book;
+      const title = t(book.titleKey);
+
+      return `
+        <article class="shop-panel book-card" data-book-card="${book.id}">
+          <div class="book-inner">
+            <button class="book-cover-btn" type="button" data-book-open="${book.id}" aria-label="${title}">
+              <img class="book-cover" src="${book.cover}" alt="" draggable="false" />
+            </button>
+
+            <div class="book-title">${title}</div>
+
+            <button class="book-buy-btn" type="button" data-book-buy="${item.url}">
+              ${t("ui.book_buy_amazon")}
+            </button>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  if (bookModal){
+    bookModal.addEventListener("click", (e) => {
+      const tEl = e.target;
+      if (!tEl) return;
+      if (tEl === bookModal) closeBookModal();
+    });
+  }
+
+  if (bookModalCancel){
+    bookModalCancel.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeBookModal();
+    });
+  }
+
+  if (bookChangeMarket){
+    bookChangeMarket.addEventListener("click", (e) => {
+      e.preventDefault();
+      openBookMarketModal();
+    });
+  }
+
+  if (bookMarketModal){
+    bookMarketModal.addEventListener("click", (e) => {
+      const tEl = e.target;
+      if (!tEl) return;
+      if (tEl === bookMarketModal) closeBookMarketModal();
+    });
+  }
+
+  if (bookMarketCancel){
+    bookMarketCancel.addEventListener("click", (e) => {
+      e.preventDefault();
+      closeBookMarketModal();
+    });
+  }
+
+  if (bookMarketList){
+    bookMarketList.addEventListener("click", (e) => {
+      const tEl = e.target;
+      const btn = tEl && tEl.closest ? tEl.closest("[data-book-market]") : null;
+      if (!btn) return;
+
+      const marketId = btn.getAttribute("data-book-market");
+      const market = getBookMarketById(marketId);
+
+      if (!market) return;
+
+      saveBookMarket(market.id);
+      renderBooks();
+      refreshOpenBookModalAfterMarketChange();
+      closeBookMarketModal();
+    });
+  }
+
+  // =========================
   // Events
   // =========================
   document.addEventListener("click", (e) => {
     const tEl = e.target;
+
+    // Books: ouverture popup via couverture
+    const bookOpen = tEl && tEl.closest ? tEl.closest("[data-book-open]") : null;
+    if (bookOpen){
+      const bookId = bookOpen.getAttribute("data-book-open");
+      if (bookId) openBookModal(bookId);
+      return;
+    }
+
+    // Books: achat direct Amazon
+    const bookBuy = tEl && tEl.closest ? tEl.closest("[data-book-buy]") : null;
+    if (bookBuy){
+      const url = bookBuy.getAttribute("data-book-buy");
+      openAmazonUrl(url);
+      return;
+    }
+
+    // Books: achat depuis popup
+    const bookAmazon = tEl && tEl.closest ? tEl.closest("[data-book-amazon]") : null;
+    if (bookAmazon){
+      const url = bookAmazon.getAttribute("data-book-amazon");
+      openAmazonUrl(url);
+      return;
+    }
 
     // Rewarded buttons
     const adBtn = tEl && tEl.closest ? tEl.closest("[data-ad]") : null;
@@ -504,6 +1261,8 @@
   // init (⚠️ sur shop.html tu n’avais pas d’init i18n, donc tout tombait en fallback -> [object Object])
   (async function boot(){
     await ensureI18nReady();
+
+    renderBooks();
 
     applyI18nNow();
     refreshEntitlementsUI();

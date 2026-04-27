@@ -784,6 +784,178 @@
   }
 }
 
+
+.book-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.book-card{
+  padding: 12px;
+  cursor: default;
+  -webkit-tap-highlight-color: transparent;
+  position:relative;
+}
+
+.book-card::before{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  pointer-events:none;
+  background:
+    radial-gradient(360px 220px at 18% 10%, rgba(255,59,59,.14), transparent 62%),
+    radial-gradient(360px 220px at 80% 12%, rgba(18,110,140,.10), transparent 62%),
+    linear-gradient(180deg, rgba(255,255,255,.05), transparent 48%);
+  opacity: .92;
+}
+
+.book-inner{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+  align-items:stretch;
+}
+
+.book-cover-btn{
+  border:0;
+  padding:0;
+  margin:0;
+  background:transparent;
+  cursor:pointer;
+  border-radius: 16px;
+  overflow:hidden;
+  box-shadow: 0 16px 32px rgba(0,0,0,.38);
+}
+
+.book-cover{
+  width:100%;
+  aspect-ratio: 2 / 3;
+  object-fit:cover;
+  display:block;
+  user-select:none;
+  pointer-events:none;
+}
+
+.book-title{
+  min-height: 34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color: var(--vc-text);
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.18;
+  text-shadow: 0 10px 22px rgba(0,0,0,.45);
+}
+
+.book-buy-btn{
+  width:100%;
+  border-radius: 14px;
+  padding: 11px 10px;
+  font-weight: 950;
+  border: 1px solid rgba(255,59,59,.30);
+  background: linear-gradient(180deg, rgba(255,59,59,.20), rgba(0,0,0,.16));
+  color: var(--vc-text);
+  cursor:pointer;
+  box-shadow: 0 10px 20px rgba(0,0,0,.22);
+  min-height: 42px;
+}
+
+.book-buy-btn:active{
+  transform: translateY(1px);
+}
+
+.book-modal-cover{
+  width:min(210px, 70vw);
+  aspect-ratio: 2 / 3;
+  object-fit:cover;
+  border-radius: 16px;
+  box-shadow: 0 18px 42px rgba(0,0,0,.55);
+}
+
+.book-country-note{
+  margin: 0;
+  color: rgba(255,255,255,.58);
+  font-size: 12px;
+  line-height: 1.35;
+  text-align:center;
+}
+
+.book-market-btn{
+  margin-top: 8px;
+  width:100%;
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.07);
+  color: var(--vc-text);
+  font-weight: 900;
+  cursor:pointer;
+}
+
+.book-market-list{
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+  width:100%;
+  margin-top: 12px;
+}
+
+.book-market-option{
+  width:100%;
+  border-radius: 14px;
+  padding: 12px 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.07);
+  color: var(--vc-text);
+  font-weight: 900;
+  text-align:left;
+  cursor:pointer;
+}
+
+.book-market-option.is-active{
+  border-color: rgba(255,59,59,.55);
+  background: rgba(255,59,59,.18);
+}
+
+@media (min-width: 768px) and (max-width: 1366px){
+  .book-grid{
+    gap:18px;
+  }
+
+  .book-card{
+    padding:18px;
+  }
+
+  .book-title{
+    min-height: 42px;
+    font-size: 18px;
+  }
+
+  .book-buy-btn{
+    min-height:56px;
+    font-size:18px;
+    border-radius:16px;
+  }
+
+  .book-modal-cover{
+    width:min(260px, 60vw);
+  }
+
+  .book-country-note{
+    font-size:15px;
+  }
+
+  .book-market-btn,
+  .book-market-option{
+    min-height: 52px;
+    font-size: 17px;
+  }
+}
+
 </style>
 </head>
 
@@ -913,7 +1085,56 @@
         </article>
       </div>
     </section>
+
+    <div class="shop-divider" id="booksDivider">
+      <div class="shop-divider-line"></div>
+      <h2 class="shop-divider-title" data-i18n="ui.shop_books_title"></h2>
+      <div class="shop-divider-line"></div>
+    </div>
+
+    <section class="shop-section" id="booksSection" aria-label="">
+      <div class="book-grid" id="bookGrid"></div>
+    </section>
   </main>
+
+
+  <div class="shop-modal" id="bookModal" aria-hidden="true">
+    <div class="shop-modal-card" role="dialog" aria-modal="true" aria-label="">
+      <div class="shop-modal-top">
+        <img class="book-modal-cover" id="bookModalCover" src="" alt="" draggable="false" />
+        <h2 class="shop-modal-title" id="bookModalTitle"></h2>
+      </div>
+
+      <p class="shop-modal-desc" id="bookModalDesc"></p>
+
+      <div class="shop-modal-bottom">
+        <p class="book-country-note" id="bookModalCountry"></p>
+
+        <button class="book-market-btn" id="bookChangeMarket" type="button" data-i18n="ui.book_change_market"></button>
+
+        <div class="shop-modal-actions">
+          <button class="shop-modal-btn" id="bookModalCancel" type="button" data-i18n="ui.shop_cancel"></button>
+          <button class="shop-modal-btn primary" id="bookModalAmazon" type="button" data-book-amazon=""></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shop-modal" id="bookMarketModal" aria-hidden="true">
+    <div class="shop-modal-card" role="dialog" aria-modal="true" aria-label="">
+      <div class="shop-modal-top">
+        <h2 class="shop-modal-title" data-i18n="ui.book_market_title"></h2>
+      </div>
+
+      <p class="shop-modal-desc" data-i18n="ui.book_market_desc"></p>
+
+      <div class="book-market-list" id="bookMarketList"></div>
+
+      <div class="shop-modal-actions">
+        <button class="shop-modal-btn" id="bookMarketCancel" type="button" data-i18n="ui.shop_cancel"></button>
+      </div>
+    </div>
+  </div>
 
   <div class="shop-modal" id="shopModal" aria-hidden="true">
     <div class="shop-modal-card" role="dialog" aria-modal="true" aria-label="">
