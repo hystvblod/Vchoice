@@ -579,6 +579,118 @@
   }
 }
 
+
+/* =========================================================
+   FIX FINAL SETTINGS — fond identique index + scroll propre
+   ========================================================= */
+
+html,
+body{
+  margin:0 !important;
+  padding:0 !important;
+  height:auto !important;
+  min-height:100% !important;
+}
+
+html{
+  background:#101426 !important;
+}
+
+body.page-settings{
+  width:100% !important;
+  min-height:100vh !important;
+  height:auto !important;
+  position:relative !important;
+  overflow-x:hidden !important;
+  overflow-y:auto !important;
+  overscroll-behavior-y:auto !important;
+  display:block !important;
+  background:none !important;
+  isolation:isolate !important;
+}
+
+body.page-settings::before{
+  content:"" !important;
+  position:absolute !important;
+  top:0 !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  min-height:100% !important;
+  pointer-events:none !important;
+  z-index:0 !important;
+  background:
+    linear-gradient(
+      180deg,
+      #101426 0%,
+      #11203a 14%,
+      #15305a 30%,
+      #183765 46%,
+      #1b3a66 58%,
+      #213861 70%,
+      #29355a 82%,
+      #312f54 92%,
+      #382a4d 100%
+    ) !important;
+  background-repeat:no-repeat !important;
+}
+
+body.page-settings::after{
+  content:none !important;
+  display:none !important;
+}
+
+body.page-settings .vc-top-actions,
+body.page-settings .app,
+body.page-settings .main,
+body.page-settings .panel,
+body.page-settings .panel__head,
+body.page-settings .panel__body{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+body.page-settings .app{
+  min-height:0 !important;
+  height:auto !important;
+  display:block !important;
+  overflow:visible !important;
+  background:transparent !important;
+}
+
+body.page-settings .main{
+  min-height:0 !important;
+  height:auto !important;
+  display:block !important;
+  overflow:visible !important;
+  padding:0 12px max(18px, calc(18px + env(safe-area-inset-bottom))) !important;
+  box-sizing:border-box !important;
+  background:transparent !important;
+}
+
+body.page-settings .panel{
+  min-height:0 !important;
+  height:auto !important;
+  display:block !important;
+  overflow:visible !important;
+  background:transparent !important;
+}
+
+body.page-settings .panel__body{
+  min-height:0 !important;
+  height:auto !important;
+  display:block !important;
+  overflow:visible !important;
+  padding-left:calc(16px + env(safe-area-inset-left)) !important;
+  padding-right:calc(16px + env(safe-area-inset-right)) !important;
+  padding-bottom:max(18px, calc(18px + env(safe-area-inset-bottom))) !important;
+  box-sizing:border-box !important;
+}
+
+body.page-settings .vc-top-right{
+  gap:10px !important;
+}
+
 </style>
 </head>
 
@@ -596,6 +708,10 @@
     <div class="vc-top-slot vc-top-center"></div>
 
     <div class="vc-top-slot vc-top-right">
+      <a id="btnGoCrosspromo" class="vc-icon-button" href="crosspromo.html" aria-label="">
+        <img src="assets/img/ui/btn_crosspromo.webp" alt="" draggable="false" />
+      </a>
+
       <a id="btnGoProfile" class="vc-icon-button" href="profile.html" aria-label="">
         <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
       </a>
