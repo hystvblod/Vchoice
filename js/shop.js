@@ -604,9 +604,9 @@
       titleKey: "ui.book_12_title",
       descKey: "ui.book_12_desc",
       asins: {
-        fr: "ASIN_BOOK_12_FR",
-        en: "ASIN_BOOK_12_EN",
-        de: "ASIN_BOOK_12_DE",
+        fr: "B0GYG3CQHZ",
+        en: "B0GYS49PNJ",
+        de: "B0GYQPX3BP",
         es: "ASIN_BOOK_12_ES",
         it: "ASIN_BOOK_12_IT"
       }
