@@ -53,6 +53,7 @@ const UI_JETON_ICON_WEBP   = "assets/img/ui/jeton.webp";
 function scenarioTextFileLang(lang){
   const safe = normalizeLang(lang) || DEFAULT_LANG;
   if(safe === "eslatam") return "es_latam";
+  if(safe === "ja") return "jp";
   return safe;
 }
 
