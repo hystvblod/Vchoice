@@ -50,11 +50,17 @@ const TUTO_JETON_ICON_WEBP = "assets/img/ui/jeton.webp";
 const UI_VCOINS_ICON_WEBP  = "assets/img/ui/vcoin.webp";
 const UI_JETON_ICON_WEBP   = "assets/img/ui/jeton.webp";
 
+function scenarioTextFileLang(lang){
+  const safe = normalizeLang(lang) || DEFAULT_LANG;
+  if(safe === "eslatam") return "es_latam";
+  return safe;
+}
+
 const PATHS = {
   ui: (lang) => `data/ui/ui_${lang}.json`,
   catalog: `data/scenarios/catalog.json`,
   scenarioLogic: (scenarioId) => `data/scenarios/${scenarioId}/logic.json`,
-  scenarioText:  (scenarioId, lang) => `data/scenarios/${scenarioId}/text_${lang}.json`,
+  scenarioText:  (scenarioId, lang) => `data/scenarios/${scenarioId}/text_${scenarioTextFileLang(lang)}.json`,
 };
 
 /* =========================
@@ -782,17 +788,22 @@ async function setLang(newLang, opts = {}){
 function load(){
   try{
     const stored = getStoredLang();
-    if(stored) LANG = stored;
 
     const raw = localStorage.getItem(SAVE_KEY);
-    if(!raw) return;
-    const data = JSON.parse(raw);
+    if(raw){
+      const data = JSON.parse(raw);
 
-    if(data && typeof data === "object"){
-      scenarioStates = data.scenarioStates || {};
-      const savedLang = normalizeLang(data.lang);
-      if(savedLang && SUPPORTED_LANGS.includes(savedLang)) LANG = savedLang;
+      if(data && typeof data === "object"){
+        scenarioStates = data.scenarioStates || {};
+
+        const savedLang = normalizeLang(data.lang);
+        if(!stored && savedLang && SUPPORTED_LANGS.includes(savedLang)){
+          LANG = savedLang;
+        }
+      }
     }
+
+    if(stored) LANG = stored;
   }catch(e){
     console.warn("load failed", e);
   }
@@ -1390,7 +1401,7 @@ function bindTopbar(){
 ========================= */
 async function loadScenarioMeta(scenarioId){
   try{
-    const scenarioLang = (LANG === "eslatam") ? "es" : LANG;
+    const scenarioLang = LANG;
     const txt = await fetchJSON(PATHS.scenarioText(scenarioId, scenarioLang));
     return (txt && typeof txt === "object" && txt.meta) ? txt.meta : {};
   }catch(_){
@@ -2058,7 +2069,7 @@ async function openScenario(scenarioId, opts = {}){
   syncAdWeightedTime();
 
   const baseLogic = await fetchJSON(PATHS.scenarioLogic(scenarioId));
-  const scenarioLang = (LANG === "eslatam") ? "es" : LANG;
+  const scenarioLang = LANG;
   const textPromise = fetchJSON(PATHS.scenarioText(scenarioId, scenarioLang))
     .catch(() => fetchJSON(PATHS.scenarioText(scenarioId, DEFAULT_LANG)));
 
