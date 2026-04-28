@@ -465,7 +465,8 @@
         en: "ASIN_BOOK_01_EN",
         de: "ASIN_BOOK_01_DE",
         es: "ASIN_BOOK_01_ES",
-        it: "ASIN_BOOK_01_IT"
+        it: "ASIN_BOOK_01_IT",
+        ptbr: "ASIN_BOOK_01_PTBR"
       }
     },
     {
@@ -478,7 +479,8 @@
         en: "ASIN_BOOK_02_EN",
         de: "ASIN_BOOK_02_DE",
         es: "ASIN_BOOK_02_ES",
-        it: "ASIN_BOOK_02_IT"
+        it: "ASIN_BOOK_02_IT",
+        ptbr: "ASIN_BOOK_02_PTBR"
       }
     },
     {
@@ -491,7 +493,8 @@
         en: "ASIN_BOOK_03_EN",
         de: "ASIN_BOOK_03_DE",
         es: "ASIN_BOOK_03_ES",
-        it: "ASIN_BOOK_03_IT"
+        it: "ASIN_BOOK_03_IT",
+        ptbr: "ASIN_BOOK_03_PTBR"
       }
     },
     {
@@ -504,7 +507,8 @@
         en: "ASIN_BOOK_04_EN",
         de: "ASIN_BOOK_04_DE",
         es: "ASIN_BOOK_04_ES",
-        it: "ASIN_BOOK_04_IT"
+        it: "ASIN_BOOK_04_IT",
+        ptbr: "ASIN_BOOK_04_PTBR"
       }
     },
     {
@@ -517,7 +521,8 @@
         en: "ASIN_BOOK_05_EN",
         de: "ASIN_BOOK_05_DE",
         es: "ASIN_BOOK_05_ES",
-        it: "ASIN_BOOK_05_IT"
+        it: "ASIN_BOOK_05_IT",
+        ptbr: "ASIN_BOOK_05_PTBR"
       }
     },
     {
@@ -530,7 +535,8 @@
         en: "ASIN_BOOK_06_EN",
         de: "ASIN_BOOK_06_DE",
         es: "ASIN_BOOK_06_ES",
-        it: "ASIN_BOOK_06_IT"
+        it: "ASIN_BOOK_06_IT",
+        ptbr: "ASIN_BOOK_06_PTBR"
       }
     },
     {
@@ -543,7 +549,8 @@
         en: "ASIN_BOOK_07_EN",
         de: "ASIN_BOOK_07_DE",
         es: "ASIN_BOOK_07_ES",
-        it: "ASIN_BOOK_07_IT"
+        it: "ASIN_BOOK_07_IT",
+        ptbr: "ASIN_BOOK_07_PTBR"
       }
     },
     {
@@ -556,7 +563,8 @@
         en: "ASIN_BOOK_08_EN",
         de: "ASIN_BOOK_08_DE",
         es: "ASIN_BOOK_08_ES",
-        it: "ASIN_BOOK_08_IT"
+        it: "ASIN_BOOK_08_IT",
+        ptbr: "ASIN_BOOK_08_PTBR"
       }
     },
     {
@@ -569,7 +577,8 @@
         en: "ASIN_BOOK_09_EN",
         de: "ASIN_BOOK_09_DE",
         es: "ASIN_BOOK_09_ES",
-        it: "ASIN_BOOK_09_IT"
+        it: "ASIN_BOOK_09_IT",
+        ptbr: "ASIN_BOOK_09_PTBR"
       }
     },
     {
@@ -582,7 +591,8 @@
         en: "ASIN_BOOK_10_EN",
         de: "ASIN_BOOK_10_DE",
         es: "ASIN_BOOK_10_ES",
-        it: "ASIN_BOOK_10_IT"
+        it: "ASIN_BOOK_10_IT",
+        ptbr: "ASIN_BOOK_10_PTBR"
       }
     },
     {
@@ -595,7 +605,8 @@
         en: "ASIN_BOOK_11_EN",
         de: "ASIN_BOOK_11_DE",
         es: "ASIN_BOOK_11_ES",
-        it: "ASIN_BOOK_11_IT"
+        it: "ASIN_BOOK_11_IT",
+        ptbr: "ASIN_BOOK_11_PTBR"
       }
     },
     {
@@ -604,11 +615,12 @@
       titleKey: "ui.book_12_title",
       descKey: "ui.book_12_desc",
       asins: {
-        fr: "ASIN_BOOK_12_FR",
-        en: "ASIN_BOOK_12_EN",
-        de: "ASIN_BOOK_12_DE",
+        fr: "B0GYG3CQHZ",
+        en: "B0GYS49PNJ",
+        de: "B0GYQPX3BP",
         es: "ASIN_BOOK_12_ES",
-        it: "ASIN_BOOK_12_IT"
+        it: "ASIN_BOOK_12_IT",
+        ptbr: "ASIN_BOOK_12_PTBR"
       }
     }
   ];
@@ -703,6 +715,15 @@
       localeMatches: ["nl-NL", "en-NL"],
       regionMatches: ["NL"]
     },
+    {
+      id: "ptbr_BR",
+      labelKey: "ui.book_market_ptbr_br",
+      domain: "amazon.com.br",
+      lang: "ptbr",
+      localeMatches: ["pt-BR"],
+      regionMatches: ["BR"]
+    },
+
 
     {
       id: "de_DE",
@@ -770,7 +791,8 @@
     de: "de_DE",
     es: "es_ES",
     it: "it_IT",
-    nl: "en_NL"
+    nl: "en_NL",
+    pt: "ptbr_BR"
   };
 
   function normalizeLocaleTag(tag){
