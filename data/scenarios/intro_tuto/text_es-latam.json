@@ -1,0 +1,42 @@
+﻿{
+  "meta": {
+    "lang": "es-419",
+    "scenario_id": "intro_tuto",
+    "title": "2:00 — El grito",
+    "tagline": "Un grito en la oscuridad. ¿Real… o solo para ti?",
+    "hint_ns": "it.h",
+    "generated": "2026-02-23"
+  },
+  "strings": {
+    "it.intro.title": "2:00 — El grito",
+    "it.intro.body": "Son las 2 de la mañana.\n\nUn grito atraviesa el silencio, breve… y luego se corta de golpe.\nTe quedas inmóvil. No sabes si es real. No sabes de dónde viene.\n\nPero sabes una cosa: volverá a ocurrir.",
+    "it.intro.c1": "Salir de la habitación",
+    "it.intro.c2": "Mirar por la mirilla",
+    "it.intro.c3": "Abrir un poco la puerta",
+    "it.s1.title": "El pasillo",
+    "it.s1.body": "El piso de madera cruje bajo tu peso.\nLa luz del pasillo parpadea una sola vez… y luego se estabiliza.\n\nEl aire está frío. No como una ventana abierta.\nComo una habitación que lleva años cerrada.\n\nAl fondo, la oscuridad parece más densa.",
+    "it.s1.c1": "Avanzar sin hacer ruido",
+    "it.s1.c2": "Apagar la luz y escuchar para seguir tu instinto",
+    "it.s1.c3": "Susurrar: « ¿Hay alguien? » y seguir el ruido",
+    "it.s2.title": "Las escaleras",
+    "it.s2.body": "Bajas lentamente.\nA mitad del descanso, ves una puerta entreabierta.\nDetrás, una corriente de aire huele a piedra húmeda.\n\nTu teléfono marca las 02:00.\nNo tienes señal.\n\nY entonces… un segundo grito.\nMás cerca.\nMás abajo.\nComo si viniera desde dentro de la casa.",
+    "it.s2.c1": "Seguir el pasillo hacia el grito",
+    "it.s2.c2": "Poner la mano en la pared para orientarte y seguirla",
+    "it.s2.c3": "Acercarte a la puerta",
+    "it.s3.title": "La puerta marcada",
+    "it.s3.body": "La puerta tiene un símbolo grabado, apenas visible.\nLa manija está helada.\n\nEn la cerradura, algo brilla: un fragmento de metal, una llave oxidada atrapada ahí desde hace mucho tiempo.\n\nQuieres tomarla.\nPero te tiemblan los dedos.\nY el grito se transforma en un soplo, justo detrás de la madera.\n\nNo puedes continuar sin desbloquear el objeto faltante. Esta escena sirve para mostrarte el sistema de fichas.",
+    "it.s3.c1": "Insertar la llave oxidada",
+    "it.s3.c2": "Forzar la manija",
+    "it.s3.c3": "Intentar abrirla golpeándola",
+    "it.s4.title": "Del otro lado",
+    "it.s4.body": "La cerradura cede con un chasquido seco.\nEl soplo se detiene.\n\nLa habitación está vacía.\nSolo una silla.\nY en el suelo, una marca húmeda, como si alguien hubiera reptado.",
+    "it.s4.c1": "Salir del edificio y pedir ayuda",
+    "it.s4.c2": "Retroceder despacio, sin hacer ruido",
+    "it.end_good.title": "Bravo — lograste salir",
+    "it.end_good.body": "El silencio vuelve a caer.\nRespiras.\n\n✅ Recompensa del tutorial:\n• +2 Fichas\n• +100 VCoins\n\nLos **VCoins** sirven para desbloquear nuevos escenarios.\nLas **Fichas** sirven para:\n• desbloquear un objeto olvidado\n• volver atrás\n• activar la guía hacia un final (bueno / malo / secreto)\n\nCada escenario tiene varios finales: uno bueno, uno malo y a veces uno o varios secretos.\n\nConsejo: si una opción está bloqueada, a menudo puedes encontrar el objeto… o desbloquearlo con 1 ficha.",
+    "it.end_bad.title": "Final — huiste",
+    "it.end_bad.body": "Retrocedes de golpe y huyes.\n\nDetrás de ti, el grito vuelve a empezar… pero esta vez parece seguirte.\n\n✅ Recompensa del tutorial:\n• +2 Fichas\n• +100 VCoins\n\nLos **VCoins** sirven para desbloquear nuevos escenarios.\nLas **Fichas** sirven para:\n• desbloquear un objeto olvidado\n• volver atrás\n• activar la guía hacia un final (bueno / malo / secreto)\n\nCada escenario tiene varios finales: uno bueno, uno malo y a veces uno o varios secretos.\n\nConsejo: si una opción está bloqueada, a menudo puedes encontrar el objeto… o desbloquearlo con 1 ficha.",
+    "it.h.clue.it_key.title": "Llave oxidada"
+  },
+  "it.s3.c3": "Intentar abrirla golpeándola"
+}
