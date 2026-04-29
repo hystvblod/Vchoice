@@ -956,6 +956,50 @@
   }
 }
 
+
+/* ✅ Popup choix boutique Amazon : reste dans l'écran + scroll interne */
+#bookMarketModal{
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  overflow: hidden;
+}
+
+#bookMarketModal .shop-modal-card{
+  width: min(420px, calc(100vw - 28px));
+  max-height: calc(100dvh - 28px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+#bookMarketModal .shop-modal-top{
+  flex: 0 0 auto;
+}
+
+#bookMarketModal .shop-modal-desc{
+  flex: 0 0 auto;
+}
+
+#bookMarketModal .book-market-list{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+#bookMarketModal .shop-modal-actions{
+  flex: 0 0 auto;
+  margin-top: 12px;
+}
+
+@supports not (height: 100dvh){
+  #bookMarketModal .shop-modal-card{
+    max-height: calc(100vh - 28px);
+  }
+}
+
 </style>
 </head>
 
