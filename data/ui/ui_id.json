@@ -1,4 +1,4 @@
-﻿{
+{
   "ui": {
     "app_title": "VChronicles",
     "app_subtitle": "Cerita interaktif",
@@ -329,6 +329,9 @@
     "reward_prefix": "DAPATKAN",
     "reward_granted": "Hadiah diterima: {amount} VCoins untuk instalasi {app}.",
     "cta_install": "Unduh",
+    "cta_claim": "Klaim",
+    "cta_claiming": "Mengklaim...",
+    "cta_claimed": "Sudah diklaim",
     "cta_later": "Nanti",
     "close_aria": "Tutup",
     "shot_open_aria": "Buka gambar",
