@@ -591,6 +591,83 @@
     await claimRewardIfEligible("vuniverse");
   }
 
+  async function getStoreActionState(appId) {
+    const stateBefore = readState();
+    const rowBefore = stateBefore.apps[appId];
+
+    if (!rowBefore) {
+      return {
+        key: "crosspromo.cta_install",
+        disabled: false
+      };
+    }
+
+    if (rowBefore.rewardClaimed) {
+      return {
+        key: "crosspromo.cta_claimed",
+        disabled: true
+      };
+    }
+
+    const installed = await refreshInstalledStatus(appId);
+    const stateAfter = readState();
+    const rowAfter = stateAfter.apps[appId];
+
+    if (!rowAfter) {
+      return {
+        key: "crosspromo.cta_install",
+        disabled: false
+      };
+    }
+
+    if (rowAfter.rewardClaimed) {
+      return {
+        key: "crosspromo.cta_claimed",
+        disabled: true
+      };
+    }
+
+    if (installed) {
+      return {
+        key: "crosspromo.cta_claim",
+        disabled: false
+      };
+    }
+
+    return {
+      key: "crosspromo.cta_install",
+      disabled: false
+    };
+  }
+
+  function bindResumeChecks() {
+    async function handleResume() {
+      await bootRewardChecks();
+
+      const host = document.getElementById("vc-crosspromo-grid");
+      if (host) {
+        await renderStorePage();
+      }
+    }
+
+    document.addEventListener("visibilitychange", async function () {
+      if (document.visibilityState === "visible") {
+        await handleResume();
+      }
+    });
+
+    try {
+      const App = window.Capacitor?.Plugins?.App;
+      if (App && typeof App.addListener === "function") {
+        App.addListener("appStateChange", async function (state) {
+          if (state && state.isActive) {
+            await handleResume();
+          }
+        });
+      }
+    } catch (_) {}
+  }
+
   function bindShotViewer(host) {
     const viewer = document.getElementById("vc-shot-viewer");
     const viewerImg = document.getElementById("vc-shot-viewer-img");
@@ -640,7 +717,8 @@
 
     for (const id of ids) {
       const app = APPS[id];
-      const actionLabel = t("crosspromo.cta_install");
+      const actionState = await getStoreActionState(id);
+      const actionLabel = t(actionState.key);
       const rewardLabel = t("crosspromo.reward_prefix");
       const desc = t(app.descKey);
 
@@ -662,7 +740,7 @@
                buildShotsHtml(app),
         "    </div>",
         '    <div class="vc-crosspromo-actions">',
-        '      <button class="vc-crosspromo-btn primary" type="button" data-crosspromo-action="' + escapeHtml(id) + '">' + escapeHtml(actionLabel) + "</button>",
+        '      <button class="vc-crosspromo-btn primary" type="button" data-crosspromo-action="' + escapeHtml(id) + '"' + (actionState.disabled ? ' disabled="disabled"' : "") + '>' + escapeHtml(actionLabel) + "</button>",
         "    </div>",
         "  </div>",
         "</article>"
@@ -678,6 +756,30 @@
         const id = btn.getAttribute("data-crosspromo-action");
         const app = APPS[id];
         if (!app) return;
+
+        const actionState = await getStoreActionState(id);
+        if (actionState.disabled) return;
+
+        if (actionState.key === "crosspromo.cta_claim") {
+          btn.disabled = true;
+          btn.textContent = t("crosspromo.cta_claiming");
+
+          const ok = await claimRewardIfEligible(id);
+          await renderStorePage();
+
+          if (!ok) {
+            await refreshInstalledStatus(id);
+            await renderStorePage();
+          }
+
+          return;
+        }
+
+        const alreadyInstalled = await refreshInstalledStatus(id);
+        if (alreadyInstalled) {
+          await renderStorePage();
+          return;
+        }
 
         setPendingStoreClick(id);
         await openStore(app);
@@ -755,6 +857,7 @@
     } catch (_) {}
 
     await bootRewardChecks();
+    bindResumeChecks();
     await renderStorePage();
 
     const pathname = String(window.location.pathname || "");

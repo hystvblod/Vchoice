@@ -74,7 +74,18 @@
 
   async function shareInvite() {
     const uid = await getCurrentUid();
-    if (!uid) return false;
+
+    if (!uid) {
+      try {
+        window.showToast?.(t("referral.login_required", "Connecte-toi pour créer ton lien d’invitation."));
+      } catch (_) {}
+
+      try {
+        alert(t("referral.login_required", "Connecte-toi pour créer ton lien d’invitation."));
+      } catch (_) {}
+
+      return false;
+    }
 
     const url = buildInviteUrl(uid);
     const text = t("referral.share_text", "Télécharge VChronicles ici : {url}")
