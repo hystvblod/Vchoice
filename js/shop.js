@@ -123,6 +123,37 @@
   function $(sel, root){ return (root || document).querySelector(sel); }
   function $all(sel, root){ return Array.from((root || document).querySelectorAll(sel)); }
 
+  const shopVCoinsBalance = $("#shop_vcoins_balance");
+  const shopJetonsBalance = $("#shop_jetons_balance");
+
+  function getBalanceNumber(kind){
+    try{
+      return kind === "jetons"
+        ? Number(window.VUserData?.getJetons?.() || 0) || 0
+        : Number(window.VUserData?.getVCoins?.() || 0) || 0;
+    }catch(_){
+      return 0;
+    }
+  }
+
+  function formatCount(v){
+    const n = Number(v || 0) || 0;
+    try{ return n.toLocaleString(); }catch(_){ return String(n); }
+  }
+
+  function renderBalances(){
+    if (shopVCoinsBalance) shopVCoinsBalance.textContent = formatCount(getBalanceNumber("vcoins"));
+    if (shopJetonsBalance) shopJetonsBalance.textContent = formatCount(getBalanceNumber("jetons"));
+  }
+
+  async function refreshBalances(opts){
+    const options = (opts && typeof opts === "object") ? opts : {};
+    if (options.remote && typeof window.VUserData?.refresh === "function"){
+      try{ await window.VUserData.refresh(); }catch(_){ }
+    }
+    renderBalances();
+  }
+
   function getStoreApi(){
     try{ return window.VCIAP || window.VRIAP || null; }catch(_){ return null; }
   }
@@ -293,6 +324,7 @@
         refreshEntitlementsUI();
         refreshAllPrices();
         applyI18nNow();
+        renderBalances();
       }, 450);
 
       setTimeout(() => {
@@ -431,6 +463,7 @@
       refreshEntitlementsUI();
       refreshAllPrices();
       applyI18nNow();
+      renderBalances();
 
       return true;
     }catch(_){
@@ -1353,11 +1386,25 @@
     refreshEntitlementsUI();
     refreshAllPrices();
     applyI18nNow();
+    renderBalances();
+  });
+
+  window.addEventListener("vc:profile", () => {
+    renderBalances();
+  });
+
+  window.addEventListener("pageshow", () => {
+    renderBalances();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) renderBalances();
   });
 
   // init (⚠️ sur shop.html tu n’avais pas d’init i18n, donc tout tombait en fallback -> [object Object])
   (async function boot(){
     await ensureI18nReady();
+    await refreshBalances({ remote: true });
 
     await initBooksConfig();
     renderBooks();
@@ -1366,6 +1413,7 @@
     refreshEntitlementsUI();
     refreshAllPrices();
     disableAllBuyButtonsIfNoIAP();
+    renderBalances();
 
     // store parfois lent -> refresh
     setTimeout(refreshAllPrices, 900);
