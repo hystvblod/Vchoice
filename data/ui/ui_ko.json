@@ -1,4 +1,4 @@
-﻿{
+{
   "ui": {
     "app_title": "VChronicles",
     "app_subtitle": "인터랙티브 스토리",
@@ -329,6 +329,9 @@
     "reward_prefix": "획득",
     "reward_granted": "{app} 설치 보상으로 {amount} VCoins를 받았습니다.",
     "cta_install": "다운로드",
+    "cta_claim": "받기",
+    "cta_claiming": "받는 중...",
+    "cta_claimed": "이미 받음",
     "cta_later": "나중에",
     "close_aria": "닫기",
     "shot_open_aria": "이미지 열기",

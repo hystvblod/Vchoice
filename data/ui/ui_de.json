@@ -1,4 +1,4 @@
-﻿{
+{
   "ui": {
     "app_title": "VChronicles",
     "app_subtitle": "Interaktive Geschichte",
@@ -329,6 +329,9 @@
     "reward_prefix": "GEWINNEN",
     "reward_granted": "Belohnung erhalten: {amount} VCoins für die Installation von {app}.",
     "cta_install": "Herunterladen",
+    "cta_claim": "Einlösen",
+    "cta_claiming": "Wird eingelöst...",
+    "cta_claimed": "Bereits eingelöst",
     "cta_later": "Später",
     "close_aria": "Schließen",
     "shot_open_aria": "Bild öffnen",

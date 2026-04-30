@@ -1,4 +1,4 @@
-﻿{
+{
   "ui": {
     "app_title": "VChronicles",
     "app_subtitle": "インタラクティブストーリー",
@@ -329,6 +329,9 @@
     "reward_prefix": "獲得",
     "reward_granted": "{app} のインストール報酬として {amount} VCoins を受け取りました。",
     "cta_install": "ダウンロード",
+    "cta_claim": "受け取る",
+    "cta_claiming": "受け取り中...",
+    "cta_claimed": "受け取り済み",
     "cta_later": "後で",
     "close_aria": "閉じる",
     "shot_open_aria": "画像を開く",
