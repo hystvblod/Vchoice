@@ -453,8 +453,11 @@
   // =========================
 
   const BOOK_MARKET_STORAGE_KEY = "vchoice_book_market";
+  const BOOKS_CONFIG_URL = "https://eygcqhrccukwvmepacrt.supabase.co/storage/v1/object/public/app-config/books/books.json";
+  const BOOKS_CONFIG_CACHE_KEY = "vchoice_books_config_cache_v1";
+  const BOOKS_CONFIG_CACHE_TIME_KEY = "vchoice_books_config_cache_time_v1";
 
-  const BOOKS = [
+  let BOOKS = [
     {
       id: "book_01",
       cover: "assets/img/books/book_01.webp",
@@ -624,6 +627,104 @@
       }
     }
   ];
+
+  function normalizeRemoteBooksConfig(raw){
+    if (!Array.isArray(raw)) return [];
+
+    return raw
+      .filter(item => item && typeof item === "object")
+      .map(item => {
+        const id = String(item.id || "").trim();
+
+        return {
+          id,
+          cover: String(item.cover || "").trim(),
+          titleKey: String(item.titleKey || "").trim(),
+          descKey: String(item.descKey || "").trim(),
+          enabled: item.enabled !== false,
+          sortOrder: Number.isFinite(Number(item.sortOrder)) ? Number(item.sortOrder) : 9999,
+          asins: {
+            fr: String(item.asins?.fr || "").trim(),
+            en: String(item.asins?.en || "").trim(),
+            de: String(item.asins?.de || "").trim(),
+            es: String(item.asins?.es || "").trim(),
+            it: String(item.asins?.it || "").trim(),
+            ptbr: String(item.asins?.ptbr || "").trim()
+          }
+        };
+      })
+      .filter(item => {
+        return item.id && item.cover && item.titleKey && item.descKey && item.enabled;
+      })
+      .sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  function loadCachedBooksConfig(){
+    try{
+      const raw = localStorage.getItem(BOOKS_CONFIG_CACHE_KEY);
+      if (!raw) return null;
+
+      const parsed = JSON.parse(raw);
+      const normalized = normalizeRemoteBooksConfig(parsed);
+
+      return normalized.length ? normalized : null;
+    }catch(_){
+      return null;
+    }
+  }
+
+  function saveCachedBooksConfig(books){
+    try{
+      localStorage.setItem(BOOKS_CONFIG_CACHE_KEY, JSON.stringify(books));
+      localStorage.setItem(BOOKS_CONFIG_CACHE_TIME_KEY, String(Date.now()));
+    }catch(_){}
+  }
+
+  async function fetchRemoteBooksConfig(){
+    const url = String(BOOKS_CONFIG_URL || "").trim();
+    if (!url || url.includes("COLLE_ICI")) return null;
+
+    try{
+      const sep = url.includes("?") ? "&" : "?";
+      const res = await fetch(`${url}${sep}v=${Date.now()}`, {
+        method: "GET",
+        cache: "no-store"
+      });
+
+      if (!res.ok) return null;
+
+      const json = await res.json();
+      const normalized = normalizeRemoteBooksConfig(json);
+
+      return normalized.length ? normalized : null;
+    }catch(_){
+      return null;
+    }
+  }
+
+  function applyBooksConfig(books){
+    if (!Array.isArray(books) || !books.length) return false;
+    BOOKS = books;
+    return true;
+  }
+
+  async function initBooksConfig(){
+    const cached = loadCachedBooksConfig();
+
+    if (cached && cached.length){
+      applyBooksConfig(cached);
+    }
+
+    const remote = await fetchRemoteBooksConfig();
+
+    if (remote && remote.length){
+      applyBooksConfig(remote);
+      saveCachedBooksConfig(remote);
+      return true;
+    }
+
+    return !!cached;
+  }
 
   const BOOK_MARKETS = [
     {
@@ -1258,6 +1359,7 @@
   (async function boot(){
     await ensureI18nReady();
 
+    await initBooksConfig();
     renderBooks();
 
     applyI18nNow();
