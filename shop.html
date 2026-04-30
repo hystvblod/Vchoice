@@ -153,8 +153,75 @@
     }
 
 .shop-head{
-  padding: 16px 2px 10px;
+  padding: 14px 2px 10px;
   text-align:center;
+}
+
+.shop-balances{
+  margin: 0 0 12px;
+  display:flex;
+  justify-content:center;
+  width:100%;
+}
+
+.shop-balances-row{
+  width:min(560px, 100%);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+.shop-balance-pill{
+  flex:1 1 0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  box-shadow: var(--vc-soft);
+  padding: 10px 12px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.shop-balance-pill img{
+  width:30px;
+  height:30px;
+  object-fit:contain;
+  display:block;
+  flex:0 0 auto;
+  filter: drop-shadow(0 2px 10px rgba(0,0,0,.5));
+}
+
+.shop-balance-pill--left{ justify-content:flex-start; }
+.shop-balance-pill--right{ justify-content:flex-end; }
+
+.shop-balance-info{
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  line-height:1.05;
+}
+
+.shop-balance-label{
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color: rgba(255,255,255,.62);
+}
+
+.shop-balance-value{
+  display:block;
+  margin-top:4px;
+  font-weight:950;
+  font-size:18px;
+  letter-spacing:.2px;
+  color: var(--vc-text);
+  text-shadow: 0 8px 18px rgba(0,0,0,.35);
 }
 
 .shop-title-row{
@@ -1042,6 +1109,12 @@
       </a>
     </div>
 
+    <div class="vc-top-slot vc-top-center">
+      <a class="vc-icon-button" href="crosspromo.html" aria-label="" data-i18n-aria="crosspromo.open_page_aria">
+        <img src="assets/img/ui/btn_crosspromo.webp" alt="" draggable="false" />
+      </a>
+    </div>
+
     <div class="vc-top-slot vc-top-right">
       <a class="vc-icon-button" href="profile.html" aria-label="" data-i18n-aria="ui.aria_profile">
         <img src="assets/img/ui/btn_profile.webp" alt="" draggable="false" />
@@ -1051,6 +1124,26 @@
 
   <main class="page">
     <header class="shop-head">
+      <div class="shop-balances">
+        <div class="shop-balances-row">
+          <div class="shop-balance-pill shop-balance-pill--left">
+            <img src="assets/img/ui/vcoin.webp" alt="" draggable="false" />
+            <div class="shop-balance-info">
+              <span class="shop-balance-label" data-i18n="ui.jeton_balance_label"></span>
+              <span class="shop-balance-value" id="shop_vcoins_balance">0</span>
+            </div>
+          </div>
+
+          <div class="shop-balance-pill shop-balance-pill--right">
+            <div class="shop-balance-info">
+              <span class="shop-balance-label" data-i18n="ui.jeton_balance_label"></span>
+              <span class="shop-balance-value" id="shop_jetons_balance">0</span>
+            </div>
+            <img src="assets/img/ui/jeton.webp" alt="" draggable="false" />
+          </div>
+        </div>
+      </div>
+
       <div class="shop-title-row">
         <div class="shop-title-line"></div>
         <h1 class="shop-title" data-i18n="ui.shop_title"></h1>
