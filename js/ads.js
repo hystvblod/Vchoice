@@ -1,7 +1,7 @@
 // js/ads.js
 // ===============================================
 // VChronicles - js/ads.js
-// - Branchements AdMob Capacitor avec IDs de test Google
+// - Branchements AdMob Capacitor avec IDs AdMob
 // - Gère la préférence "pub personnalisée"
 // - Rewarded + Interstitial
 // ===============================================
@@ -9,7 +9,7 @@
 (function () {
   "use strict";
 
-  const TEST_IDS = {
+  const AD_IDS = {
     android: {
       banner: "ca-app-pub-3940256099942544/6300978111",
       adaptiveBanner: "ca-app-pub-3940256099942544/9214589741",
@@ -394,11 +394,11 @@
       }
 
       if (info.privacyOptionsRequirementStatus !== "REQUIRED") {
-  _setConsentStopFlag(true);
-  _setConsentRetryPending(false);
-  _clearIntroFlowFlag();
-  return false;
-}
+        _setConsentStopFlag(true);
+        _setConsentRetryPending(false);
+        _clearIntroFlowFlag();
+        return false;
+      }
 
       await plugin.showPrivacyOptionsForm();
 
@@ -418,10 +418,10 @@
     }
   }
 
-  function getTestIds() {
+  function getAdIds() {
     const p = getPlatform();
-    if (p === "ios") return TEST_IDS.ios;
-    return TEST_IDS.android;
+    if (p === "ios") return AD_IDS.ios;
+    return AD_IDS.android;
   }
 
   async function init() {
@@ -453,18 +453,18 @@
   }
 
   function getInterstitialUnitId() {
-    return getTestIds().interstitial;
+    return getAdIds().interstitial;
   }
 
   function getRewardedUnitId() {
-    return getTestIds().rewarded;
+    return getAdIds().rewarded;
   }
 
   function rewardedOptions(extra) {
     return Object.assign(
       {
         adId: getRewardedUnitId(),
-        isTesting: true,
+        isTesting: false,
         immersiveMode: true,
       },
       extra || {}
@@ -475,7 +475,7 @@
     return Object.assign(
       {
         adId: getInterstitialUnitId(),
-        isTesting: true,
+        isTesting: false,
         immersiveMode: true,
       },
       extra || {}
@@ -721,10 +721,9 @@
     openGooglePrivacyOptionsForm,
     _debug: {
       getPlatform,
-      getTestIds,
+      getAdIds,
     },
   };
-
 
   try {
     _startWeightedTimer();
