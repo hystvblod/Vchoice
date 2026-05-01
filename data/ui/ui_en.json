@@ -319,7 +319,8 @@
     "book_11_title": "Village of the Black Fog",
     "book_11_desc": "The long-form version of the Village of the Black Fog scenario. An unsettling novel set in a village missing from every map, where the fog seems to breathe and every street makes escape harder.",
     "book_12_title": "Stories and Legends from the Beyond",
-    "book_12_desc": "A long and immersive collection of dark, mysterious, and supernatural stories. Several legends from the beyond are expanded into longer tales with a creepy, accessible, and unsettling atmosphere."
+    "book_12_desc": "A long and immersive collection of dark, mysterious, and supernatural stories. Several legends from the beyond are expanded into longer tales with a creepy, accessible, and unsettling atmosphere.",
+    "profile_auto_username_prefix": "User_"
   },
   "common": {
     "cancel": "Cancel"
@@ -362,6 +363,10 @@
         "popup2": {
           "title": "Another adventure is waiting",
           "body": "Rule empires and make your choices."
+        },
+        "popup3": {
+          "title": "Bonus available",
+          "body": "Earn a bonus by playing VUniverse and ruling fictional worlds."
         }
       }
     }
