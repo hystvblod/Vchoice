@@ -13,8 +13,8 @@
     android: {
       banner: "ca-app-pub-3940256099942544/6300978111",
       adaptiveBanner: "ca-app-pub-3940256099942544/9214589741",
-      interstitial: "ca-app-pub-3940256099942544/1033173712",
-      rewarded: "ca-app-pub-3940256099942544/5224354917",
+      interstitial: "ca-app-pub-6837328794080297/7291681822",
+      rewarded: "ca-app-pub-6837328794080297/3233705670",
       rewardedInterstitial: "ca-app-pub-3940256099942544/5354046379",
     },
     ios: {
