@@ -98,6 +98,7 @@
     "jeton_title": "Tokens",
     "jeton_balance_label": "Balance:",
     "jeton_back_btn": "Go back — 1 token",
+    "jeton_back_ad_btn": "Go back — rewarded video",
     "jeton_guide_btn": "Guide to an ending — 3 tokens",
     "jeton_guide_good": "Good ending",
     "jeton_guide_bad": "Bad ending",
@@ -116,7 +117,7 @@
     "locked_note_foundable": "These elements can be found in the game, without ads.",
     "locked_unlock_jeton": "Spend 1 token",
     "locked_unlock_ad": "Watch an ad",
-    "locked_unlock_ad_fail": "Ad unavailable right now.",
+    "locked_unlock_ad_fail": "The rewarded video is not available right now.",
     "locked_unlock_no_jetons": "Not enough tokens.",
     "locked_unlock_error": "Unable to unlock right now.",
     "scenario_buy": {
@@ -443,5 +444,9 @@
     "unlock_direct": "Instant unlock — {price}",
     "unlock_direct_no_price": "Instant unlock",
     "desc": "This scenario is locked. You can unlock it for free with VCoins + 1 video, or open it instantly through the store."
-  }
+  },
+  "jeton_back_btn": "Go back — 1 token",
+  "jeton_back_ad_btn": "Go back — rewarded video",
+  "jeton_guide_btn": "Guide to an ending — 3 tokens",
+  "locked_unlock_ad_fail": "The rewarded video is not available right now."
 }

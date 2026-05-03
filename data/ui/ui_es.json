@@ -99,6 +99,7 @@
     "jeton_title": "Fichas",
     "jeton_balance_label": "Saldo:",
     "jeton_back_btn": "Volver atrás — 1 ficha",
+    "jeton_back_ad_btn": "Volver atrás — vídeo recompensado",
     "jeton_guide_btn": "Guía hacia un final — 3 fichas",
     "jeton_guide_good": "Final bueno",
     "jeton_guide_bad": "Final malo",
@@ -117,7 +118,7 @@
     "locked_note_foundable": "Estos elementos se pueden encontrar en el juego, sin anuncios.",
     "locked_unlock_jeton": "Gastar 1 ficha",
     "locked_unlock_ad": "Ver un anuncio",
-    "locked_unlock_ad_fail": "Publicidad no disponible por el momento.",
+    "locked_unlock_ad_fail": "El vídeo recompensado no está disponible en este momento.",
     "locked_unlock_no_jetons": "No tienes suficientes fichas.",
     "locked_unlock_error": "No se puede desbloquear ahora.",
     "scenario_buy": {
@@ -443,5 +444,9 @@
     "unlock_direct": "Desbloqueo inmediato — {price}",
     "unlock_direct_no_price": "Desbloqueo inmediato",
     "desc": "Este escenario está bloqueado. Puedes desbloquearlo gratis con VCoins + 1 vídeo, o abrirlo al instante desde la tienda."
-  }
+  },
+  "jeton_back_btn": "Volver atrás — 1 ficha",
+  "jeton_back_ad_btn": "Volver atrás — vídeo recompensado",
+  "jeton_guide_btn": "Guía hacia un final — 3 fichas",
+  "locked_unlock_ad_fail": "El vídeo recompensado no está disponible en este momento."
 }
