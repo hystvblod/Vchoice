@@ -54,7 +54,7 @@
     "end_remaining_many": "まだ見つけていない結末があと{count}個あります。",
     "end_all_found_line": "おめでとうございます、このシナリオのすべての結末を解放しました。",
     "end_reward_label": "報酬：",
-    "end_btn_add_bonus": "+{amount}を追加",
+    "end_btn_add_bonus": "x2ボーナス: +{amount}",
     "end_add_bonus_wait": "確認中…",
     "end_add_bonus_done": "ボーナス +{amount} を追加しました",
     "end_add_bonus_error": "現在広告を利用できません。",
@@ -434,5 +434,14 @@
     "invite_popup_title": "VChronicles は気に入りましたか？",
     "invite_popup_body": "友だちをこの物語に招待して、招待が確認されると VCoins を獲得しましょう。",
     "last_ending_popup_body": "このシナリオの3つの結末を見つけました。あなたの友だちもたどり着けると思いますか？ 招待して、インストールが確認されると VCoins を獲得しましょう。"
+  },
+  "end_btn_add_bonus": "x2ボーナス: +{amount}",
+  "scenario_buy": {
+    "vcoins_plus_reward": "{price} + 動画1本",
+    "reward_wait": "解除を確定するには動画を視聴してください。",
+    "err_reward_required": "動画が完了していません。シナリオは解除されませんでした。",
+    "unlock_direct": "すぐに解除 — {price}",
+    "unlock_direct_no_price": "すぐに解除",
+    "desc": "このシナリオはロックされています。VCoins + 動画1本で無料解除するか、ストアからすぐに開放できます。"
   }
 }

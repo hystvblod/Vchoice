@@ -1331,15 +1331,13 @@
       }
 
       buyPayPrefix.textContent = _t("ui.scenario_buy.pay_prefix", "Débloquer :");
-      if (isPremium){
-        buyPayPrice.textContent = _t(
-          "ui.scenario_buy.premium_pay_suffix",
-          "{price} + reward",
-          { price: PRICE }
-        );
-      } else {
-        buyPayPrice.textContent = String(PRICE);
-      }
+
+      buyPayPrice.textContent = _t(
+        "ui.scenario_buy.vcoins_plus_reward",
+        "{price} + 1 vidéo",
+        { price: PRICE }
+      );
+
       buyPayBalance.textContent = "";
       buyPayBalance.style.display = "none";
 
@@ -1357,61 +1355,89 @@
       buyPopup.setAttribute("aria-hidden","false");
     }
 
+    let normalUnlockBusy = false;
+
     async function tryUnlockWithVcoins(scenarioId){
+      if (normalUnlockBusy) return;
+      normalUnlockBusy = true;
+
       showBuyError("");
 
-      let refreshed = false;
-      try{
-        refreshed = await window.VUserData?.refresh?.().catch(() => false);
-      }catch(_){}
+      try {
+        let refreshed = false;
+        try{
+          refreshed = await window.VUserData?.refresh?.().catch(() => false);
+        }catch(_){}
 
-      if (!refreshed){
-        showBuyError(_t("ui.scenario_buy.err_unlock", ""));
-        return;
-      }
+        if (!refreshed){
+          showBuyError(_t("ui.scenario_buy.err_unlock", ""));
+          return;
+        }
 
-      const balance = getCurrentVCoins();
-      if (balance < PRICE){
-        showBuyError(
-          _t(
-            "ui.scenario_buy.err_unlock_insufficient",
-            "",
-            { balance, price: PRICE }
-          )
-        );
-        return;
-      }
+        const balance = getCurrentVCoins();
 
-      const res = await window.VUserData?.unlockScenario?.(scenarioId);
-
-      if (!res?.ok){
-        const reason = String(
-          res?.reason ||
-          res?.error?.message ||
-          "rpc_error"
-        ).toLowerCase();
-
-        if (reason.includes("insufficient_vcoins")){
+        if (balance < PRICE){
           showBuyError(
             _t(
               "ui.scenario_buy.err_unlock_insufficient",
               "",
-              { balance: getCurrentVCoins(), price: PRICE }
+              { balance, price: PRICE }
             )
           );
           return;
         }
 
-        console.warn("[unlockScenario]", reason);
-        showBuyError(_t("ui.scenario_buy.err_unlock", ""));
-        return;
+        if (isNativeRuntime()){
+          if (!window.VAds || typeof window.VAds.showRewarded !== "function"){
+            showBuyError(_t("ui.scenario_buy.err_not_ready", "La vidéo récompensée n'est pas prête."));
+            return;
+          }
+
+          showBuyError(_t("ui.scenario_buy.reward_wait", "Regarde la vidéo pour confirmer le déblocage."));
+
+          const ad = await window.VAds.showRewarded({
+            placement: "scenario_unlock"
+          });
+
+          if (!ad?.ok){
+            showBuyError(_t("ui.scenario_buy.err_reward_required", "Vidéo non terminée. Le scénario n’a pas été débloqué."));
+            return;
+          }
+        }
+
+        const res = await window.VUserData?.unlockScenario?.(scenarioId);
+
+        if (!res?.ok){
+          const reason = String(
+            res?.reason ||
+            res?.error?.message ||
+            "rpc_error"
+          ).toLowerCase();
+
+          if (reason.includes("insufficient_vcoins")){
+            showBuyError(
+              _t(
+                "ui.scenario_buy.err_unlock_insufficient",
+                "",
+                { balance: getCurrentVCoins(), price: PRICE }
+              )
+            );
+            return;
+          }
+
+          console.warn("[unlockScenario]", reason);
+          showBuyError(_t("ui.scenario_buy.err_unlock", ""));
+          return;
+        }
+
+        await window.VUserData?.refresh?.().catch(() => false);
+
+        applyLocks();
+        closeBuyPopup();
+        launchScenario(scenarioId);
+      } finally {
+        normalUnlockBusy = false;
       }
-
-      await window.VUserData?.refresh?.().catch(() => false);
-
-      applyLocks();
-      closeBuyPopup();
-      launchScenario(scenarioId);
     }
 
     async function buyScenarioDirect(scenarioId){

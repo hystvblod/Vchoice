@@ -54,7 +54,7 @@
     "end_remaining_many": "Kamu masih punya {count} akhir lagi untuk ditemukan.",
     "end_all_found_line": "Selamat, kamu telah membuka semua akhir dari skenario ini.",
     "end_reward_label": "Hadiah:",
-    "end_btn_add_bonus": "Tambahkan +{amount}",
+    "end_btn_add_bonus": "Bonus x2: +{amount}",
     "end_add_bonus_wait": "Sedang divalidasi…",
     "end_add_bonus_done": "Bonus +{amount} ditambahkan",
     "end_add_bonus_error": "Iklan tidak tersedia untuk saat ini.",
@@ -434,5 +434,14 @@
     "invite_popup_title": "Kamu suka VChronicles?",
     "invite_popup_body": "Undang teman untuk mencoba ceritanya dan dapatkan VCoins saat undangan tervalidasi.",
     "last_ending_popup_body": "Kamu telah menemukan 3 akhir dari skenario ini. Menurutmu teman-temanmu juga bisa mencapainya? Undang mereka dan dapatkan VCoins saat sebuah instalasi tervalidasi."
+  },
+  "end_btn_add_bonus": "Bonus x2: +{amount}",
+  "scenario_buy": {
+    "vcoins_plus_reward": "{price} + 1 video",
+    "reward_wait": "Tonton video untuk mengonfirmasi pembukaan.",
+    "err_reward_required": "Video belum selesai. Skenario belum dibuka.",
+    "unlock_direct": "Buka langsung — {price}",
+    "unlock_direct_no_price": "Buka langsung",
+    "desc": "Skenario ini terkunci. Kamu bisa membukanya gratis dengan VCoins + 1 video, atau membukanya langsung melalui toko."
   }
 }

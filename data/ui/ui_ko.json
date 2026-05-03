@@ -54,9 +54,9 @@
     "end_remaining_many": "아직 발견하지 못한 엔딩이 {count}개 남아 있습니다.",
     "end_all_found_line": "축하합니다, 이 시나리오의 모든 엔딩을 해금했습니다.",
     "end_reward_label": "보상:",
-    "end_btn_add_bonus": "+{amount} 추가",
+    "end_btn_add_bonus": "x2 보너스: +{amount}",
     "end_add_bonus_wait": "확인 중…",
-    "end_add_bonus_done": "보너스 +{amount} 추가됨",
+    "end_add_bonus_done": "보너스 x2 보너스: +{amount}됨",
     "end_add_bonus_error": "현재 광고를 이용할 수 없습니다.",
     "profile_title": "프로필",
     "profile_subtitle": "보유 잔액과 해금한 엔딩입니다.",
@@ -434,5 +434,14 @@
     "invite_popup_title": "VChronicles가 마음에 드시나요?",
     "invite_popup_body": "친구를 초대해 이 이야기를 체험하게 하고, 초대가 확인되면 VCoins를 받으세요.",
     "last_ending_popup_body": "이 시나리오의 3가지 엔딩을 모두 찾았습니다. 친구들도 해낼 수 있을까요? 친구를 초대하고 설치가 확인되면 VCoins를 받으세요."
+  },
+  "end_btn_add_bonus": "x2 보너스: +{amount}",
+  "scenario_buy": {
+    "vcoins_plus_reward": "{price} + 동영상 1개",
+    "reward_wait": "잠금 해제를 확정하려면 동영상을 시청하세요.",
+    "err_reward_required": "동영상이 완료되지 않았습니다. 시나리오가 잠금 해제되지 않았습니다.",
+    "unlock_direct": "즉시 잠금 해제 — {price}",
+    "unlock_direct_no_price": "즉시 잠금 해제",
+    "desc": "이 시나리오는 잠겨 있습니다. VCoins + 동영상 1개로 무료로 해제하거나, 스토어에서 즉시 열 수 있습니다."
   }
 }

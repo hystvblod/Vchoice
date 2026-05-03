@@ -54,7 +54,7 @@
     "end_remaining_many": "You still have {count} endings left to discover.",
     "end_all_found_line": "Well done, you unlocked every ending in this scenario.",
     "end_reward_label": "Reward:",
-    "end_btn_add_bonus": "Add +{amount}",
+    "end_btn_add_bonus": "x2 Bonus: +{amount}",
     "end_add_bonus_wait": "Checking…",
     "end_add_bonus_done": "Bonus +{amount} added",
     "end_add_bonus_error": "Ad unavailable right now.",
@@ -434,5 +434,14 @@
     "invite_popup_title": "Do you like VChronicles?",
     "invite_popup_body": "Invite a friend to try the story and earn VCoins when an invite is validated.",
     "last_ending_popup_body": "You found the 3 endings of this scenario. Do you think your friends could do it too? Invite them and earn VCoins when an install is validated."
+  },
+  "end_btn_add_bonus": "x2 Bonus: +{amount}",
+  "scenario_buy": {
+    "vcoins_plus_reward": "{price} + 1 video",
+    "reward_wait": "Watch the video to confirm the unlock.",
+    "err_reward_required": "Video not completed. The scenario was not unlocked.",
+    "unlock_direct": "Instant unlock — {price}",
+    "unlock_direct_no_price": "Instant unlock",
+    "desc": "This scenario is locked. You can unlock it for free with VCoins + 1 video, or open it instantly through the store."
   }
 }

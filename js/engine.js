@@ -22,8 +22,8 @@ const SAVE_KEY = "creepy_engine_save_v1";
 const DEFAULT_LANG = "en";
 const ENDING_AD_BONUS_AMOUNT = 200;
 
-const INTERSTITIAL_EVERY_N_CHOICES = 8;
-const INTERSTITIAL_MIN_GAME_MS = 150 * 1000;
+const INTERSTITIAL_EVERY_N_CHOICES = 7;
+const INTERSTITIAL_MIN_GAME_MS = 120 * 1000;
 const INTERSTITIAL_GLOBAL_CHOICE_KEY = "vchoice_ads_ingame_choices_v1";
 const INTERSTITIAL_GLOBAL_TIME_KEY = "vchoice_ads_ingame_time_ms_v1";
 const INDEX_RETURN_COUNTER_KEY = "vchoice_ads_end_return_count_v1";
