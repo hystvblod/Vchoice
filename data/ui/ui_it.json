@@ -99,6 +99,7 @@
     "jeton_title": "Gettoni",
     "jeton_balance_label": "Saldo:",
     "jeton_back_btn": "Torna indietro — 1 gettone",
+    "jeton_back_ad_btn": "Torna indietro — video ricompensato",
     "jeton_guide_btn": "Guida verso un finale — 3 gettoni",
     "jeton_guide_good": "Finale buono",
     "jeton_guide_bad": "Finale cattivo",
@@ -117,7 +118,7 @@
     "locked_note_foundable": "Questi elementi si possono trovare nel gioco, senza pubblicità.",
     "locked_unlock_jeton": "Spendi 1 gettone",
     "locked_unlock_ad": "Guarda una pubblicità",
-    "locked_unlock_ad_fail": "Pubblicità non disponibile al momento.",
+    "locked_unlock_ad_fail": "Il video ricompensato non è disponibile al momento.",
     "locked_unlock_no_jetons": "Gettoni insufficienti.",
     "locked_unlock_error": "Impossibile sbloccare ora.",
     "scenario_buy": {
@@ -443,5 +444,9 @@
     "unlock_direct": "Sblocco immediato — {price}",
     "unlock_direct_no_price": "Sblocco immediato",
     "desc": "Questo scenario è bloccato. Puoi sbloccarlo gratis con VCoins + 1 video, oppure aprirlo subito dallo store."
-  }
+  },
+  "jeton_back_btn": "Torna indietro — 1 gettone",
+  "jeton_back_ad_btn": "Torna indietro — video ricompensato",
+  "jeton_guide_btn": "Guida verso un finale — 3 gettoni",
+  "locked_unlock_ad_fail": "Il video ricompensato non è disponibile al momento."
 }

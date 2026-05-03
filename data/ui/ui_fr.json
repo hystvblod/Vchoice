@@ -99,6 +99,7 @@
     "jeton_title": "Jetons",
     "jeton_balance_label": "Solde :",
     "jeton_back_btn": "Retour en arrière — 1 jeton",
+    "jeton_back_ad_btn": "Retour en arrière — vidéo récompensée",
     "jeton_guide_btn": "Guide vers une fin — 3 jetons",
     "jeton_guide_good": "Fin bonne",
     "jeton_guide_bad": "Fin mauvaise",
@@ -117,7 +118,7 @@
     "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans pub.",
     "locked_unlock_jeton": "Dépenser 1 jeton",
     "locked_unlock_ad": "Regarder une pub",
-    "locked_unlock_ad_fail": "Publicité indisponible pour le moment.",
+    "locked_unlock_ad_fail": "La vidéo récompensée n’est pas disponible pour le moment.",
     "locked_unlock_no_jetons": "Pas assez de jetons.",
     "locked_unlock_error": "Impossible de débloquer maintenant.",
     "scenario_buy": {
@@ -443,5 +444,9 @@
     "unlock_direct": "Déblocage immédiat — {price}",
     "unlock_direct_no_price": "Déblocage immédiat",
     "desc": "Ce scénario est verrouillé. Tu peux le débloquer gratuitement avec des VCoins + 1 vidéo, ou l’ouvrir instantanément via le store."
-  }
+  },
+  "jeton_back_btn": "Retour en arrière — 1 jeton",
+  "jeton_back_ad_btn": "Retour en arrière — vidéo récompensée",
+  "jeton_guide_btn": "Guide vers une fin — 3 jetons",
+  "locked_unlock_ad_fail": "La vidéo récompensée n’est pas disponible pour le moment."
 }

@@ -951,6 +951,9 @@ function applyStaticI18n(){
   const bBack = $("btnJetonBackModal");
   if(bBack) setLabelWithTrailingIcon(bBack, tUI("jeton_back_btn"), UI_JETON_ICON_WEBP);
 
+  const bBackAd = $("btnJetonBackAdModal");
+  if(bBackAd) bBackAd.textContent = tUI("jeton_back_ad_btn");
+
   const guideLabel = $("jetonGuideLabel");
   if(guideLabel) setLabelWithTrailingIcon(guideLabel, tUI("jeton_guide_btn"), UI_JETON_ICON_WEBP);
 
@@ -1248,8 +1251,23 @@ function bindJetonHud(){
   const backBtn = $("btnJetonBackModal");
   if(backBtn){
     backBtn.addEventListener("click", async () => {
-      await goBackWithJeton();
-      hideJetonModal();
+      const ok = await goBackWithJeton();
+      if(ok) hideJetonModal();
+    });
+  }
+
+  const backAdBtn = $("btnJetonBackAdModal");
+  if(backAdBtn){
+    backAdBtn.addEventListener("click", async () => {
+      const msg = $("jetonModalMsg");
+      if(msg) msg.textContent = "";
+
+      try{
+        const ok = await goBackWithReward();
+        if(ok) hideJetonModal();
+      }catch(_){
+        if(msg) msg.textContent = tUI("locked_unlock_ad_fail");
+      }
     });
   }
 
@@ -2224,32 +2242,76 @@ async function spendJetons(cost){
   return await window.VUserData.spendJetons(cost);
 }
 
-async function goBackWithJeton(){
+async function goBackCore(){
   const st = scenarioStates[currentScenarioId];
-  if(!st) return;
+  if(!st) return false;
 
   st.history ??= [];
   if(!st.history.length){
     showHintModal(tUI("hint_title"), tUI("locked_no_back"));
-    return;
+    return false;
+  }
+
+  st.scene = st.history.pop();
+  trackSceneVisit(st.scene);
+
+  if(GUIDE_STATE.active && GUIDE_STATE.dynamic){
+    refreshDynamicGuideFromCurrentScene();
+  }
+
+  save();
+  updateHudJetons();
+  updateJetonModalCount();
+  hideHintModal();
+  renderScene();
+  await maybeShowStuckAssist();
+  return true;
+}
+
+async function goBackWithJeton(){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return false;
+
+  st.history ??= [];
+  if(!st.history.length){
+    showHintModal(tUI("hint_title"), tUI("locked_no_back"));
+    return false;
   }
 
   const res = await spendJetons(1);
   if(!res?.ok){
     showHintModal(tUI("hint_title"), tUI("jeton_not_enough"));
-    return;
+    return false;
   }
 
-  st.scene = st.history.pop();
-  trackSceneVisit(st.scene);
-  if(GUIDE_STATE.active && GUIDE_STATE.dynamic){
-    refreshDynamicGuideFromCurrentScene();
-  }
-  save();
   updateHudJetons();
-  hideHintModal();
-  renderScene();
-  await maybeShowStuckAssist();
+  updateJetonModalCount();
+  return await goBackCore();
+}
+
+async function goBackWithReward(){
+  const st = scenarioStates[currentScenarioId];
+  if(!st) return false;
+
+  st.history ??= [];
+  if(!st.history.length){
+    showHintModal(tUI("hint_title"), tUI("locked_no_back"));
+    return false;
+  }
+
+  if(!window.VAds || typeof window.VAds.showRewarded !== "function"){
+    showHintModal(tUI("hint_title"), tUI("locked_unlock_ad_fail"));
+    return false;
+  }
+
+  const ad = await window.VAds.showRewarded({ placement: "jeton_back" });
+  if(!ad?.ok){
+    showHintModal(tUI("hint_title"), tUI("locked_unlock_ad_fail"));
+    return false;
+  }
+
+  markGameplayRewardedSeen();
+  return await goBackCore();
 }
 
 function prettyFlagTitle(flag){

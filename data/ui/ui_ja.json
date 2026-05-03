@@ -99,6 +99,7 @@
     "jeton_title": "トークン",
     "jeton_balance_label": "残高：",
     "jeton_back_btn": "前に戻る — 1トークン",
+    "jeton_back_ad_btn": "戻る — リワード動画",
     "jeton_guide_btn": "結末までガイド — 3トークン",
     "jeton_guide_good": "良い結末",
     "jeton_guide_bad": "悪い結末",
@@ -117,7 +118,7 @@
     "locked_note_foundable": "これらの要素は広告なしでもゲーム内で見つけられます。",
     "locked_unlock_jeton": "1トークン使う",
     "locked_unlock_ad": "広告を見る",
-    "locked_unlock_ad_fail": "現在広告を利用できません。",
+    "locked_unlock_ad_fail": "リワード動画は現在利用できません。",
     "locked_unlock_no_jetons": "トークンが足りません。",
     "locked_unlock_error": "現在は解放できません。",
     "scenario_buy": {
@@ -443,5 +444,9 @@
     "unlock_direct": "すぐに解除 — {price}",
     "unlock_direct_no_price": "すぐに解除",
     "desc": "このシナリオはロックされています。VCoins + 動画1本で無料解除するか、ストアからすぐに開放できます。"
-  }
+  },
+  "jeton_back_btn": "戻る — トークン1個",
+  "jeton_back_ad_btn": "戻る — リワード動画",
+  "jeton_guide_btn": "エンディングへのガイド — トークン3個",
+  "locked_unlock_ad_fail": "リワード動画は現在利用できません。"
 }

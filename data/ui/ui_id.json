@@ -99,6 +99,7 @@
     "jeton_title": "Token",
     "jeton_balance_label": "Saldo:",
     "jeton_back_btn": "Kembali — 1 token",
+    "jeton_back_ad_btn": "Kembali — video berhadiah",
     "jeton_guide_btn": "Panduan menuju akhir — 3 token",
     "jeton_guide_good": "Akhir baik",
     "jeton_guide_bad": "Akhir buruk",
@@ -117,7 +118,7 @@
     "locked_note_foundable": "Elemen-elemen ini bisa ditemukan di dalam permainan, tanpa iklan.",
     "locked_unlock_jeton": "Gunakan 1 token",
     "locked_unlock_ad": "Tonton iklan",
-    "locked_unlock_ad_fail": "Iklan tidak tersedia untuk saat ini.",
+    "locked_unlock_ad_fail": "Video berhadiah belum tersedia saat ini.",
     "locked_unlock_no_jetons": "Token tidak cukup.",
     "locked_unlock_error": "Tidak bisa membuka sekarang.",
     "scenario_buy": {
@@ -443,5 +444,9 @@
     "unlock_direct": "Buka langsung — {price}",
     "unlock_direct_no_price": "Buka langsung",
     "desc": "Skenario ini terkunci. Kamu bisa membukanya gratis dengan VCoins + 1 video, atau membukanya langsung melalui toko."
-  }
+  },
+  "jeton_back_btn": "Kembali — 1 token",
+  "jeton_back_ad_btn": "Kembali — video berhadiah",
+  "jeton_guide_btn": "Panduan menuju ending — 3 token",
+  "locked_unlock_ad_fail": "Video berhadiah belum tersedia saat ini."
 }

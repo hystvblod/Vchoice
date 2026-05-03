@@ -99,6 +99,7 @@
     "jeton_title": "Jetons",
     "jeton_balance_label": "Guthaben:",
     "jeton_back_btn": "Zurückgehen — 1 Jeton",
+    "jeton_back_ad_btn": "Zurückgehen — Belohnungsvideo",
     "jeton_guide_btn": "Weg zu einem Ende zeigen — 3 Jetons",
     "jeton_guide_good": "Gutes Ende",
     "jeton_guide_bad": "Schlechtes Ende",
@@ -117,7 +118,7 @@
     "locked_note_foundable": "Diese Elemente können im Spiel gefunden werden, ohne Werbung.",
     "locked_unlock_jeton": "1 Jeton ausgeben",
     "locked_unlock_ad": "Werbung ansehen",
-    "locked_unlock_ad_fail": "Werbung ist im Moment nicht verfügbar.",
+    "locked_unlock_ad_fail": "Das Belohnungsvideo ist im Moment nicht verfügbar.",
     "locked_unlock_no_jetons": "Nicht genug Jetons.",
     "locked_unlock_error": "Kann im Moment nicht freigeschaltet werden.",
     "scenario_buy": {
@@ -443,5 +444,9 @@
     "unlock_direct": "Sofort freischalten — {price}",
     "unlock_direct_no_price": "Sofort freischalten",
     "desc": "Dieses Szenario ist gesperrt. Du kannst es kostenlos mit VCoins + 1 Video freischalten oder es sofort über den Store öffnen."
-  }
+  },
+  "jeton_back_btn": "Zurückgehen — 1 Jeton",
+  "jeton_back_ad_btn": "Zurückgehen — Belohnungsvideo",
+  "jeton_guide_btn": "Weg zu einem Ende zeigen — 3 Jetons",
+  "locked_unlock_ad_fail": "Das Belohnungsvideo ist im Moment nicht verfügbar."
 }
