@@ -54,7 +54,7 @@
     "end_remaining_many": "Dir bleiben noch {count} Enden zu entdecken.",
     "end_all_found_line": "Glückwunsch, du hast alle Enden dieses Szenarios freigeschaltet.",
     "end_reward_label": "Belohnung:",
-    "end_btn_add_bonus": "+{amount} hinzufügen",
+    "end_btn_add_bonus": "x2-Bonus: +{amount}",
     "end_add_bonus_wait": "Bestätigung läuft…",
     "end_add_bonus_done": "Bonus +{amount} hinzugefügt",
     "end_add_bonus_error": "Werbung ist im Moment nicht verfügbar.",
@@ -434,5 +434,14 @@
     "invite_popup_title": "Gefällt dir VChronicles?",
     "invite_popup_body": "Lade einen Freund ein, die Geschichte auszuprobieren, und erhalte VCoins, wenn eine Einladung bestätigt wird.",
     "last_ending_popup_body": "Du hast die 3 Enden dieses Szenarios gefunden. Glaubst du, deine Freunde schaffen das auch? Lade sie ein und erhalte VCoins, wenn eine Installation bestätigt wird."
+  },
+  "end_btn_add_bonus": "x2-Bonus: +{amount}",
+  "scenario_buy": {
+    "vcoins_plus_reward": "{price} + 1 Video",
+    "reward_wait": "Sieh dir das Video an, um die Freischaltung zu bestätigen.",
+    "err_reward_required": "Video nicht abgeschlossen. Das Szenario wurde nicht freigeschaltet.",
+    "unlock_direct": "Sofort freischalten — {price}",
+    "unlock_direct_no_price": "Sofort freischalten",
+    "desc": "Dieses Szenario ist gesperrt. Du kannst es kostenlos mit VCoins + 1 Video freischalten oder es sofort über den Store öffnen."
   }
 }

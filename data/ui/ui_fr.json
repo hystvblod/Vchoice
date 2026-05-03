@@ -54,7 +54,7 @@
     "end_remaining_many": "Il te reste encore {count} fins à découvrir.",
     "end_all_found_line": "Bravo, tu as débloqué toutes les fins de ce scénario.",
     "end_reward_label": "Récompense :",
-    "end_btn_add_bonus": "Rajouter +{amount}",
+    "end_btn_add_bonus": "Bonus x2 : +{amount}",
     "end_add_bonus_wait": "Validation en cours…",
     "end_add_bonus_done": "Bonus +{amount} ajouté",
     "end_add_bonus_error": "Publicité indisponible pour le moment.",
@@ -434,5 +434,14 @@
     "invite_popup_title": "Tu aimes VChronicles ?",
     "invite_popup_body": "Invite un ami à essayer l’histoire et gagne des VCoins quand une invitation est validée.",
     "last_ending_popup_body": "Tu as trouvé les 3 fins de ce scénario. Tu penses que tes amis y arriveraient aussi ? Invite-les et gagne des VCoins quand une installation est validée."
+  },
+  "end_btn_add_bonus": "Bonus x2 : +{amount}",
+  "scenario_buy": {
+    "vcoins_plus_reward": "{price} + 1 vidéo",
+    "reward_wait": "Regarde la vidéo pour confirmer le déblocage.",
+    "err_reward_required": "Vidéo non terminée. Le scénario n’a pas été débloqué.",
+    "unlock_direct": "Déblocage immédiat — {price}",
+    "unlock_direct_no_price": "Déblocage immédiat",
+    "desc": "Ce scénario est verrouillé. Tu peux le débloquer gratuitement avec des VCoins + 1 vidéo, ou l’ouvrir instantanément via le store."
   }
 }

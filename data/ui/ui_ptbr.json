@@ -54,7 +54,7 @@
     "end_remaining_many": "Ainda faltam {count} finais para descobrir.",
     "end_all_found_line": "Parabéns, você desbloqueou todos os finais deste cenário.",
     "end_reward_label": "Recompensa:",
-    "end_btn_add_bonus": "Adicionar +{amount}",
+    "end_btn_add_bonus": "Bônus x2: +{amount}",
     "end_add_bonus_wait": "Validando…",
     "end_add_bonus_done": "Bônus +{amount} adicionado",
     "end_add_bonus_error": "Publicidade indisponível no momento.",
@@ -434,5 +434,14 @@
     "invite_popup_title": "Você gosta de VChronicles?",
     "invite_popup_body": "Convide um amigo para experimentar a história e ganhe VCoins quando um convite for validado.",
     "last_ending_popup_body": "Você encontrou os 3 finais deste cenário. Acha que seus amigos também conseguiriam? Convide-os e ganhe VCoins quando uma instalação for validada."
+  },
+  "end_btn_add_bonus": "Bônus x2: +{amount}",
+  "scenario_buy": {
+    "vcoins_plus_reward": "{price} + 1 vídeo",
+    "reward_wait": "Assista ao vídeo para confirmar o desbloqueio.",
+    "err_reward_required": "Vídeo não concluído. O cenário não foi desbloqueado.",
+    "unlock_direct": "Desbloqueio imediato — {price}",
+    "unlock_direct_no_price": "Desbloqueio imediato",
+    "desc": "Este cenário está bloqueado. Você pode desbloqueá-lo grátis com VCoins + 1 vídeo, ou abri-lo na hora pela loja."
   }
 }
