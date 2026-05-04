@@ -18,6 +18,8 @@
     "btn_continue": "계속",
     "btn_restart": "다시 시작",
     "btn_back": "뒤로",
+    "btn_back_scenarios": "시나리오로 돌아가기",
+    "btn_home": "홈",
     "btn_exit": "나가기",
     "btn_hint": "힌트",
     "loading": "로딩 중…",

@@ -18,6 +18,8 @@
     "btn_continue": "Fortsetzen",
     "btn_restart": "Neu starten",
     "btn_back": "Zurück",
+    "btn_back_scenarios": "Zurück zu den Szenarien",
+    "btn_home": "Startseite",
     "btn_exit": "Beenden",
     "btn_hint": "Hinweis",
     "loading": "Laden…",

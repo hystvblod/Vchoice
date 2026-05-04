@@ -18,6 +18,8 @@
     "btn_continue": "Continuer",
     "btn_restart": "Recommencer",
     "btn_back": "Retour",
+    "btn_back_scenarios": "Retour aux scénarios",
+    "btn_home": "Accueil",
     "btn_exit": "Quitter",
     "btn_hint": "Indice",
     "loading": "Chargement…",

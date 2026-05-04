@@ -18,6 +18,8 @@
     "btn_continue": "Continue",
     "btn_restart": "Restart",
     "btn_back": "Back",
+    "btn_back_scenarios": "Back to scenarios",
+    "btn_home": "Home",
     "btn_exit": "Exit",
     "btn_hint": "Hint",
     "loading": "Loading…",

@@ -436,8 +436,10 @@ function getEndingRewardAmount(payload){
   ];
 
   for(const raw of candidates){
+    if(raw === 0 || raw === "0") return 0;
+
     const n = Number(raw);
-    if(Number.isFinite(n) && n > 0) return n;
+    if(Number.isFinite(n) && n >= 0) return n;
   }
 
   return 300;
@@ -2994,7 +2996,9 @@ async function handleEnding(type, endScene){
     }catch(e){}
   }
 
-  const rewardAmount = Number(ENDING_STATE.reward || 300);
+  const rewardAmount = Number.isFinite(Number(ENDING_STATE.reward))
+  ? Number(ENDING_STATE.reward)
+  : 300;
   const endingProgress = getScenarioEndingProgress(currentScenarioId);
   const remainingEndingsCount = endingProgress.remainingCount;
 
@@ -3164,21 +3168,24 @@ async function handleEnding(type, endScene){
       renderScene();
     };
 
-    const btnBack = document.createElement("button");
-    btnBack.type = "button";
-    btnBack.className = "choice_btn";
-    btnBack.textContent = tUI("btn_back");
-    btnBack.onclick = async () => {
+    const btnScenarios = document.createElement("button");
+    btnScenarios.type = "button";
+    btnScenarios.className = "choice_btn";
+    btnScenarios.textContent = tUI("btn_back_scenarios");
+    btnScenarios.onclick = async () => {
       ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
-
-      try {
-        const sid = String(currentScenarioId || "").trim().toLowerCase();
-        if (sid && sid !== "intro_tuto") {
-          localStorage.setItem("vchoice_pending_book_offer_scenario", sid);
-        }
-      } catch (_) {}
-
       try{ window.VCCrossPromo?.queueOfferVBlocksAfterLoss?.(); }catch(_){}
+      await maybeShowInterstitialOnReturnToIndex();
+      try{ window.VROneSignal?.markPromptPendingOnNextIndex?.(); }catch(_){}
+      location.href = "index.html";
+    };
+
+    const btnHome = document.createElement("button");
+    btnHome.type = "button";
+    btnHome.className = "choice_btn";
+    btnHome.textContent = tUI("btn_home");
+    btnHome.onclick = async () => {
+      ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
       await maybeShowInterstitialOnReturnToIndex();
       try{ window.VROneSignal?.markPromptPendingOnNextIndex?.(); }catch(_){}
       location.href = "index.html";
@@ -3186,7 +3193,8 @@ async function handleEnding(type, endScene){
 
     choicesEl.appendChild(btnBonus);
     choicesEl.appendChild(btnRestart);
-    choicesEl.appendChild(btnBack);
+    choicesEl.appendChild(btnScenarios);
+    choicesEl.appendChild(btnHome);
 
     maybePromptLikeGameShare({
       remainingEndingsCount,

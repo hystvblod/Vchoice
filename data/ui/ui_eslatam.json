@@ -18,6 +18,8 @@
     "btn_continue": "Continuar",
     "btn_restart": "Reiniciar",
     "btn_back": "Volver",
+    "btn_back_scenarios": "Volver a los escenarios",
+    "btn_home": "Inicio",
     "btn_exit": "Salir",
     "btn_hint": "Pista",
     "loading": "Cargando…",
