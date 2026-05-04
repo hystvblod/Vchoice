@@ -116,6 +116,8 @@
     "stuck_mini_guide": "Dipandu untuk 5 pilihan berikutnya menuju ending yang belum ditemukan: 1 token",
     "stuck_mini_guide_ad": "Tonton iklan untuk dibimbing pada 5 pilihan berikutnya",
     "stuck_full_guide": "Dipandu sampai akhir: 3 token",
+
+    "stuck_need_3_jetons": "Kamu membutuhkan 3 token untuk dipandu sampai ending.",
     "stuck_get_jetons": "Dapatkan token",
     "locked_note_foundable": "Elemen-elemen ini bisa ditemukan di dalam game, tanpa bantuan.",
     "locked_force_passage": "Paksa jalan ini?",

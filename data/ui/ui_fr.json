@@ -116,6 +116,8 @@
     "stuck_mini_guide": "Être guidé sur les 5 prochains choix vers une fin non découverte : 1 jeton",
     "stuck_mini_guide_ad": "Regarder une pub pour être guidé sur les 5 prochains choix",
     "stuck_full_guide": "Être guidé jusqu’à la fin : 3 jetons",
+
+    "stuck_need_3_jetons": "Il faut 3 jetons pour être guidé jusqu’à une fin.",
     "stuck_get_jetons": "Obtenir des jetons",
     "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans aide.",
     "locked_force_passage": "Forcer le passage ?",

@@ -1806,3 +1806,30 @@ body.page-game .scene__hud .choice_btn{
   justify-content: center;
   text-align: center;
 }
+
+.vc-stuck-msg:not(:empty){
+  display:block;
+  width:100%;
+  max-width:520px;
+  margin:12px auto 0;
+  padding:12px 14px;
+  border-radius:16px;
+  background:rgba(255,70,70,.16);
+  border:1px solid rgba(255,120,120,.35);
+  color:#ffd7d7;
+  text-align:center;
+  font-weight:900;
+  line-height:1.45;
+}
+
+.vc-stuck-btn.is-denied{
+  animation:vcDeniedShake .28s ease both;
+}
+
+@keyframes vcDeniedShake{
+  0%{ transform:translateX(0); }
+  25%{ transform:translateX(-5px); }
+  50%{ transform:translateX(5px); }
+  75%{ transform:translateX(-3px); }
+  100%{ transform:translateX(0); }
+}
