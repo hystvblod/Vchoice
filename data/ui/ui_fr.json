@@ -116,6 +116,7 @@
     "stuck_full_guide": "Être guidé jusqu’à la fin — 3 jetons",
     "stuck_get_jetons": "Obtenir des jetons",
     "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans aide.",
+    "locked_force_passage": "Forcer le passage ?",
     "locked_unlock_jeton": "Dépenser 1 jeton",
     "locked_unlock_ad": "Regarder une vidéo récompensée",
     "locked_unlock_ad_fail": "La vidéo récompensée n’est pas disponible pour le moment.",
