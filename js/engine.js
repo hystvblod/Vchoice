@@ -91,6 +91,7 @@ let GUIDE_STATE = {
   stepsLeft: 0,
   dynamic: false
 };
+let GUIDE_PICKER_CONTEXT = null;
 
 let OVERRIDE_FLAGS = false;
 
@@ -1292,6 +1293,50 @@ function bindJetonHud(){
           return;
         }
 
+        const picker = GUIDE_PICKER_CONTEXT || { mode: "full", useReward: false, stepsLeft: 0 };
+
+        if(picker.mode === "mini"){
+          if(picker.useReward){
+            if(!window.VAds || typeof window.VAds.showRewarded !== "function"){
+              if(msg) msg.textContent = tUI("locked_unlock_ad_fail");
+              return;
+            }
+
+            const ad = await window.VAds.showRewarded({ placement: "mini_guide" });
+            if(!ad?.ok){
+              if(msg) msg.textContent = tUI("locked_unlock_ad_fail");
+              return;
+            }
+
+            markGameplayRewardedSeen();
+          }else{
+            const res = await spendJetons(1);
+            if(!res?.ok){
+              if(msg) msg.textContent = tUI("jeton_not_enough");
+              updateHudJetons();
+              updateJetonModalCount();
+              return;
+            }
+          }
+
+          const miniPlan = trimGuidePlan(plan, picker.stepsLeft || MINI_GUIDE_STEP_COUNT);
+
+          applyGuidePlan(miniPlan, {
+            targetType,
+            mode: "mini",
+            stepsLeft: picker.stepsLeft || MINI_GUIDE_STEP_COUNT,
+            dynamic: true
+          });
+
+          GUIDE_PICKER_CONTEXT = null;
+          updateHudJetons();
+          updateJetonModalCount();
+          updateJetonGuideUI();
+          hideJetonModal();
+          renderScene();
+          return;
+        }
+
         if(GUIDE_STATE.active){
           applyGuidePlan(plan, {
             targetType,
@@ -1300,6 +1345,7 @@ function bindJetonHud(){
             dynamic: false
           });
 
+          GUIDE_PICKER_CONTEXT = null;
           updateJetonGuideUI();
           hideJetonModal();
           renderScene();
@@ -1321,12 +1367,14 @@ function bindJetonHud(){
           dynamic: false
         });
 
+        GUIDE_PICKER_CONTEXT = null;
         updateHudJetons();
         updateJetonModalCount();
         updateJetonGuideUI();
         hideJetonModal();
         renderScene();
       }catch(e){
+        GUIDE_PICKER_CONTEXT = null;
         if(msg) msg.textContent = tUI("jeton_guide_error");
       }
     });
@@ -1685,6 +1733,7 @@ function hideHintModal(){
   modal.setAttribute("aria-hidden","true");
 
   modal.classList.remove("vc-stuck-modal");
+  modal.classList.remove("vc-locked-modal");
 
   const title = $("hintTitle");
   const body = $("hintBody");
@@ -1693,6 +1742,7 @@ function hideHintModal(){
   const close = $("hintClose");
 
   if(title) title.classList.remove("vc-stuck-title");
+  if(title) title.classList.remove("vc-locked-title");
   if(body) body.classList.remove("vc-stuck-body");
   if(actions) actions.classList.remove("vc-stuck-actions");
   if(msg) msg.classList.remove("vc-stuck-msg");
@@ -1728,6 +1778,50 @@ function showHintModalWithActionsRich(title, buildBodyFn, buildActionsFn){
 
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden","false");
+}
+
+function openGuidePicker(context = {}){
+  GUIDE_PICKER_CONTEXT = {
+    mode: context.mode === "mini" ? "mini" : "full",
+    useReward: !!context.useReward,
+    stepsLeft: Number(context.stepsLeft || MINI_GUIDE_STEP_COUNT)
+  };
+
+  hideHintModal();
+  showJetonModal();
+
+  const msg = $("jetonModalMsg");
+  if(msg){
+    msg.textContent = GUIDE_PICKER_CONTEXT.mode === "mini"
+      ? tUI("stuck_pick_ending_mini")
+      : tUI("stuck_pick_ending_full");
+  }
+}
+
+async function buy12JetonsInline(setMsg){
+  try{
+    setMsg?.(tUI("no_jeton_iap_wait"));
+    const api = window.VCIAP || window.VRIAP || null;
+    if(!api || typeof api.order !== "function"){
+      setMsg?.(tUI("no_jeton_iap_fail"));
+      return false;
+    }
+    const waitPromise = waitForIapOutcome(EMPTY_JETON_IAP_PRODUCT_ID);
+    await api.order(EMPTY_JETON_IAP_PRODUCT_ID);
+    const result = await waitPromise;
+    if(!result?.ok){
+      setMsg?.(tUI("no_jeton_iap_fail"));
+      return false;
+    }
+    updateHudJetons();
+    updateJetonModalCount();
+    updateEmptyJetonModalCount();
+    setMsg?.("");
+    return true;
+  }catch(_){
+    setMsg?.(tUI("no_jeton_iap_fail"));
+    return false;
+  }
 }
 
 /* =========================
@@ -1962,95 +2056,70 @@ function showStuckAssistModal(){
   const modal = $("hintModal");
   const titleEl = $("hintTitle");
   const bodyEl = $("hintBody");
-
   if(modal) modal.classList.add("vc-stuck-modal");
   if(titleEl) titleEl.classList.add("vc-stuck-title");
   if(bodyEl) bodyEl.classList.add("vc-stuck-body");
-
-  showHintModalWithActionsRich(
-    tUI("stuck_title"),
-    (root) => {
-      const p = document.createElement("div");
-      p.className = "vc-modal-prewrap vc-stuck-copy";
-      p.textContent = tUI("stuck_body", { count: STUCK_REPEAT_THRESHOLD });
-      root.appendChild(p);
-
-      const msg = document.createElement("div");
-      msg.id = "vcStuckMsg";
-      msg.className = "vc-lock-msg vc-stuck-msg";
-      msg.textContent = "";
-      root.appendChild(msg);
-    },
-    (actionsWrap) => {
-      actionsWrap.className = "modal__actions modal__actions--center vc-stuck-actions";
-
-      const msg = () => $("vcStuckMsg");
-
-      const btnMini = document.createElement("button");
-      btnMini.type = "button";
-      btnMini.className = "btn vc-stuck-btn vc-stuck-btn--pulse";
-      if(getJetonBalance() >= 1){
-        setChoiceButtonContentWithIcon(btnMini, UI_JETON_ICON_WEBP, tUI("stuck_mini_guide"));
-      }else{
-        btnMini.textContent = tUI("stuck_mini_guide_ad");
+  showHintModalWithActionsRich(tUI("stuck_title"), (root) => {
+    const p = document.createElement("div");
+    p.className = "vc-modal-prewrap vc-stuck-copy";
+    p.textContent = tUI("stuck_body", { count: STUCK_REPEAT_THRESHOLD });
+    root.appendChild(p);
+    const msg = document.createElement("div");
+    msg.id = "vcStuckMsg";
+    msg.className = "vc-lock-msg vc-stuck-msg";
+    msg.textContent = "";
+    root.appendChild(msg);
+  }, (actionsWrap) => {
+    actionsWrap.className = "modal__actions modal__actions--center vc-stuck-actions";
+    const msg = () => $("vcStuckMsg");
+    const setMsg = (txt) => { if(msg()) msg().textContent = txt || ""; };
+    const btnMiniJeton = document.createElement("button");
+    btnMiniJeton.type = "button";
+    btnMiniJeton.className = "btn vc-stuck-btn vc-stuck-btn--pulse";
+    setChoiceButtonContentWithIcon(btnMiniJeton, UI_JETON_ICON_WEBP, tUI("stuck_mini_guide"));
+    btnMiniJeton.onclick = () => {
+      setMsg("");
+      openGuidePicker({ mode: "mini", useReward: false, stepsLeft: MINI_GUIDE_STEP_COUNT });
+    };
+    actionsWrap.appendChild(btnMiniJeton);
+    const btnMiniReward = document.createElement("button");
+    btnMiniReward.type = "button";
+    btnMiniReward.className = "btn vc-stuck-btn btn--ghost";
+    btnMiniReward.textContent = tUI("stuck_mini_guide_reward");
+    btnMiniReward.onclick = () => {
+      setMsg("");
+      openGuidePicker({ mode: "mini", useReward: true, stepsLeft: MINI_GUIDE_STEP_COUNT });
+    };
+    actionsWrap.appendChild(btnMiniReward);
+    const btnFull = document.createElement("button");
+    btnFull.type = "button";
+    btnFull.className = "btn vc-stuck-btn";
+    setChoiceButtonContentWithIcon(btnFull, UI_JETON_ICON_WEBP, tUI("stuck_full_guide"));
+    btnFull.onclick = () => {
+      setMsg("");
+      openGuidePicker({ mode: "full", useReward: false, stepsLeft: 0 });
+    };
+    actionsWrap.appendChild(btnFull);
+    const btnBuy = document.createElement("button");
+    btnBuy.type = "button";
+    btnBuy.className = "btn vc-stuck-btn btn--ghost";
+    btnBuy.textContent = tUI("stuck_buy_12_jetons", { price: getEmptyJetonIapPrice() || "..." });
+    btnBuy.onclick = async () => {
+      setMsg("");
+      const ok = await buy12JetonsInline(setMsg);
+      if(ok){
+        hideHintModal();
+        showJetonModal();
       }
-      btnMini.onclick = async () => {
-        try{
-          if(msg()) msg().textContent = "";
-          await startMiniGuideAssist();
-          hideHintModal();
-          renderScene();
-        }catch(e){
-          const code = String(e?.message || "");
-          if(code === "no_path"){
-            if(msg()) msg().textContent = tUI("jeton_guide_no_path");
-            return;
-          }
-          if(code === "ad_unavailable"){
-            if(msg()) msg().textContent = tUI("locked_unlock_ad_fail");
-            return;
-          }
-          if(msg()) msg().textContent = tUI("jeton_not_enough");
-        }
-      };
-      actionsWrap.appendChild(btnMini);
-
-      const btnFull = document.createElement("button");
-      btnFull.type = "button";
-      btnFull.className = "btn vc-stuck-btn";
-      setChoiceButtonContentWithIcon(btnFull, UI_JETON_ICON_WEBP, tUI("stuck_full_guide"));
-      btnFull.onclick = async () => {
-        try{
-          if(msg()) msg().textContent = "";
-          await startFullGuideAssist();
-          hideHintModal();
-          renderScene();
-        }catch(e){
-          const code = String(e?.message || "");
-          if(code === "no_path"){
-            if(msg()) msg().textContent = tUI("jeton_guide_no_path");
-            return;
-          }
-          if(msg()) msg().textContent = tUI("jeton_not_enough");
-        }
-      };
-      actionsWrap.appendChild(btnFull);
-
-      const btnShop = document.createElement("button");
-      btnShop.type = "button";
-      btnShop.className = "btn vc-stuck-btn btn--ghost";
-      btnShop.textContent = tUI("stuck_get_jetons");
-      btnShop.onclick = () => openShopPage();
-      actionsWrap.appendChild(btnShop);
-
-      const btnContinue = document.createElement("button");
-      btnContinue.type = "button";
-      btnContinue.className = "btn vc-stuck-btn btn--ghost vc-stuck-btn--last";
-      btnContinue.textContent = tUI("stuck_continue");
-      btnContinue.onclick = () => hideHintModal();
-      actionsWrap.appendChild(btnContinue);
-    }
-  );
+    };
+    actionsWrap.appendChild(btnBuy);
+    const btnContinue = document.createElement("button");
+    btnContinue.type = "button";
+    btnContinue.className = "btn vc-stuck-btn btn--ghost vc-stuck-btn--last";
+    btnContinue.textContent = tUI("stuck_continue");
+    btnContinue.onclick = () => hideHintModal();
+    actionsWrap.appendChild(btnContinue);
+  });
 }
 
 async function maybeShowStuckAssist(){
@@ -2650,6 +2719,7 @@ function showLockedChoiceModal(choice){
           return;
         }
 
+        markGameplayRewardedSeen();
         grantMissingFlags(choice, missingAll, missingAny);
         save();
 
@@ -2695,6 +2765,10 @@ function showLockedChoiceModal(choice){
       }
     }
   );
+  const lockedModal = $("hintModal");
+  const lockedTitle = $("hintTitle");
+  if(lockedModal) lockedModal.classList.add("vc-locked-modal");
+  if(lockedTitle) lockedTitle.classList.add("vc-locked-title");
 }
 
 /* =========================
