@@ -1295,7 +1295,11 @@ function bindJetonHud(){
           return;
         }
 
-        const picker = GUIDE_PICKER_CONTEXT || { mode: "full", useReward: false, stepsLeft: 0 };
+        const picker = GUIDE_PICKER_CONTEXT || {
+          mode: "full",
+          useReward: false,
+          stepsLeft: 0
+        };
 
         if(picker.mode === "mini"){
           if(picker.useReward){
@@ -1304,7 +1308,10 @@ function bindJetonHud(){
               return;
             }
 
-            const ad = await window.VAds.showRewarded({ placement: "mini_guide" });
+            const ad = await window.VAds.showRewarded({
+              placement: "mini_guide"
+            });
+
             if(!ad?.ok){
               if(msg) msg.textContent = tUI("locked_unlock_ad_fail");
               return;
@@ -1312,7 +1319,15 @@ function bindJetonHud(){
 
             markGameplayRewardedSeen();
           }else{
+            if(getJetonBalance() < 1){
+              if(msg) msg.textContent = tUI("jeton_not_enough");
+              updateHudJetons();
+              updateJetonModalCount();
+              return;
+            }
+
             const res = await spendJetons(1);
+
             if(!res?.ok){
               if(msg) msg.textContent = tUI("jeton_not_enough");
               updateHudJetons();
@@ -1339,22 +1354,15 @@ function bindJetonHud(){
           return;
         }
 
-        if(GUIDE_STATE.active){
-          applyGuidePlan(plan, {
-            targetType,
-            mode: "full",
-            stepsLeft: 0,
-            dynamic: false
-          });
-
-          GUIDE_PICKER_CONTEXT = null;
-          updateJetonGuideUI();
-          hideJetonModal();
-          renderScene();
+        if(getJetonBalance() < 3){
+          if(msg) msg.textContent = tUI("jeton_not_enough");
+          updateHudJetons();
+          updateJetonModalCount();
           return;
         }
 
         const res = await spendJetons(3);
+
         if(!res?.ok){
           if(msg) msg.textContent = tUI("jeton_not_enough");
           updateHudJetons();
@@ -2003,6 +2011,86 @@ function refreshDynamicGuideFromCurrentScene(){
   OVERRIDE_FLAGS = true;
 }
 
+
+async function startMiniGuideToUnreachedEnding({ useReward = false, setMsg } = {}){
+  try{
+    if(setMsg) setMsg("");
+
+    const progress = getScenarioEndingProgress(currentScenarioId);
+    const order = ["good", "bad", "secret"];
+    const targetType = order.find((k) => !progress?.flags?.[k]);
+
+    if(!targetType){
+      setMsg?.(tUI("stuck_all_endings_known"));
+      return false;
+    }
+
+    const st = scenarioStates[currentScenarioId];
+    const curId = st?.scene;
+    const found = computeGuidePlan(curId, targetType);
+
+    if(!found || !found.nextByScene || !Object.keys(found.nextByScene).length){
+      setMsg?.(tUI("stuck_no_unreached_path"));
+      return false;
+    }
+
+    if(useReward){
+      if(!window.VAds || typeof window.VAds.showRewarded !== "function") {
+        setMsg?.(tUI("locked_unlock_ad_fail"));
+        return false;
+      }
+
+      const ad = await window.VAds.showRewarded({
+        placement: "stuck_mini_guide_unreached"
+      });
+
+      if(!ad?.ok){
+        setMsg?.(tUI("locked_unlock_ad_fail"));
+        return false;
+      }
+
+      markGameplayRewardedSeen();
+    } else {
+      if(getJetonBalance() < 1){
+        setMsg?.(tUI("jeton_not_enough"));
+        updateHudJetons();
+        updateJetonModalCount();
+        return false;
+      }
+
+      const res = await spendJetons(1);
+
+      if(!res?.ok){
+        setMsg?.(tUI("jeton_not_enough"));
+        updateHudJetons();
+        updateJetonModalCount();
+        return false;
+      }
+
+      updateHudJetons();
+      updateJetonModalCount();
+    }
+
+    const miniPlan = trimGuidePlan(found, MINI_GUIDE_STEP_COUNT);
+
+    applyGuidePlan(miniPlan, {
+      targetType,
+      mode: "mini",
+      stepsLeft: MINI_GUIDE_STEP_COUNT,
+      dynamic: true
+    });
+
+    updateJetonGuideUI();
+    hideHintModal();
+    renderScene();
+    return true;
+  } catch(e){
+    console.warn("[startMiniGuideToUnreachedEnding]", e);
+    setMsg?.(tUI("jeton_guide_error"));
+    return false;
+  }
+}
+
 async function startMiniGuideAssist(){
   const curId = scenarioStates[currentScenarioId]?.scene;
   const plan = computeGuidePlan(curId, "any");
@@ -2058,70 +2146,114 @@ function showStuckAssistModal(){
   const modal = $("hintModal");
   const titleEl = $("hintTitle");
   const bodyEl = $("hintBody");
+
   if(modal) modal.classList.add("vc-stuck-modal");
   if(titleEl) titleEl.classList.add("vc-stuck-title");
   if(bodyEl) bodyEl.classList.add("vc-stuck-body");
-  showHintModalWithActionsRich(tUI("stuck_title"), (root) => {
-    const p = document.createElement("div");
-    p.className = "vc-modal-prewrap vc-stuck-copy";
-    p.textContent = tUI("stuck_body", { count: STUCK_REPEAT_THRESHOLD });
-    root.appendChild(p);
-    const msg = document.createElement("div");
-    msg.id = "vcStuckMsg";
-    msg.className = "vc-lock-msg vc-stuck-msg";
-    msg.textContent = "";
-    root.appendChild(msg);
-  }, (actionsWrap) => {
-    actionsWrap.className = "modal__actions modal__actions--center vc-stuck-actions";
-    const msg = () => $("vcStuckMsg");
-    const setMsg = (txt) => { if(msg()) msg().textContent = txt || ""; };
-    const btnMiniJeton = document.createElement("button");
-    btnMiniJeton.type = "button";
-    btnMiniJeton.className = "btn vc-stuck-btn vc-stuck-btn--pulse";
-    setChoiceButtonContentWithIcon(btnMiniJeton, UI_JETON_ICON_WEBP, tUI("stuck_mini_guide"));
-    btnMiniJeton.onclick = () => {
-      setMsg("");
-      openGuidePicker({ mode: "mini", useReward: false, stepsLeft: MINI_GUIDE_STEP_COUNT });
-    };
-    actionsWrap.appendChild(btnMiniJeton);
-    const btnMiniReward = document.createElement("button");
-    btnMiniReward.type = "button";
-    btnMiniReward.className = "btn vc-stuck-btn btn--ghost";
-    btnMiniReward.textContent = tUI("stuck_mini_guide_reward");
-    btnMiniReward.onclick = () => {
-      setMsg("");
-      openGuidePicker({ mode: "mini", useReward: true, stepsLeft: MINI_GUIDE_STEP_COUNT });
-    };
-    actionsWrap.appendChild(btnMiniReward);
-    const btnFull = document.createElement("button");
-    btnFull.type = "button";
-    btnFull.className = "btn vc-stuck-btn";
-    setChoiceButtonContentWithIcon(btnFull, UI_JETON_ICON_WEBP, tUI("stuck_full_guide"));
-    btnFull.onclick = () => {
-      setMsg("");
-      openGuidePicker({ mode: "full", useReward: false, stepsLeft: 0 });
-    };
-    actionsWrap.appendChild(btnFull);
-    const btnBuy = document.createElement("button");
-    btnBuy.type = "button";
-    btnBuy.className = "btn vc-stuck-btn btn--ghost";
-    btnBuy.textContent = tUI("stuck_buy_12_jetons", { price: getEmptyJetonIapPrice() || "..." });
-    btnBuy.onclick = async () => {
-      setMsg("");
-      const ok = await buy12JetonsInline(setMsg);
-      if(ok){
-        hideHintModal();
-        showJetonModal();
-      }
-    };
-    actionsWrap.appendChild(btnBuy);
-    const btnContinue = document.createElement("button");
-    btnContinue.type = "button";
-    btnContinue.className = "btn vc-stuck-btn btn--ghost vc-stuck-btn--last";
-    btnContinue.textContent = tUI("stuck_continue");
-    btnContinue.onclick = () => hideHintModal();
-    actionsWrap.appendChild(btnContinue);
-  });
+
+  showHintModalWithActionsRich(
+    tUI("stuck_title"),
+    (root) => {
+      const p = document.createElement("div");
+      p.className = "vc-modal-prewrap vc-stuck-copy";
+      p.textContent = tUI("stuck_body", { count: STUCK_REPEAT_THRESHOLD });
+      root.appendChild(p);
+
+      const msg = document.createElement("div");
+      msg.id = "vcStuckMsg";
+      msg.className = "vc-lock-msg vc-stuck-msg";
+      msg.textContent = "";
+      root.appendChild(msg);
+    },
+    (actionsWrap) => {
+      actionsWrap.className = "modal__actions modal__actions--center vc-stuck-actions";
+
+      const msg = () => $("vcStuckMsg");
+      const setMsg = (txt) => {
+        const el = msg();
+        if(el) el.textContent = txt || "";
+      };
+
+      const btnMiniJeton = document.createElement("button");
+      btnMiniJeton.type = "button";
+      btnMiniJeton.className = "btn vc-stuck-btn vc-stuck-btn--pulse";
+      setChoiceButtonContentWithIcon(
+        btnMiniJeton,
+        UI_JETON_ICON_WEBP,
+        tUI("stuck_mini_guide")
+      );
+      btnMiniJeton.onclick = async () => {
+        await startMiniGuideToUnreachedEnding({
+          useReward: false,
+          setMsg
+        });
+      };
+      actionsWrap.appendChild(btnMiniJeton);
+
+      const btnMiniReward = document.createElement("button");
+      btnMiniReward.type = "button";
+      btnMiniReward.className = "btn vc-stuck-btn btn--ghost";
+      btnMiniReward.textContent = tUI("stuck_mini_guide_reward");
+      btnMiniReward.onclick = async () => {
+        await startMiniGuideToUnreachedEnding({
+          useReward: true,
+          setMsg
+        });
+      };
+      actionsWrap.appendChild(btnMiniReward);
+
+      const btnFull = document.createElement("button");
+      btnFull.type = "button";
+      btnFull.className = "btn vc-stuck-btn";
+      setChoiceButtonContentWithIcon(
+        btnFull,
+        UI_JETON_ICON_WEBP,
+        tUI("stuck_full_guide")
+      );
+      btnFull.onclick = () => {
+        setMsg("");
+
+        if(getJetonBalance() < 3){
+          setMsg(tUI("jeton_not_enough"));
+          updateHudJetons();
+          updateJetonModalCount();
+          return;
+        }
+
+        openGuidePicker({
+          mode: "full",
+          useReward: false,
+          stepsLeft: 0
+        });
+      };
+      actionsWrap.appendChild(btnFull);
+
+      const btnBuy = document.createElement("button");
+      btnBuy.type = "button";
+      btnBuy.className = "btn vc-stuck-btn btn--ghost";
+      btnBuy.textContent = tUI("stuck_buy_12_jetons", {
+        price: getEmptyJetonIapPrice() || "..."
+      });
+      btnBuy.onclick = async () => {
+        setMsg("");
+
+        const ok = await buy12JetonsInline(setMsg);
+
+        if(ok){
+          hideHintModal();
+          showJetonModal();
+        }
+      };
+      actionsWrap.appendChild(btnBuy);
+
+      const btnContinue = document.createElement("button");
+      btnContinue.type = "button";
+      btnContinue.className = "btn vc-stuck-btn btn--ghost vc-stuck-btn--last";
+      btnContinue.textContent = tUI("stuck_continue");
+      btnContinue.onclick = () => hideHintModal();
+      actionsWrap.appendChild(btnContinue);
+    }
+  );
 }
 
 async function maybeShowStuckAssist(){

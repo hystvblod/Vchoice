@@ -113,9 +113,9 @@
     "stuck_title": "Parece que você ficou preso aqui",
     "stuck_body": "Você voltou várias vezes para esta cena. Quer uma ajudinha?",
     "stuck_continue": "Continuar sem ajuda",
-    "stuck_mini_guide": "Ser guiado nas próximas 5 escolhas — 1 ficha",
+    "stuck_mini_guide": "Ser guiado nas próximas 5 escolhas até um final ainda não descoberto: 1 ficha",
     "stuck_mini_guide_ad": "Assistir a um anúncio para ser guiado nas próximas 5 escolhas",
-    "stuck_full_guide": "Ser guiado até o final — 3 fichas",
+    "stuck_full_guide": "Ser guiado até o final: 3 fichas",
     "stuck_get_jetons": "Conseguir tokens",
     "locked_note_foundable": "Esses elementos podem ser encontrados no jogo, sem ajuda.",
     "locked_force_passage": "Forçar a passagem?",
@@ -328,7 +328,11 @@
     "book_11_title": "Vilarejo da névoa negra",
     "book_11_desc": "A versão longa do cenário Vilarejo da névoa negra. Um romance inquietante em um vilarejo ausente dos mapas, onde a névoa parece respirar e cada rua torna a fuga mais difícil.",
     "book_12_title": "Histórias e lendas do além",
-    "book_12_desc": "Uma coletânea longa e imersiva de histórias sombrias, misteriosas e sobrenaturais. Várias lendas do além são desenvolvidas em relatos mais longos, com uma atmosfera creepy, acessível e inquietante."
+    "book_12_desc": "Uma coletânea longa e imersiva de histórias sombrias, misteriosas e sobrenaturais. Várias lendas do além são desenvolvidas em relatos mais longos, com uma atmosfera creepy, acessível e inquietante.",
+    "stuck_mini_guide_reward": "Ser guiado nas próximas 5 escolhas até um final ainda não descoberto: vídeo recompensado",
+    "stuck_buy_12_jetons": "12 fichas: {price}",
+    "stuck_all_endings_known": "Todos os finais deste cenário já foram descobertos.",
+    "stuck_no_unreached_path": "Não há nenhum caminho disponível daqui para um final ainda não descoberto."
   },
   "common": {
     "cancel": "Cancelar"

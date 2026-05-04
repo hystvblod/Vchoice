@@ -113,9 +113,9 @@
     "stuck_title": "Parece que te quedaste atascado aquí",
     "stuck_body": "Has vuelto varias veces a esta escena. ¿Quieres una ayuda?",
     "stuck_continue": "Seguir sin ayuda",
-    "stuck_mini_guide": "Recibir guía en las próximas 5 opciones — 1 ficha",
+    "stuck_mini_guide": "Recibir guía en las próximas 5 opciones hacia un final no descubierto: 1 ficha",
     "stuck_mini_guide_ad": "Ver un anuncio para recibir guía en las próximas 5 opciones",
-    "stuck_full_guide": "Recibir guía hasta el final — 3 fichas",
+    "stuck_full_guide": "Recibir guía hasta el final: 3 fichas",
     "stuck_get_jetons": "Conseguir fichas",
     "locked_note_foundable": "Estos elementos se pueden encontrar en el juego, sin ayuda.",
     "locked_force_passage": "¿Forzar el paso?",
@@ -328,7 +328,11 @@
     "book_11_title": "Pueblo de la niebla negra",
     "book_11_desc": "La versión larga del escenario Pueblo de la niebla negra. Una novela inquietante en un pueblo ausente de los mapas, donde la niebla parece respirar y cada calle vuelve más difícil escapar.",
     "book_12_title": "Historias y leyendas del más allá",
-    "book_12_desc": "Una colección larga e inmersiva de historias oscuras, misteriosas y sobrenaturales. Varias leyendas del más allá se desarrollan en relatos más largos, con una atmósfera creepy, accesible e inquietante."
+    "book_12_desc": "Una colección larga e inmersiva de historias oscuras, misteriosas y sobrenaturales. Varias leyendas del más allá se desarrollan en relatos más largos, con una atmósfera creepy, accesible e inquietante.",
+    "stuck_mini_guide_reward": "Recibir guía en las próximas 5 opciones hacia un final no descubierto: video recompensado",
+    "stuck_buy_12_jetons": "12 fichas: {price}",
+    "stuck_all_endings_known": "Ya se descubrieron todos los finales de este escenario.",
+    "stuck_no_unreached_path": "No hay ningún camino disponible hacia un final no descubierto desde aquí."
   },
   "common": {
     "cancel": "Cancelar"
