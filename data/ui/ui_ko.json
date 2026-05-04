@@ -113,9 +113,9 @@
     "stuck_title": "여기서 막힌 것 같아요",
     "stuck_body": "이 장면으로 여러 번 돌아왔습니다. 도움을 받을래요?",
     "stuck_continue": "도움 없이 계속",
-    "stuck_mini_guide": "다음 5개의 선택 안내 — 토큰 1개",
+    "stuck_mini_guide": "아직 발견하지 않은 엔딩으로 다음 5개의 선택 안내: 토큰 1개",
     "stuck_mini_guide_ad": "광고를 보고 다음 5개의 선택 안내받기",
-    "stuck_full_guide": "엔딩까지 안내 — 토큰 3개",
+    "stuck_full_guide": "엔딩까지 안내: 토큰 3개",
     "stuck_get_jetons": "토큰 얻기",
     "locked_note_foundable": "이 요소들은 게임 안에서 찾을 수 있으며, 도움은 필요하지 않습니다.",
     "locked_force_passage": "강제로 통과할까요?",
@@ -328,7 +328,11 @@
     "book_11_title": "검은 안개의 마을",
     "book_11_desc": "시나리오 검은 안개의 마을의 장편 버전입니다. 지도에 없는 마을을 배경으로, 숨 쉬는 듯한 안개와 빠져나갈수록 더 어려워지는 거리들을 다룬 불안한 소설입니다.",
     "book_12_title": "저편의 이야기와 전설",
-    "book_12_desc": "어둡고 신비하며 초자연적인 이야기들을 담은 긴 몰입형 모음집입니다. 저편에 관한 여러 전설을 읽기 쉽고 creepy하며 불안한 분위기의 긴 이야기로 확장했습니다."
+    "book_12_desc": "어둡고 신비하며 초자연적인 이야기들을 담은 긴 몰입형 모음집입니다. 저편에 관한 여러 전설을 읽기 쉽고 creepy하며 불안한 분위기의 긴 이야기로 확장했습니다.",
+    "stuck_mini_guide_reward": "아직 발견하지 않은 엔딩으로 다음 5개의 선택 안내: 리워드 동영상",
+    "stuck_buy_12_jetons": "토큰 12개: {price}",
+    "stuck_all_endings_known": "이 시나리오의 모든 엔딩을 이미 발견했습니다.",
+    "stuck_no_unreached_path": "여기서는 아직 발견하지 않은 엔딩으로 가는 길이 없습니다."
   },
   "common": {
     "cancel": "취소"

@@ -113,9 +113,9 @@
     "stuck_title": "Tu sembles bloqué ici",
     "stuck_body": "Tu es revenu plusieurs fois sur cette scène. Tu veux un coup de pouce ?",
     "stuck_continue": "Continuer sans aide",
-    "stuck_mini_guide": "Être guidé sur les 5 prochains choix — 1 jeton",
+    "stuck_mini_guide": "Être guidé sur les 5 prochains choix vers une fin non découverte : 1 jeton",
     "stuck_mini_guide_ad": "Regarder une pub pour être guidé sur les 5 prochains choix",
-    "stuck_full_guide": "Être guidé jusqu’à la fin — 3 jetons",
+    "stuck_full_guide": "Être guidé jusqu’à la fin : 3 jetons",
     "stuck_get_jetons": "Obtenir des jetons",
     "locked_note_foundable": "Ces éléments sont trouvables dans le jeu, sans aide.",
     "locked_force_passage": "Forcer le passage ?",
@@ -328,7 +328,11 @@
     "book_11_title": "Village de la brume noire",
     "book_11_desc": "La version longue du scénario Village de la brume noire. Un roman inquiétant dans un village absent des cartes, où la brume semble respirer et où chaque rue rend le retour plus difficile.",
     "book_12_title": "Histoires et légendes de l’au-delà",
-    "book_12_desc": "Un recueil long et immersif d’histoires sombres, mystérieuses et surnaturelles. Plusieurs légendes de l’au-delà y sont développées en version longue, avec une ambiance creepy, accessible et inquiétante."
+    "book_12_desc": "Un recueil long et immersif d’histoires sombres, mystérieuses et surnaturelles. Plusieurs légendes de l’au-delà y sont développées en version longue, avec une ambiance creepy, accessible et inquiétante.",
+    "stuck_mini_guide_reward": "Être guidé sur les 5 prochains choix vers une fin non découverte : vidéo récompensée",
+    "stuck_buy_12_jetons": "12 jetons : {price}",
+    "stuck_all_endings_known": "Toutes les fins de ce scénario ont déjà été découvertes.",
+    "stuck_no_unreached_path": "Aucun chemin disponible vers une fin non découverte depuis ici."
   },
   "common": {
     "cancel": "Annuler"

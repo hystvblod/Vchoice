@@ -113,9 +113,9 @@
     "stuck_title": "Pareces bloqueado aqui",
     "stuck_body": "Voltaste várias vezes a esta cena. Queres uma ajuda?",
     "stuck_continue": "Continuar sem ajuda",
-    "stuck_mini_guide": "Ser guiado nas próximas 5 escolhas — 1 ficha",
+    "stuck_mini_guide": "Ser guiado nas próximas 5 escolhas até um final ainda não descoberto: 1 ficha",
     "stuck_mini_guide_ad": "Ver uma publicidade para seres guiado nas próximas 5 escolhas",
-    "stuck_full_guide": "Ser guiado até ao fim — 3 fichas",
+    "stuck_full_guide": "Ser guiado até ao fim: 3 fichas",
     "stuck_get_jetons": "Obter fichas",
     "locked_note_foundable": "Estes elementos podem ser encontrados no jogo, sem ajuda.",
     "locked_force_passage": "Forçar a passagem?",
@@ -328,7 +328,11 @@
     "book_11_title": "Aldeia do nevoeiro negro",
     "book_11_desc": "A versão longa do cenário Aldeia do nevoeiro negro. Um romance inquietante numa aldeia ausente dos mapas, onde o nevoeiro parece respirar e cada rua torna a fuga mais difícil.",
     "book_12_title": "Histórias e lendas do além",
-    "book_12_desc": "Uma coletânea longa e imersiva de histórias sombrias, misteriosas e sobrenaturais. Várias lendas do além são desenvolvidas em relatos mais longos, com uma atmosfera creepy, acessível e inquietante."
+    "book_12_desc": "Uma coletânea longa e imersiva de histórias sombrias, misteriosas e sobrenaturais. Várias lendas do além são desenvolvidas em relatos mais longos, com uma atmosfera creepy, acessível e inquietante.",
+    "stuck_mini_guide_reward": "Ser guiado nas próximas 5 escolhas até um final ainda não descoberto: vídeo recompensado",
+    "stuck_buy_12_jetons": "12 fichas: {price}",
+    "stuck_all_endings_known": "Todos os finais deste cenário já foram descobertos.",
+    "stuck_no_unreached_path": "Não há nenhum caminho disponível daqui para um final ainda não descoberto."
   },
   "common": {
     "cancel": "Cancelar"

@@ -113,9 +113,9 @@
     "stuck_title": "Sembri bloccato qui",
     "stuck_body": "Sei tornato più volte in questa scena. Vuoi un aiuto?",
     "stuck_continue": "Continua senza aiuto",
-    "stuck_mini_guide": "Essere guidato nelle prossime 5 scelte — 1 gettone",
+    "stuck_mini_guide": "Essere guidato nelle prossime 5 scelte verso un finale non scoperto: 1 gettone",
     "stuck_mini_guide_ad": "Guarda una pubblicità per essere guidato nelle prossime 5 scelte",
-    "stuck_full_guide": "Essere guidato fino alla fine — 3 gettoni",
+    "stuck_full_guide": "Essere guidato fino alla fine: 3 gettoni",
     "stuck_get_jetons": "Ottenere gettoni",
     "locked_note_foundable": "Questi elementi si possono trovare nel gioco, senza aiuto.",
     "locked_force_passage": "Forzare il passaggio?",
@@ -328,7 +328,11 @@
     "book_11_title": "Villaggio della nebbia nera",
     "book_11_desc": "La versione lunga dello scenario Villaggio della nebbia nera. Un romanzo inquietante in un villaggio assente dalle mappe, dove la nebbia sembra respirare e ogni strada rende più difficile fuggire.",
     "book_12_title": "Storie e leggende dell’aldilà",
-    "book_12_desc": "Una raccolta lunga e immersiva di storie oscure, misteriose e soprannaturali. Diverse leggende dell’aldilà vengono sviluppate in racconti più lunghi, con un’atmosfera creepy, accessibile e inquietante."
+    "book_12_desc": "Una raccolta lunga e immersiva di storie oscure, misteriose e soprannaturali. Diverse leggende dell’aldilà vengono sviluppate in racconti più lunghi, con un’atmosfera creepy, accessibile e inquietante.",
+    "stuck_mini_guide_reward": "Essere guidato nelle prossime 5 scelte verso un finale non scoperto: video ricompensato",
+    "stuck_buy_12_jetons": "12 gettoni: {price}",
+    "stuck_all_endings_known": "Tutti i finali di questo scenario sono già stati scoperti.",
+    "stuck_no_unreached_path": "Da qui non è disponibile alcun percorso verso un finale non scoperto."
   },
   "common": {
     "cancel": "Annulla"

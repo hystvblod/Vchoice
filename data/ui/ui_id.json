@@ -113,9 +113,9 @@
     "stuck_title": "Sepertinya kamu terjebak di sini",
     "stuck_body": "Kamu sudah kembali beberapa kali ke adegan ini. Mau sedikit bantuan?",
     "stuck_continue": "Lanjutkan tanpa bantuan",
-    "stuck_mini_guide": "Dipandu untuk 5 pilihan berikutnya — 1 token",
+    "stuck_mini_guide": "Dipandu untuk 5 pilihan berikutnya menuju ending yang belum ditemukan: 1 token",
     "stuck_mini_guide_ad": "Tonton iklan untuk dibimbing pada 5 pilihan berikutnya",
-    "stuck_full_guide": "Dipandu sampai akhir — 3 token",
+    "stuck_full_guide": "Dipandu sampai akhir: 3 token",
     "stuck_get_jetons": "Dapatkan token",
     "locked_note_foundable": "Elemen-elemen ini bisa ditemukan di dalam game, tanpa bantuan.",
     "locked_force_passage": "Paksa jalan ini?",
@@ -328,7 +328,11 @@
     "book_11_title": "Desa Kabut Hitam",
     "book_11_desc": "Versi panjang dari skenario Desa Kabut Hitam. Sebuah novel meresahkan di desa yang tidak ada di peta, tempat kabut seolah bernapas dan setiap jalan membuat pelarian semakin sulit.",
     "book_12_title": "Kisah dan Legenda dari Alam Sebrang",
-    "book_12_desc": "Sebuah kumpulan panjang dan imersif berisi kisah gelap, misterius, dan supernatural. Beberapa legenda dari alam seberang dikembangkan menjadi cerita yang lebih panjang, dengan suasana creepy, mudah diikuti, dan meresahkan."
+    "book_12_desc": "Sebuah kumpulan panjang dan imersif berisi kisah gelap, misterius, dan supernatural. Beberapa legenda dari alam seberang dikembangkan menjadi cerita yang lebih panjang, dengan suasana creepy, mudah diikuti, dan meresahkan.",
+    "stuck_mini_guide_reward": "Dipandu untuk 5 pilihan berikutnya menuju ending yang belum ditemukan: video berhadiah",
+    "stuck_buy_12_jetons": "12 token: {price}",
+    "stuck_all_endings_known": "Semua ending dalam skenario ini sudah ditemukan.",
+    "stuck_no_unreached_path": "Tidak ada jalur menuju ending yang belum ditemukan dari sini."
   },
   "common": {
     "cancel": "Batal"

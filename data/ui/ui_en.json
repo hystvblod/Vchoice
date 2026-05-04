@@ -112,9 +112,9 @@
     "stuck_title": "You seem stuck here",
     "stuck_body": "You have come back to this scene several times. Do you want a little help?",
     "stuck_continue": "Continue without help",
-    "stuck_mini_guide": "Be guided for the next 5 choices — 1 token",
+    "stuck_mini_guide": "Be guided for the next 5 choices toward an undiscovered ending: 1 token",
     "stuck_mini_guide_ad": "Watch an ad to be guided for the next 5 choices",
-    "stuck_full_guide": "Be guided until the ending — 3 tokens",
+    "stuck_full_guide": "Be guided until the ending: 3 tokens",
     "stuck_get_jetons": "Get tokens",
     "locked_note_foundable": "These elements can be found in the game, without help.",
     "locked_force_passage": "Force your way through?",
@@ -328,7 +328,11 @@
     "book_11_desc": "The long-form version of the Village of the Black Fog scenario. An unsettling novel set in a village missing from every map, where the fog seems to breathe and every street makes escape harder.",
     "book_12_title": "Stories and Legends from the Beyond",
     "book_12_desc": "A long and immersive collection of dark, mysterious, and supernatural stories. Several legends from the beyond are expanded into longer tales with a creepy, accessible, and unsettling atmosphere.",
-    "profile_auto_username_prefix": "User_"
+    "profile_auto_username_prefix": "User_",
+    "stuck_mini_guide_reward": "Be guided for the next 5 choices toward an undiscovered ending: rewarded video",
+    "stuck_buy_12_jetons": "12 tokens: {price}",
+    "stuck_all_endings_known": "All endings in this scenario have already been discovered.",
+    "stuck_no_unreached_path": "No path to an undiscovered ending is available from here."
   },
   "common": {
     "cancel": "Cancel"
