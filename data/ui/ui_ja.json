@@ -18,6 +18,8 @@
     "btn_continue": "続ける",
     "btn_restart": "最初から",
     "btn_back": "戻る",
+    "btn_back_scenarios": "シナリオに戻る",
+    "btn_home": "ホーム",
     "btn_exit": "終了",
     "btn_hint": "ヒント",
     "loading": "読み込み中…",
