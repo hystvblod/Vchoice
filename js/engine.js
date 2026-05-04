@@ -2664,6 +2664,8 @@ function showLockedChoiceModal(choice){
   lines.push("");
   lines.push(tUI("locked_note_foundable"));
   lines.push("");
+  lines.push(tUI("locked_force_passage"));
+  lines.push("");
 
   const actions = [];
 
@@ -2755,10 +2757,12 @@ function showLockedChoiceModal(choice){
       root.appendChild(msg);
     },
     (actionsWrap) => {
+      actionsWrap.className = "modal__actions modal__actions--center vc-locked-actions";
+
       for(const a of actions){
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = a.className || "btn";
+        btn.className = (a.className || "btn") + " vc-locked-btn";
         btn.textContent = a.label || tUI("btn_ok");
         btn.onclick = async () => { await a.onClick?.(); };
         actionsWrap.appendChild(btn);
