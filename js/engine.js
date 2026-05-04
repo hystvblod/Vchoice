@@ -2122,14 +2122,19 @@ async function startMiniGuideAssist(){
 }
 
 async function startFullGuideAssist(){
+  if(getJetonBalance() < 3){
+    throw new Error("not_enough_jetons");
+  }
+
   const curId = scenarioStates[currentScenarioId]?.scene;
   const plan = computeGuidePlan(curId, "any");
+
   if(!plan || !plan.nextByScene || !Object.keys(plan.nextByScene).length){
     throw new Error("no_path");
   }
 
   const res = await spendJetons(3);
-  if(!res?.ok) throw new Error("jeton_failed");
+  if(!res?.ok) throw new Error("not_enough_jetons");
 
   updateHudJetons();
   updateJetonModalCount();
@@ -2205,27 +2210,48 @@ function showStuckAssistModal(){
       const btnFull = document.createElement("button");
       btnFull.type = "button";
       btnFull.className = "btn vc-stuck-btn";
-      setChoiceButtonContentWithIcon(
-        btnFull,
-        UI_JETON_ICON_WEBP,
-        tUI("stuck_full_guide")
-      );
-      btnFull.onclick = () => {
-        setMsg("");
+      setChoiceButtonContentWithIcon(btnFull, UI_JETON_ICON_WEBP, tUI("stuck_full_guide"));
 
-        if(getJetonBalance() < 3){
-          setMsg(tUI("jeton_not_enough"));
-          updateHudJetons();
-          updateJetonModalCount();
-          return;
+      btnFull.onclick = async () => {
+        const msgEl = msg();
+
+        function deny(txt){
+          if(msgEl) msgEl.textContent = txt || tUI("jeton_not_enough");
+
+          btnFull.classList.remove("is-denied");
+          void btnFull.offsetWidth;
+          btnFull.classList.add("is-denied");
+
+          setTimeout(() => {
+            btnFull.classList.remove("is-denied");
+          }, 320);
         }
 
-        openGuidePicker({
-          mode: "full",
-          useReward: false,
-          stepsLeft: 0
-        });
+        try{
+          if(msgEl) msgEl.textContent = "";
+
+          if(getJetonBalance() < 3){
+            deny(tUI("stuck_need_3_jetons") || tUI("jeton_not_enough"));
+            updateHudJetons();
+            updateJetonModalCount();
+            return;
+          }
+
+          await startFullGuideAssist();
+          hideHintModal();
+          renderScene();
+        }catch(e){
+          const code = String(e?.message || "");
+
+          if(code === "no_path"){
+            deny(tUI("jeton_guide_no_path"));
+            return;
+          }
+
+          deny(tUI("stuck_need_3_jetons") || tUI("jeton_not_enough"));
+        }
       };
+
       actionsWrap.appendChild(btnFull);
 
       const btnBuy = document.createElement("button");

@@ -115,6 +115,8 @@
     "stuck_mini_guide": "Be guided for the next 5 choices toward an undiscovered ending: 1 token",
     "stuck_mini_guide_ad": "Watch an ad to be guided for the next 5 choices",
     "stuck_full_guide": "Be guided until the ending: 3 tokens",
+
+    "stuck_need_3_jetons": "You need 3 tokens to be guided to an ending.",
     "stuck_get_jetons": "Get tokens",
     "locked_note_foundable": "These elements can be found in the game, without help.",
     "locked_force_passage": "Force your way through?",

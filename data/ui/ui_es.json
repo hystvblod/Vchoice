@@ -116,6 +116,8 @@
     "stuck_mini_guide": "Ser guiado en las próximas 5 elecciones hacia un final no descubierto: 1 ficha",
     "stuck_mini_guide_ad": "Ver un anuncio para ser guiado en las próximas 5 elecciones",
     "stuck_full_guide": "Ser guiado hasta el final: 3 fichas",
+
+    "stuck_need_3_jetons": "Necesitas 3 fichas para recibir guía hasta un final.",
     "stuck_get_jetons": "Conseguir fichas",
     "locked_note_foundable": "Estos elementos se pueden encontrar en el juego, sin ayuda.",
     "locked_force_passage": "¿Forzar el paso?",

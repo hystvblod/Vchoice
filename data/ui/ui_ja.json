@@ -116,6 +116,8 @@
     "stuck_mini_guide": "未発見の結末へ向けて次の5つの選択をガイド: 1トークン",
     "stuck_mini_guide_ad": "広告を見て次の5つの選択肢をガイドしてもらう",
     "stuck_full_guide": "最後までガイド: 3トークン",
+
+    "stuck_need_3_jetons": "エンディングまでガイドするにはトークンが3個必要です。",
     "stuck_get_jetons": "トークンを入手",
     "locked_note_foundable": "これらの要素はゲーム内で見つけられます。助けは不要です。",
     "locked_force_passage": "強行突破しますか？",

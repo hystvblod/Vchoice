@@ -116,6 +116,8 @@
     "stuck_mini_guide": "Für die nächsten 5 Entscheidungen zu einem unentdeckten Ende geführt werden: 1 Jeton",
     "stuck_mini_guide_ad": "Werbung ansehen, um bei den nächsten 5 Entscheidungen geführt zu werden",
     "stuck_full_guide": "Bis zum Ende geführt werden: 3 Jetons",
+
+    "stuck_need_3_jetons": "Du brauchst 3 Jetons, um bis zu einem Ende geführt zu werden.",
     "stuck_get_jetons": "Jetons erhalten",
     "locked_note_foundable": "Diese Elemente können im Spiel gefunden werden, ohne Hilfe.",
     "locked_force_passage": "Den Durchgang erzwingen?",
