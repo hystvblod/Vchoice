@@ -1393,6 +1393,24 @@ body.page-game .scene__hud .choice_btn{
   transform:translateY(-50%);
 }
 
+.vc-locked-modal .modal__head,
+.vc-locked-modal .modal__header{
+  position: relative;
+  justify-content: center;
+}
+
+.vc-locked-modal .modal__title{
+  width: 100%;
+  text-align: center;
+}
+
+.vc-locked-modal .modal__close{
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .vc-stuck-title{
   width:100%;
   text-align:center;
