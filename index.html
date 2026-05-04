@@ -935,6 +935,7 @@
   <script src="js/referral.js"></script>
   <script src="js/scenarioPremium.js"></script>
   <script src="js/premiumZip.js"></script>
+<script src="js/bookEndOffer.js"></script>
   <script>
     window.addEventListener("load", async function () {
       try {
@@ -1825,6 +1826,7 @@
 
         try { applyLocks(); } catch(e){ console.error("[applyLocks post]", e); }
         try { await checkAppUpdateAndMaybeShow(); } catch(e){ console.error("[checkAppUpdateAndMaybeShow]", e); }
+try { await window.VCBookEndOffer?.maybeShow?.(); } catch(e){ console.error("[book end offer]", e); }
       })();
     })();
   </script>

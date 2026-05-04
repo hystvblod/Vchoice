@@ -3092,6 +3092,14 @@ async function handleEnding(type, endScene){
     btnBack.textContent = tUI("btn_back");
     btnBack.onclick = async () => {
       ENDING_STATE = { key:"", reward:300, adBonusClaimed:false, busy:false };
+
+      try {
+        const sid = String(currentScenarioId || "").trim().toLowerCase();
+        if (sid && sid !== "intro_tuto") {
+          localStorage.setItem("vchoice_pending_book_offer_scenario", sid);
+        }
+      } catch (_) {}
+
       try{ window.VCCrossPromo?.queueOfferVBlocksAfterLoss?.(); }catch(_){}
       await maybeShowInterstitialOnReturnToIndex();
       try{ window.VROneSignal?.markPromptPendingOnNextIndex?.(); }catch(_){}
