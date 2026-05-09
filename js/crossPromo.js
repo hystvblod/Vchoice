@@ -142,6 +142,7 @@
     return {
       dismissedCount: Math.max(0, Number(s.dismissedCount || 0) || 0),
       rewardClaimed: !!s.rewardClaimed,
+      rewardClaiming: false,
       installedDetected: !!s.installedDetected,
       clickedStore: !!s.clickedStore,
       pendingInstallCheck: !!s.pendingInstallCheck,
@@ -278,28 +279,75 @@
   async function claimRewardIfEligible(appId) {
     const state = readState();
     const row = state.apps[appId];
+
     if (!row) return false;
     if (row.rewardClaimed) return false;
-    if (!row.pendingInstallCheck) return false;
-    if (!row.installedDetected) return false;
+
+    // Sécurité : on récompense dès que l'app est réellement détectée installée.
+    // On ne dépend plus de pendingInstallCheck, sinon une app déjà installée peut bloquer la récompense.
+    const installedNow = await refreshInstalledStatus(appId);
+    if (!installedNow) return false;
+
+    const freshState = readState();
+    const freshRow = freshState.apps[appId];
+
+    if (!freshRow) return false;
+    if (freshRow.rewardClaimed) return false;
+
+    freshRow.rewardClaiming = true;
+    writeState(freshState);
 
     try {
-      if (!window.VUserData?.addVCoins) return false;
-
-      await window.VUserData.addVCoins(REWARD_AMOUNT);
-
-      if (window.VUserData?.refresh) {
-        await window.VUserData.refresh();
+      if (typeof window.VUserData?.addVCoins !== "function") {
+        freshRow.rewardClaiming = false;
+        writeState(freshState);
+        return false;
       }
 
-      row.rewardClaimed = true;
-      row.pendingInstallCheck = false;
-      row.clickedStore = false;
-      writeState(state);
+      const before = Number(window.VUserData?.getVCoins?.() || 0);
+
+      const res = await window.VUserData.addVCoins(REWARD_AMOUNT);
+
+      const addOk =
+        res === true ||
+        typeof res === "number" ||
+        res?.ok === true ||
+        typeof res?.vcoins === "number";
+
+      if (!addOk) {
+        freshRow.rewardClaiming = false;
+        writeState(freshState);
+        return false;
+      }
+
+      try { await window.VUserData?.refresh?.(); } catch (_) {}
+
+      let after = Number(window.VUserData?.getVCoins?.() || 0);
+
+      if (after < before + REWARD_AMOUNT) {
+        await new Promise((resolve) => setTimeout(resolve, 900));
+        try { await window.VUserData?.refresh?.(); } catch (_) {}
+        after = Number(window.VUserData?.getVCoins?.() || 0);
+      }
+
+      if (after < before + REWARD_AMOUNT) {
+        freshRow.rewardClaiming = false;
+        writeState(freshState);
+        return false;
+      }
+
+      freshRow.rewardClaimed = true;
+      freshRow.rewardClaiming = false;
+      freshRow.pendingInstallCheck = false;
+      freshRow.clickedStore = false;
+      freshRow.installedDetected = true;
+      writeState(freshState);
 
       showRewardToast(appId);
       return true;
     } catch (_) {
+      freshRow.rewardClaiming = false;
+      writeState(freshState);
       return false;
     }
   }
