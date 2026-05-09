@@ -365,11 +365,29 @@
 
     if (cfg.kind === "vcoins"){
       const r = await window.VUserData?.addVCoins?.(cfg.amount);
-      if (r === null || r === undefined) throw new Error("credit_vcoins_failed");
+
+      const ok =
+        typeof r === "number" ||
+        (r && typeof r === "object" && r.ok === true);
+
+      if (!ok) {
+        throw new Error((r && r.reason) || "credit_vcoins_failed");
+      }
+
+      try { await window.VUserData?.refresh?.(); } catch (_) {}
     }
     else if (cfg.kind === "jetons"){
       const r = await window.VUserData?.addJetons?.(cfg.amount);
-      if (r === null || r === undefined) throw new Error("credit_jetons_failed");
+
+      const ok =
+        typeof r === "number" ||
+        (r && typeof r === "object" && r.ok === true);
+
+      if (!ok) {
+        throw new Error((r && r.reason) || "credit_jetons_failed");
+      }
+
+      try { await window.VUserData?.refresh?.(); } catch (_) {}
     }
     else if (cfg.kind === "no_ads"){
       setNoAdsEntitled(true);
