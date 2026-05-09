@@ -282,17 +282,20 @@
 
     if (!row) return false;
     if (row.rewardClaimed) return false;
+    if (row.rewardClaiming) return false;
 
-    // Sécurité : on récompense dès que l'app est réellement détectée installée.
-    // On ne dépend plus de pendingInstallCheck, sinon une app déjà installée peut bloquer la récompense.
-    const installedNow = await refreshInstalledStatus(appId);
-    if (!installedNow) return false;
+    if (!row.installedDetected) {
+      const installedNow = await refreshInstalledStatus(appId);
+      if (!installedNow) return false;
+    }
 
     const freshState = readState();
     const freshRow = freshState.apps[appId];
 
     if (!freshRow) return false;
     if (freshRow.rewardClaimed) return false;
+    if (freshRow.rewardClaiming) return false;
+    if (!freshRow.installedDetected) return false;
 
     freshRow.rewardClaiming = true;
     writeState(freshState);
@@ -304,33 +307,29 @@
         return false;
       }
 
-      const before = Number(window.VUserData?.getVCoins?.() || 0);
+      const beforeCoins = Number(window.VUserData?.getVCoins?.() || 0);
 
-      const res = await window.VUserData.addVCoins(REWARD_AMOUNT);
+      await window.VUserData.addVCoins(REWARD_AMOUNT);
 
-      const addOk =
-        res === true ||
-        typeof res === "number" ||
-        res?.ok === true ||
-        typeof res?.vcoins === "number";
-
-      if (!addOk) {
-        freshRow.rewardClaiming = false;
-        writeState(freshState);
-        return false;
+      if (typeof window.VUserData?.refresh === "function") {
+        await window.VUserData.refresh();
       }
 
-      try { await window.VUserData?.refresh?.(); } catch (_) {}
+      let afterCoins = Number(window.VUserData?.getVCoins?.() || beforeCoins);
 
-      let after = Number(window.VUserData?.getVCoins?.() || 0);
+      if (afterCoins < beforeCoins + REWARD_AMOUNT) {
+        await new Promise(function (resolve) {
+          setTimeout(resolve, 900);
+        });
 
-      if (after < before + REWARD_AMOUNT) {
-        await new Promise((resolve) => setTimeout(resolve, 900));
-        try { await window.VUserData?.refresh?.(); } catch (_) {}
-        after = Number(window.VUserData?.getVCoins?.() || 0);
+        if (typeof window.VUserData?.refresh === "function") {
+          await window.VUserData.refresh();
+        }
+
+        afterCoins = Number(window.VUserData?.getVCoins?.() || beforeCoins);
       }
 
-      if (after < before + REWARD_AMOUNT) {
+      if (afterCoins < beforeCoins + REWARD_AMOUNT) {
         freshRow.rewardClaiming = false;
         writeState(freshState);
         return false;

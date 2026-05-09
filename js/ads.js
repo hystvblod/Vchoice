@@ -550,6 +550,168 @@
     }, d);
   }
 
+  function waitRewardedOnce(timeoutMs) {
+    return new Promise((resolve) => {
+      const plugin = getPlugin();
+
+      let off = null;
+      let timer = null;
+      let doneCalled = false;
+
+      function done(ok) {
+        if (doneCalled) return;
+        doneCalled = true;
+
+        try {
+          if (off && typeof off.remove === "function") {
+            off.remove();
+          }
+        } catch (_) {}
+
+        if (timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
+
+        resolve(!!ok);
+      }
+
+      try {
+        if (!plugin || typeof plugin.addListener !== "function") {
+          done(false);
+          return;
+        }
+
+        off = plugin.addListener("onRewardedVideoAdReward", function () {
+          done(true);
+        });
+      } catch (_) {
+        done(false);
+        return;
+      }
+
+      timer = setTimeout(function () {
+        done(false);
+      }, timeoutMs || 30000);
+    });
+  }
+
+  function waitDismissedOnce(kind, timeoutMs) {
+    return new Promise((resolve) => {
+      const plugin = getPlugin();
+
+      let offDismissed = null;
+      let offFailed = null;
+      let timer = null;
+      let doneCalled = false;
+
+      function done(ok) {
+        if (doneCalled) return;
+        doneCalled = true;
+
+        try {
+          if (offDismissed && typeof offDismissed.remove === "function") {
+            offDismissed.remove();
+          }
+        } catch (_) {}
+
+        try {
+          if (offFailed && typeof offFailed.remove === "function") {
+            offFailed.remove();
+          }
+        } catch (_) {}
+
+        if (timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
+
+        resolve(!!ok);
+      }
+
+      const dismissedEvt = kind === "rewarded"
+        ? "onRewardedVideoAdDismissed"
+        : "interstitialAdDismissed";
+
+      const failedEvt = kind === "rewarded"
+        ? "onRewardedVideoAdFailedToShow"
+        : "interstitialAdFailedToShow";
+
+      try {
+        if (!plugin || typeof plugin.addListener !== "function") {
+          done(false);
+          return;
+        }
+
+        offDismissed = plugin.addListener(dismissedEvt, function () {
+          done(true);
+        });
+
+        offFailed = plugin.addListener(failedEvt, function () {
+          done(false);
+        });
+      } catch (_) {
+        done(false);
+        return;
+      }
+
+      timer = setTimeout(function () {
+        done(true);
+      }, timeoutMs || 45000);
+    });
+  }
+
+  function waitAppReturnOnce(timeoutMs) {
+    return new Promise((resolve) => {
+      let doneCalled = false;
+      let timer = null;
+
+      function done() {
+        if (doneCalled) return;
+        doneCalled = true;
+
+        try {
+          document.removeEventListener("visibilitychange", onVisibility);
+        } catch (_) {}
+
+        try {
+          window.removeEventListener("focus", onFocus);
+        } catch (_) {}
+
+        if (timer) {
+          clearTimeout(timer);
+          timer = null;
+        }
+
+        resolve(true);
+      }
+
+      function onVisibility() {
+        try {
+          if (!document.hidden) {
+            done();
+          }
+        } catch (_) {}
+      }
+
+      function onFocus() {
+        done();
+      }
+
+      try {
+        document.addEventListener("visibilitychange", onVisibility);
+      } catch (_) {}
+
+      try {
+        window.addEventListener("focus", onFocus);
+      } catch (_) {}
+
+      timer = setTimeout(function () {
+        done();
+      }, timeoutMs || 8000);
+    });
+  }
+
   async function showRewarded(opts) {
     opts = opts || {};
 
@@ -563,11 +725,13 @@
 
     try {
       const plugin = getPlugin();
+
       if (!plugin) {
         return { ok: false, reason: "plugin_missing" };
       }
 
       const initState = await init();
+
       if (!initState || !initState.ok) {
         return { ok: false, reason: initState?.reason || "init_failed" };
       }
@@ -577,28 +741,82 @@
       }
 
       const okPreload = await preloadRewardedAd();
+
       if (!okPreload) {
         return { ok: false, reason: "rewarded_prepare_failed" };
       }
 
       preShowAdCleanup();
 
-      const rewardItem = await withTimeout(
-        plugin.showRewardVideoAd(),
-        45000,
-        "rewarded_show_timeout"
+      _rewardedReady = false;
+
+      const rewardedPromise = waitRewardedOnce(30000);
+      const dismissedPromise = waitDismissedOnce("rewarded", 45000);
+
+      let showResult = null;
+
+      try {
+        showResult = await plugin.showRewardVideoAd();
+      } catch (e) {
+        try {
+          await dismissedPromise.catch(function () {
+            return false;
+          });
+        } catch (_) {}
+
+        _rewardedReady = false;
+        scheduleRewardedPreload(800);
+
+        return {
+          ok: false,
+          reason: e?.message || "rewarded_show_exception"
+        };
+      }
+
+      const eventRewarded = await rewardedPromise.catch(function () {
+        return false;
+      });
+
+      const returnRewarded = !!(
+        showResult &&
+        (
+          showResult.rewarded === true ||
+          showResult.reward === true ||
+          showResult.rewardItem ||
+          showResult.type ||
+          showResult.amount != null
+        )
       );
+
+      const gotReward = !!(eventRewarded || returnRewarded);
+
+      await Promise.race([
+        dismissedPromise.catch(function () {
+          return false;
+        }),
+        waitAppReturnOnce(8000)
+      ]);
+
+      postAdCleanup();
+
+      _rewardedReady = false;
+      scheduleRewardedPreload(500);
+
+      if (!gotReward) {
+        return {
+          ok: false,
+          reason: "reward_not_granted",
+          raw: showResult || null
+        };
+      }
 
       markRewardedShown();
       markGameRewardSeen();
       _incCounter(REWARDED_TOTAL_COUNT_KEY);
 
-      _rewardedReady = false;
-      scheduleRewardedPreload(500);
-
       return {
         ok: true,
-        reward: rewardItem || null,
+        reward: showResult || null,
         placement: String(opts.placement || "rewarded")
       };
     } catch (e) {
@@ -610,7 +828,9 @@
         reason: e?.message || "rewarded_exception"
       };
     } finally {
-      postAdCleanup();
+      try {
+        postAdCleanup();
+      } catch (_) {}
       _rewardBusy = false;
       _showLock = false;
       _currentAdKind = null;
