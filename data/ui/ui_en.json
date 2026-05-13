@@ -382,7 +382,23 @@
           "title": "Bonus available",
           "body": "Earn a bonus by playing VUniverse and ruling fictional worlds."
         }
+      },
+    "vmonster": {
+      "name": "VMonster",
+      "store_desc": "Merge monsters, unlock new worlds and progress through a fun strategic game.",
+      "popup1": {
+        "title": "Need VCoins?",
+        "body": "Install VMonster, then come back to VChronicles to claim your reward."
+      },
+      "popup2": {
+        "title": "Discover VMonster",
+        "body": "Merge monsters, unlock worlds and earn your bonus VCoins."
+      },
+      "popup3": {
+        "title": "A reward is waiting",
+        "body": "Try VMonster, then come back here to claim your bonus."
       }
+    }
     }
   },
   "scenarios": {

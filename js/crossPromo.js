@@ -7,6 +7,15 @@
   const REWARD_AMOUNT = 600;
   const MAX_DISMISS_PER_GAME = 2;
 
+const POSTGAME_OFFERS = [
+  { appId: "vblocks", popupIndex: 2 },
+  { appId: "vuniverse", popupIndex: 2 },
+  { appId: "vmonster", popupIndex: 2 },
+  { appId: "vblocks", popupIndex: 3 },
+  { appId: "vuniverse", popupIndex: 3 },
+  { appId: "vmonster", popupIndex: 3 }
+];
+
   const APPS = {
     vblocks: {
       id: "vblocks",
@@ -50,6 +59,27 @@
       popup2BodyKey: "crosspromo.apps.vuniverse.popup2.body",
       popup3TitleKey: "crosspromo.apps.vuniverse.popup3.title",
       popup3BodyKey: "crosspromo.apps.vuniverse.popup3.body"
+    },
+    vmonster: {
+      id: "vmonster",
+      packageName: "com.vboldstudio.vmonster",
+      iosScheme: "vmonster://",
+      storeUrlAndroid: "https://play.google.com/store/apps/details?id=com.vboldstudio.vmonster",
+      storeUrlIOS: "https://apps.apple.com/app/idZZZZZZZZZZ",
+      cover: "assets/img/crosspromo/vmonster_cover.webp",
+      shots: [
+        "assets/img/crosspromo/vmonster_01.webp",
+        "assets/img/crosspromo/vmonster_02.webp",
+        "assets/img/crosspromo/vmonster_03.webp"
+      ],
+      titleKey: "crosspromo.apps.vmonster.name",
+      descKey: "crosspromo.apps.vmonster.store_desc",
+      popup1TitleKey: "crosspromo.apps.vmonster.popup1.title",
+      popup1BodyKey: "crosspromo.apps.vmonster.popup1.body",
+      popup2TitleKey: "crosspromo.apps.vmonster.popup2.title",
+      popup2BodyKey: "crosspromo.apps.vmonster.popup2.body",
+      popup3TitleKey: "crosspromo.apps.vmonster.popup3.title",
+      popup3BodyKey: "crosspromo.apps.vmonster.popup3.body"
     }
   };
 
@@ -160,10 +190,14 @@
       if (!parsed || typeof parsed !== "object") return defaultState();
 
       return {
-        lowVcoinsNextApp: parsed.lowVcoinsNextApp === "vuniverse" ? "vuniverse" : "vblocks",
+        lowVcoinsNextApp: ["vblocks", "vuniverse", "vmonster"].includes(parsed.lowVcoinsNextApp)
+          ? parsed.lowVcoinsNextApp
+          : "vblocks",
+        nextPostGameOfferIndex: Number(parsed.nextPostGameOfferIndex || 0) % POSTGAME_OFFERS.length,
         apps: {
           vblocks: normalizeGameState(parsed.apps?.vblocks),
-          vuniverse: normalizeGameState(parsed.apps?.vuniverse)
+          vuniverse: normalizeGameState(parsed.apps?.vuniverse),
+          vmonster: normalizeGameState(parsed.apps?.vmonster)
         }
       };
     } catch (_) {
@@ -583,28 +617,45 @@
     return true;
   }
 
-  function getOtherAppId(appId) {
-    return appId === "vblocks" ? "vuniverse" : "vblocks";
+  function getNextLowVcoinsAppId(appId) {
+    const options = ["vblocks", "vuniverse", "vmonster"];
+    const index = options.indexOf(appId);
+    return options[(index + 1 + options.length) % options.length] || "vblocks";
   }
 
   function chooseLowVcoinsOffer() {
     const state = readState();
-    const firstChoice = state.lowVcoinsNextApp === "vuniverse" ? "vuniverse" : "vblocks";
-    const secondChoice = getOtherAppId(firstChoice);
+    const options = ["vblocks", "vuniverse", "vmonster"];
+    const start = Math.max(0, options.indexOf(state.lowVcoinsNextApp));
 
-    const firstRow = state.apps[firstChoice];
-    const secondRow = state.apps[secondChoice];
+    for (let i = 0; i < options.length; i += 1) {
+      const appId = options[(start + i) % options.length];
+      const row = state.apps[appId];
 
-    if (canStillShowForGame(firstRow)) {
-      state.lowVcoinsNextApp = secondChoice;
-      writeState(state);
-      return { appId: firstChoice, popupIndex: 1 };
+      if (canStillShowForGame(row)) {
+        state.lowVcoinsNextApp = getNextLowVcoinsAppId(appId);
+        writeState(state);
+        return { appId: appId, popupIndex: 1 };
+      }
     }
 
-    if (canStillShowForGame(secondRow)) {
-      state.lowVcoinsNextApp = firstChoice;
-      writeState(state);
-      return { appId: secondChoice, popupIndex: 1 };
+    return null;
+  }
+
+  function choosePostGameOffer() {
+    const state = readState();
+    const start = Number(state.nextPostGameOfferIndex || 0) % POSTGAME_OFFERS.length;
+
+    for (let i = 0; i < POSTGAME_OFFERS.length; i += 1) {
+      const index = (start + i) % POSTGAME_OFFERS.length;
+      const offer = POSTGAME_OFFERS[index];
+      const row = state.apps[offer.appId];
+
+      if (canStillShowForGame(row)) {
+        state.nextPostGameOfferIndex = (index + 1) % POSTGAME_OFFERS.length;
+        writeState(state);
+        return offer;
+      }
     }
 
     return null;
@@ -619,12 +670,14 @@
       return openPromoPopup(offer.appId, offer.popupIndex);
     }
 
-    if (context === "offer_vblocks_after_loss") {
-      return openPromoPopup("vblocks", 2);
-    }
-
-    if (context === "offer_vuniverse_after_story") {
-      return openPromoPopup("vuniverse", 2);
+    if (
+      context === "offer_vblocks_after_loss" ||
+      context === "offer_vuniverse_after_story" ||
+      context === "offer_vmonster_after_story"
+    ) {
+      const offer = choosePostGameOffer();
+      if (!offer) return false;
+      return openPromoPopup(offer.appId, offer.popupIndex);
     }
 
     return false;
@@ -633,9 +686,11 @@
   async function bootRewardChecks() {
     await refreshInstalledStatus("vblocks");
     await refreshInstalledStatus("vuniverse");
+    await refreshInstalledStatus("vmonster");
 
     await claimRewardIfEligible("vblocks");
     await claimRewardIfEligible("vuniverse");
+    await claimRewardIfEligible("vmonster");
   }
 
   async function getStoreActionState(appId) {
@@ -759,7 +814,7 @@
     const host = document.getElementById("vc-crosspromo-grid");
     if (!host) return;
 
-    const ids = ["vuniverse", "vblocks"];
+    const ids = ["vuniverse", "vblocks", "vmonster"];
     const rows = [];
 
     for (const id of ids) {
@@ -885,6 +940,15 @@
       queueOfferVUniverseAfterStory() {
         try {
           sessionStorage.setItem(CONTEXT_KEY, "offer_vuniverse_after_story");
+          return true;
+        } catch (_) {
+          return false;
+        }
+      },
+
+      queueOfferVMonsterAfterStory() {
+        try {
+          sessionStorage.setItem(CONTEXT_KEY, "offer_vmonster_after_story");
           return true;
         } catch (_) {
           return false;

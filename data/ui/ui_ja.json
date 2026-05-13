@@ -382,7 +382,23 @@
           "body": "VUniverse をプレイして架空の世界を支配すると、ボーナスを獲得できます。"
         },
         "diamond_note": "広告なし + すべての世界を解放"
+      },
+    "vmonster": {
+      "name": "VMonster",
+      "store_desc": "モンスターを合体させ、新しいワールドを解放しながら楽しく戦略的に進めるゲームです。",
+      "popup1": {
+        "title": "VCoinsが必要ですか？",
+        "body": "VMonsterをインストールしてからVChroniclesに戻ると、報酬を受け取れます。"
+      },
+      "popup2": {
+        "title": "VMonsterを発見",
+        "body": "モンスターを合体させ、ワールドを解放してボーナスVCoinsを獲得しましょう。"
+      },
+      "popup3": {
+        "title": "報酬が待っています",
+        "body": "VMonsterを試してから戻ると、ボーナスを受け取れます。"
       }
+    }
     }
   },
   "scenarios": {

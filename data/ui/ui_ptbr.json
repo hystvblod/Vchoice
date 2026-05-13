@@ -382,7 +382,23 @@
           "body": "Ganhe um bônus jogando VUniverse e comandando universos fictícios."
         },
         "diamond_note": "Sem Anúncios + todos os universos desbloqueados"
+      },
+    "vmonster": {
+      "name": "VMonster",
+      "store_desc": "Funda monstros, desbloqueie novos mundos e avance em um jogo divertido e estratégico.",
+      "popup1": {
+        "title": "Precisa de VCoins?",
+        "body": "Instale VMonster e volte ao VChronicles para resgatar sua recompensa."
+      },
+      "popup2": {
+        "title": "Conheça VMonster",
+        "body": "Funda monstros, desbloqueie mundos e ganhe seus VCoins bônus."
+      },
+      "popup3": {
+        "title": "Uma recompensa está esperando",
+        "body": "Teste VMonster e volte aqui para resgatar seu bônus."
       }
+    }
     }
   },
   "scenarios": {

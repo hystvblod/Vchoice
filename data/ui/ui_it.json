@@ -382,7 +382,23 @@
           "body": "Guadagna un bonus giocando a VUniverse e dirigendo universi fittizi."
         },
         "diamond_note": "No Pub + tutti gli universi sbloccati"
+      },
+    "vmonster": {
+      "name": "VMonster",
+      "store_desc": "Fondi mostri, sblocca nuovi mondi e avanza in un gioco divertente e strategico.",
+      "popup1": {
+        "title": "Ti servono VCoins?",
+        "body": "Installa VMonster e torna su VChronicles per ottenere la tua ricompensa."
+      },
+      "popup2": {
+        "title": "Scopri VMonster",
+        "body": "Fondi mostri, sblocca mondi e guadagna i tuoi VCoins bonus."
+      },
+      "popup3": {
+        "title": "Una ricompensa ti aspetta",
+        "body": "Prova VMonster e torna qui per ottenere il tuo bonus."
       }
+    }
     }
   },
   "scenarios": {
