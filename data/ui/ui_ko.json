@@ -382,7 +382,23 @@
           "body": "VUniverse를 플레이하고 가상의 세계를 지배하며 보너스를 획득하세요."
         },
         "diamond_note": "광고 없음 + 모든 세계 해금"
+      },
+    "vmonster": {
+      "name": "VMonster",
+      "store_desc": "몬스터를 합성하고 새로운 월드를 잠금 해제하며 재미있는 전략 게임을 진행하세요.",
+      "popup1": {
+        "title": "VCoins가 필요하신가요?",
+        "body": "VMonster를 설치한 뒤 VChronicles로 돌아와 보상을 받으세요."
+      },
+      "popup2": {
+        "title": "VMonster 발견하기",
+        "body": "몬스터를 합성하고 월드를 잠금 해제해 보너스 VCoins를 받으세요."
+      },
+      "popup3": {
+        "title": "보상이 기다리고 있어요",
+        "body": "VMonster를 플레이한 뒤 돌아와 보너스를 받으세요."
       }
+    }
     }
   },
   "scenarios": {

@@ -382,7 +382,23 @@
           "body": "Gagne un bonus en jouant à VUniverse et en dirigeant des univers fictifs."
         },
         "diamond_note": "No Pub + tous les univers débloqués"
+      },
+    "vmonster": {
+      "name": "VMonster",
+      "store_desc": "Fusionne des monstres, débloque de nouveaux univers et progresse dans un jeu fun et stratégique.",
+      "popup1": {
+        "title": "Besoin de VCoins ?",
+        "body": "Installe VMonster puis reviens dans VChronicles pour récupérer ta récompense."
+      },
+      "popup2": {
+        "title": "Découvre VMonster",
+        "body": "Fusionne des monstres, débloque des univers et gagne tes VCoins bonus."
+      },
+      "popup3": {
+        "title": "Une récompense t’attend",
+        "body": "Essaie VMonster puis reviens ici pour réclamer ton bonus."
       }
+    }
     }
   },
   "scenarios": {

@@ -382,7 +382,23 @@
           "body": "Verdiene einen Bonus, indem du VUniverse spielst und fiktive Universen leitest."
         },
         "diamond_note": "Keine Werbung + alle Universen freigeschaltet"
+      },
+    "vmonster": {
+      "name": "VMonster",
+      "store_desc": "Verschmelze Monster, schalte neue Welten frei und komme in einem unterhaltsamen Strategiespiel voran.",
+      "popup1": {
+        "title": "Brauchst du VCoins?",
+        "body": "Installiere VMonster und kehre zu VChronicles zurück, um deine Belohnung zu erhalten."
+      },
+      "popup2": {
+        "title": "Entdecke VMonster",
+        "body": "Verschmelze Monster, schalte Welten frei und verdiene deine Bonus-VCoins."
+      },
+      "popup3": {
+        "title": "Eine Belohnung wartet",
+        "body": "Teste VMonster und kehre hierher zurück, um deinen Bonus zu erhalten."
       }
+    }
     }
   },
   "scenarios": {

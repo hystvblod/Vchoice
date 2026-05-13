@@ -382,7 +382,23 @@
           "body": "Dapatkan bonus dengan bermain VUniverse dan memimpin dunia-dunia fiktif."
         },
         "diamond_note": "Tanpa Iklan + semua universe terbuka"
+      },
+    "vmonster": {
+      "name": "VMonster",
+      "store_desc": "Gabungkan monster, buka dunia baru, dan maju dalam game strategi yang seru.",
+      "popup1": {
+        "title": "Butuh VCoins?",
+        "body": "Instal VMonster lalu kembali ke VChronicles untuk mengklaim hadiahmu."
+      },
+      "popup2": {
+        "title": "Temukan VMonster",
+        "body": "Gabungkan monster, buka dunia, dan dapatkan bonus VCoins."
+      },
+      "popup3": {
+        "title": "Ada hadiah menunggu",
+        "body": "Coba VMonster lalu kembali ke sini untuk mengklaim bonusmu."
       }
+    }
     }
   },
   "scenarios": {
